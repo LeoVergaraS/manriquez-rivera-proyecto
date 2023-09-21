@@ -1,19 +1,27 @@
 package manriquezrivera.proyecto.services;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import manriquezrivera.proyecto.entity.Submateria;
+
+import manriquezrivera.proyecto.repositories.SubMateriaRepository;
+
 @Service 
 public class SubMateriaService{
     @Autowired
     private SubMateriaRepository subMateriaRepository;
 
-    public List<SubMateria> getAllSubMaterias(){
+    public List<Submateria> getAllSubMaterias(){
         return subMateriaRepository.findAll();
     }
 
-    public SubMateria getSubMateriaById(Long id){
+    public Submateria getSubMateriaById(Long id){
         return subMateriaRepository.findById(id).get();
     }
 
-    public SubMateria saveSubMateria(SubMateria subMateria){
+    public Submateria saveSubMateria(Submateria subMateria){
         return subMateriaRepository.save(subMateria);
     }
 
