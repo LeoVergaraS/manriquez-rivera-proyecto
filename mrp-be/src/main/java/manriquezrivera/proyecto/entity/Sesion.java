@@ -1,4 +1,5 @@
 package manriquezrivera.proyecto.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,15 @@ public class Sesion {
     private Long id;
     private Long tiempo;
     private Date fecha;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Cliente id_cliente;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_materia")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Materia id_materia;
+
 }
