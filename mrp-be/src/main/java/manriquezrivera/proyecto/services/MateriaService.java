@@ -1,5 +1,13 @@
 package manriquezrivera.proyecto.services;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import manriquezrivera.proyecto.entity.Materia;
+import manriquezrivera.proyecto.repositories.MateriaRepository;
+
 @Service
 public class MateriaService{
     @Autowired
