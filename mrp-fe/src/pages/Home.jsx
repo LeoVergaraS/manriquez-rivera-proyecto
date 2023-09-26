@@ -28,12 +28,18 @@ function Home() {
                                 <tr>
                                     <th>Cliente</th>
                                     <th>Materia</th>
-                                    <th>Submateria</th>
+                                    <th>Sub Materia</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <Row></Row>
                                 <tr>
                                     <td>Eduardo Abarca</td>
+                                    <td>Derecho Laboral</td>
+                                    <td>Finiquito</td>
+                                </tr>
+                                <tr>
+                                    <td>Juan Iturbe</td>
                                     <td>Derecho Laboral</td>
                                     <td>Finiquito</td>
                                 </tr>
