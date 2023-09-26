@@ -1,0 +1,15 @@
+table{
+    color: white;
+}
+
+tbody{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(red,blue);
+}
+
+.container2{
+    border:solid 1px rgba(255,255,255,0.2)
+}

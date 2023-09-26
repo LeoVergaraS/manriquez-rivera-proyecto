@@ -2,11 +2,12 @@ import Form from 'react-bootstrap/Form';
 import { Container, Col, Row } from 'react-bootstrap';
 import { BiSearchAlt } from 'react-icons/bi';
 import './home.scss'
+import '../components/Table/table.scss'
 
 function Home() {
     return (
         <Container>
-            <Row style={{ margin: "75px", alignItems:"center" }}>
+            <Row style={{ margin: "75px", alignItems: "center" }}>
                 <Col xs="auto">
                     <BiSearchAlt style={{ color: "white", fontSize: "35px" }} />
                 </Col>
@@ -19,14 +20,29 @@ function Home() {
                     </Form.Select>
                 </Col>
             </Row>
-
             <Row>
                 <Col>
-
+                    <div className='container2'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Materia</th>
+                                    <th>Submateria</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Eduardo Abarca</td>
+                                    <td>Derecho Laboral</td>
+                                    <td>Finiquito</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </Col>
             </Row>
-
-        </Container>
+        </Container >
     );
 }
 
