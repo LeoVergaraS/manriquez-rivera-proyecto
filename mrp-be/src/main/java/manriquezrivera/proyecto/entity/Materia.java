@@ -14,6 +14,6 @@ public class Materia {
     @Column(unique = true, nullable = false)
     private Long id;
     private String nombre;
-
+    private boolean borrado;
 
 }

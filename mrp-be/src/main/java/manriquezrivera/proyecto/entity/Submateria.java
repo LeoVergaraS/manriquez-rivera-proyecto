@@ -15,6 +15,7 @@ public class Submateria {
     @Column(unique = true, nullable = false)
     private Long id;
     private String nombre;
+    private boolean borrado;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_materia")

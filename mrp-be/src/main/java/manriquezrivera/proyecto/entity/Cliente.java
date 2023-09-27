@@ -15,4 +15,5 @@ public class Cliente {
     private Long id;
     private String nombre;
     private String rut;
+    private boolean borrado;
 }
