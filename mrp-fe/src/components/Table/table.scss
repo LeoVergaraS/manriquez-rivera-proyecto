@@ -34,8 +34,16 @@ td {
     border-bottom: solid 1px rgb(225, 21, 212);
     text-align: center;
     border: 2px solid #1E464B;
+    //border-radius: 10px;
 }
 
 tbody tr:hover{
     background: rgb(219, 215, 215);
+}
+
+.special-column {
+    background-color: #1E464B;
+    cursor: pointer;
+    border-radius: 0%;
+    border-bottom: 3px solid #1E464B;
 }
