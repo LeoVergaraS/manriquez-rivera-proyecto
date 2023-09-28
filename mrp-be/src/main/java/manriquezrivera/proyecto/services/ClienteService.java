@@ -14,11 +14,11 @@ public class ClienteService{
     private ClienteRepository clienteRepository;
 
     public List<Cliente> getAllClientes(){
-        return clienteRepository.findAll();
+        return clienteRepository.getAll();
     }
 
     public Cliente getClienteById(Long id){
-        return clienteRepository.findById(id).get();
+        return clienteRepository.getById(id);
     }
 
     public Cliente saveCliente(Cliente cliente){

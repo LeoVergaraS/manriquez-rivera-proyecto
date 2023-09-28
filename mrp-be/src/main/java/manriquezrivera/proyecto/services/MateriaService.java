@@ -14,11 +14,11 @@ public class MateriaService{
     private MateriaRepository materiaRepository;
 
     public List<Materia> getAllMaterias(){
-        return materiaRepository.findAll();
+        return materiaRepository.getAll();
     }
 
     public Materia getMateriaById(Long id){
-        return materiaRepository.findById(id).get();
+        return materiaRepository.getById(id);
     }
 
     public Materia saveMateria(Materia materia){

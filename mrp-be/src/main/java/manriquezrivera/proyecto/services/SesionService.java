@@ -14,11 +14,11 @@ public class SesionService{
     private SesionRepository sesionRepository;
 
     public List<Sesion> getAllSesiones(){
-        return sesionRepository.findAll();
+        return sesionRepository.getAll();
     }
 
     public Sesion getSesionById(Long id){
-        return sesionRepository.findById(id).get();
+        return sesionRepository.getById(id);
     }
 
     public Sesion saveSesion(Sesion sesion){

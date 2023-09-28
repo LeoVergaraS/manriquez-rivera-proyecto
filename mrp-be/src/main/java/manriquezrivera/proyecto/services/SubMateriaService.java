@@ -14,11 +14,11 @@ public class SubMateriaService{
     private SubMateriaRepository subMateriaRepository;
 
     public List<Submateria> getAllSubMaterias(){
-        return subMateriaRepository.findAll();
+        return subMateriaRepository.getAll();
     }
 
     public Submateria getSubMateriaById(Long id){
-        return subMateriaRepository.findById(id).get();
+        return subMateriaRepository.getById(id);
     }
 
     public Submateria saveSubMateria(Submateria subMateria){
