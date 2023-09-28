@@ -49,5 +49,20 @@ tbody tr:hover{
 }
 
 .special-row{
-    height: 5px;
+    height: 9px;
+}
+
+#tbody-special{
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #BBBBBB;
+}
+
+#td-special{
+    padding: 5px;
+    border-bottom: solid 1px rgb(225, 21, 212);
+    text-align: center;
+    border: 2px solid #1E464B;
+    
 }
