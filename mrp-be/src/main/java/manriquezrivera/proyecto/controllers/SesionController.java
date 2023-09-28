@@ -46,9 +46,9 @@ public class SesionController {
       return ResponseEntity.ok().body(sesionGuardada);
     }
 
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<String> deleteSesion(@PathVariable(value = "id") Long id){
-      sesionService.deleteSesionById(id);
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteSesion(@RequestBody Sesion sesion){
+      Sesion sesionEliminada = sesionService.deleteSesion(sesion);
       return ResponseEntity.ok().body("Sesion eliminada correctamente");
     }
 }

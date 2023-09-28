@@ -25,7 +25,8 @@ public class SesionService{
         return sesionRepository.save(sesion);
     }
 
-    public void deleteSesionById(Long id){
-        sesionRepository.deleteById(id);
+    public Sesion deleteSesion(Sesion sesion){
+        sesion.setBorrado(true);
+        return sesionRepository.save(sesion);
     }
 }

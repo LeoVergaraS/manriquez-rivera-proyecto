@@ -25,7 +25,8 @@ public class SubMateriaService{
         return subMateriaRepository.save(subMateria);
     }
 
-    public void deleteSubMateriaById(Long id){
-        subMateriaRepository.deleteById(id);
+    public Submateria deleteSubMateria(Submateria submateria){
+        submateria.setBorrado(true);
+        return subMateriaRepository.save(submateria);
     }
 }

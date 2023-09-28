@@ -47,9 +47,9 @@ public class ClienteController {
       return ResponseEntity.ok().body(clienteGuardado);
     }
 
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<String> deleteCliente(@PathVariable(value = "id") Long id){
-      clienteService.deleteClienteById(id);
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteCliente(@RequestBody Cliente cliente){
+      Cliente clienteEliminado = clienteService.deleteCliente(cliente);
       return ResponseEntity.ok().body("Cliente eliminado correctamente");
     }
 }

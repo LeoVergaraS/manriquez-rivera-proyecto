@@ -25,7 +25,8 @@ public class MateriaService{
         return materiaRepository.save(materia);
     }
 
-    public void deleteMateriaById(Long id){
-        materiaRepository.deleteById(id);
+    public Materia deleteMateria(Materia materia){
+        materia.setBorrado(true);
+        return materiaRepository.save(materia);
     }
 }

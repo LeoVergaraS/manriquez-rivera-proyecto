@@ -46,9 +46,9 @@ public class MateriaController {
       return ResponseEntity.ok().body(materiaGuardada);
     }
 
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<String> deleteMateria(@PathVariable(value = "id") Long id){
-      materiaService.deleteMateriaById(id);
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteMateria(@RequestBody Materia materia){
+      Materia materiaEliminada = materiaService.deleteMateria(materia);
       return ResponseEntity.ok().body("Materia eliminada correctamente");
     }
 }
