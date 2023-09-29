@@ -14,6 +14,18 @@ function Home() {
     const [sesiones, setSesiones] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
 
+    const [sesion, setSesion] = useState({
+        id: null,
+        fecha: null,
+        tiempo: null,
+        materia: {
+            id_materia: 0
+        },
+        cliente: {
+            id_cliente: 0
+        }
+    })
+
     const togglePlay = () => {
         setIsPlaying(!isPlaying);
     };
@@ -72,22 +84,24 @@ function Home() {
                                     <th>Sub Materia</th>
                                     <th className="special-column"></th>
                                 </tr>
-                                <tr className= "special-row"></tr>               
+                                <tr className="special-row"></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td className="special-column" onClick={togglePlay}>
-                                        {isPlaying ? (
-                                            <FaCirclePause onClick={Pause} style={{ color: "#DFBF68", fontSize: "65px" }} />
-                                        ) : (
-                                            <FaPlayCircle onClick={Play} style={{ color: "#DFBF68", fontSize: "65px" }} />
-                                        )}
-                                    </td>
-                                    <td>Joakin Roa</td>
-                                    <td>Familia</td>
-                                    <td>Pensión de alimentos</td>
-                                    <td className="special-column"><PiClockCountdownFill style={{ color: "#DFBF68", fontSize: "75px" }} /></td>
-                                </tr>
+                                {sesiones.map((sesion) => (
+                                    <tr key={sesion.id}>
+                                        <td className="special-column" onClick={togglePlay}>
+                                            {isPlaying ? (
+                                                <FaCirclePause onClick={Pause} style={{ color: "#DFBF68", fontSize: "65px" }} />
+                                            ) : (
+                                                <FaPlayCircle onClick={Play} style={{ color: "#DFBF68", fontSize: "65px" }} />
+                                            )}
+                                        </td>
+                                        <td>{sesion.id_cliente.nombre}</td>
+                                        <td>{sesion.id_materia.nombre}</td>
+                                        <td>Sub materia</td>
+                                        <td className="special-column"><PiClockCountdownFill style={{ color: "#DFBF68", fontSize: "75px" }} /></td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
