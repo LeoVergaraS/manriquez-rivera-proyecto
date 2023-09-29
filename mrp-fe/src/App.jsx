@@ -4,6 +4,7 @@ import './App.css'
 import Home from './pages/Home'
 import Navbar from './components/Navbar/Navbar'
 import Consulta from './pages/Consulta'
+import Materia from './pages/Materia'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/consulta" element={<Consulta/>}/>
+        <Route path="/materia" element={<Materia/>}/>
       </Routes>
     </Router>
   )
