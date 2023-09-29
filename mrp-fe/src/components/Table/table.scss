@@ -8,7 +8,7 @@ table{
 tbody{
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    min-height: 80%;
     background: white;
 }
 
@@ -18,7 +18,7 @@ tbody{
 }
 
 thead{
-    background: #1E464B;
+    background: #3B575A;
     color: white;
 }
 
@@ -33,7 +33,7 @@ td {
     padding: 15px;
     border-bottom: solid 1px rgb(225, 21, 212);
     text-align: center;
-    border: 2px solid #1E464B;
+    border: 2px solid white;
     //border-radius: 10px;
 }
 
@@ -42,10 +42,10 @@ tbody tr:hover{
 }
 
 .special-column {
-    background-color: #1E464B;
+    background-color: white;
     cursor: pointer;
     border-radius: 0%;
-    border-bottom: 3px solid #1E464B;
+    border-bottom: 3px solid white;
 }
 
 .special-row{
