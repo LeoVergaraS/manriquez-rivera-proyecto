@@ -4,6 +4,7 @@ import './App.css'
 import Home from './pages/Home'
 import Navbar from './components/Navbar/Navbar'
 import Consulta from './pages/Consulta'
+import Youtube from './pages/Youtube'
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/consulta" element={<Consulta/>}/>
+        <Route path="/consulta" element={<Youtube/>}/>
       </Routes>
     </Router>
   )

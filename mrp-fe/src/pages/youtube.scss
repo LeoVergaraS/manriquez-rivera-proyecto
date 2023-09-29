@@ -1,0 +1,86 @@
+.layout{}
+
+.navegador{
+  border-bottom: 2px solid #DFBF68;
+
+  &__tabs{
+    list-style: none;
+    display: flex;
+    margin: 0;
+  }
+
+  &__tabs-item{
+    height: 50px;
+    width: 120px;
+    padding: 10px 0 0 16px;
+    color: white;
+    font-size: 25px;
+    margin-bottom: 0;
+    cursor: pointer;
+    
+    &:hover{
+      color: #DFBF68;
+      transition: all 0.3 ease-in-out;
+    }
+  }
+}
+
+.selected{
+  background-color: #DFBF68;
+  color: #1E464B;
+  &:hover{
+    color: #1E464B;
+  }
+}
+
+.main{
+  display: grid;
+  grid-template-columns: 80% 20%;
+  grid-template-rows: 1fr
+}
+
+.tabla{
+  padding-top: 10px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+
+  &__cabecera{
+    display: flex;
+    gap: 20px;
+
+    &-item{
+      display: flex;
+    justify-content: center;
+    width: 150px;
+    font-size: 30px;
+    color: white;
+    border-bottom: 2px solid #DFBF68;
+    }
+  }
+
+  &__content{
+    display: flex;
+    gap: 5px;
+    &-item{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 170px;
+      height: 55px;
+      font-size: 30px;
+      color: black;
+      background-color: white;
+      border-radius: 5px;
+    }
+  }
+
+}
+
+.filtro{
+  border-left: 2px solid #DFBF68;
+  height: calc(100vh - (71px + 52px));
+}
+
+
