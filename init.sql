@@ -6,17 +6,18 @@ USE `mrp`;
 CREATE TABLE IF NOT EXISTS `materia` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) DEFAULT NULL,
+  `borrado` bit(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
 -- Insert data -- 
 INSERT INTO `materia`
-(nombre)
-VALUES('Derecho Laboral'),
-('Derecho de Familia'),
-('Derecho Civil'),
-('Deudas'),
-('Copropiedad'),
-('Derecho Comercial'),
-('Derecho Constitucional'),
-('Juzgado de Policía Local');
+(nombre, borrado)
+VALUES('Derecho Laboral',0),
+('Derecho de Familia',0),
+('Derecho Civil',0),
+('Deudas',0),
+('Copropiedad',0),
+('Derecho Comercial',0),
+('Derecho Constitucional',0),
+('Juzgado de Policía Local',0);

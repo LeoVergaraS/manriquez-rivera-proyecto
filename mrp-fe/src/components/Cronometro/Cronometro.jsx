@@ -6,8 +6,8 @@ import { VscDebugRestart } from 'react-icons/vsc';
 import { GiSaveArrow } from 'react-icons/gi'
 
 function Cronometro() {
-    const [diff, setDiff] = useState(null)
-    const [initial, setInitial] = useState(null)
+    const [diff, setDiff] = useState(0)
+    const [initial, setInitial] = useState(0)
     const [isPlaying, setIsPlaying] = useState(false);
 
     const animationRef = useRef(null);
@@ -17,14 +17,14 @@ function Cronometro() {
     };
 
     const tick = () => {
-        setDiff(new Date(+new Date() - initial));
+        setDiff(new Date().getTime() - initial);
         animationRef.current = requestAnimationFrame(tick);
     };
 
     const start = () => {
         if(!isPlaying){
           togglePlay();
-          setInitial(new Date(+new Date() - diff));
+          setInitial(new Date().getTime() - diff);
           animationRef.current = requestAnimationFrame(tick);
         }
     }
@@ -70,18 +70,18 @@ function Cronometro() {
     );
 }
 
-const timeFormat = (date) => {
-    if (!date) return "00:00:00";
+const timeFormat = (milliseconds) => {
+    console.log(milliseconds)
+    if (!milliseconds) return "00:00:00";
 
-    console.log(date);
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
 
-    let hh = date.getUTCHours();
-    let mm = date.getUTCMinutes();
-    let ss = date.getUTCSeconds();
-
-    hh = hh < 10 ? "0" + hh : hh;
-    mm = mm < 10 ? "0" + mm : mm;
-    ss = ss < 10 ? "0" + ss : ss;
+    const hh = hours < 10 ? "0" + hours : hours;
+    const mm = minutes < 10 ? "0" + minutes : minutes;
+    const ss = seconds < 10 ? "0" + seconds : seconds;
 
     return `${hh}:${mm}:${ss}`;
 };
