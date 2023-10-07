@@ -56,8 +56,7 @@ function Cronometro() {
   // Función para reiniciar el cronómetro
   const reset = () => {
     if(isPlaying) {
-      togglePlay();
-      setIsPaused(true);
+      pause();
     }
     setTiempo(0);
     localStorage.setItem("tiempoCronometro", "00:00:00");
