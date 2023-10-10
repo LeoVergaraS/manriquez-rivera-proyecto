@@ -2,12 +2,15 @@ import { Container } from "react-bootstrap";
 import "./youtube.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Table_01 from "../components/Table_01/Table_01";
 
 const Youtube = () => {
   const [selectedCliente, setSelectedCliente] = useState("");
   const [selectedGeneral, setSelectedGeneral] = useState("");
   const [selectedMateria, setSelectedMateria] = useState("selected");
   const [consultasC, setConsultasC] = useState([]);
+
+  const headerMateria = ["Materia", "Tiempo"];
 
   const handleSelected = (type) => {
     if (type === "cliente") {
@@ -44,7 +47,6 @@ const Youtube = () => {
   return (
     <div className="layout">
       <div className="navegador">
-        <button onClick={() => console.log(consultasC)}>Click</button>
         <ul className="navegador__tabs">
           <p
             className={"navegador__tabs-item " + selectedGeneral}
@@ -68,32 +70,17 @@ const Youtube = () => {
       </div>
 
       <div className="main">
-        <div className="tabla">
-          <div className="tabla__row">
-            <div className="tabla__cabecera">
-              <p className="tabla__cabecera-item">Nombre</p>
-              <p className="tabla__cabecera-item">Tiempo</p>
-            </div>
+        <Table_01 header={headerMateria} listObject={consultasC} />
+        <aside className="filtro">
+          <div className="filtro__column">
+            <div className="filtro__item">1 semana</div>
+            <div className="filtro__item">1 mes</div>
+            <div className="filtro__item">3 meses</div>
+            <div className="filtro__item">6 meses</div>
+            <div className="filtro__item">1 año</div>
+            <div className="filtro__item">Personalizado</div>
           </div>
-          {consultasC.map((consulta) => {
-            return (
-              <div className="tabla__row">
-                <div className="tabla__content">
-                  <div className="tabla__content-item">{consulta.nombre}</div>
-                  <div className="tabla__content-item">{consulta.tiempo}</div>
-                </div>
-              </div>
-            );
-          })}
-
-          <div className="tabla__row">
-            <div className="tabla__footer">
-              <div className="tabla__footer-item">Total</div>
-              <div className="tabla__footer-item">Total</div>
-            </div>
-          </div>
-        </div>
-        <aside className="filtro">hola</aside>
+        </aside>
       </div>
     </div>
   );

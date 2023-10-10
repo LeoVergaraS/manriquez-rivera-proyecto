@@ -1,0 +1,61 @@
+.tabla{
+  padding-top: 10px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+
+  &__row{
+    margin-top: 5px;
+  }
+
+  &__cabecera{
+    display: flex;
+    gap: 20px;
+
+    &-item{
+      display: flex;
+    justify-content: center;
+    width: 150px;
+    font-size: 30px;
+    color: white;
+    border-bottom: 2px solid #DFBF68;
+    }
+  }
+
+  &__content{
+    display: flex;
+    gap: 3px;
+    &-item{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 170px;
+      height: 70px;
+      font-size: 25px;
+      color: black;
+      background-color: white;
+      border-radius: 5px;
+      line-height: 32px;
+      text-align: center;
+    }
+  }
+
+  &__footer{
+    display: flex;
+    gap: 3px;
+    border-top: 2px solid #DFBF68;
+    margin-top: 5px;
+    padding-top: 5px;
+    &-item{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 170px;
+      font-size: 30px;
+      color: black;
+      background-color: #BBBBBB;
+      border-radius: 5px;
+    }
+  }
+}

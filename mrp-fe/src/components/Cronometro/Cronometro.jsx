@@ -13,7 +13,6 @@ function Cronometro() {
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
 
-  // Función para formatear el tiempo en formato HH:mm:ss
   const formatearTiempo = (tiempo) => {
     const horas = String(Math.floor(tiempo / 3600)).padStart(2, "0");
     const minutos = String(Math.floor((tiempo % 3600) / 60)).padStart(2, "0");
@@ -53,7 +52,6 @@ function Cronometro() {
     console.log("save");
   };
 
-  // Función para reiniciar el cronómetro
   const reset = () => {
     if(isPlaying) {
       pause();
@@ -61,19 +59,6 @@ function Cronometro() {
     setTiempo(0);
     localStorage.setItem("tiempoCronometro", "00:00:00");
   };
-
-
-  // Actualizar el tiempo cada segundo
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setTiempo((prevTiempo) => {
-//         const nuevoTiempo = prevTiempo + 1;
-//         localStorage.setItem("tiempoCronometro", String(nuevoTiempo));
-//         return nuevoTiempo;
-//       });
-//     }, 1000);
-//     return () => clearInterval(interval);
-//   }, []);
 
   return (
     <div className="App">
