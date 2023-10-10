@@ -2,9 +2,12 @@ import "./table_01.scss";
 
 const Table_01 = ({header,listObject}) => {
   const keys = () => {
-    if(listObject === null || listObject === undefined) return [];
+    if(listObject === null || listObject === undefined || listObject.length === 0) return [];
     const k = Object.keys(listObject[0]);
+    return k;
   }
+
+  const getter = keys();
 
   const getTotal = (consulta) => {
     let total = 0;
@@ -13,6 +16,8 @@ const Table_01 = ({header,listObject}) => {
     });
     return total;
   }
+
+  if(listObject === null || listObject === undefined || listObject.length === 0) return <div></div>;
 
   return (
     <div className="tabla">
@@ -25,8 +30,8 @@ const Table_01 = ({header,listObject}) => {
         return (
           <div className="tabla__row">
             <div className="tabla__content">
-              <div className="tabla__content-item">{consulta[keys[0]]}</div>
-              <div className="tabla__content-item">{consulta[keys[1]]}</div>
+              <div className="tabla__content-item">{consulta[getter[0]]}</div>
+              <div className="tabla__content-item">{consulta[getter[1]]}</div>
             </div>
           </div>
         );
