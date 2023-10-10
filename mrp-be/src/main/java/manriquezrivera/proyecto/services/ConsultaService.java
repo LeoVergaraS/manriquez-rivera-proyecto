@@ -22,7 +22,7 @@ public class ConsultaService {
     return consultaMateriaRepository.getConsultaMateria();
   }
 
-  public List<ConsultaCliente> getCC(Long id){
-    return consultaClienteRepository.getConsultaClientes(id);
+  public List<ConsultaCliente> getCC(Long id, String fechaInicio, String fechaFin){
+    return consultaClienteRepository.getConsultaClientes(id, fechaInicio, fechaFin);
   }
 }

@@ -21,9 +21,9 @@ public class ConsultaController {
   @Autowired
   ConsultaService consultaService;
 
-  @GetMapping("/cliente/{id}")
-  public ResponseEntity<List<ConsultaCliente>> getConsultasCliente(@PathVariable("id") Long id){
-    List<ConsultaCliente> consultasCliente = consultaService.getCC(id);
+  @GetMapping("/cliente/{id}/{fi}/{ff}")
+  public ResponseEntity<List<ConsultaCliente>> getConsultasCliente(@PathVariable("id") Long id, @PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin){
+    List<ConsultaCliente> consultasCliente = consultaService.getCC(id, fechaInicio, fechaFin);
     if(consultasCliente == null){
       return ResponseEntity.notFound().build();
     }
