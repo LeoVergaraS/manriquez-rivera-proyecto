@@ -30,9 +30,9 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultasCliente);
   }
 
-  @GetMapping("/materia")
-  public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(){
-    List<ConsultaMateria> consultasMaterias = consultaService.getCM();
+  @GetMapping("/materia/{fi}/{ff}")
+  public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin){
+    List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin);
     if(consultasMaterias == null){
       return ResponseEntity.notFound().build();
     }

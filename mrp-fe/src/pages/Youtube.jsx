@@ -38,9 +38,11 @@ const Youtube = () => {
     }
   };
 
-  const getConsultasMateria = async () => {
+  const getConsultasMateria = async (filtro) => {
     try {
-      let url = "http://localhost:8090/consultas/materia";
+      const ff = new Date();
+      const fi = getFechaFin(ff, filtro);
+      let url = "http://localhost:8090/consultas/materia/" + formatDate(fi) + "/" + formatDate(ff);
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasM(response.data);
@@ -57,7 +59,8 @@ const Youtube = () => {
   
   const handleFiltro = (filtro) => {
     setFiltro(filtro);
-    getConsultasCliente(cliente, filtro);
+    if(selectedCliente === "selected") getConsultasCliente(cliente, filtro);
+    if(selectedMateria === "selected") getConsultasMateria(filtro);
   }
 
   const getFechaFin = (fi, filtro) => {
@@ -117,7 +120,7 @@ const Youtube = () => {
   }
 
   useEffect(() => {
-    getConsultasMateria();
+    getConsultasMateria(filtro);
     getClientes();
   }, []);
 

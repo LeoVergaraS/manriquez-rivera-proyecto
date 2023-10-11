@@ -14,6 +14,7 @@ public interface ConsultaClienteRepository extends JpaRepository<ConsultaCliente
   @Query(value = "SELECT fecha, sum(tiempo) as tiempo " + 
                  "FROM sesion " + 
                  "WHERE id_cliente = :id AND " +
+                 "      borrado = 0 AND" + 
                  "      fecha BETWEEN :fechaInicio AND :fechaFin " +
                  "GROUP BY fecha", nativeQuery = true)
   List<ConsultaCliente> getConsultaClientes(@Param("id") Long id, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);

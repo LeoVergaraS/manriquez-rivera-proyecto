@@ -18,8 +18,8 @@ public class ConsultaService {
   @Autowired
   ConsultaMateriaRepository consultaMateriaRepository;
 
-  public List<ConsultaMateria> getCM(){
-    return consultaMateriaRepository.getConsultaMateria();
+  public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin){
+    return consultaMateriaRepository.getConsultaMateria(fechaInicio, fechaFin);
   }
 
   public List<ConsultaCliente> getCC(Long id, String fechaInicio, String fechaFin){
