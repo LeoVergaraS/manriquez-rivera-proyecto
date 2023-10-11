@@ -13,20 +13,59 @@ import axios from 'axios';
 function Home() {
 
     const [sesiones, setSesiones] = useState([]);
-    
+    const [clientes,setClientes] = useState([]);
+
 
     const [sesion, setSesion] = useState({
         id: null,
         fecha: null,
         tiempo: null,
         materia: {
-            id_materia: 0
+            id: null,
+            nombre: "Seleccione un cliente"
         },
         cliente: {
-            id_cliente: 0
+            id: null,
+            nombre: "Seleccione un cliente"
         }
     })
 
+    const [idClienteSeleccionado, setIdClienteSeleccionado] = useState(0)
+    const [sesionSeleccionada, setSesionSeleccionada] = useState({
+        id: null,
+        fecha: null,
+        tiempo: null,
+        abogado: "-",
+        id_materia: {
+            id: null,
+            nombre: "-"
+        },
+        id_cliente: {
+            id: null,
+            nombre: "-"
+        },
+        id_submateria:{
+            id: null,
+            nombre: "-"
+        }
+    })
+    const [clienteSeleccionado, setClienteSeleccionado]= useState({
+        id: null,
+        nombre: "seleccione un cliente",
+       borrado:null
+    })
+
+    const handleSelect = (e) => {
+        setIdClienteSeleccionado(e.target.value);
+        console.log(e.target.value);
+        let idCliente= parseInt(e.target.value);
+        let foundCliente= clientes.find(cliente=>cliente.id === idCliente);
+        console.log(foundCliente);
+        setClienteSeleccionado(foundCliente);
+        let foundSesion= sesiones.find(sesion=>sesion.id_cliente.id === idCliente)
+        setSesionSeleccionada(foundSesion);
+        
+    }
     
     const Play = () => {
         console.log("Comienza el caso");
@@ -50,11 +89,25 @@ function Home() {
         }
     }
 
+    const getClientes = async () => {
+        try {
+            let url = 'http://localhost:8090/clientes';
+            const response = await axios.get(url);
+            if (response.status === 200) {
+                setClientes(response.data);
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
+
     useEffect(() => {
         getSesiones();
+        getClientes();
     }, [])
 
-    console.log("sesiones", sesiones);
+    //console.log("sesiones", sesiones);
 
     return (
         <Container fluid style={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
@@ -63,11 +116,13 @@ function Home() {
                     <BiSearchAlt style={{ color: "white", fontSize: "50px" }} />
                 </Col>
                 <Col>
-                    <Form.Select aria-label="Default select example" style={{ fontSize: "22px" }}>
-                        <option>¿Qué cliente desea buscar?</option>
-                        <option value="1">Joakin Roa</option>
-                        <option value="2">Luis Toro</option>
-                        <option value="3">Leo Vergara</option>
+                    <Form.Select aria-label="Default select example" style={{ fontSize: "22px" }} value={idClienteSeleccionado} onChange={handleSelect}>
+                        <option value={0} disabled selected>¿Qué cliente desea buscar?</option>
+                        {clientes.map((cliente) => ( 
+                                <option key={cliente.id} value={cliente.id}>
+                                {cliente.nombre}
+                              </option>
+                         ))}
                     </Form.Select>
                 </Col>
             </Row>
@@ -88,14 +143,12 @@ function Home() {
                                         <tr className="special-row"></tr>
                                     </thead>
                                     <tbody style={{ color: "white" }}>
-                                        {sesiones.map((sesion) => (
-                                            <tr key={sesion.id} style={{ background: "#3B575A" }}>
-                                                <td>{sesion.id_cliente.nombre}</td>
-                                                <td>{sesion.id_materia.nombre}</td>
-                                                <td>Sub materia</td>
-                                                <td>Daniel Manriquez</td>
-                                            </tr>
-                                        ))}
+                                            <tr key={sesionSeleccionada.id} style={{ background: "#3B575A" }}>
+                                                <td>{sesionSeleccionada.id_cliente.nombre}</td>
+                                                <td>{sesionSeleccionada.id_materia.nombre}</td>
+                                                <td>{sesionSeleccionada.id_submateria.nombre}</td>
+                                                <td>{sesionSeleccionada.abogado}</td>
+                                            </tr> 
                                     </tbody>
                                 </table>
                             </Card.Body>

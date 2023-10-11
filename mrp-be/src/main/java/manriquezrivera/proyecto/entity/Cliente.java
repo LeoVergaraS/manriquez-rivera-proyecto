@@ -14,6 +14,5 @@ public class Cliente {
     @Column(unique = true, nullable = false)
     private Long id;
     private String nombre;
-    private String rut;
     private boolean borrado;
 }

@@ -18,6 +18,7 @@ public class Sesion {
     private Long tiempo;
     private Date fecha;
     private boolean borrado;
+    private String abogado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente")
@@ -28,5 +29,10 @@ public class Sesion {
     @JoinColumn(name = "id_materia")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Materia id_materia;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_submateria")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Submateria id_submateria;
 
 }
