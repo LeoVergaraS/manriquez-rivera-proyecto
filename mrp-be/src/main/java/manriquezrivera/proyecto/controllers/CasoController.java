@@ -52,7 +52,9 @@ public class CasoController {
       String nombreCliente = casoGuardado.getId_cliente().getNombre();
       Cliente cliente = clienteService.getClienteByNombre(nombreCliente);
       if(cliente == null){
-        clienteService.saveCliente(new Cliente(null, nombreCliente, false)); 
+        Cliente clienteCreado = clienteService.saveCliente(new Cliente(null, nombreCliente, false)); 
+        casoGuardado.setId_cliente(clienteCreado);
+        return ResponseEntity.ok().body(casoGuardado);
       }
       casoGuardado.setId_cliente(cliente);
       return ResponseEntity.ok().body(casoGuardado);
