@@ -1,19 +1,35 @@
 import Form from 'react-bootstrap/Form';
-import { Container, Col, Row, Card } from 'react-bootstrap';
+import { Container, Col, Row, Card, Button, Modal } from 'react-bootstrap';
 import { BiSearchAlt } from 'react-icons/bi';
 import { FaPlayCircle, FaRegPlayCircle } from 'react-icons/fa';
 import { FaCirclePause } from 'react-icons/fa6';
 import { PiClockCountdownFill, PiCornersOutLight } from 'react-icons/pi';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { FiEdit } from 'react-icons/fi';
 import './home.scss'
 import '../components/Table/table.scss'
 import { useState, useEffect } from 'react';
 import Cronometro from '../components/Cronometro/Cronometro';
 import axios from 'axios';
+import FormSesion from '../components/FormSesion';
 
 function Home() {
+    const [showCreate, setShowCreate] = useState(false);
+    
+    const handleCloseCreate = () => {
+        setEditedItem(defaultItem);
+        setShowCreate(false);
+    }
+
+    const handleShowCreate = () => {
+        setEditedItem(defaultItem);
+        setShowCreate(true);
+    }
 
     const [sesiones, setSesiones] = useState([]);
-    const [clientes,setClientes] = useState([]);
+    const [clientes, setClientes] = useState([]);
+    const [materias, setMaterias] = useState([]);
+    const [subMaterias, setSubMaterias] = useState([]);
 
 
     const [sesion, setSesion] = useState({
@@ -44,29 +60,29 @@ function Home() {
             id: null,
             nombre: "-"
         },
-        id_submateria:{
+        id_submateria: {
             id: null,
             nombre: "-"
         }
     })
-    const [clienteSeleccionado, setClienteSeleccionado]= useState({
+    const [clienteSeleccionado, setClienteSeleccionado] = useState({
         id: null,
         nombre: "seleccione un cliente",
-       borrado:null
+        borrado: null
     })
 
     const handleSelect = (e) => {
         setIdClienteSeleccionado(e.target.value);
         console.log(e.target.value);
-        let idCliente= parseInt(e.target.value);
-        let foundCliente= clientes.find(cliente=>cliente.id === idCliente);
+        let idCliente = parseInt(e.target.value);
+        let foundCliente = clientes.find(cliente => cliente.id === idCliente);
         console.log(foundCliente);
         setClienteSeleccionado(foundCliente);
-        let foundSesion= sesiones.find(sesion=>sesion.id_cliente.id === idCliente)
+        let foundSesion = sesiones.find(sesion => sesion.id_cliente.id === idCliente)
         setSesionSeleccionada(foundSesion);
-        
+
     }
-    
+
     const Play = () => {
         console.log("Comienza el caso");
     }
@@ -102,9 +118,90 @@ function Home() {
         }
     }
 
+    const getMaterias = async () => {
+        try {
+            let url = 'http://localhost:8090/materias';
+            const response = await axios.get(url);
+            if (response.status === 200) {
+                setMaterias(response.data);
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
+
+    const getSubMaterias = async () => {
+        try {
+            let url = 'http://localhost:8090/submaterias';
+            const response = await axios.get(url);
+            if (response.status === 200) {
+                setSubMaterias(response.data);
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
+
+    const createSesion = async (editedItem) => {
+        console.log("createSesion");
+        try {
+            let url = 'http://localhost:8090/sesiones';
+            const response = await axios.post(url, editedItem);
+            if (response.status === 200) {
+                handleCloseCreate();
+                console.log("Sesion creada");
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
+
+    const [editedItem, setEditedItem] = useState({
+        id: null,
+        fecha: null,
+        tiempo: null,
+        abogado: "",
+        id_materia: {
+            id: null,
+            nombre: "-"
+        },
+        id_cliente: {
+            id: null,
+            nombre: "-"
+        },
+        id_submateria: {
+            id: null,
+            nombre: "-"
+        }
+    })
+
+    const [defaultItem, setDefaultItem] = useState({
+        id: null,
+        fecha: null,
+        tiempo: null,
+        abogado: "",
+        id_materia: {
+            id: null,
+            nombre: "-"
+        },
+        id_cliente: {
+            id: null,
+            nombre: "-"
+        },
+        id_submateria: {
+            id: null,
+            nombre: "-"
+        }
+    })
+
     useEffect(() => {
         getSesiones();
         getClientes();
+        getMaterias();
+        getSubMaterias();
     }, [])
 
     //console.log("sesiones", sesiones);
@@ -117,52 +214,66 @@ function Home() {
                 </Col>
                 <Col>
                     <Form.Select aria-label="Default select example" style={{ fontSize: "22px" }} value={idClienteSeleccionado} onChange={handleSelect}>
-                        <option value={0} disabled selected>¿Qué cliente desea buscar?</option>
-                        {clientes.map((cliente) => ( 
-                                <option key={cliente.id} value={cliente.id}>
+                        <option value={0} disabled defaultValue>¿Qué cliente desea buscar?</option>
+                        {clientes.map((cliente) => (
+                            <option key={cliente.id} value={cliente.id}>
                                 {cliente.nombre}
-                              </option>
-                         ))}
+                            </option>
+                        ))}
                     </Form.Select>
                 </Col>
             </Row>
             <Row >
                 <Col style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     <div className='container2'>
-                        <Card style={{ background: "#3B575A", borderRadius:"25px" }}>
+                        <Card style={{ background: "#3B575A", borderRadius: "25px" }}>
                             <Card.Body>
-                                <table>
-                                    <thead>
-                                        <tr style={{ background: "#3B575A" }}>
-                                            <th>Cliente</th>
-                                            <th>Materia</th>
-                                            <th>Sub Materia</th>
-                                            <th>Abogado</th>
-                                            <th></th>
-                                        </tr>
-                                        <tr className="special-row"></tr>
-                                    </thead>
-                                    <tbody style={{ color: "white" }}>
-                                            <tr key={sesionSeleccionada.id} style={{ background: "#3B575A" }}>
-                                                <td>{sesionSeleccionada.id_cliente.nombre}</td>
-                                                <td>{sesionSeleccionada.id_materia.nombre}</td>
-                                                <td>{sesionSeleccionada.id_submateria.nombre}</td>
-                                                <td>{sesionSeleccionada.abogado}</td>
-                                            </tr> 
-                                    </tbody>
-                                </table>
+                                <Row style={{ alignItems: "center" }}>
+                                    <Col xs={"auto"}>
+                                        <Row style={{ marginBottom: 20 }}>
+                                            <AiOutlinePlusCircle onClick={handleShowCreate} style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
+                                        </Row>
+                                        <Row style={{ marginTop: 35 }}>
+                                            <FiEdit style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
+                                        </Row>
+                                    </Col>
+                                    <Col>
+                                        <table>
+                                            <thead>
+                                                <tr style={{ background: "#3B575A" }}>
+                                                    <th>Cliente</th>
+                                                    <th>Materia</th>
+                                                    <th>Sub Materia</th>
+                                                    <th>Abogado</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr className="special-row"></tr>
+                                            </thead>
+                                            <tbody style={{ color: "white" }}>
+                                                <tr key={sesionSeleccionada.id} style={{ background: "#3B575A" }}>
+                                                    <td>{sesionSeleccionada.id_cliente.nombre}</td>
+                                                    <td>{sesionSeleccionada.id_materia.nombre}</td>
+                                                    <td>{sesionSeleccionada.id_submateria.nombre}</td>
+                                                    <td>{sesionSeleccionada.abogado}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </Col>
+                                </Row>
                             </Card.Body>
                         </Card>
-                        <Card 
-                            style={{ background: "#3B575A", 
-                                     height: "200px", 
-                                     width: "300px", 
-                                       marginLeft: "30px", 
-                                        borderRadius:"25px"}}
-                            >
-                            <Card.Body style={{display:"flex",justifyContent:"center", alignItems:"center"}}>
-                                <Cronometro/>
-                                
+                        <Card
+                            style={{
+                                background: "#3B575A",
+                                height: "200px",
+                                width: "300px",
+                                marginLeft: "30px",
+                                borderRadius: "25px"
+                            }}
+                        >
+                            <Card.Body style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <Cronometro />
+
                                 {/*<div >
                                     <PiClockCountdownFill style={{ color: "#DFBF68", fontSize: "75px", cursor:"pointer" }} />
                                     </div>*/}
@@ -171,6 +282,22 @@ function Home() {
                     </div>
                 </Col>
             </Row>
+
+            <Modal show={showCreate} onHide={handleCloseCreate}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Crear sesión</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FormSesion
+                        sesion={editedItem}
+                        postSesion={createSesion}
+                        handleClose={handleCloseCreate}
+                        materias={materias}
+                        subMaterias={subMaterias}
+                        clientes={clientes}
+                    />
+                </Modal.Body>
+            </Modal>
 
         </Container >
     );
