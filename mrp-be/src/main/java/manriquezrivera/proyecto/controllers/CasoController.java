@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import manriquezrivera.proyecto.services.CasoService;
+import manriquezrivera.proyecto.services.ClienteService;
 import manriquezrivera.proyecto.entity.Caso;
+import manriquezrivera.proyecto.entity.Cliente;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CasoController {
     @Autowired
     CasoService casoService;
+
+    @Autowired
+    ClienteService clienteService;
 
     @GetMapping
     public ResponseEntity<List<Caso>> getCasos(){
@@ -44,12 +49,16 @@ public class CasoController {
     @PostMapping
     public ResponseEntity<Caso> postCaso(@RequestBody Caso caso){
       Caso casoGuardado = casoService.saveCaso(caso);
+      String nombreCliente = casoGuardado.getId_cliente().getNombre();
+      if(clienteService.getClienteByNombre(nombreCliente) == null){
+        clienteService.saveCliente(new Cliente(null, nombreCliente, false)); 
+      }
       return ResponseEntity.ok().body(casoGuardado);
     }
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteCaso(@RequestBody Caso caso){
-      Caso casoEliminado = casoService.deleteCaso(caso);
+      casoService.deleteCaso(caso);
       return ResponseEntity.ok().body("Caso eliminado correctamente");
     }
 }

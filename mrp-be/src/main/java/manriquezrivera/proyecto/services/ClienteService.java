@@ -21,6 +21,10 @@ public class ClienteService{
         return clienteRepository.getById(id);
     }
 
+    public Cliente getClienteByNombre(String nombre){
+        return clienteRepository.getByNombre(nombre);
+    }
+
     public Cliente saveCliente(Cliente cliente){
         return clienteRepository.save(cliente);
     }

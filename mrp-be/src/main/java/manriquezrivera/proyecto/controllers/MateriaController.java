@@ -48,7 +48,7 @@ public class MateriaController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteMateria(@RequestBody Materia materia){
-      Materia materiaEliminada = materiaService.deleteMateria(materia);
+      materiaService.deleteMateria(materia);
       return ResponseEntity.ok().body("Materia eliminada correctamente");
     }
 }

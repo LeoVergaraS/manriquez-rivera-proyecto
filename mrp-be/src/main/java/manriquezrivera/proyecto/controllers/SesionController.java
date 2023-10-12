@@ -48,7 +48,7 @@ public class SesionController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteSesion(@RequestBody Sesion sesion){
-      Sesion sesionEliminada = sesionService.deleteSesion(sesion);
+      sesionService.deleteSesion(sesion);
       return ResponseEntity.ok().body("Sesion eliminada correctamente");
     }
 }

@@ -49,7 +49,7 @@ public class SubmateriaController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteSubmateria(@RequestBody Submateria submateria){
-      Submateria submateriaEliminada = submateriaService.deleteSubMateria(submateria);
+      submateriaService.deleteSubMateria(submateria);
       return ResponseEntity.ok().body("Submateria eliminada correctamente");
     }
 }
