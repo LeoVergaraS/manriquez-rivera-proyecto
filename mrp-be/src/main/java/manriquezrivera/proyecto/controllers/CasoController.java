@@ -48,15 +48,16 @@ public class CasoController {
 
     @PostMapping
     public ResponseEntity<Caso> postCaso(@RequestBody Caso caso){
-      Caso casoGuardado = casoService.saveCaso(caso);
-      String nombreCliente = casoGuardado.getId_cliente().getNombre();
+      String nombreCliente = caso.getId_cliente().getNombre();
       Cliente cliente = clienteService.getClienteByNombre(nombreCliente);
       if(cliente == null){
         Cliente clienteCreado = clienteService.saveCliente(new Cliente(null, nombreCliente, false)); 
-        casoGuardado.setId_cliente(clienteCreado);
+        caso.setId_cliente(clienteCreado);
+        Caso casoGuardado = casoService.saveCaso(caso);
         return ResponseEntity.ok().body(casoGuardado);
       }
-      casoGuardado.setId_cliente(cliente);
+      caso.setId_cliente(cliente);
+      Caso casoGuardado = casoService.saveCaso(caso);
       return ResponseEntity.ok().body(casoGuardado);
     }
 
