@@ -5,8 +5,9 @@ import { FaCirclePause } from "react-icons/fa6";
 import { VscDebugRestart } from "react-icons/vsc";
 import { GiSaveArrow } from "react-icons/gi";
 import axios from 'axios';
+import formatDate from "../../utils/functions/fomatDate";
 
-function Cronometro() {
+function Cronometro({id_caso}) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -82,22 +83,21 @@ function Cronometro() {
   }
 
   const save = () => {
-    const segundosTotales = tiempo;
-    setSegundosTotales(segundosTotales);
-    console.log("seg totales:", segundosTotales);
-    console.log("save");
-    sesion.tiempo = segundosTotales;
-    createSesion(sesion);
+    sesion.tiempo = tiempo;
+    sesion.fecha = formatDate(new Date());
+    sesion.id_caso.id = id_caso;
+    console.log(sesion);
+    //createSesion(sesion);
   };
 
+
   const createSesion = async (sesion) => {
-    sesion.fecha = new Date();
-    sesion.id_caso.id = 1;
     try {
       let url = 'http://localhost:8090/sesiones';
       const response = await axios.post(url,sesion);
       if (response.status === 200) {
         console.log("Sesion creada");
+
       }
     }
     catch (err) {

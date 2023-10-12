@@ -8,9 +8,8 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
     const formSchema = yup.object().shape({
         id_materia: yup.number().required('Ingrese una materia válida').min(1, "Seleccione una opción válida"),
         id_submateria: yup.number().required('Ingrese una submateria válida').min(1, "Seleccione una opción válida"),
-        id_cliente: yup.number().required('Ingrese un cliente válido').min(1, "Seleccione una opción válida"),
+        id_cliente: yup.string().required('Ingrese un cliente válido').min(1, "Seleccione una opción válida").max(255,'Máximo 255 caracteres'),
         abogado: yup.string().required('Ingrese un nombre válido').min(1, 'Mínimo 1 carácter').max(255, 'Máximo 255 caracteres'),
-
     });
 
     const formatDate = (date) => {
@@ -18,13 +17,13 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
         let mm = date.getMonth() + 1;
         let yyyy = date.getFullYear();
         if (dd < 10) {
-          dd = "0" + dd;
+            dd = "0" + dd;
         }
         if (mm < 10) {
-          mm = "0" + mm;
+            mm = "0" + mm;
         }
         return yyyy + "-" + mm + "-" + dd;
-      };
+    };
 
     return (
         <div>
@@ -33,7 +32,7 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
                 onSubmit={(values) => {
                     //console.log("submit");
                     const objetoActualizado = { ...sesion, ...values };
-                    objetoActualizado.id_cliente = { id: values.id_cliente }
+                    objetoActualizado.id_cliente = { nombre: values.id_cliente }
                     objetoActualizado.id_materia = { id: values.id_materia }
                     objetoActualizado.id_submateria = { id: values.id_submateria }
                     objetoActualizado.fecha = formatDate(new Date())
@@ -44,7 +43,7 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
                 initialValues={{
                     id_materia: sesion.id_materia.id || '',
                     id_submateria: sesion.id_submateria.id || '',
-                    id_cliente: sesion.cliente || '',
+                    id_cliente: sesion.id_cliente.nombre || '',
                     abogado: sesion.abogado || ''
                 }}
             >
@@ -55,19 +54,16 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
 
                             <Col>
                                 <Form.Group className='mb-3' controlId='input-cliente'>
-                                    <Form.Label>Nombre cliente</Form.Label>
-                                    <Form.Select
+                                    <Form.Label>Cliente</Form.Label>
+                                    <Form.Control
                                         name="id_cliente"
-                                        aria-label='select'
-                                        onChange={handleChange}
+                                        type='text'
                                         value={values.id_cliente}
-                                        isInvalid={!!errors.id_cliente}
-                                    >
-                                        <option key={0} value={0}>Seleccione una opción</option>
-                                        {clientes.map((item) => (<option key={item.id} value={item.id}>{item.nombre}</option>))}
-                                    </Form.Select>
+                                        onChange={handleChange}     
+                                        isInvalid={!!errors.cliente}
+                                    />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.id_cliente}
+                                        {errors.cliente}
                                     </Form.Control.Feedback>
                                 </Form.Group>
 
@@ -111,15 +107,15 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
 
                                 <Form.Group className='mb-3' controlId='input-submateria'>
                                     <Form.Label>Submateria</Form.Label>
-                                    <Form.Select 
+                                    <Form.Select
                                         aria-label="select"
                                         name="id_submateria"
                                         onChange={handleChange}
                                         value={values.id_submateria}
                                         isInvalid={!!errors.id_submateria}
-                                        >
+                                    >
                                         <option key={0} value={0}>Seleccione una opción</option>
-                                        {subMaterias.map((item)=>(<option key={item.id} value={item.id}>{item.nombre}</option>))}
+                                        {subMaterias.map((item) => (<option key={item.id} value={item.id}>{item.nombre}</option>))}
                                     </Form.Select>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.id_submateria}

@@ -1,5 +1,5 @@
 import Form from 'react-bootstrap/Form';
-import { Container, Col, Row, Card, Button, Modal } from 'react-bootstrap';
+import { Container, Col, Row, Card, Modal } from 'react-bootstrap';
 import { BiSearchAlt } from 'react-icons/bi';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
@@ -12,7 +12,8 @@ import FormSesion from '../components/FormSesion';
 
 function Home() {
     const [showCreate, setShowCreate] = useState(false);
-    
+    const [showEdit, setShowEdit] = useState(false);
+     
     const handleCloseCreate = () => {
         setEditedItem(defaultItem);
         setShowCreate(false);
@@ -21,6 +22,17 @@ function Home() {
     const handleShowCreate = () => {
         setEditedItem(defaultItem);
         setShowCreate(true);
+    }
+
+    const handleShowEdit = () => {
+        setEditedItem(defaultItem);
+        setShowEdit(true);
+    }
+
+    
+    const handleCloseEdit = () => {
+        setEditedItem(defaultItem);
+        setShowEdit(false);
     }
 
     const [sesiones, setSesiones] = useState([]);
@@ -44,15 +56,15 @@ function Home() {
         }
     })
 
-    const [idClienteSeleccionado, setIdClienteSeleccionado] = useState(0)
-    const [sesionSeleccionada, setSesionSeleccionada] = useState({
+    const [idCasoSeleccionado, setIdCasosSeleccionado] = useState(0)
+    const [casoSeleccionado, setCasoSeleccionado] = useState({
         id: null,
         fecha: null,
         tiempo: null,
         abogado: "-",
         id_materia: {
             id: null,
-            nombre: "-"
+            nombre: ""
         },
         id_cliente: {
             id: null,
@@ -70,25 +82,13 @@ function Home() {
     })
 
     const handleSelect = (e) => {
-        setIdClienteSeleccionado(e.target.value);
-        console.log(e.target.value);
-        let idCliente = parseInt(e.target.value);
-        let foundCliente = clientes.find(cliente => cliente.id === idCliente);
-        console.log(foundCliente);
-        setClienteSeleccionado(foundCliente);
-        let foundSesion = casos.find(sesion => sesion.id_cliente.id === idCliente)
-        setSesionSeleccionada(foundSesion);
-
+        setIdCasosSeleccionado(e.target.value);
+        let idCaso = parseInt(e.target.value);
+        let foundCliente = clientes.find(cliente => cliente.id === idCaso);
+        //setClienteSeleccionado(foundCliente);
+        let foundCaso = casos.find(caso => caso.id === idCaso)
+        setCasoSeleccionado(foundCaso);
     }
-
-    const Play = () => {
-        console.log("Comienza el caso");
-    }
-
-    const Pause = () => {
-        console.log("Pausa el caso")
-    }
-
 
     const getSesiones = async () => {
         try {
@@ -155,15 +155,15 @@ function Home() {
         }
     }
 
-
     const createCaso = async (editedItem) => {
-        console.log("createCaso");
+        //console.log("createCaso");
         try {
             let url = 'http://localhost:8090/casos';
             const response = await axios.post(url, editedItem);
             if (response.status === 200) {
                 handleCloseCreate();
-                console.log("Caso creada");
+                //console.log("Caso creada");
+                getCasos();
             }
         }
         catch (err) {
@@ -178,11 +178,11 @@ function Home() {
         abogado: "",
         id_materia: {
             id: null,
-            nombre: "-"
+            nombre: ""
         },
         id_cliente: {
             id: null,
-            nombre: "-"
+            nombre: ""
         },
         id_submateria: {
             id: null,
@@ -201,7 +201,7 @@ function Home() {
         },
         id_cliente: {
             id: null,
-            nombre: "-"
+            nombre: ""
         },
         id_submateria: {
             id: null,
@@ -217,7 +217,7 @@ function Home() {
         getCasos();
     }, [])
 
-    //console.log("sesiones", sesiones);
+    //console.log(casoSeleccionado);
 
     return (
         <Container fluid style={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
@@ -226,8 +226,8 @@ function Home() {
                     <BiSearchAlt style={{ color: "white", fontSize: "50px" }} />
                 </Col>
                 <Col>
-                    <Form.Select aria-label="Default select example" style={{ fontSize: "22px" }} value={idClienteSeleccionado} onChange={handleSelect}>
-                        <option value={0} disabled defaultValue>¿Qué cliente desea buscar?</option>
+                    <Form.Select aria-label="Default select example" style={{ fontSize: "22px" }} value={idCasoSeleccionado} onChange={handleSelect}>
+                        <option value={0} disabled defaultValue>¿Qué caso desea buscar?</option>
                         {casos.map((caso) => (
                             <option key={caso.id} value={caso.id}>
                                 {caso.id_cliente.nombre + ' - ' + caso.id_materia.nombre}
@@ -247,7 +247,7 @@ function Home() {
                                             <AiOutlinePlusCircle onClick={handleShowCreate} style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
                                         </Row>
                                         <Row style={{ marginTop: 35 }}>
-                                            <FiEdit style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
+                                            <FiEdit  onClick={handleShowEdit} style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
                                         </Row>
                                     </Col>
                                     <Col>
@@ -263,11 +263,12 @@ function Home() {
                                                 <tr className="special-row"></tr>
                                             </thead>
                                             <tbody style={{ color: "white" }}>
-                                                <tr key={sesionSeleccionada.id} style={{ background: "#3B575A" }}>
-                                                    <td>{sesionSeleccionada.id_cliente.nombre}</td>
-                                                    <td>{sesionSeleccionada.id_materia.nombre}</td>
-                                                    <td>{sesionSeleccionada.id_submateria.nombre}</td>
-                                                    <td>{sesionSeleccionada.abogado}</td>
+                                                <tr key={setCasoSeleccionado.id} style={{ background: "#3B575A" }}>
+                                                    {console.log("caso: ",casoSeleccionado)}
+                                                    <td>{casoSeleccionado.id_cliente.nombre}</td>
+                                                    <td>{casoSeleccionado.id_materia.nombre}</td>
+                                                    <td>{casoSeleccionado.id_submateria.nombre}</td>
+                                                    <td>{casoSeleccionado.abogado}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -285,7 +286,7 @@ function Home() {
                             }}
                         >
                             <Card.Body style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <Cronometro />
+                                <Cronometro id_caso={casoSeleccionado.id}/>
 
                                 {/*<div >
                                     <PiClockCountdownFill style={{ color: "#DFBF68", fontSize: "75px", cursor:"pointer" }} />
@@ -298,7 +299,7 @@ function Home() {
 
             <Modal show={showCreate} onHide={handleCloseCreate}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Crear sesión</Modal.Title>
+                    <Modal.Title>Crear Caso</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <FormSesion
@@ -311,6 +312,26 @@ function Home() {
                     />
                 </Modal.Body>
             </Modal>
+
+
+            <Modal show={showEdit} onHide={handleCloseEdit}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Editar Caso</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                     <FormSesion
+                        sesion={casoSeleccionado}
+                        postSesion={createCaso}
+                        handleClose={handleCloseEdit}
+                        materias={materias}
+                        subMaterias={subMaterias}
+                        clientes={clientes}
+                    />
+                </Modal.Body>
+            </Modal>
+
+
+
 
         </Container >
     );
