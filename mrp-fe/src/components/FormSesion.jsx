@@ -93,14 +93,17 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
                             <Col>
                                 <Form.Group className='mb-3' controlId='input-abogado'>
                                     <Form.Label>Abogado</Form.Label>
-                                    <Form.Control
+                                    <Form.Select
                                         name="abogado"
-                                        type='text'
-                                        value={values.abogado}
+                                        aria-label="select"
                                         onChange={handleChange}
+                                        value={values.abogado}
                                         isInvalid={!!errors.abogado}
-                                    />
-                                    <span style={{ color: "#adb5bd" }}>{values.abogado.length + '/255'}</span>
+                                    >
+                                        <option key={0} value={0}>Seleccione una opción</option>
+                                        <option key={1} value={"Daniel Manriquez"}>Daniel Manriquez</option>
+                                        <option key={2} value={"Pablo Rivera"}>Pablo Rivera</option>
+                                    </Form.Select>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.abogado}
                                     </Form.Control.Feedback>

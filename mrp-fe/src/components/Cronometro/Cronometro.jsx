@@ -4,14 +4,28 @@ import { FaPlayCircle, FaRegPlayCircle } from "react-icons/fa";
 import { FaCirclePause } from "react-icons/fa6";
 import { VscDebugRestart } from "react-icons/vsc";
 import { GiSaveArrow } from "react-icons/gi";
+import axios from 'axios';
 
 function Cronometro() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
+  const [sesiones, setSesiones] = useState([]);
+
+  const [segundosTotales, setSegundosTotales] = useState(0);
+
   const tiempoInicial = parseInt(localStorage.getItem("tiempoCronometro")) || 0;
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
+
+  const [sesion, setSesion] = useState({
+    id: null,
+    fecha: null,
+    tiempo: null,
+    id_caso: {
+        id: 0
+    }
+})
 
   const formatearTiempo = (tiempo) => {
     const horas = String(Math.floor(tiempo / 3600)).padStart(2, "0");
@@ -28,7 +42,6 @@ function Cronometro() {
   const start = () => {
     if (!isPlaying) {
       togglePlay();
-
       intervalRef.current = setInterval(() => {
         setTiempo((prevTiempo) => {
           const nuevoTiempo = prevTiempo + 1;
@@ -38,7 +51,6 @@ function Cronometro() {
       }, 1000);
     }
   };
-  
 
   const pause = () => {
     if (isPlaying) {
@@ -48,17 +60,54 @@ function Cronometro() {
     }
   };
 
-  const save = () => {
-    console.log("save");
-  };
-
   const reset = () => {
-    if(isPlaying) {
+    if (isPlaying) {
       pause();
     }
     setTiempo(0);
     localStorage.setItem("tiempoCronometro", "00:00:00");
   };
+
+  const getSesiones = async () => {
+    try {
+      let url = 'http://localhost:8090/sesiones';
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setSesiones(response.data);
+      }
+    }
+    catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  const save = () => {
+    const segundosTotales = tiempo;
+    setSegundosTotales(segundosTotales);
+    console.log("seg totales:", segundosTotales);
+    console.log("save");
+    sesion.tiempo = segundosTotales;
+    createSesion(sesion);
+  };
+
+  const createSesion = async (sesion) => {
+    sesion.fecha = new Date();
+    sesion.id_caso.id = 1;
+    try {
+      let url = 'http://localhost:8090/sesiones';
+      const response = await axios.post(url,sesion);
+      if (response.status === 200) {
+        console.log("Sesion creada");
+      }
+    }
+    catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  useEffect(() => {
+    getSesiones();
+}, [])
 
   return (
     <div className="App">

@@ -1,9 +1,6 @@
 import Form from 'react-bootstrap/Form';
 import { Container, Col, Row, Card, Button, Modal } from 'react-bootstrap';
 import { BiSearchAlt } from 'react-icons/bi';
-import { FaPlayCircle, FaRegPlayCircle } from 'react-icons/fa';
-import { FaCirclePause } from 'react-icons/fa6';
-import { PiClockCountdownFill, PiCornersOutLight } from 'react-icons/pi';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import './home.scss'
@@ -30,6 +27,7 @@ function Home() {
     const [clientes, setClientes] = useState([]);
     const [materias, setMaterias] = useState([]);
     const [subMaterias, setSubMaterias] = useState([]);
+    const [casos, setCasos] = useState([]);
 
 
     const [sesion, setSesion] = useState({
@@ -78,7 +76,7 @@ function Home() {
         let foundCliente = clientes.find(cliente => cliente.id === idCliente);
         console.log(foundCliente);
         setClienteSeleccionado(foundCliente);
-        let foundSesion = sesiones.find(sesion => sesion.id_cliente.id === idCliente)
+        let foundSesion = casos.find(sesion => sesion.id_cliente.id === idCliente)
         setSesionSeleccionada(foundSesion);
 
     }
@@ -144,14 +142,28 @@ function Home() {
         }
     }
 
-    const createSesion = async (editedItem) => {
-        console.log("createSesion");
+    const getCasos = async () => {
         try {
-            let url = 'http://localhost:8090/sesiones';
+            let url = 'http://localhost:8090/casos';
+            const response = await axios.get(url);
+            if (response.status === 200) {
+                setCasos(response.data);
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
+
+
+    const createCaso = async (editedItem) => {
+        console.log("createCaso");
+        try {
+            let url = 'http://localhost:8090/casos';
             const response = await axios.post(url, editedItem);
             if (response.status === 200) {
                 handleCloseCreate();
-                console.log("Sesion creada");
+                console.log("Caso creada");
             }
         }
         catch (err) {
@@ -202,6 +214,7 @@ function Home() {
         getClientes();
         getMaterias();
         getSubMaterias();
+        getCasos();
     }, [])
 
     //console.log("sesiones", sesiones);
@@ -215,9 +228,9 @@ function Home() {
                 <Col>
                     <Form.Select aria-label="Default select example" style={{ fontSize: "22px" }} value={idClienteSeleccionado} onChange={handleSelect}>
                         <option value={0} disabled defaultValue>¿Qué cliente desea buscar?</option>
-                        {clientes.map((cliente) => (
-                            <option key={cliente.id} value={cliente.id}>
-                                {cliente.nombre}
+                        {casos.map((caso) => (
+                            <option key={caso.id} value={caso.id}>
+                                {caso.id_cliente.nombre + ' - ' + caso.id_materia.nombre}
                             </option>
                         ))}
                     </Form.Select>
@@ -290,7 +303,7 @@ function Home() {
                 <Modal.Body>
                     <FormSesion
                         sesion={editedItem}
-                        postSesion={createSesion}
+                        postSesion={createCaso}
                         handleClose={handleCloseCreate}
                         materias={materias}
                         subMaterias={subMaterias}
