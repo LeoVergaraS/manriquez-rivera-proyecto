@@ -50,9 +50,11 @@ public class CasoController {
     public ResponseEntity<Caso> postCaso(@RequestBody Caso caso){
       Caso casoGuardado = casoService.saveCaso(caso);
       String nombreCliente = casoGuardado.getId_cliente().getNombre();
-      if(clienteService.getClienteByNombre(nombreCliente) == null){
+      Cliente cliente = clienteService.getClienteByNombre(nombreCliente);
+      if(cliente == null){
         clienteService.saveCliente(new Cliente(null, nombreCliente, false)); 
       }
+      casoGuardado.setId_cliente(cliente);
       return ResponseEntity.ok().body(casoGuardado);
     }
 
