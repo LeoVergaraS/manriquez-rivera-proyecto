@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.sql.Date;
 @Entity
 @Table(name = "caso")
 @Data
@@ -19,6 +19,7 @@ public class Caso {
     private Long id;
     private String abogado;
     private boolean borrado;
+    private Date fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_materia")

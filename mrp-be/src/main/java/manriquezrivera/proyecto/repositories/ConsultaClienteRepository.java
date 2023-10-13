@@ -12,9 +12,9 @@ import manriquezrivera.proyecto.models.ConsultaCliente;
 @Repository
 public interface ConsultaClienteRepository extends JpaRepository<ConsultaCliente, Long>{
   @Query(value = "SELECT fecha, sum(tiempo) as tiempo " + 
-                 "FROM sesion " + 
-                 "WHERE id_cliente = :id AND " +
-                 "      borrado = 0 AND" + 
+                 "FROM sesion as s, caso as c " + 
+                 "WHERE c.id_cliente = :id AND s.id_caso = c.id AND" +
+                 "      s.borrado = 0 AND" + 
                  "      fecha BETWEEN :fechaInicio AND :fechaFin " +
                  "GROUP BY fecha", nativeQuery = true)
   List<ConsultaCliente> getConsultaClientes(@Param("id") Long id, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);

@@ -217,8 +217,6 @@ function Home() {
         getCasos();
     }, [])
 
-    //console.log(casoSeleccionado);
-
     return (
         <Container fluid style={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
             <Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
@@ -230,7 +228,7 @@ function Home() {
                         <option value={0} disabled defaultValue>¿Qué caso desea buscar?</option>
                         {casos.map((caso) => (
                             <option key={caso.id} value={caso.id}>
-                                {caso.id_cliente.nombre + ' - ' + caso.id_materia.nombre}
+                                {caso.id_cliente.nombre + ' | ' + caso.fecha}
                             </option>
                         ))}
                     </Form.Select>
@@ -241,6 +239,7 @@ function Home() {
                     <div className='container2'>
                         <Card style={{ background: "#3B575A", borderRadius: "25px" }}>
                             <Card.Body>
+
                                 <Row style={{ alignItems: "center" }}>
                                     <Col xs={"auto"}>
                                         <Row style={{ marginBottom: 20 }}>
@@ -274,6 +273,8 @@ function Home() {
                                         </table>
                                     </Col>
                                 </Row>
+                                <br></br>
+                                <p style={{ color:"white", fontSize:"25px", textAlign:"right"}}>{"Caso " + casoSeleccionado.id + "  |   " + casoSeleccionado.fecha}</p>
                             </Card.Body>
                         </Card>
                         <Card

@@ -87,7 +87,7 @@ function Cronometro({id_caso}) {
     sesion.fecha = formatDate(new Date());
     sesion.id_caso.id = id_caso;
     console.log(sesion);
-    //createSesion(sesion);
+    createSesion(sesion);
   };
 
 

@@ -36,7 +36,6 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
                     objetoActualizado.id_materia = { id: values.id_materia }
                     objetoActualizado.id_submateria = { id: values.id_submateria }
                     objetoActualizado.fecha = formatDate(new Date())
-                    objetoActualizado.tiempo = 0
                     //console.log("Posteando sesion");
                     postSesion(objetoActualizado);
                 }}
