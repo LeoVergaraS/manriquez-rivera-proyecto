@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form';
 import { Container, Col, Row, Card, Modal } from 'react-bootstrap';
 import { BiSearchAlt } from 'react-icons/bi';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiOutlinePlusCircle, AiFillSave } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import './home.scss'
 import '../components/Table/table.scss'
@@ -9,11 +9,16 @@ import { useState, useEffect } from 'react';
 import Cronometro from '../components/Cronometro/Cronometro';
 import axios from 'axios';
 import FormSesion from '../components/FormSesion';
+import 'react-tooltip/dist/react-tooltip.css'
+import { Tooltip } from 'react-tooltip'
+import formatDateShow from '../utils/functions/formatDateShow';
+import Swal from 'sweetalert2';
+
 
 function Home() {
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
-     
+
     const handleCloseCreate = () => {
         setEditedItem(defaultItem);
         setShowCreate(false);
@@ -29,7 +34,7 @@ function Home() {
         setShowEdit(true);
     }
 
-    
+
     const handleCloseEdit = () => {
         setEditedItem(defaultItem);
         setShowEdit(false);
@@ -58,13 +63,13 @@ function Home() {
 
     const [idCasoSeleccionado, setIdCasosSeleccionado] = useState(0)
     const [casoSeleccionado, setCasoSeleccionado] = useState({
-        id: null,
-        fecha: null,
+        id: 0,
+        fecha: "-",
         tiempo: null,
         abogado: "-",
         id_materia: {
             id: null,
-            nombre: ""
+            nombre: "-"
         },
         id_cliente: {
             id: null,
@@ -164,6 +169,11 @@ function Home() {
                 handleCloseCreate();
                 //console.log("Caso creada");
                 getCasos();
+                Swal.fire(
+                    'Good job!',
+                    'You clicked the button!',
+                    'success'
+                  )
             }
         }
         catch (err) {
@@ -191,8 +201,8 @@ function Home() {
     })
 
     const [defaultItem, setDefaultItem] = useState({
-        id: null,
-        fecha: null,
+        id: "-",
+        fecha: "-",
         tiempo: null,
         abogado: "",
         id_materia: {
@@ -219,6 +229,7 @@ function Home() {
 
     return (
         <Container fluid style={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
+
             <Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
                 <Col xs="auto">
                     <BiSearchAlt style={{ color: "white", fontSize: "50px" }} />
@@ -243,10 +254,16 @@ function Home() {
                                 <Row style={{ alignItems: "center" }}>
                                     <Col xs={"auto"}>
                                         <Row style={{ marginBottom: 20 }}>
-                                            <AiOutlinePlusCircle onClick={handleShowCreate} style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
+                                            <AiOutlinePlusCircle onClick={handleShowCreate} 
+                                                                 data-tooltip-id="my-tooltip" 
+                                                                 data-tooltip-content="Crear caso"
+                                                                 style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
                                         </Row>
                                         <Row style={{ marginTop: 35 }}>
-                                            <FiEdit  onClick={handleShowEdit} style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
+                                            <FiEdit onClick={handleShowEdit}
+                                                    data-tooltip-id="my-tooltip" 
+                                                    data-tooltip-content="Editar caso"
+                                                    style={{ cursor: "pointer", fontSize: 40, color: "#DFBF68" }} />
                                         </Row>
                                     </Col>
                                     <Col>
@@ -263,7 +280,7 @@ function Home() {
                                             </thead>
                                             <tbody style={{ color: "white" }}>
                                                 <tr key={setCasoSeleccionado.id} style={{ background: "#3B575A" }}>
-                                                    {console.log("caso: ",casoSeleccionado)}
+                                                    {console.log("caso: ", casoSeleccionado)}
                                                     <td>{casoSeleccionado.id_cliente.nombre}</td>
                                                     <td>{casoSeleccionado.id_materia.nombre}</td>
                                                     <td>{casoSeleccionado.id_submateria.nombre}</td>
@@ -274,20 +291,22 @@ function Home() {
                                     </Col>
                                 </Row>
                                 <br></br>
-                                <p style={{ color:"white", fontSize:"25px", textAlign:"right"}}>{"Caso " + casoSeleccionado.id + "  |   " + casoSeleccionado.fecha}</p>
+                                <p style={{ color: "white", fontSize: "25px", textAlign: "right" }}>{casoSeleccionado.id === 0 ? "" : ("Caso " + casoSeleccionado.id + "  |   " + formatDateShow(casoSeleccionado.fecha))}</p>
                             </Card.Body>
                         </Card>
                         <Card
                             style={{
                                 background: "#3B575A",
-                                height: "200px",
+                                height: "auto",
                                 width: "300px",
                                 marginLeft: "30px",
                                 borderRadius: "25px"
                             }}
                         >
+                            <p style={{textAlign:"center", color:"white", fontSize:"30px", marginTop:"10px"}}>Tiempo de sesión</p>
                             <Card.Body style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <Cronometro id_caso={casoSeleccionado.id}/>
+                                
+                                <Cronometro id_caso={casoSeleccionado.id} />
 
                                 {/*<div >
                                     <PiClockCountdownFill style={{ color: "#DFBF68", fontSize: "75px", cursor:"pointer" }} />
@@ -309,7 +328,6 @@ function Home() {
                         handleClose={handleCloseCreate}
                         materias={materias}
                         subMaterias={subMaterias}
-                        clientes={clientes}
                     />
                 </Modal.Body>
             </Modal>
@@ -320,18 +338,18 @@ function Home() {
                     <Modal.Title>Editar Caso</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                     <FormSesion
+                    <FormSesion
                         sesion={casoSeleccionado}
                         postSesion={createCaso}
                         handleClose={handleCloseEdit}
                         materias={materias}
                         subMaterias={subMaterias}
-                        clientes={clientes}
                     />
                 </Modal.Body>
             </Modal>
 
 
+            <Tooltip id="my-tooltip" style={{backgroundColor: "#DFBF68", fontSize:20}}/>
 
 
         </Container >

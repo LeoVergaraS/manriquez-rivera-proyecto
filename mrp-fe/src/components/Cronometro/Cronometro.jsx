@@ -6,6 +6,8 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { GiSaveArrow } from "react-icons/gi";
 import axios from 'axios';
 import formatDate from "../../utils/functions/fomatDate";
+import { AiOutlinePlusCircle, AiFillSave } from 'react-icons/ai';
+import Swal from 'sweetalert2';
 
 function Cronometro({id_caso}) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -18,6 +20,7 @@ function Cronometro({id_caso}) {
   const tiempoInicial = parseInt(localStorage.getItem("tiempoCronometro")) || 0;
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
+  const [runningTime, setRunningTime] = useState("");
 
   const [sesion, setSesion] = useState({
     id: null,
@@ -42,6 +45,7 @@ function Cronometro({id_caso}) {
 
   const start = () => {
     if (!isPlaying) {
+      setRunningTime("running");
       togglePlay();
       intervalRef.current = setInterval(() => {
         setTiempo((prevTiempo) => {
@@ -55,6 +59,7 @@ function Cronometro({id_caso}) {
 
   const pause = () => {
     if (isPlaying) {
+      setRunningTime("");
       togglePlay();
       setIsPaused(true);
       clearInterval(intervalRef.current);
@@ -83,6 +88,7 @@ function Cronometro({id_caso}) {
   }
 
   const save = () => {
+    togglePlay();
     sesion.tiempo = tiempo;
     sesion.fecha = formatDate(new Date());
     sesion.id_caso.id = id_caso;
@@ -97,6 +103,11 @@ function Cronometro({id_caso}) {
       const response = await axios.post(url,sesion);
       if (response.status === 200) {
         console.log("Sesion creada");
+        Swal.fire(
+          'Good job!',
+          'You clicked the button!',
+          'success'
+        )
 
       }
     }
@@ -111,7 +122,7 @@ function Cronometro({id_caso}) {
 
   return (
     <div className="App">
-      <h1 className="timer">{formatearTiempo(tiempo)}</h1>
+      <h1 className={"timer " + runningTime}>{formatearTiempo(tiempo)}</h1>
       <div
         style={{
           display: "flex",
@@ -121,7 +132,7 @@ function Cronometro({id_caso}) {
           gap: "10px",
         }}
       >
-        <GiSaveArrow
+        <AiFillSave
           onClick={save}
           style={{ cursor: "pointer", color: "#DFBF68", fontSize: "40px" }}
         />

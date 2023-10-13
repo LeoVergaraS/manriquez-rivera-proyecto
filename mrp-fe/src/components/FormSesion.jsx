@@ -2,7 +2,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import * as yup from 'yup';
 import * as formik from 'formik';
 
-const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, clientes }) => {
+const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias }) => {
 
     const { Formik } = formik;
     const formSchema = yup.object().shape({
@@ -40,7 +40,7 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias, cl
                     postSesion(objetoActualizado);
                 }}
                 initialValues={{
-                    id_materia: sesion.id_materia.id || '',
+                    id_materia: sesion.id_materia.id === '-' ? '' : sesion.id_materia.id,
                     id_submateria: sesion.id_submateria.id || '',
                     id_cliente: sesion.id_cliente.nombre || '',
                     abogado: sesion.abogado || ''

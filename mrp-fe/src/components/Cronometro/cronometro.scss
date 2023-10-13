@@ -1,8 +1,12 @@
 
   .timer {
     text-align: center;
-    color: white;
+    color: rgb(255, 255, 255, 0.5);
     text-shadow: 3px 1px rgb(108, 90, 28);
     font-size: 45px;
     font-family: monospace;
+  }
+
+  .running{
+    color: rgb(255, 255, 255);
   }
