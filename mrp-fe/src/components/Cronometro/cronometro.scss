@@ -40,6 +40,7 @@
       color: #DFBF68;
       font-size: 65px;
       transition: scale 0.2s ease-in-out;
+
       &:hover{
         scale: 1.05;
       }
@@ -52,6 +53,50 @@
       transition: scale 0.2s ease-in-out;
       &:hover{
         scale: 1.2;
+      }
+    }
+  }
+}
+
+.cronometro{
+  &__actions{
+    &-save-disabled{
+      cursor: auto;
+      color: #DFBF68;
+      font-size: 40px;
+      opacity: 0.5;
+      &:hover{
+        scale: 1;
+      }
+    }
+
+    &-reset-disabled{
+      cursor: auto;
+      color: #DFBF68;
+      font-size: 40px;
+      opacity: 0.5;
+      &:hover{
+        scale: 1;
+      }
+    }
+
+    &-pause-disabled{
+      cursor: auto;
+      color: #DFBF68;
+      font-size: 65px;
+      opacity: 0.5;
+      &:hover{
+        scale: 1;
+      }
+    }
+
+    &-play-disabled{
+      cursor: auto;
+      color: #DFBF68;
+      font-size: 65px;
+      opacity: 0.5;
+      &:hover{
+        scale: 1;
       }
     }
   }

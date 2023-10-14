@@ -13,10 +13,6 @@ function Cronometro({ id_caso }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
-  const [sesiones, setSesiones] = useState([]);
-
-  const [segundosTotales, setSegundosTotales] = useState(0);
-
   const tiempoInicial = parseInt(localStorage.getItem("tiempoCronometro")) || 0;
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
@@ -110,6 +106,9 @@ function Cronometro({ id_caso }) {
 
   useEffect(() => {
     getSesiones();
+    if (id_caso !== 0) {
+      setDisabled("");
+    }
   }, []);
 
   return (
@@ -118,18 +117,40 @@ function Cronometro({ id_caso }) {
         {formatearTiempo(tiempo)}
       </h1>
       <div className="cronometro__actions">
-        <AiFillSave className="cronometro__actions-save" onClick={save} />
+        <AiFillSave
+          className={
+            id_caso === 0
+              ? "cronometro__actions-save-disabled"
+              : "cronometro__actions-save"
+          }
+          onClick={id_caso === 0 ? null : save}
+        />
         {isPlaying ? (
           <FaCirclePause
-            className="cronometro__actions-pause"
-            onClick={pause}
+            className={
+              id_caso === 0
+                ? "cronometro__actions-pause-disabled"
+                : "cronometro__actions-pause"
+            }
+            onClick={id_caso === 0 ? null : pause}
           />
         ) : (
-          <FaPlayCircle className="cronometro__actions-play" onClick={start} />
+          <FaPlayCircle
+            className={
+              id_caso === 0
+                ? "cronometro__actions-play-disabled"
+                : "cronometro__actions-play"
+            }
+            onClick={id_caso === 0 ? null : start}
+          />
         )}
         <VscDebugRestart
-          onClick={reset}
-          className="cronometro__actions-reset"
+          onClick={id_caso === 0 ? null : reset}
+          className={
+            id_caso === 0
+              ? "cronometro__actions-reset-disabled"
+              : "cronometro__actions-reset"
+          }
           style={{ cursor: "pointer", color: "#DFBF68", fontSize: "40px" }}
         />
       </div>
