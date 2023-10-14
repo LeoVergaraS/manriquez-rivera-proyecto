@@ -4,12 +4,12 @@ import { FaPlayCircle, FaRegPlayCircle } from "react-icons/fa";
 import { FaCirclePause } from "react-icons/fa6";
 import { VscDebugRestart } from "react-icons/vsc";
 import { GiSaveArrow } from "react-icons/gi";
-import axios from 'axios';
+import axios from "axios";
 import formatDate from "../../utils/functions/fomatDate";
-import { AiOutlinePlusCircle, AiFillSave } from 'react-icons/ai';
-import Swal from 'sweetalert2';
+import { AiOutlinePlusCircle, AiFillSave } from "react-icons/ai";
+import Swal from "sweetalert2";
 
-function Cronometro({id_caso}) {
+function Cronometro({ id_caso }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -27,9 +27,9 @@ function Cronometro({id_caso}) {
     fecha: null,
     tiempo: null,
     id_caso: {
-        id: 0
-    }
-})
+      id: 0,
+    },
+  });
 
   const formatearTiempo = (tiempo) => {
     const horas = String(Math.floor(tiempo / 3600)).padStart(2, "0");
@@ -76,16 +76,15 @@ function Cronometro({id_caso}) {
 
   const getSesiones = async () => {
     try {
-      let url = 'http://localhost:8090/sesiones';
+      let url = "http://localhost:8090/sesiones";
       const response = await axios.get(url);
       if (response.status === 200) {
         setSesiones(response.data);
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err.message);
     }
-  }
+  };
 
   const save = () => {
     togglePlay();
@@ -96,59 +95,41 @@ function Cronometro({id_caso}) {
     createSesion(sesion);
   };
 
-
   const createSesion = async (sesion) => {
     try {
-      let url = 'http://localhost:8090/sesiones';
-      const response = await axios.post(url,sesion);
+      let url = "http://localhost:8090/sesiones";
+      const response = await axios.post(url, sesion);
       if (response.status === 200) {
         console.log("Sesion creada");
-        Swal.fire(
-          'Good job!',
-          'You clicked the button!',
-          'success'
-        )
-
+        Swal.fire("Good job!", "You clicked the button!", "success");
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err.message);
     }
-  }
+  };
 
   useEffect(() => {
     getSesiones();
-}, [])
+  }, []);
 
   return (
-    <div className="App">
-      <h1 className={"timer " + runningTime}>{formatearTiempo(tiempo)}</h1>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "20px",
-          gap: "10px",
-        }}
-      >
-        <AiFillSave
-          onClick={save}
-          style={{ cursor: "pointer", color: "#DFBF68", fontSize: "40px" }}
-        />
+    <div className="cronometro">
+      <h1 className={"cronometro__timer " + runningTime}>
+        {formatearTiempo(tiempo)}
+      </h1>
+      <div className="cronometro__actions">
+        <AiFillSave className="cronometro__actions-save" onClick={save} />
         {isPlaying ? (
           <FaCirclePause
+            className="cronometro__actions-pause"
             onClick={pause}
-            style={{ cursor: "pointer", color: "#DFBF68", fontSize: "65px" }}
           />
         ) : (
-          <FaPlayCircle
-            onClick={start}
-            style={{ cursor: "pointer", color: "#DFBF68", fontSize: "65px" }}
-          />
+          <FaPlayCircle className="cronometro__actions-play" onClick={start} />
         )}
         <VscDebugRestart
           onClick={reset}
+          className="cronometro__actions-reset"
           style={{ cursor: "pointer", color: "#DFBF68", fontSize: "40px" }}
         />
       </div>

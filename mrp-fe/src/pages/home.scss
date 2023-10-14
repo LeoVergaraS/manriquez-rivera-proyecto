@@ -1,5 +1,4 @@
 .home{
-    background-color: red;
     &__nav-link{
         font-size: 1.5rem;
         border-bottom: 3px solid #DFBF68;
@@ -7,9 +6,30 @@
     }
 }
 
-.card-timer{
-    height: 200px ;
-    width: 300px ;
-    background-color: "#3B575A"; 
-    margin-left: "50px";
+.create-icon{
+    transition: scale 0.2s ease-in-out;
+    &:hover{
+        scale: 1.2;
+    }
+}
+
+.edit-icon{
+    transition: scale 0.2s ease-in-out;
+    &:hover{
+        scale: 1.2;
+    }
+}
+
+.card-caso{
+    transition: scale 0.4s ease-in-out;
+    &:hover{
+        scale: 1.03;
+    }
+}
+
+.card-cronometro{
+    transition: scale 0.4s ease-in-out;
+    &:hover{
+        scale: 1.03;
+    }
 }
