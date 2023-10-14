@@ -62,7 +62,6 @@ function Home() {
   const [casoSeleccionado, setCasoSeleccionado] = useState({
     id: 0,
     fecha: "-",
-    tiempo: null,
     abogado: "-",
     id_materia: {
       id: null,
@@ -153,7 +152,8 @@ function Home() {
   };
 
   const createCaso = async (editedItem) => {
-    //console.log("createCaso");
+    console.log("createCaso");
+    console.log("editedItem: ",editedItem);
     try {
       let url = "http://localhost:8090/casos";
       const response = await axios.post(url, editedItem);
@@ -169,7 +169,7 @@ function Home() {
   };
 
   const [editedItem, setEditedItem] = useState({
-    id: null,
+    id: 0,
     fecha: null,
     tiempo: null,
     abogado: "",
@@ -183,12 +183,12 @@ function Home() {
     },
     id_submateria: {
       id: null,
-      nombre: "-",
+      nombre: "",
     },
   });
 
   const [defaultItem, setDefaultItem] = useState({
-    id: "-",
+    id: 0,
     fecha: "-",
     tiempo: null,
     abogado: "",
@@ -205,8 +205,6 @@ function Home() {
       nombre: "-",
     },
   });
-
-  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     getSesiones();
@@ -294,7 +292,6 @@ function Home() {
                           key={setCasoSeleccionado.id}
                           style={{ background: "#3B575A" }}
                         >
-                          {console.log("caso: ", casoSeleccionado)}
                           <td>{casoSeleccionado.id_cliente.nombre}</td>
                           <td>{casoSeleccionado.id_materia.nombre}</td>
                           <td>{casoSeleccionado.id_submateria.nombre}</td>
