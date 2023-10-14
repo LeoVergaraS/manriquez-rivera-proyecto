@@ -13,6 +13,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import formatDateShow from "../utils/functions/formatDateShow";
 import Swal from "sweetalert2";
+import InputSelect from "../components/InputSelect/InputSelect";
 
 function Home() {
   const [showCreate, setShowCreate] = useState(false);
@@ -229,7 +230,8 @@ function Home() {
           <BiSearchAlt style={{ color: "white", fontSize: "50px" }} />
         </Col>
         <Col>
-          <Form.Select
+        <InputSelect casos={casos}></InputSelect>
+          {/*<Form.Select
             aria-label="Default select example"
             style={{ fontSize: "22px" }}
             value={idCasoSeleccionado}
@@ -243,7 +245,7 @@ function Home() {
                 {caso.id_cliente.nombre + " | " + caso.fecha}
               </option>
             ))}
-          </Form.Select>
+            </Form.Select>*/}
         </Col>
       </Row>
       <Row>
