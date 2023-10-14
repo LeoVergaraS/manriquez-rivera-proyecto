@@ -151,7 +151,6 @@ function Cronometro({ id_caso }) {
               ? "cronometro__actions-reset-disabled"
               : "cronometro__actions-reset"
           }
-          style={{ cursor: "pointer", color: "#DFBF68", fontSize: "40px" }}
         />
       </div>
     </div>
