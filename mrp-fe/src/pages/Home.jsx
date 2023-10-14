@@ -206,6 +206,8 @@ function Home() {
     },
   });
 
+  const [selected, setSelected] = useState(null);
+
   useEffect(() => {
     getSesiones();
     getClientes();
@@ -268,15 +270,10 @@ function Home() {
                     </Row>
                     <Row style={{ marginTop: 35 }}>
                       <FiEdit
-                        className="edit-icon"
-                        onClick={handleShowEdit}
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-content="Editar caso"
-                        style={{
-                          cursor: "pointer",
-                          fontSize: 40,
-                          color: "#DFBF68",
-                        }}
+                        className={casoSeleccionado.id === 0 ? "edit-icon-disabled" : "edit-icon"}
+                        onClick={casoSeleccionado.id === 0 ? null : handleShowEdit}
+                        data-tooltip-id={casoSeleccionado.id === 0 ? null : "my-tooltip"}
+                        data-tooltip-content={casoSeleccionado.id === 0 ? null : "Editar caso"}
                       />
                     </Row>
                   </Col>
