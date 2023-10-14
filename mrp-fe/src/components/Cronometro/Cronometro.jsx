@@ -8,7 +8,8 @@ import axios from "axios";
 import formatDate from "../../utils/functions/fomatDate";
 import { AiOutlinePlusCircle, AiFillSave } from "react-icons/ai";
 import Swal from "sweetalert2";
-
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip } from "react-tooltip";
 function Cronometro({ id_caso }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -70,6 +71,32 @@ function Cronometro({ id_caso }) {
     localStorage.setItem("tiempoCronometro", "00:00:00");
   };
 
+  const resetButton = () => {
+    if (isPlaying) {
+      pause();
+    }
+    Swal.fire({
+      title: '¿Estás seguro de resetear el cronómetro?',
+      text: "No podrá ser recuperado el tiempo transcurrido",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Resetear cronómetro',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        reset();
+      }
+      else{
+      }
+    })
+
+    
+    
+    
+  };
+
   const getSesiones = async () => {
     try {
       let url = "http://localhost:8090/sesiones";
@@ -83,12 +110,38 @@ function Cronometro({ id_caso }) {
   };
 
   const save = () => {
-    togglePlay();
-    sesion.tiempo = tiempo;
-    sesion.fecha = formatDate(new Date());
-    sesion.id_caso.id = id_caso;
-    console.log(sesion);
-    createSesion(sesion);
+    let estaPausado=0;
+    if(!isPlaying){
+      estaPausado=1;
+      
+    }
+    console.log(estaPausado);
+    pause();
+    Swal.fire({
+      title: '¿Estás seguro de finalizar la sesión?',
+      text: "Esto no podra ser borrado despues",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Guardar la sesion',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sesion.tiempo = tiempo;
+        sesion.fecha = formatDate(new Date());
+        sesion.id_caso.id = id_caso;
+        console.log(sesion);
+        createSesion(sesion);
+        reset();
+      }
+      else{
+        if(estaPausado==0){
+          start();
+        }
+      }
+    })
+
   };
 
   const createSesion = async (sesion) => {
@@ -97,7 +150,7 @@ function Cronometro({ id_caso }) {
       const response = await axios.post(url, sesion);
       if (response.status === 200) {
         console.log("Sesion creada");
-        Swal.fire("Good job!", "You clicked the button!", "success");
+        Swal.fire("Sesión creada con exito!", "", "success");
       }
     } catch (err) {
       console.log(err.message);
@@ -133,6 +186,8 @@ function Cronometro({ id_caso }) {
                 : "cronometro__actions-pause"
             }
             onClick={id_caso === 0 ? null : pause}
+            data-tooltip-id={id_caso === 0 ? null : "my-tooltip"}
+            data-tooltip-content={id_caso === 0 ? null : "Pausar cronometro"}
           />
         ) : (
           <FaPlayCircle
@@ -142,10 +197,14 @@ function Cronometro({ id_caso }) {
                 : "cronometro__actions-play"
             }
             onClick={id_caso === 0 ? null : start}
+            data-tooltip-id={id_caso === 0 ? null : "my-tooltip"}
+            data-tooltip-content={id_caso === 0 ? null : "Iniciar cronometro"}
           />
         )}
         <VscDebugRestart
-          onClick={id_caso === 0 ? null : reset}
+          onClick={id_caso === 0 ? null : resetButton}
+          data-tooltip-id={id_caso === 0 ? null : "my-tooltip"}
+          data-tooltip-content={id_caso === 0 ? null : "Resetear cronometro"}
           className={
             id_caso === 0
               ? "cronometro__actions-reset-disabled"
@@ -153,7 +212,12 @@ function Cronometro({ id_caso }) {
           }
         />
       </div>
+      <Tooltip
+        id="my-tooltip"
+        style={{ backgroundColor: "#DFBF68", fontSize: 20 }}
+      />
     </div>
+
   );
 }
 

@@ -162,7 +162,7 @@ function Home() {
         handleCloseCreate();
         //console.log("Caso creada");
         getCasos();
-        Swal.fire("Good job!", "You clicked the button!", "success");
+        Swal.fire("Caso creado con exito!", "", "success");
       }
     } catch (err) {
       console.log(err.message);
@@ -230,8 +230,8 @@ function Home() {
           <BiSearchAlt style={{ color: "white", fontSize: "50px" }} />
         </Col>
         <Col>
-        <InputSelect casos={casos}></InputSelect>
-          {/*<Form.Select
+        {/*<InputSelect casos={casos}></InputSelect> */ }
+          <Form.Select
             aria-label="Default select example"
             style={{ fontSize: "22px" }}
             value={idCasoSeleccionado}
@@ -245,7 +245,7 @@ function Home() {
                 {caso.id_cliente.nombre + " | " + caso.fecha}
               </option>
             ))}
-            </Form.Select>*/}
+            </Form.Select>
         </Col>
       </Row>
       <Row>
