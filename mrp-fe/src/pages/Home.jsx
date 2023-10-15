@@ -18,6 +18,18 @@ import InputSelect from "../components/InputSelect/InputSelect";
 function Home() {
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [hoveredCard1, setHoveredCard1] = useState("");
+  const [hoveredCard2, setHoveredCard2] = useState("");
+
+  const handleMouseEnter = (type) => {
+    if(type === 1){
+      setHoveredCard1("hovered");
+      setHoveredCard2("");
+    }else{
+      setHoveredCard1("");
+      setHoveredCard2("hovered");
+    }
+  }
 
   const handleCloseCreate = () => {
     setEditedItem(defaultItem);
@@ -255,8 +267,9 @@ function Home() {
       <Row>
         <Col style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <div className="container2">
-            <Card
-              className="card-caso"
+            <Card 
+              onMouseEnter={() => handleMouseEnter(1)}
+              className={"card-caso " + hoveredCard1}
               style={{ background: "#3B575A", borderRadius: "25px" }}
             >
               <Card.Body>
@@ -370,7 +383,8 @@ function Home() {
               </Card.Body>
             </Card>
             <Card
-              className="card-cronometro"
+              onMouseEnter={() => handleMouseEnter(2)}
+              className={"card-cronometro " + hoveredCard2}
               style={{
                 background: "#3B575A",
                 height: "auto",
