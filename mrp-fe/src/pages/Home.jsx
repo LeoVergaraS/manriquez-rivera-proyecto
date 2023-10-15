@@ -154,7 +154,7 @@ function Home() {
 
   const createCaso = async (editedItem) => {
     console.log("createCaso");
-    console.log("editedItem: ",editedItem);
+    console.log("editedItem: ", editedItem);
     try {
       let url = "http://localhost:8090/casos";
       const response = await axios.post(url, editedItem);
@@ -192,14 +192,14 @@ function Home() {
     id: 0,
     fecha: "-",
     tiempo: null,
-    abogado: "",
+    abogado: "-",
     id_materia: {
       id: null,
       nombre: "-",
     },
     id_cliente: {
       id: null,
-      nombre: "",
+      nombre: "-",
     },
     id_submateria: {
       id: null,
@@ -230,8 +230,12 @@ function Home() {
           <BiSearchAlt style={{ color: "white", fontSize: "50px" }} />
         </Col>
         <Col>
-        {/*<InputSelect casos={casos}></InputSelect> */ }
-          <Form.Select
+          <InputSelect
+            casos={casos}
+            setCaso={setCasoSeleccionado}
+            ObjDefault={defaultItem}
+          />
+          {/*<Form.Select
             aria-label="Default select example"
             style={{ fontSize: "22px" }}
             value={idCasoSeleccionado}
@@ -245,13 +249,16 @@ function Home() {
                 {caso.id_cliente.nombre + " | " + caso.fecha}
               </option>
             ))}
-            </Form.Select>
+            </Form.Select>*/}
         </Col>
       </Row>
       <Row>
         <Col style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <div className="container2">
-            <Card className="card-caso" style={{ background: "#3B575A", borderRadius: "25px" }}>
+            <Card
+              className="card-caso"
+              style={{ background: "#3B575A", borderRadius: "25px" }}
+            >
               <Card.Body>
                 <Row style={{ alignItems: "center" }}>
                   <Col xs={"auto"}>
@@ -270,10 +277,34 @@ function Home() {
                     </Row>
                     <Row style={{ marginTop: 35 }}>
                       <FiEdit
-                        className={casoSeleccionado.id === 0 ? "edit-icon-disabled" : "edit-icon"}
-                        onClick={casoSeleccionado.id === 0 ? null : handleShowEdit}
-                        data-tooltip-id={casoSeleccionado.id === 0 ? null : "my-tooltip"}
-                        data-tooltip-content={casoSeleccionado.id === 0 ? null : "Editar caso"}
+                        className={
+                          casoSeleccionado === undefined
+                            ? "edit-icon-disabled"
+                            : casoSeleccionado.id === 0
+                            ? "edit-icon-disabled"
+                            : "edit-icon"
+                        }
+                        onClick={
+                          casoSeleccionado == undefined
+                            ? null
+                            : casoSeleccionado.id === 0
+                            ? null
+                            : handleShowEdit
+                        }
+                        data-tooltip-id={
+                          casoSeleccionado == undefined
+                            ? null
+                            : casoSeleccionado.id === 0
+                            ? null
+                            : "my-tooltip"
+                        }
+                        data-tooltip-content={
+                          casoSeleccionado == undefined
+                            ? null
+                            : casoSeleccionado.id === 0
+                            ? null
+                            : "Editar caso"
+                        }
                       />
                     </Row>
                   </Col>
@@ -294,10 +325,26 @@ function Home() {
                           key={setCasoSeleccionado.id}
                           style={{ background: "#3B575A" }}
                         >
-                          <td>{casoSeleccionado.id_cliente.nombre}</td>
-                          <td>{casoSeleccionado.id_materia.nombre}</td>
-                          <td>{casoSeleccionado.id_submateria.nombre}</td>
-                          <td>{casoSeleccionado.abogado}</td>
+                          <td>
+                            {casoSeleccionado == undefined
+                              ? "-"
+                              : casoSeleccionado.id_cliente.nombre}
+                          </td>
+                          <td>
+                            {casoSeleccionado == undefined
+                              ? "-"
+                              : casoSeleccionado.id_materia.nombre}
+                          </td>
+                          <td>
+                            {casoSeleccionado == undefined
+                              ? "-"
+                              : casoSeleccionado.id_submateria.nombre}
+                          </td>
+                          <td>
+                            {casoSeleccionado == undefined
+                              ? "-"
+                              : casoSeleccionado.abogado}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -311,7 +358,9 @@ function Home() {
                     textAlign: "right",
                   }}
                 >
-                  {casoSeleccionado.id === 0
+                  {casoSeleccionado === undefined
+                    ? ""
+                    : casoSeleccionado.id === 0
                     ? ""
                     : "Caso " +
                       casoSeleccionado.id +
@@ -347,7 +396,7 @@ function Home() {
                   alignItems: "center",
                 }}
               >
-                <Cronometro id_caso={casoSeleccionado.id} />
+                <Cronometro id_caso={casoSeleccionado === undefined ? 0 : casoSeleccionado.id} />
 
                 {/*<div >
                                     <PiClockCountdownFill style={{ color: "#DFBF68", fontSize: "75px", cursor:"pointer" }} />
