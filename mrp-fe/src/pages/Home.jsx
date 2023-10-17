@@ -8,12 +8,13 @@ import "../components/Table/table.scss";
 import { useState, useEffect } from "react";
 import Cronometro from "../components/Cronometro/Cronometro";
 import axios from "axios";
-import FormSesion from "../components/FormSesion";
+import FormSesion from "../components/Forms/FormSesion/FormSesion";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import formatDateShow from "../utils/functions/formatDateShow";
 import Swal from "sweetalert2";
 import InputSelect from "../components/InputSelect/InputSelect";
+import Alerta from "../components/Alerta/Alerta";
 
 function Home() {
   const [showCreate, setShowCreate] = useState(false);
@@ -164,6 +165,18 @@ function Home() {
     }
   };
 
+  const getCasoById = async (id) => {
+    try {
+      let url = "http://localhost:8090/casos/" + id;
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setCasoSeleccionado(response.data);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   const createCaso = async (item) => {
     try {
       let url = "http://localhost:8090/casos";
@@ -172,19 +185,7 @@ function Home() {
         handleCloseCreate();
         //console.log("Caso creada");
         getCasos();
-        Swal.fire("Caso creado con exito!", "", "success");
-      }
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
-  const getCasoById = async (id) => {
-    try {
-      let url = "http://localhost:8090/casos/" + id;
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        setCasoSeleccionado(response.data);
+        Alerta.fire({icon: 'success', title: 'Caso creado con exito!'});
       }
     } catch (err) {
       console.log(err.message);
@@ -200,7 +201,7 @@ function Home() {
         handleCloseEdit();
         getCasos();
         getCasoById(item.id);
-        Swal.fire("Caso actualizado con exito!", "", "success");
+        Alerta.fire({icon: 'success', title: 'Caso actualizado con exito!'});
       }
     } catch (err) {
       console.log(err.message);
