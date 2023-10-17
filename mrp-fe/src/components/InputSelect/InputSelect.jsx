@@ -1,43 +1,33 @@
-import { useState } from 'react';
 import formatDateShow from '../../utils/functions/formatDateShow';
+import Select from 'react-select';
 import './inputSelect.scss'
-const InputSelect = ({casos, setCaso, ObjDefault}) => {
 
-  const [caso, setOption] = useState({});
+const InputSelect = ({casos, setCaso}) => {
 
   const handleSelect = (e) => {
-    const index = e.target.value.split(".")[0] - 1;
-    if (index !== -1) {
-      const casoSeleccionado = casos[index];
-      setCaso(casoSeleccionado);
-      console.log(casoSeleccionado);
+    if(e === null){
+      setCaso(null)
     }else{
-      setCaso(ObjDefault);
+      const caso = casos.find((caso) => caso.id === e.value);
+      setCaso(caso);
     }
   }
 
   return (
     <div className="input-select">
-      <input
-        className="input-select__search"
+      <Select 
         placeholder="¿Qué caso desea buscar?"
-        type="text"
-        list="casos"
-        name="category"
-        onSelect={handleSelect}
+        options={casos.map((caso) => 
+              ({label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre} - ${formatDateShow(caso.fecha)}`, 
+                value: caso.id}))
+                }
+        onChange={handleSelect}
+        defaultValue={null}
+        isClearable={true}
       />
-      <datalist  id="casos">
-        <option name="table1" value="1" selected="true" disabled="disabled">
-          ¿Qué caso desea buscar?
-        </option>
-        {casos.map((caso, index) => (
-          <option  key={caso.id} name={"caso" + index} value={(index + 1) + ".- " + caso.id_cliente.nombre + " - " + caso.id_materia.nombre}>
-            {formatDateShow(caso.fecha)}
-          </option>
-        ))}
-      </datalist>
     </div>
   );
 };
 
 export default InputSelect;
+

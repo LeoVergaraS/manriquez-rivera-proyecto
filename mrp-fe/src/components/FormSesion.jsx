@@ -40,10 +40,10 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias }) 
                     postSesion(objetoActualizado);
                 }}
                 initialValues={{
-                    id_materia: sesion.id_materia.id === '-' ? '' : sesion.id_materia.id,
-                    id_submateria: sesion.id_submateria.id || '',
-                    id_cliente: sesion.id_cliente.nombre || '',
-                    abogado: sesion.abogado || ''
+                    id_materia: sesion.id_materia.id,
+                    id_submateria: sesion.id_submateria.id,
+                    id_cliente: sesion.id_cliente.nombre,
+                    abogado: sesion.abogado
                 }}
             >
                 {({ handleSubmit, handleChange, values, errors }) => (
@@ -59,10 +59,10 @@ const FormSesion = ({ sesion, postSesion, handleClose, materias, subMaterias }) 
                                         type='text'
                                         value={values.id_cliente}
                                         onChange={handleChange}     
-                                        isInvalid={!!errors.cliente}
+                                        isInvalid={!!errors.id_cliente}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.cliente}
+                                        {errors.id_cliente}
                                     </Form.Control.Feedback>
                                 </Form.Group>
 

@@ -164,12 +164,10 @@ function Home() {
     }
   };
 
-  const createCaso = async (editedItem) => {
-    console.log("createCaso");
-    console.log("editedItem: ", editedItem);
+  const createCaso = async (item) => {
     try {
       let url = "http://localhost:8090/casos";
-      const response = await axios.post(url, editedItem);
+      const response = await axios.post(url, item);
       if (response.status === 200) {
         handleCloseCreate();
         //console.log("Caso creada");
@@ -181,8 +179,37 @@ function Home() {
     }
   };
 
+  const getCasoById = async (id) => {
+    try {
+      let url = "http://localhost:8090/casos/" + id;
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setCasoSeleccionado(response.data);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const updateCaso = async (item) => {
+    try {
+      console.log(item);
+      let url = "http://localhost:8090/casos";
+      const response = await axios.post(url, item);
+      if (response.status === 200) {
+        handleCloseEdit();
+        getCasos();
+        getCasoById(item.id);
+        Swal.fire("Caso actualizado con exito!", "", "success");
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+
   const [editedItem, setEditedItem] = useState({
-    id: 0,
+    id: null,
     fecha: null,
     tiempo: null,
     abogado: "",
@@ -201,21 +228,21 @@ function Home() {
   });
 
   const [defaultItem, setDefaultItem] = useState({
-    id: 0,
-    fecha: "-",
+    id: null,
+    fecha: null,
     tiempo: null,
-    abogado: "-",
+    abogado: "",
     id_materia: {
       id: null,
-      nombre: "-",
+      nombre: "",
     },
     id_cliente: {
       id: null,
-      nombre: "-",
+      nombre: "",
     },
     id_submateria: {
       id: null,
-      nombre: "-",
+      nombre: "",
     },
   });
 
@@ -239,29 +266,13 @@ function Home() {
     >
       <Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
         <Col xs="auto">
-          <BiSearchAlt style={{ color: "white", fontSize: "50px" }} />
+          <BiSearchAlt style={{ color: "white", fontSize: "40px" }} />
         </Col>
         <Col>
           <InputSelect
             casos={casos}
             setCaso={setCasoSeleccionado}
-            ObjDefault={defaultItem}
           />
-          {/*<Form.Select
-            aria-label="Default select example"
-            style={{ fontSize: "22px" }}
-            value={idCasoSeleccionado}
-            onChange={handleSelect}
-          >
-            <option value={0} disabled defaultValue>
-              ¿Qué caso desea buscar?
-            </option>
-            {casos.map((caso) => (
-              <option key={caso.id} value={caso.id}>
-                {caso.id_cliente.nombre + " | " + caso.fecha}
-              </option>
-            ))}
-            </Form.Select>*/}
         </Col>
       </Row>
       <Row>
@@ -291,28 +302,28 @@ function Home() {
                     <Row style={{ marginTop: 35 }}>
                       <FiEdit
                         className={
-                          casoSeleccionado === undefined
+                          casoSeleccionado === undefined || casoSeleccionado === null
                             ? "edit-icon-disabled"
                             : casoSeleccionado.id === 0
                             ? "edit-icon-disabled"
                             : "edit-icon"
                         }
                         onClick={
-                          casoSeleccionado == undefined
+                          casoSeleccionado == undefined || casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
                             ? null
                             : handleShowEdit
                         }
                         data-tooltip-id={
-                          casoSeleccionado == undefined
+                          casoSeleccionado == undefined || casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
                             ? null
                             : "my-tooltip"
                         }
                         data-tooltip-content={
-                          casoSeleccionado == undefined
+                          casoSeleccionado == undefined || casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
                             ? null
@@ -339,22 +350,22 @@ function Home() {
                           style={{ background: "#3B575A" }}
                         >
                           <td>
-                            {casoSeleccionado == undefined
+                            {casoSeleccionado == undefined || casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_cliente.nombre}
                           </td>
                           <td>
-                            {casoSeleccionado == undefined
+                            {casoSeleccionado == undefined || casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_materia.nombre}
                           </td>
                           <td>
-                            {casoSeleccionado == undefined
+                            {casoSeleccionado == undefined || casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_submateria.nombre}
                           </td>
                           <td>
-                            {casoSeleccionado == undefined
+                            {casoSeleccionado == undefined || casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.abogado}
                           </td>
@@ -371,7 +382,7 @@ function Home() {
                     textAlign: "right",
                   }}
                 >
-                  {casoSeleccionado === undefined
+                  {casoSeleccionado === undefined || casoSeleccionado === null
                     ? ""
                     : casoSeleccionado.id === 0
                     ? ""
@@ -410,11 +421,7 @@ function Home() {
                   alignItems: "center",
                 }}
               >
-                <Cronometro id_caso={casoSeleccionado === undefined ? 0 : casoSeleccionado.id} />
-
-                {/*<div >
-                                    <PiClockCountdownFill style={{ color: "#DFBF68", fontSize: "75px", cursor:"pointer" }} />
-                                    </div>*/}
+                <Cronometro id_caso={casoSeleccionado === undefined || casoSeleccionado === null ? 0 : casoSeleccionado.id} />
               </Card.Body>
             </Card>
           </div>
@@ -443,7 +450,7 @@ function Home() {
         <Modal.Body>
           <FormSesion
             sesion={casoSeleccionado}
-            postSesion={createCaso}
+            postSesion={updateCaso}
             handleClose={handleCloseEdit}
             materias={materias}
             subMaterias={subMaterias}
