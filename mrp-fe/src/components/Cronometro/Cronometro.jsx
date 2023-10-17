@@ -10,14 +10,31 @@ import { AiOutlinePlusCircle, AiFillSave } from "react-icons/ai";
 import Swal from "sweetalert2";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
+import Select from 'react-select'
+
 function Cronometro({ id_caso }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const tiempoInicial = parseInt(localStorage.getItem("tiempoCronometro")) || 0;
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
   const [runningTime, setRunningTime] = useState("");
+
+  const [ts, setTs] = useState(60);
+
+  const handleSelect = (e) => {
+    setTs(e.value);
+  }
+    
+  const tiempos = [
+    { label : "1 hora", value: 60},
+    { label : "45 min", value: 45},
+    { label : "30 min", value: 30},
+    { label: "15 min", value: 15 },
+    { label : "No", value: -1}
+  ]
 
   const [sesion, setSesion] = useState({
     id: null,
@@ -40,9 +57,10 @@ function Cronometro({ id_caso }) {
     setIsPaused(false);
   };
 
-  const start = () => {
+  const start = async () => {
     if (!isPlaying) {
       setRunningTime("running");
+      setIsDisabled(true);
       togglePlay();
       intervalRef.current = setInterval(() => {
         setTiempo((prevTiempo) => {
@@ -50,6 +68,7 @@ function Cronometro({ id_caso }) {
           localStorage.setItem("tiempoCronometro", String(nuevoTiempo));
           return nuevoTiempo;
         });
+        
       }, 1000);
     }
   };
@@ -57,6 +76,7 @@ function Cronometro({ id_caso }) {
   const pause = () => {
     if (isPlaying) {
       setRunningTime("");
+      setIsDisabled(false);
       togglePlay();
       setIsPaused(true);
       clearInterval(intervalRef.current);
@@ -90,24 +110,20 @@ function Cronometro({ id_caso }) {
       }
       else{
       }
-    })
-
-    
-    
-    
+    })    
   };
 
-  const getSesiones = async () => {
-    try {
-      let url = "http://localhost:8090/sesiones";
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        setSesiones(response.data);
-      }
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  // const getSesiones = async () => {
+  //   try {
+  //     let url = "http://localhost:8090/sesiones";
+  //     const response = await axios.get(url);
+  //     if (response.status === 200) {
+  //       setSesiones(response.data);
+  //     }
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // };
 
   const save = () => {
     let estaPausado=0;
@@ -149,7 +165,6 @@ function Cronometro({ id_caso }) {
       let url = "http://localhost:8090/sesiones";
       const response = await axios.post(url, sesion);
       if (response.status === 200) {
-        console.log("Sesion creada");
         Swal.fire("Sesión creada con exito!", "", "success");
       }
     } catch (err) {
@@ -158,11 +173,10 @@ function Cronometro({ id_caso }) {
   };
 
   useEffect(() => {
-    getSesiones();
-    if (id_caso !== 0) {
-      setDisabled("");
+    if(tiempo % (ts * 60) === 0 && ts !== -1){
+      pause();
     }
-  }, []);
+  }, [tiempo, ts]);
 
   return (
     <div className="cronometro">
@@ -212,10 +226,18 @@ function Cronometro({ id_caso }) {
           }
         />
       </div>
+      <Select 
+        options={tiempos}
+        defaultValue={tiempos[0]}
+        isDisabled={isDisabled}
+        onChange={handleSelect}
+    
+      />
       <Tooltip
         id="my-tooltip"
         style={{ backgroundColor: "#DFBF68", fontSize: 20 }}
       />
+
     </div>
 
   );
