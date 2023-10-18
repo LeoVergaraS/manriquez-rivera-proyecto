@@ -1,8 +1,10 @@
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Container, Form, Modal } from "react-bootstrap";
 import "./youtube.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Table_01 from "../components/Table_01/Table_01";
+import { Row, Col } from "react-bootstrap";
+import GraficoGernal1 from "../components/Graficos/GraficoGernal1";
 
 const Youtube = () => {
   const [selectedCliente, setSelectedCliente] = useState("");
@@ -171,7 +173,7 @@ const Youtube = () => {
 
   return (
     <>
-      <div className="layout">
+      {/*<div className="layout" style={{width:"250px"}}>
         <div className="navegador">
           <ul className="navegador__tabs">
             <p
@@ -197,6 +199,7 @@ const Youtube = () => {
 
         <div className="main">
           {/*selectedGeneral*/}
+      {/*}
           {selectedCliente === "selected" ? (
             <div
               className="d-flex align-items-center"
@@ -245,7 +248,24 @@ const Youtube = () => {
             </div>
           </aside>
         </div>
-      </div>
+      </div>*/}
+
+      <Row>
+        <Col>
+          <Row>
+            <p>Gráfico 1</p>
+            <GraficoGernal1 />
+          </Row>
+          <Row>
+            <p>Gráfico 2</p>
+          </Row>
+        </Col>
+        <Col>
+          <Row>
+            <p>Tabla</p>
+          </Row>
+        </Col>
+      </Row>
 
       <Modal show={showModal} onHide={handleModal}>
         <Modal.Header closeButton>
