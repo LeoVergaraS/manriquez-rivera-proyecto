@@ -258,25 +258,27 @@ const Youtube = () => {
       </div>
 
       <Row>
-        <Col>
-          <Row>
-            <Card style={{ width: "75%", marginLeft: "50px", marginTop: "50px"}}>
+        <Col xs={12} md={6}>
+
+          <Card style={{ marginLeft: "50px", marginTop: "50px", backgroundColor: "#235c62" }}>
+            <Card.Body>
               <GraficoGernal1 />
-            </Card>
-          </Row>
-          <Row>
-            <Card style={{ width: "75%", marginLeft: "50px", marginTop: "50px" }}>
+            </Card.Body>
+          </Card>
+
+          <Card style={{ marginLeft: "50px", marginTop: "50px", backgroundColor: "#235c62" }}>
+            <Card.Body>
               <GraficoGernal1 />
-            </Card>
-          </Row>
+            </Card.Body>
+          </Card>
+
         </Col>
-        <Col>
-          <Row>
-            <Card style={{ width: "50%", marginLeft: "50px", marginTop: "50px", backgroundColor:"#1e464b", borderColor:"#1e464b" }}>
-              <List />
-            </Card>
-          </Row>
+        <Col xs={6} md={6} className="d-flex justify-content-center align-items-center">
+          <Card style={{ width: "50%", backgroundColor: "#1e464b", borderColor: "#1e464b", marginTop:"50px" }}>
+            <List/>
+          </Card>
         </Col>
+
       </Row>
 
 

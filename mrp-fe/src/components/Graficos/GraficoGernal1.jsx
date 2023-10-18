@@ -22,12 +22,13 @@ class GraficoGernal1 extends Component {
             data: {
                 labels: dias,
                 datasets: [
-                    {
+                    {   
                         label: "Sesiones",
                         data: sesiones,
                         fill: false,
                         borderColor: 'lightBlue',
-                        tension: 0.3
+                        tension: 0.3,
+                        
                     }
                 ]
             },
@@ -38,13 +39,22 @@ class GraficoGernal1 extends Component {
                     x: {
                         title: {
                             display: true,
-                            text: 'Días de la semana' // Etiqueta para el eje x
+                            text: 'Días de la semana', // Etiqueta para el eje x
+                            color: '#1e3f43'
+                        },
+                        grid: {
+                            display: false
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Tiempo total de sesión (Hrs.)' // Etiqueta para el eje y
+                            text: 'Tiempo total de sesión (Hrs.)', // Etiqueta para el eje y
+                            color: '#1e3f43'
+                        },
+                        grid: {
+                            display: true,
+                            color: 'lightGray'
                         },
                         beginAtZero: true
                     }
@@ -60,7 +70,7 @@ class GraficoGernal1 extends Component {
                 <div className="card-header">
                     <h4 className="card-title">Tiempo de sesiones por día</h4>
                 </div>
-                <div className="card-body">
+                <div className="card-body" >
                     <canvas
                         id="myChart"
                         ref={this.chartRef}
