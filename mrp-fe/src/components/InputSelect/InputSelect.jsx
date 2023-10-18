@@ -23,7 +23,6 @@ const InputSelect = ({casos, setCaso}) => {
                 }
         onChange={handleSelect}
         defaultValue={null}
-        isClearable={true}
       />
     </div>
   );

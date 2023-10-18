@@ -12,29 +12,15 @@ import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import Select from 'react-select'
 
-function Cronometro({ id_caso }) {
+function Cronometro({ id_caso, ts, setIsDisabled }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
+ 
 
   const tiempoInicial = parseInt(localStorage.getItem("tiempoCronometro")) || 0;
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
   const [runningTime, setRunningTime] = useState("");
-
-  const [ts, setTs] = useState(60);
-
-  const handleSelect = (e) => {
-    setTs(e.value);
-  }
-    
-  const tiempos = [
-    { label : "1 hora", value: 60},
-    { label : "45 min", value: 45},
-    { label : "30 min", value: 30},
-    { label: "15 min", value: 15 },
-    { label : "No", value: -1}
-  ]
 
   const [sesion, setSesion] = useState({
     id: null,
@@ -191,6 +177,8 @@ function Cronometro({ id_caso }) {
               : "cronometro__actions-save"
           }
           onClick={id_caso === 0 ? null : save}
+          data-tooltip-id={id_caso === 0 ? null : "tooltip-cronometro"}
+          data-tooltip-content={id_caso === 0 ? null : "Guardar sesión"}
         />
         {isPlaying ? (
           <FaCirclePause
@@ -200,7 +188,7 @@ function Cronometro({ id_caso }) {
                 : "cronometro__actions-pause"
             }
             onClick={id_caso === 0 ? null : pause}
-            data-tooltip-id={id_caso === 0 ? null : "my-tooltip"}
+            data-tooltip-id={id_caso === 0 ? null : "tooltip-cronometro"}
             data-tooltip-content={id_caso === 0 ? null : "Pausar cronometro"}
           />
         ) : (
@@ -211,30 +199,23 @@ function Cronometro({ id_caso }) {
                 : "cronometro__actions-play"
             }
             onClick={id_caso === 0 ? null : start}
-            data-tooltip-id={id_caso === 0 ? null : "my-tooltip"}
+            data-tooltip-id={id_caso === 0 ? null : "tooltip-cronometro"}
             data-tooltip-content={id_caso === 0 ? null : "Iniciar cronometro"}
           />
         )}
         <VscDebugRestart
           onClick={id_caso === 0 ? null : resetButton}
-          data-tooltip-id={id_caso === 0 ? null : "my-tooltip"}
-          data-tooltip-content={id_caso === 0 ? null : "Resetear cronometro"}
           className={
             id_caso === 0
               ? "cronometro__actions-reset-disabled"
               : "cronometro__actions-reset"
           }
+          data-tooltip-id={id_caso === 0 ? null : "tooltip-cronometro"}
+          data-tooltip-content={id_caso === 0 ? null : "Resetear cronometro"}
         />
       </div>
-      <Select 
-        options={tiempos}
-        defaultValue={tiempos[0]}
-        isDisabled={isDisabled}
-        onChange={handleSelect}
-    
-      />
       <Tooltip
-        id="my-tooltip"
+        id="tooltip-cronometro"
         style={{ backgroundColor: "#DFBF68", fontSize: 20 }}
       />
 

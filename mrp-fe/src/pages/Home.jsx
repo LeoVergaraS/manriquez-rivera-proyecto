@@ -15,22 +15,39 @@ import formatDateShow from "../utils/functions/formatDateShow";
 import Swal from "sweetalert2";
 import InputSelect from "../components/InputSelect/InputSelect";
 import Alerta from "../components/Alerta/Alerta";
+import Select from "react-select";
 
 function Home() {
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [hoveredCard1, setHoveredCard1] = useState("");
   const [hoveredCard2, setHoveredCard2] = useState("");
 
+  const [ts, setTs] = useState(60);
+
+  const handleSelectTs = (e) => {
+    console.log(e.value);
+    setTs(e.value);
+  }
+    
+  const tiempos = [
+    { label : "1 hora",    value: 60},
+    { label : "45 min",    value: 45},
+    { label : "30 min",    value: 30},
+    { label : "15 min",    value: 15},
+    { label : "Sin pausa", value: -1}
+  ]
+
   const handleMouseEnter = (type) => {
-    if(type === 1){
+    if (type === 1) {
       setHoveredCard1("hovered");
       setHoveredCard2("");
-    }else{
+    } else {
       setHoveredCard1("");
       setHoveredCard2("hovered");
     }
-  }
+  };
 
   const handleCloseCreate = () => {
     setEditedItem(defaultItem);
@@ -184,7 +201,7 @@ function Home() {
       if (response.status === 200) {
         handleCloseCreate();
         getCasos();
-        Alerta.fire({icon: 'success', title: 'Caso creado con exito!'});
+        Alerta.fire({ icon: "success", title: "Caso creado con exito!" });
       }
     } catch (err) {
       console.log(err.message);
@@ -200,13 +217,12 @@ function Home() {
         handleCloseEdit();
         getCasos();
         getCasoById(item.id);
-        Alerta.fire({icon: 'success', title: 'Caso actualizado con exito!'});
+        Alerta.fire({ icon: "success", title: "Caso actualizado con exito!" });
       }
     } catch (err) {
       console.log(err.message);
     }
   };
-
 
   const [editedItem, setEditedItem] = useState({
     id: null,
@@ -269,16 +285,13 @@ function Home() {
           <BiSearchAlt style={{ color: "white", fontSize: "40px" }} />
         </Col>
         <Col>
-          <InputSelect
-            casos={casos}
-            setCaso={setCasoSeleccionado}
-          />
+          <InputSelect casos={casos} setCaso={setCasoSeleccionado} />
         </Col>
       </Row>
       <Row>
         <Col style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <div className="container2">
-            <Card 
+            <Card
               onMouseEnter={() => handleMouseEnter(1)}
               className={"card-caso " + hoveredCard1}
               style={{ background: "#3B575A", borderRadius: "25px" }}
@@ -302,28 +315,32 @@ function Home() {
                     <Row style={{ marginTop: 35 }}>
                       <FiEdit
                         className={
-                          casoSeleccionado === undefined || casoSeleccionado === null
+                          casoSeleccionado === undefined ||
+                          casoSeleccionado === null
                             ? "edit-icon-disabled"
                             : casoSeleccionado.id === 0
                             ? "edit-icon-disabled"
                             : "edit-icon"
                         }
                         onClick={
-                          casoSeleccionado == undefined || casoSeleccionado === null
+                          casoSeleccionado == undefined ||
+                          casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
                             ? null
                             : handleShowEdit
                         }
                         data-tooltip-id={
-                          casoSeleccionado == undefined || casoSeleccionado === null
+                          casoSeleccionado == undefined ||
+                          casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
                             ? null
                             : "my-tooltip"
                         }
                         data-tooltip-content={
-                          casoSeleccionado == undefined || casoSeleccionado === null
+                          casoSeleccionado == undefined ||
+                          casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
                             ? null
@@ -350,22 +367,26 @@ function Home() {
                           style={{ background: "#3B575A" }}
                         >
                           <td>
-                            {casoSeleccionado == undefined || casoSeleccionado === null
+                            {casoSeleccionado == undefined ||
+                            casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_cliente.nombre}
                           </td>
                           <td>
-                            {casoSeleccionado == undefined || casoSeleccionado === null
+                            {casoSeleccionado == undefined ||
+                            casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_materia.nombre}
                           </td>
                           <td>
-                            {casoSeleccionado == undefined || casoSeleccionado === null
+                            {casoSeleccionado == undefined ||
+                            casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_submateria.nombre}
                           </td>
                           <td>
-                            {casoSeleccionado == undefined || casoSeleccionado === null
+                            {casoSeleccionado == undefined ||
+                            casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.abogado}
                           </td>
@@ -421,8 +442,49 @@ function Home() {
                   alignItems: "center",
                 }}
               >
-                <Cronometro id_caso={casoSeleccionado === undefined || casoSeleccionado === null ? 0 : casoSeleccionado.id} />
+                <Cronometro
+                  ts={ts}
+                  setIsDisabled={setIsDisabled}
+                  id_caso={
+                    casoSeleccionado === undefined || casoSeleccionado === null
+                      ? 0
+                      : casoSeleccionado.id
+                  }
+                />
               </Card.Body>
+              <Select
+                className="select-ts-container"
+                classNamePrefix="select-ts"
+                options={tiempos}
+                defaultValue={tiempos[0]}
+                isDisabled={isDisabled}
+                onChange={handleSelectTs}
+                styles={{
+                  control: (baseStyles) => ({
+                    ...baseStyles,
+                    backgroundColor: "rgba(0,0,0,0)",
+                    border: "none",
+                    borderBottom: "3px solid #DFBF68",            
+                  }),
+                  singleValue: (baseStyles) => ({
+                    ...baseStyles,
+                    color: "white",
+                    fontSize: "19px",
+                  }),
+                  menu: (baseStyles) => ({
+                    ...baseStyles,
+                    backgroundColor: "rgba(0,0,0,0)",
+                    color: "white",
+                    borderBottom: "3px solid #DFBF68", 
+                    fontSize: "19px"
+                  }),
+                  option: (baseStyles, state) => ({
+                    ...baseStyles,
+                    backgroundColor: state.isFocused ? "#DFBF68" : "rgba(0,0,0,0)",
+                    color: state.isFocused ? "black" : "white",
+                  }),
+                }}
+              />
             </Card>
           </div>
         </Col>
