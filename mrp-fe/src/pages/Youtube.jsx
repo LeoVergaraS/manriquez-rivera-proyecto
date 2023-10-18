@@ -1,10 +1,12 @@
-import { Button, Container, Form, Modal } from "react-bootstrap";
+import { Button, Card, Container, Form, Modal } from "react-bootstrap";
 import "./youtube.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Table_01 from "../components/Table_01/Table_01";
 import { Row, Col } from "react-bootstrap";
 import GraficoGernal1 from "../components/Graficos/GraficoGernal1";
+import DropdownR from "../components/Dropdown/DropdownR";
+import List from "../components/List/List";
 
 const Youtube = () => {
   const [selectedCliente, setSelectedCliente] = useState("");
@@ -166,6 +168,8 @@ const Youtube = () => {
     }
   };
 
+  const options = ["Enero", "Febrero", "Marzo"];
+
   useEffect(() => {
     getConsultasMateria(filtro);
     getClientes();
@@ -173,7 +177,7 @@ const Youtube = () => {
 
   return (
     <>
-      {/*<div className="layout" style={{width:"250px"}}>
+      <div className="layout" style={{ width: "250px" }}>
         <div className="navegador">
           <ul className="navegador__tabs">
             <p
@@ -195,11 +199,13 @@ const Youtube = () => {
               Materia
             </p>
           </ul>
+          <DropdownR className="navegador__tiempo" />
         </div>
 
-        <div className="main">
-          {/*selectedGeneral*/}
-      {/*}
+        {/*
+        <div className="main">*/}
+        {/*selectedGeneral*/}
+        {/*}
           {selectedCliente === "selected" ? (
             <div
               className="d-flex align-items-center"
@@ -249,23 +255,30 @@ const Youtube = () => {
           </aside>
         </div>
       </div>*/}
+      </div>
 
       <Row>
         <Col>
           <Row>
-            <p>Gráfico 1</p>
-            <GraficoGernal1 />
+            <Card style={{ width: "75%", marginLeft: "50px", marginTop: "50px"}}>
+              <GraficoGernal1 />
+            </Card>
           </Row>
           <Row>
-            <p>Gráfico 2</p>
+            <Card style={{ width: "75%", marginLeft: "50px", marginTop: "50px" }}>
+              <GraficoGernal1 />
+            </Card>
           </Row>
         </Col>
         <Col>
           <Row>
-            <p>Tabla</p>
+            <Card style={{ width: "50%", marginLeft: "50px", marginTop: "50px", backgroundColor:"#1e464b", borderColor:"#1e464b" }}>
+              <List />
+            </Card>
           </Row>
         </Col>
       </Row>
+
 
       <Modal show={showModal} onHide={handleModal}>
         <Modal.Header closeButton>

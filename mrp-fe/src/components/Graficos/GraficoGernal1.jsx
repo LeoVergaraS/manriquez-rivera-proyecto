@@ -26,7 +26,7 @@ class GraficoGernal1 extends Component {
                         label: "Sesiones",
                         data: sesiones,
                         fill: false,
-                        borderColor: '#DADDB1',
+                        borderColor: 'lightBlue',
                         tension: 0.3
                     }
                 ]

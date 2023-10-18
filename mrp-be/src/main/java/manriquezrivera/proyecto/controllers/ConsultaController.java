@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import manriquezrivera.proyecto.models.ConsultaCliente;
+import manriquezrivera.proyecto.models.ConsultaSesiones;
 import manriquezrivera.proyecto.models.ConsultaMateria;
 import manriquezrivera.proyecto.services.ConsultaService;
 
@@ -37,5 +38,14 @@ public class ConsultaController {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok().body(consultasMaterias);
+  }
+
+    @GetMapping("/sesiones/{fi}/{ff}")
+  public ResponseEntity<List<ConsultaSesiones>> getConsultasSesiones(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin){
+    List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin);
+    if(consultaSesiones == null){
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(consultaSesiones);
   }
 }
