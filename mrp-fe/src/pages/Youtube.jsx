@@ -171,8 +171,8 @@ const Youtube = () => {
   const options = ["Enero", "Febrero", "Marzo"];
 
   useEffect(() => {
-    getConsultasMateria(filtro);
-    getClientes();
+    //getConsultasMateria(filtro);
+    //getClientes();
   }, []);
 
   return (
