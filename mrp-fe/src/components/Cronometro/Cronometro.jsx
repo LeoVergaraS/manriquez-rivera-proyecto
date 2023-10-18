@@ -96,13 +96,13 @@ function Cronometro({ id_caso }) {
       pause();
     }
     Swal.fire({
-      title: '¿Estás seguro de resetear el cronómetro?',
+      title: '¿Estás seguro de reiniciar el cronómetro?',
       text: "No podrá ser recuperado el tiempo transcurrido",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Resetear cronómetro',
+      confirmButtonText: 'Si, Reiniciar cronómetro',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -134,13 +134,13 @@ function Cronometro({ id_caso }) {
     console.log(estaPausado);
     pause();
     Swal.fire({
-      title: '¿Estás seguro de finalizar la sesión?',
-      text: "Esto no podra ser borrado despues",
+      title: '¿Estás seguro de guardar la sesión?',
+      text: "Esto no podrá ser modificado después",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Guardar la sesion',
+      confirmButtonText: 'Si, Guardar la sesión',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -165,7 +165,7 @@ function Cronometro({ id_caso }) {
       let url = "http://localhost:8090/sesiones";
       const response = await axios.post(url, sesion);
       if (response.status === 200) {
-        Swal.fire("Sesión creada con exito!", "", "success");
+        Swal.fire("Sesión guardada con exito!", "", "success");
       }
     } catch (err) {
       console.log(err.message);

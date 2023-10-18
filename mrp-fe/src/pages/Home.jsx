@@ -183,7 +183,6 @@ function Home() {
       const response = await axios.post(url, item);
       if (response.status === 200) {
         handleCloseCreate();
-        //console.log("Caso creada");
         getCasos();
         Alerta.fire({icon: 'success', title: 'Caso creado con exito!'});
       }
