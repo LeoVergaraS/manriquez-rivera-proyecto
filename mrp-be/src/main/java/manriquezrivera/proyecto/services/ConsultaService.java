@@ -43,7 +43,7 @@ public class ConsultaService {
     return consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
   }
 
-  public int getCantidadClientes(String fechaInicio, String fechaFin){
+  /*public int getCantidadClientes(String fechaInicio, String fechaFin){
     return consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
-  } 
+  } */
 }
