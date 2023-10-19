@@ -18,4 +18,9 @@ public interface ConsultaClienteRepository extends JpaRepository<ConsultaCliente
                  "      fecha BETWEEN :fechaInicio AND :fechaFin " +
                  "GROUP BY fecha", nativeQuery = true)
   List<ConsultaCliente> getConsultaClientes(@Param("id") Long id, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+
+  @Query(value = "SELECT count(*) as cantidadClientes " +
+                 "FROM (SELECT distinct cl.nombre " + "FROM mrp.sesion as se, mrp.cliente as cl, mrp.caso as ca " + "WHERE cl.borrado = 0 AND " + "cl.id = ca.id_cliente AND " + "se.id_caso = ca.id AND "
+		          + "se.fecha  BETWEEN fechaInicio AND :fechaFin) as clientes", nativeQuery= true)
+int getConsultaCantidadClientes(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
 }

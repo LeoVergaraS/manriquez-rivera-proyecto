@@ -1,23 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useRef } from 'react';
 import { Chart } from 'chart.js';
 import 'chart.js/auto';
 
-const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
-const sesiones = [100, 200, 150, 432, 312, 645, 231]
+// const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
+// const sesiones = [100, 200, 150, 432, 0, 645, 231]
 //const colores = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
 
-class GraficoGernal1 extends Component {
-    chartRef = React.createRef();
-    myChart = null;
+const GraficoGernal1 = ({tiempoSesiones}) =>{
+    const chartRef = useRef();
+    const myChartRef = useRef(null);
 
-    async componentDidMount() {
-        const myChartRef = this.chartRef.current.getContext("2d");
+    const dias = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.fecha }) : [];
+    const sesiones = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo }) : [];
 
-        if (this.myChart) {
-            this.myChart.destroy();
+    useEffect(() => {
+        console.log(dias, sesiones)
+        if (myChartRef.current) {
+            myChartRef.current.destroy();
         }
 
-        this.myChart = new Chart(myChartRef, {
+        const myChart = new Chart(chartRef.current, {
             type: 'line',
             data: {
                 labels: dias,
@@ -28,7 +30,6 @@ class GraficoGernal1 extends Component {
                         fill: false,
                         borderColor: 'lightBlue',
                         tension: 0.3,
-                        
                     }
                 ]
             },
@@ -59,27 +60,28 @@ class GraficoGernal1 extends Component {
                         beginAtZero: true
                     }
                 }
-            }
+            },
 
         });
-    }
 
-    render() {
+        myChartRef.current = myChart;
+    },[tiempoSesiones]);
+
         return (
+            <>
             <div className="card">
-                <div className="card-header">
-                    <h4 className="card-title">Tiempo de sesiones por día</h4>
+                <div className="card-header"> 
+                    <h4 className="card-title text-center" >Tiempo de sesiones por día</h4>
                 </div>
                 <div className="card-body" >
                     <canvas
                         id="myChart"
-                        ref={this.chartRef}
+                        ref={chartRef}
                     />
                 </div>
             </div>
-        )
+            </>
+        );
     }
-
-}
 
 export default GraficoGernal1;

@@ -5,7 +5,7 @@ import { FaCirclePause } from "react-icons/fa6";
 import { VscDebugRestart } from "react-icons/vsc";
 import { GiSaveArrow } from "react-icons/gi";
 import axios from "axios";
-import formatDate from "../../utils/functions/fomatDate";
+import formatDate from "../../utils/functions/formatearFecha";
 import { AiOutlinePlusCircle, AiFillSave } from "react-icons/ai";
 import Swal from "sweetalert2";
 import "react-tooltip/dist/react-tooltip.css";

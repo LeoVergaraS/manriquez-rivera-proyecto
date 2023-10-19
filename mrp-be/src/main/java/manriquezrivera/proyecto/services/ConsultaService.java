@@ -34,4 +34,16 @@ public class ConsultaService {
   public List<ConsultaSesiones> getCS( String fechaInicio, String fechaFin){
     return consultaSesionesRepository.getConsultaSesionesDias(fechaInicio, fechaFin);
   }
+
+  public int getCCS( String fechaInicio, String fechaFin){
+    return consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
+  }
+
+  public int getCCT(String fechaInicio, String fechaFin){
+    return consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
+  }
+
+  public int getCantidadClientes(String fechaInicio, String fechaFin){
+    return consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
+  } 
 }

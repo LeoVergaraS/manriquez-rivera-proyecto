@@ -7,11 +7,13 @@ import { Row, Col } from "react-bootstrap";
 import GraficoGernal1 from "../components/Graficos/GraficoGernal1";
 import DropdownR from "../components/Dropdown/DropdownR";
 import List from "../components/List/List";
+import formatearFecha from "../utils/functions/formatearFecha";
+import { addDays, format } from "date-fns";
 
 const Youtube = () => {
   const [selectedCliente, setSelectedCliente] = useState("");
-  const [selectedGeneral, setSelectedGeneral] = useState("");
-  const [selectedMateria, setSelectedMateria] = useState("selected");
+  const [selectedGeneral, setSelectedGeneral] = useState("selected");
+  const [selectedMateria, setSelectedMateria] = useState("");
   const [personalizado, setPersonalizado] = useState({
     fechaInicio: new Date(),
     fechaFin: new Date(),
@@ -19,6 +21,12 @@ const Youtube = () => {
 
   const [showModal, setShowModal] = useState(false);
 
+  const [fechaFin, setFechaFin] = useState(formatearFecha(new Date(), 1, 0));
+  const [fechaInicio, setFechaInicio] = useState(
+    formatearFecha(new Date(), 0, 7)
+  );
+
+  const [consultasS, setConsultasS] = useState([]);
   const [consultasC, setConsultasC] = useState([]);
   const [consultasM, setConsultasM] = useState([]);
   const [consultasG, setConsultasG] = useState([]);
@@ -168,12 +176,50 @@ const Youtube = () => {
     }
   };
 
+  const getConsultasSesiones = async () => {
+    try {
+      let url =
+        "http://localhost:8090/consultas/sesiones/" +
+        fechaInicio +
+        "/" +
+        fechaFin;
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setConsultasS(response.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const fechaIni = new Date(fechaInicio);
+  const fechaFini = new Date(fechaFin);
+  const fechas = [];
+  let currentDate = fechaIni;
+  while (currentDate <= fechaFini) {
+    fechas.push(format(currentDate, "yyyy-MM-dd"));
+    currentDate = addDays(currentDate, 1);
+  }
+  
+  const query = `
+  SELECT fecha, COALESCE(SUM(tiempo), 0) AS tiempo_total
+  FROM mrp.sesion
+  WHERE borrado = 0 AND fecha IN (${fechas
+    .map((date) => `'${date}'`)
+    .join(", ")})
+  GROUP BY fecha
+  ORDER BY fecha;
+`;
+
+  console.log("query: ",query);
+
   const options = ["Enero", "Febrero", "Marzo"];
 
   useEffect(() => {
     //getConsultasMateria(filtro);
     //getClientes();
-  }, []);
+    getConsultasSesiones();
+  }, [fechaFin, fechaInicio]);
 
   return (
     <>
@@ -199,7 +245,11 @@ const Youtube = () => {
               Materia
             </p>
           </ul>
-          <DropdownR className="navegador__tiempo" />
+          <DropdownR
+            className="navegador__tiempo"
+            setFI={setFechaInicio}
+            setFF={setFechaFin}
+          />
         </div>
 
         {/*
@@ -259,28 +309,47 @@ const Youtube = () => {
 
       <Row>
         <Col xs={12} md={6}>
+          <Card
+            style={{
+              marginLeft: "50px",
+              marginTop: "50px",
+              backgroundColor: "#235c62",
+            }}
+          >
+            <Card.Body>
+              <GraficoGernal1 tiempoSesiones={consultasS} />
+            </Card.Body>
+          </Card>
 
-          <Card style={{ marginLeft: "50px", marginTop: "50px", backgroundColor: "#235c62" }}>
+          <Card
+            style={{
+              marginLeft: "50px",
+              marginTop: "50px",
+              backgroundColor: "#235c62",
+            }}
+          >
             <Card.Body>
               <GraficoGernal1 />
             </Card.Body>
           </Card>
-
-          <Card style={{ marginLeft: "50px", marginTop: "50px", backgroundColor: "#235c62" }}>
-            <Card.Body>
-              <GraficoGernal1 />
-            </Card.Body>
-          </Card>
-
         </Col>
-        <Col xs={6} md={6} className="d-flex justify-content-center align-items-center">
-          <Card style={{ width: "50%", backgroundColor: "#1e464b", borderColor: "#1e464b", marginTop:"50px" }}>
-            <List/>
+        <Col
+          xs={6}
+          md={6}
+          className="d-flex justify-content-center align-items-center"
+        >
+          <Card
+            style={{
+              width: "50%",
+              backgroundColor: "#1e464b",
+              borderColor: "#1e464b",
+              marginTop: "50px",
+            }}
+          >
+            <List />
           </Card>
         </Col>
-
       </Row>
-
 
       <Modal show={showModal} onHide={handleModal}>
         <Modal.Header closeButton>

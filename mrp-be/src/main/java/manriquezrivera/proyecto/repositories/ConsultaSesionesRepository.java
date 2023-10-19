@@ -10,9 +10,19 @@ import org.springframework.stereotype.Repository;
 import manriquezrivera.proyecto.models.ConsultaSesiones;
 @Repository
 public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesiones, Long>{
-    @Query(value = "SELECT fecha , sum(tiempo) FROM mrp.sesion" +
-                "WHERE borrado = 0 AND" +
-                "fecha  BETWEEN :fechaInicio AND :fechaFin" +
-                "GROUP BY fecha", nativeQuery= true)
-List<ConsultaSesiones> getConsultaSesionesDias(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);               
+    @Query(value = "SELECT fecha , sum(tiempo) as tiempo FROM mrp.sesion " +
+                   "WHERE borrado = 0 AND " +
+                   "fecha BETWEEN :fechaInicio AND :fechaFin " +
+                   "GROUP BY fecha", nativeQuery= true)
+List<ConsultaSesiones> getConsultaSesionesDias(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+
+@Query(value = "SELECT count(*) as cantidadSesiones FROM mrp.sesion " +
+                "WHERE borrado = 0 AND " +
+                "fecha BETWEEN :fechaInicio AND :fechaFin ", nativeQuery= true)
+int getConsultaCantidadSesiones(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin); 
+
+@Query(value = "SELECT sum(tiempo) as cantidadTiempo FROM mrp.sesion " +
+                "WHERE borrado = 0 AND " +
+                "fecha BETWEEN :fechaInicio AND :fechaFin ", nativeQuery= true)
+int getConsultaCantidadTiempo(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin); 
   }
