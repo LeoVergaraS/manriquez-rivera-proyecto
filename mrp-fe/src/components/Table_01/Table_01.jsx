@@ -1,27 +1,11 @@
 import "./table_01.scss";
+import castTime from "../../utils/functions/castTime";
 
 const Table_01 = ({header,listObject}) => {
   const keys = () => {
     if(listObject === null || listObject === undefined || listObject.length === 0) return [];
     const k = Object.keys(listObject[0]);
     return k;
-  }
-
-  // time -> seg
-  const castTime = (time) => {
-    console.log(time)
-    if (time < 3600) {
-      // Si es menor a una hora, muestra solo minutos
-      const minutos = Math.floor(time / 60);
-      return `${minutos} min`;
-    } else {
-      // Si es una hora o más, muestra horas y minutos
-      const horas = Math.floor(time / 3600);
-      const minutos = Math.floor((time % 3600) / 60);
-      const horasStr = String(horas).padStart(2, '0');
-      const minutosStr = String(minutos).padStart(2, '0');
-      return `${horasStr} hrs ${minutosStr} min`;
-    }
   }
 
   const getter = keys();

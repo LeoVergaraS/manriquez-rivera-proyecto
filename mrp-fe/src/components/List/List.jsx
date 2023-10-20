@@ -3,8 +3,11 @@ import Badge from 'react-bootstrap/Badge';
 import './list.scss'
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
+import castTime from '../../utils/functions/castTime';
 
-const List = () => {
+const List = ({estadisticas}) => {
+
+    console.log(estadisticas);
 
     return (
             <ListGroup as="ol">
@@ -13,7 +16,7 @@ const List = () => {
                     className="d-flex justify-content-between align-items-start"
                 >
                     <div className="ms-2 me-auto">
-                        <div className="fw-bold">32</div>
+                        <div className="fw-bold">{estadisticas.cantidad_sesiones}</div>
                         Sesiones realizadas
                     </div>
                 </ListGroup.Item>
@@ -24,7 +27,7 @@ const List = () => {
 
                 >
                     <div className="ms-2 me-auto">
-                        <div className="fw-bold">8h 27m</div>
+                        <div className="fw-bold">{castTime(estadisticas.cantidad_tiempo)}</div>
                         Tiempo trabajado
                     </div>
                 </ListGroup.Item>
@@ -34,7 +37,7 @@ const List = () => {
                     className="d-flex justify-content-between align-items-start"
                 >
                     <div className="ms-2 me-auto">
-                        <div className="fw-bold">11</div>
+                        <div className="fw-bold">{estadisticas.cantidad_clientes}</div>
                         Clientes atendidos
                     </div>
                 </ListGroup.Item>
@@ -44,7 +47,7 @@ const List = () => {
                     className="d-flex justify-content-between align-items-start"
                 >
                     <div className="ms-2 me-auto">
-                        <div className="fw-bold">Juan iturbe</div>
+                        <div className="fw-bold">{estadisticas.nombre_cliente_max}</div>
                         Cliente con más tiempo dedicado
                     </div>
                 </ListGroup.Item>
@@ -54,7 +57,7 @@ const List = () => {
                     className="d-flex justify-content-between align-items-start"
                 >
                     <div className="ms-2 me-auto">
-                        <div className="fw-bold">9</div>
+                        <div className="fw-bold">{estadisticas.cantidad_materias}</div>
                         Materias atendidas
                     </div>
                 </ListGroup.Item>
@@ -64,7 +67,7 @@ const List = () => {
                     className="d-flex justify-content-between align-items-start"
                 >
                     <div className="ms-2 me-auto">
-                        <div className="fw-bold">Drecho Laboral</div>
+                        <div className="fw-bold">{estadisticas.nombre_materia_max}</div>
                         Materia con más tiempo dedicado
                     </div>
                 </ListGroup.Item>
@@ -74,7 +77,7 @@ const List = () => {
                     className="d-flex justify-content-between align-items-start"
                 >
                     <div className="ms-2 me-auto">
-                        <div className="fw-bold">7</div>
+                        <div className="fw-bold">{estadisticas.cantidad_submateria}</div>
                         Submaterias atendidas
                     </div>
                 </ListGroup.Item>
@@ -84,7 +87,7 @@ const List = () => {
                     className="d-flex justify-content-between align-items-start"
                 >
                     <div className="ms-2 me-auto">
-                        <div className="fw-bold">Familia</div>
+                        <div className="fw-bold">{estadisticas.nombre_submateria_max}</div>
                         Submateria con más tiempo dedicado
                     </div>
                 </ListGroup.Item>

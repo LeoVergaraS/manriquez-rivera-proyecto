@@ -2,7 +2,8 @@ import { Card, Row, Col } from "react-bootstrap";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 import List from "../../components/List/List";
 
-const General = ({consultasS}) => {
+const General = ({consultasS,estadisticas}) => {
+
 	return (
 		<>
 			<Row>
@@ -44,7 +45,7 @@ const General = ({consultasS}) => {
 							marginTop: "50px",
 						}}
 					>
-						<List />
+						<List estadisticas={estadisticas}/>
 					</Card>
 				</Col>
 			</Row>

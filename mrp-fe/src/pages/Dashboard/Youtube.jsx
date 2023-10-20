@@ -21,6 +21,8 @@ const Youtube = () => {
     fechaFin: new Date(),
   });
 
+  const [estadisticas, setEstadisticas] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
 
   const [fechaFin, setFechaFin] = useState(formatearFecha(new Date(), 1, 0));
@@ -213,97 +215,117 @@ const Youtube = () => {
   ORDER BY fecha;
 `;
 
-  useEffect(() => {
-    //getConsultasMateria(filtro);
-    //getClientes();
-    //getConsultasSesiones();
-  }, [fechaFin, fechaInicio]);
+  const getEstadisticas = async () => {
+    try {
+      let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin;
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setEstadisticas(response.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-  return (
-    <>
-      <div className="navegador">
-        <ul className="navegador__tabs">
-          <p
-            className={"navegador__tabs-item " + selectedGeneral}
-            onClick={() => handleSelected("general")}
-          >
-            General
-          </p>
-          <p
-            className={"navegador__tabs-item " + selectedCliente}
-            onClick={() => handleSelected("cliente")}
-          >
-            Clientes
-          </p>
-          <p
-            className={"navegador__tabs-item " + selectedMateria}
-            onClick={() => handleSelected("materia")}
-          >
-            Materia
-          </p>
-        </ul>
-        <DropdownR
-          className="navegador__tiempo"
-          setFI={setFechaInicio}
-          setFF={setFechaFin}
-        />
-      </div>
+  console.log(estadisticas);
+  console.log(estadisticas.cantidad_sesiones);
+  
 
-      {selectedGeneral === "selected" ? (
-        <General consultasS={consultasS}/>) : null}
 
-      {selectedCliente === "selected" ? (
-        <Clientes consultasS={consultasS}/>) : null}
+    //console.log(fechaInicio, fechaFin);
 
-      {selectedMateria === "selected" ? (
-        <Materias consultasS={consultasS}/>) : null}
+    useEffect(() => {
+      //getConsultasMateria(filtro);
+      //getClientes();
+      //getConsultasSesiones();
+      getEstadisticas();
+    }, [fechaFin, fechaInicio]);
 
-      <Modal show={showModal} onHide={handleModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Rango de tiempo</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Fecha inicio</Form.Label>
-              <Form.Control
-                type="date"
-                value={formatDate(personalizado.fechaInicio)}
-                onChange={(e) =>
-                  setPersonalizado({
-                    ...personalizado,
-                    fechaInicio: new Date(e.target.value),
-                  })
-                }
-              />
-            </Form.Group>
+    return (
+      <>
+        <div className="navegador">
+          <ul className="navegador__tabs">
+            <p
+              className={"navegador__tabs-item " + selectedGeneral}
+              onClick={() => handleSelected("general")}
+            >
+              General
+            </p>
+            <p
+              className={"navegador__tabs-item " + selectedCliente}
+              onClick={() => handleSelected("cliente")}
+            >
+              Clientes
+            </p>
+            <p
+              className={"navegador__tabs-item " + selectedMateria}
+              onClick={() => handleSelected("materia")}
+            >
+              Materia
+            </p>
+          </ul>
+          <DropdownR
+            className="navegador__tiempo"
+            setFI={setFechaInicio}
+            setFF={setFechaFin}
+          />
+        </div>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Fecha fin</Form.Label>
-              <Form.Control
-                type="date"
-                value={formatDate(personalizado.fechaFin)}
-                onChange={(e) =>
-                  setPersonalizado({
-                    ...personalizado,
-                    fechaFin: new Date(e.target.value),
-                  })
-                }
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleModal}>
-            Cancelar
-          </Button>
-          <Button variant="success" onClick={handleSearch}>
-            Buscar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
-};
+        {selectedGeneral === "selected" ? (
+          <General consultasS={consultasS} estadisticas={estadisticas}/>) : null}
 
-export default Youtube;
+        {selectedCliente === "selected" ? (
+          <Clientes consultasS={consultasS} />) : null}
+
+        {selectedMateria === "selected" ? (
+          <Materias consultasS={consultasS} />) : null}
+
+        <Modal show={showModal} onHide={handleModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Rango de tiempo</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Fecha inicio</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={formatDate(personalizado.fechaInicio)}
+                  onChange={(e) =>
+                    setPersonalizado({
+                      ...personalizado,
+                      fechaInicio: new Date(e.target.value),
+                    })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Fecha fin</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={formatDate(personalizado.fechaFin)}
+                  onChange={(e) =>
+                    setPersonalizado({
+                      ...personalizado,
+                      fechaFin: new Date(e.target.value),
+                    })
+                  }
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleModal}>
+              Cancelar
+            </Button>
+            <Button variant="success" onClick={handleSearch}>
+              Buscar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  };
+
+  export default Youtube;
