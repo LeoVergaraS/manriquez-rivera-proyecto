@@ -317,7 +317,7 @@ const Youtube = () => {
             }}
           >
             <Card.Body>
-              <GraficoGernal1 tiempoSesiones={consultasS} />
+              <GraficoGernal1 tiempoSesiones={consultasS} title={"Tiempo de sesiones por día"} />
             </Card.Body>
           </Card>
 
@@ -329,7 +329,7 @@ const Youtube = () => {
             }}
           >
             <Card.Body>
-              <GraficoGernal1 />
+              <GraficoGernal1 title={"Tiempo de materias por día"} />
             </Card.Body>
           </Card>
         </Col>

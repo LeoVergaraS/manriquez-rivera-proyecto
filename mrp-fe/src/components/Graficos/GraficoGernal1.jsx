@@ -6,7 +6,7 @@ const dias = ['2023-10-13','2023-10-14','2023-10-15','2023-10-16','2023-10-17','
 const sesiones = [420, 0, 0, 480, 400, 460, 395]
 //const colores = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
 
-const GraficoGernal1 = ({tiempoSesiones}) =>{
+const GraficoGernal1 = ({title, tiempoSesiones}) =>{
     const chartRef = useRef();
     const myChartRef = useRef(null);
 
@@ -71,7 +71,7 @@ const GraficoGernal1 = ({tiempoSesiones}) =>{
             <>
             <div className="card">
                 <div className="card-header"> 
-                    <h4 className="card-title text-center" >Tiempo de sesiones por día</h4>
+                    <h4 className="card-title text-center" >{title}</h4>
                 </div>
                 <div className="card-body" >
                     <canvas
