@@ -2,13 +2,15 @@ import { Button, Card, Container, Form, Modal } from "react-bootstrap";
 import "./youtube.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Table_01 from "../components/Table_01/Table_01";
-import { Row, Col } from "react-bootstrap";
-import GraficoGernal1 from "../components/Graficos/GraficoGernal1";
-import DropdownR from "../components/Dropdown/DropdownR";
-import List from "../components/List/List";
-import formatearFecha from "../utils/functions/formatearFecha";
+//import Table_01 from "../components/Table_01/Table_01";
+//import GraficoGernal1 from "../components/Graficos/GraficoGernal1";
+import DropdownR from "../../components/Dropdown/DropdownR";
+//import List from "../../components/List/List";
+import formatearFecha from "../../utils/functions/formatearFecha";
 import { addDays, format } from "date-fns";
+import General from "./General";
+import Clientes from "./Clientes";
+import Materias from "./Materias";
 
 const Youtube = () => {
   const [selectedCliente, setSelectedCliente] = useState("");
@@ -200,156 +202,61 @@ const Youtube = () => {
     fechas.push(format(currentDate, "yyyy-MM-dd"));
     currentDate = addDays(currentDate, 1);
   }
-  
+
   const query = `
   SELECT fecha, COALESCE(SUM(tiempo), 0) AS tiempo_total
   FROM mrp.sesion
   WHERE borrado = 0 AND fecha IN (${fechas
-    .map((date) => `'${date}'`)
-    .join(", ")})
+      .map((date) => `'${date}'`)
+      .join(", ")})
   GROUP BY fecha
   ORDER BY fecha;
 `;
 
-  console.log("query: ",query);
-
-  const options = ["Enero", "Febrero", "Marzo"];
-
   useEffect(() => {
     //getConsultasMateria(filtro);
     //getClientes();
-    getConsultasSesiones();
+    //getConsultasSesiones();
   }, [fechaFin, fechaInicio]);
 
   return (
     <>
-      <div className="layout" style={{ width: "250px" }}>
-        <div className="navegador">
-          <ul className="navegador__tabs">
-            <p
-              className={"navegador__tabs-item " + selectedGeneral}
-              onClick={() => handleSelected("general")}
-            >
-              General
-            </p>
-            <p
-              className={"navegador__tabs-item " + selectedCliente}
-              onClick={() => handleSelected("cliente")}
-            >
-              Clientes
-            </p>
-            <p
-              className={"navegador__tabs-item " + selectedMateria}
-              onClick={() => handleSelected("materia")}
-            >
-              Materia
-            </p>
-          </ul>
-          <DropdownR
-            className="navegador__tiempo"
-            setFI={setFechaInicio}
-            setFF={setFechaFin}
-          />
-        </div>
-
-        {/*
-        <div className="main">*/}
-        {/*selectedGeneral*/}
-        {/*}
-          {selectedCliente === "selected" ? (
-            <div
-              className="d-flex align-items-center"
-              style={{ flexDirection: "column" }}
-            >
-              <Form.Select
-                value={cliente}
-                onChange={handleSelect}
-                style={{ fontSize: 25, width: "20%", marginTop: 20 }}
-              >
-                <option value={0} key={0}>
-                  Seleccione un cliente
-                </option>
-                {clientes.map((cliente) => (
-                  <option value={cliente.id} key={cliente.id}>
-                    {cliente.nombre}
-                  </option>
-                ))}
-              </Form.Select>
-              <Table_01 header={headerClientes} listObject={consultasC} />
-            </div>
-          ) : null}
-          {selectedMateria === "selected" ? (
-            <Table_01 header={headerMateria} listObject={consultasM} />
-          ) : null}
-          <aside className="filtro">
-            <div className="filtro__column">
-              <div className="filtro__item" onClick={() => handleFiltro(0)}>
-                1 semana
-              </div>
-              <div className="filtro__item" onClick={() => handleFiltro(1)}>
-                1 mes
-              </div>
-              <div className="filtro__item" onClick={() => handleFiltro(2)}>
-                3 meses
-              </div>
-              <div className="filtro__item" onClick={() => handleFiltro(3)}>
-                6 meses
-              </div>
-              <div className="filtro__item" onClick={() => handleFiltro(4)}>
-                1 año
-              </div>
-              <div className="filtro__item" onClick={handleModal}>
-                Personalizado
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div>*/}
+      <div className="navegador">
+        <ul className="navegador__tabs">
+          <p
+            className={"navegador__tabs-item " + selectedGeneral}
+            onClick={() => handleSelected("general")}
+          >
+            General
+          </p>
+          <p
+            className={"navegador__tabs-item " + selectedCliente}
+            onClick={() => handleSelected("cliente")}
+          >
+            Clientes
+          </p>
+          <p
+            className={"navegador__tabs-item " + selectedMateria}
+            onClick={() => handleSelected("materia")}
+          >
+            Materia
+          </p>
+        </ul>
+        <DropdownR
+          className="navegador__tiempo"
+          setFI={setFechaInicio}
+          setFF={setFechaFin}
+        />
       </div>
 
-      <Row>
-        <Col xs={12} md={6}>
-          <Card
-            style={{
-              marginLeft: "50px",
-              marginTop: "50px",
-              backgroundColor: "#235c62",
-            }}
-          >
-            <Card.Body>
-              <GraficoGernal1 tiempoSesiones={consultasS} title={"Tiempo de sesiones por día"} />
-            </Card.Body>
-          </Card>
+      {selectedGeneral === "selected" ? (
+        <General consultasS={consultasS}/>) : null}
 
-          <Card
-            style={{
-              marginLeft: "50px",
-              marginTop: "50px",
-              backgroundColor: "#235c62",
-            }}
-          >
-            <Card.Body>
-              <GraficoGernal1 title={"Tiempo de materias por día"} />
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col
-          xs={6}
-          md={6}
-          className="d-flex justify-content-center align-items-center"
-        >
-          <Card
-            style={{
-              width: "50%",
-              backgroundColor: "#1e464b",
-              borderColor: "#1e464b",
-              marginTop: "50px",
-            }}
-          >
-            <List />
-          </Card>
-        </Col>
-      </Row>
+      {selectedCliente === "selected" ? (
+        <Clientes consultasS={consultasS}/>) : null}
+
+      {selectedMateria === "selected" ? (
+        <Materias consultasS={consultasS}/>) : null}
 
       <Modal show={showModal} onHide={handleModal}>
         <Modal.Header closeButton>

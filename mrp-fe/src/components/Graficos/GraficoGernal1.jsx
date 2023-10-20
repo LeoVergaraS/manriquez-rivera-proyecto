@@ -14,7 +14,6 @@ const GraficoGernal1 = ({title, tiempoSesiones}) =>{
     //const sesiones = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo }) : [];
 
     useEffect(() => {
-        console.log(dias, sesiones)
         if (myChartRef.current) {
             myChartRef.current.destroy();
         }

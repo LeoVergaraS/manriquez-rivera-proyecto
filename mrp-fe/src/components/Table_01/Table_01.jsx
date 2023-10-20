@@ -7,6 +7,23 @@ const Table_01 = ({header,listObject}) => {
     return k;
   }
 
+  // time -> seg
+  const castTime = (time) => {
+    console.log(time)
+    if (time < 3600) {
+      // Si es menor a una hora, muestra solo minutos
+      const minutos = Math.floor(time / 60);
+      return `${minutos} min`;
+    } else {
+      // Si es una hora o más, muestra horas y minutos
+      const horas = Math.floor(time / 3600);
+      const minutos = Math.floor((time % 3600) / 60);
+      const horasStr = String(horas).padStart(2, '0');
+      const minutosStr = String(minutos).padStart(2, '0');
+      return `${horasStr} hrs ${minutosStr} min`;
+    }
+  }
+
   const getter = keys();
 
   const getTotal = (consulta) => {
@@ -14,7 +31,7 @@ const Table_01 = ({header,listObject}) => {
     consulta.forEach((item) => {
       total += item.tiempo;
     });
-    return total;
+    return castTime(total);
   }
 
   if(listObject === null || listObject === undefined || listObject.length === 0) return <div></div>;
@@ -31,7 +48,7 @@ const Table_01 = ({header,listObject}) => {
           <div className="tabla__row">
             <div className="tabla__content">
               <div className="tabla__content-item">{consulta[getter[0]]}</div>
-              <div className="tabla__content-item">{consulta[getter[1]]}</div>
+              <div className="tabla__content-item">{castTime(consulta[getter[1]])}</div>
             </div>
           </div>
         );

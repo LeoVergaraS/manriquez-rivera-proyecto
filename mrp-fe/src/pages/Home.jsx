@@ -294,7 +294,7 @@ function Home() {
             <Card
               onMouseEnter={() => handleMouseEnter(1)}
               className={"card-caso " + hoveredCard1}
-              style={{ background: "#3B575A", borderRadius: "25px" }}
+              style={{ background: "#235c62", borderRadius: "25px" }}
             >
               <Card.Body>
                 <Row style={{ alignItems: "center" }}>
@@ -352,7 +352,7 @@ function Home() {
                   <Col>
                     <table>
                       <thead>
-                        <tr style={{ background: "#3B575A" }}>
+                        <tr style={{ background: "#235c62" }}>
                           <th>Cliente</th>
                           <th>Materia</th>
                           <th>Sub Materia</th>
@@ -364,7 +364,7 @@ function Home() {
                       <tbody style={{ color: "white" }}>
                         <tr
                           key={setCasoSeleccionado.id}
-                          style={{ background: "#3B575A" }}
+                          style={{ background: "#235c62" }}
                         >
                           <td>
                             {casoSeleccionado == undefined ||
@@ -418,7 +418,7 @@ function Home() {
               onMouseEnter={() => handleMouseEnter(2)}
               className={"card-cronometro " + hoveredCard2}
               style={{
-                background: "#3B575A",
+                background: "#235c62",
                 height: "auto",
                 width: "300px",
                 marginLeft: "30px",

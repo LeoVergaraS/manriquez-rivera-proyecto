@@ -20,9 +20,29 @@ public interface ConsultaClienteRepository extends JpaRepository<ConsultaCliente
   List<ConsultaCliente> getConsultaClientes(@Param("id") Long id, @Param("fechaInicio") String fechaInicio,
       @Param("fechaFin") String fechaFin);
 
-  /*@Query(value = "SELECT count(*) as cantidadClientes " +
-      "FROM (SELECT distinct cl.nombre " + "FROM mrp.sesion as se, mrp.cliente as cl, mrp.caso as ca "
-      + "WHERE cl.borrado = 0 AND " + "cl.id = ca.id_cliente AND " + "se.id_caso = ca.id AND "
-      + "se.fecha  BETWEEN fechaInicio AND :fechaFin) as clientes", nativeQuery = true)
-  int getConsultaCantidadClientes(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);*/
+  @Query(value =    "SELECT count(*) as cantidadClientes " +
+                    "FROM (SELECT distinct cl.nombre " + 
+                        "FROM mrp.sesion as se, mrp.cliente as cl, mrp.caso as ca "+
+                        "WHERE cl.borrado = 0 AND " + "cl.id = ca.id_cliente AND " + "se.id_caso = ca.id AND "+
+                              "se.fecha  BETWEEN :fechaInicio AND :fechaFin) as clientes", nativeQuery = true)
+  int getConsultaCantidadClientes(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+
+
+    // @Query(value=		"SELECT max(tiempo) "+
+    //                     "FROM(SELECT cl.nombre, sum(tiempo) as tiempo "+
+	// 		                "FROM mrp.sesion as se, mrp.cliente as cl, mrp.caso as ca "+ 
+    //                         "WHERE cl.borrado = 0 AND  cl.id = ca.id_cliente AND se.id_caso = ca.id AND "+ 
+    //                               "se.fecha  BETWEEN :fechaInicio AND :fechaFin "+
+    //                               "group by cl.nombre) as clTiempo", nativeQuery=true)
+    // int getConsultaTiempoClienteMax(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+
+    @Query(value= "SELECT * "+
+                  "FROM(SELECT cl.nombre, sum(tiempo) as tiempo "+
+			          "FROM mrp.sesion as se, mrp.cliente as cl, mrp.caso as ca "+
+                      "WHERE cl.borrado = 0 AND  cl.id = ca.id_cliente AND se.id_caso = ca.id AND "+
+                      "se.fecha  BETWEEN :fechaInicio AND :fechaFin "+
+                      "group by cl.nombre) as clTiempo "+
+                  "order by tiempo desc "+
+		          "Limit 1", nativeQuery=true)
+    String getConsultaNombreTiempoClienteMax(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
 }
