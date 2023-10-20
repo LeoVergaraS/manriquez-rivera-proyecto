@@ -30,13 +30,13 @@ function Home() {
     console.log(e.value);
     setTs(e.value);
   }
-    
+
   const tiempos = [
-    { label : "1 hora",    value: 60},
-    { label : "45 min",    value: 45},
-    { label : "30 min",    value: 30},
-    { label : "15 min",    value: 15},
-    { label : "Sin pausa", value: -1}
+    { label: "1 hora", value: 60 },
+    { label: "45 min", value: 45 },
+    { label: "30 min", value: 30 },
+    { label: "15 min", value: 15 },
+    { label: "Sin pausa", value: -1 }
   ]
 
   const handleMouseEnter = (type) => {
@@ -280,14 +280,14 @@ function Home() {
         alignItems: "center",
       }}
     >
+
       <Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
-        <Col xs="auto">
-          <BiSearchAlt style={{ color: "white", fontSize: "40px" }} />
-        </Col>
-        <Col>
-          <InputSelect casos={casos} setCaso={setCasoSeleccionado} />
-        </Col>
+        <fieldset className="fieldset-select">
+          <legend className="fieldset-select__legend"> Buscar caso </legend>
+          <InputSelect className="fieldset-select__input-select" casos={casos} setCaso={setCasoSeleccionado} />
+        </fieldset>
       </Row>
+
       <Row>
         <Col style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <div className="container2">
@@ -316,35 +316,35 @@ function Home() {
                       <FiEdit
                         className={
                           casoSeleccionado === undefined ||
-                          casoSeleccionado === null
+                            casoSeleccionado === null
                             ? "edit-icon-disabled"
                             : casoSeleccionado.id === 0
-                            ? "edit-icon-disabled"
-                            : "edit-icon"
+                              ? "edit-icon-disabled"
+                              : "edit-icon"
                         }
                         onClick={
                           casoSeleccionado == undefined ||
-                          casoSeleccionado === null
+                            casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
-                            ? null
-                            : handleShowEdit
+                              ? null
+                              : handleShowEdit
                         }
                         data-tooltip-id={
                           casoSeleccionado == undefined ||
-                          casoSeleccionado === null
+                            casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
-                            ? null
-                            : "my-tooltip"
+                              ? null
+                              : "my-tooltip"
                         }
                         data-tooltip-content={
                           casoSeleccionado == undefined ||
-                          casoSeleccionado === null
+                            casoSeleccionado === null
                             ? null
                             : casoSeleccionado.id === 0
-                            ? null
-                            : "Editar caso"
+                              ? null
+                              : "Editar caso"
                         }
                       />
                     </Row>
@@ -368,25 +368,25 @@ function Home() {
                         >
                           <td>
                             {casoSeleccionado == undefined ||
-                            casoSeleccionado === null
+                              casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_cliente.nombre}
                           </td>
                           <td>
                             {casoSeleccionado == undefined ||
-                            casoSeleccionado === null
+                              casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_materia.nombre}
                           </td>
                           <td>
                             {casoSeleccionado == undefined ||
-                            casoSeleccionado === null
+                              casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_submateria.nombre}
                           </td>
                           <td>
                             {casoSeleccionado == undefined ||
-                            casoSeleccionado === null
+                              casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.abogado}
                           </td>
@@ -406,8 +406,8 @@ function Home() {
                   {casoSeleccionado === undefined || casoSeleccionado === null
                     ? ""
                     : casoSeleccionado.id === 0
-                    ? ""
-                    : "Caso " +
+                      ? ""
+                      : "Caso " +
                       casoSeleccionado.id +
                       "  |   " +
                       formatDateShow(casoSeleccionado.fecha)}
@@ -464,7 +464,7 @@ function Home() {
                     ...baseStyles,
                     backgroundColor: "rgba(0,0,0,0)",
                     border: "none",
-                    borderBottom: "3px solid #DFBF68",            
+                    borderBottom: "3px solid #DFBF68",
                   }),
                   singleValue: (baseStyles) => ({
                     ...baseStyles,
@@ -475,7 +475,7 @@ function Home() {
                     ...baseStyles,
                     backgroundColor: "rgba(0,0,0,0)",
                     color: "white",
-                    borderBottom: "3px solid #DFBF68", 
+                    borderBottom: "3px solid #DFBF68",
                     fontSize: "19px"
                   }),
                   option: (baseStyles, state) => ({
