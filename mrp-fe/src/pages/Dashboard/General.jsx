@@ -6,7 +6,7 @@ const General = ({consultasS,estadisticas}) => {
 
 	return (
 		<>
-			<Row>
+			<Row  style={{width:"100%"}}>
 				<Col xs={12} md={6}>
 					<Card
 						style={{

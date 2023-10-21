@@ -11,7 +11,7 @@ const Clientes = ({ consultasS }) => {
 
 	return (
 		<>
-			<Row>
+			<Row  style={{width:"100%"}}>
 				<Col xs={12} md={6}>
 					<Row>
 						<Card

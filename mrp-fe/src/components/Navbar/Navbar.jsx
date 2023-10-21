@@ -10,6 +10,7 @@ function NavbarResponsive() {
                     <Nav className="navbar__nav m-auto justify-content-center gap-3" >
                         <Nav.Link className="navbar__nav-link" href="/">Inicio</Nav.Link>
                         <Nav.Link className="navbar__nav-link" href="/consulta">Dashboard</Nav.Link>
+                        <Nav.Link className="navbar__nav-link" href="/admin">Admin</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

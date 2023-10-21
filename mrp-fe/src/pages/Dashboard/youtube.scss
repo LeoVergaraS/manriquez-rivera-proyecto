@@ -3,7 +3,7 @@
 .navegador{
   border-bottom: 2px solid #DFBF68;
   display: flex;
-  width: 100vw;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
 
@@ -47,30 +47,6 @@
   grid-template-rows: 1fr
 }
 
-.filtro{
-  border-left: 2px solid #DFBF68;
-  background-color: #DFBF68;
-  height: calc(100vh - (71px + 52px));
 
-  &__column{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 100%;
-  }
-
-  &__item{
-    text-align: center;
-    font-size: 25px;
-    border-bottom: 2px solid #1E464B;
-    transition: width 0.5s ease-in-out;
-    width: auto;
-    cursor: pointer;
-    &:hover{
-      width: 160px;
-    }
-  }
-}
 
 
