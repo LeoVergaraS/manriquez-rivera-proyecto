@@ -9,10 +9,13 @@ import formatFechaAnios from "../../utils/functions/formatFechaAnios";
 const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio }) => {
   const mesActual = new Date().getMonth();
   const anioActual = new Date().getFullYear();
+  const anioAnterior = anioActual - 1;
 
   // primer dia del año
   const primerDia = new Date(anioActual, 0, 1);
   const ultimoDia = new Date(anioActual, 11, 31);
+  const primerDiaAnterior = new Date(anioAnterior, 0, 1);
+  const ultimoDiaAnterior = new Date(anioAnterior, 11, 31);
 
   const [selectedValue, setSelectedValue] = useState(opciones[0].nombre);
 
@@ -56,6 +59,13 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio })
     if(eventKey == 6){
       setFF(formatFechaAnios(ultimoDia));
       setFI(formatFechaAnios(primerDia));
+      setDropSiempre(0);
+      setDropAnio(1);
+    }
+
+    if(eventKey == 7){
+      setFF(formatFechaAnios(ultimoDiaAnterior));
+      setFI(formatFechaAnios(primerDiaAnterior));
       setDropSiempre(0);
       setDropAnio(1);
     }

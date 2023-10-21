@@ -66,6 +66,7 @@ public class ConsultaService {
     }
 
     List<ConsultaSesiones> consultaSesiones = consultaSesionesRepository.getConsultaSesionesDias(fechaInicio, fechaFin);
+
     List<ConsultaSesiones> consultaSesiones2 = new ArrayList<ConsultaSesiones>();
 
     // Se crea un arreglo que contenga las fechas que existen entre fechaInicio y
@@ -74,8 +75,7 @@ public class ConsultaService {
     fechas.add(fechaFin);
 
     if (dropAnio == 1) {
-      dropSelect = getCantidadDiasDeUnAnio(2023)-1;
-      // System.out.println("dropSelect: " + dropSelect);
+      dropSelect = getCantidadDiasDeUnAnio(2023) - 1;
     }
     int i = 1;
     while (i <= dropSelect) {
@@ -102,7 +102,17 @@ public class ConsultaService {
     i = 0;
     int j = 0;
     while (i < dropSelect) {
-      if (j < consultaSesiones.size()) {
+      if (consultaSesiones.size() == 0) {
+        int k = 0;
+        while (k < dropSelect) {
+          ConsultaSesiones consultaNueva = new ConsultaSesiones();
+          consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(k)));
+          consultaNueva.setTiempo(0L);
+          consultaSesiones2.add(consultaNueva);
+          k++;
+        }
+        break;
+      } else if (j < consultaSesiones.size()) {
         if (fechasInvertidas.get(i).equals(consultaSesiones.get(j).getFecha().toString())) {
           consultaSesiones2.add(consultaSesiones.get(j));
           i++;
@@ -157,27 +167,51 @@ public class ConsultaService {
       fechaInicio = allConsultas.get(0).getFecha().toString();
     }
     Integer cantidad_sesiones = consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
+    System.out.println(fechaInicio + " " + fechaFin);
     Integer cantidad_tiempo = consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
+
     Integer cantidad_clientes = consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
 
-    String nombre_tiempo_cliente_max = consultaClienteRepository.getConsultaNombreTiempoClienteMax(fechaInicio,
+    List<ConsultaMateria> nombre_tiempo_cliente_max = consultaMateriaRepository.getConsultaNombreTiempoClienteMax(fechaInicio,
         fechaFin);
-    String nombre_cliente_max = nombre_tiempo_cliente_max.split(",")[0];
-    int tiempo_cliente_max = Integer.parseInt(nombre_tiempo_cliente_max.split(",")[1]);
+    String nombre_cliente_max;
+    Integer tiempo_cliente_max;
+    if(nombre_tiempo_cliente_max.size()==0){
+      nombre_cliente_max = "No hay clientes";
+      tiempo_cliente_max = 0;
+    }else{
+      nombre_cliente_max = nombre_tiempo_cliente_max.get(0).getNombre();
+      tiempo_cliente_max = nombre_tiempo_cliente_max.get(0).getTiempo().intValue();
+    }
 
     Integer cantidad_materias = consultaMateriaRepository.getConsultaCantidadMaterias(fechaInicio, fechaFin);
 
-    String nombre_tiempo_materia_max = consultaMateriaRepository.getConsultaNombreTiempoMateriaMax(fechaInicio,
+    List<ConsultaMateria> nombre_tiempo_materia_max = consultaMateriaRepository.getConsultaNombreTiempoMateriaMax(fechaInicio,
         fechaFin);
-    String nombre_materia_max = nombre_tiempo_materia_max.split(",")[0];
-    Integer tiempo_materia_max = Integer.parseInt(nombre_tiempo_materia_max.split(",")[1]);
+    String nombre_materia_max;
+    Integer tiempo_materia_max;
+    if(nombre_tiempo_materia_max.size()==0){
+      nombre_materia_max = "No hay materias";
+      tiempo_materia_max = 0;
+    }else{
+      nombre_materia_max = nombre_tiempo_materia_max.get(0).getNombre();
+      tiempo_materia_max = nombre_tiempo_materia_max.get(0).getTiempo().intValue();
+    }
 
     Integer cantidad_submateria = consultaMateriaRepository.getConsultaCantidadSubmaterias(fechaInicio, fechaFin);
 
-    String nombre_tiempo_submateria_max = consultaMateriaRepository.getConsultaNombreTiempoSubmateriaMax(fechaInicio,
+    List<ConsultaMateria> nombre_tiempo_submateria_max = consultaMateriaRepository.getConsultaNombreTiempoSubmateriaMax(fechaInicio,
         fechaFin);
-    String nombre_submateria_max = nombre_tiempo_submateria_max.split(",")[0];
-    Integer tiempo_submateria_max = Integer.parseInt(nombre_tiempo_submateria_max.split(",")[1]);
+    String nombre_submateria_max;
+    Integer tiempo_submateria_max;
+    if(nombre_tiempo_submateria_max.size()==0){
+      nombre_submateria_max = "No hay submaterias";
+      tiempo_submateria_max = 0;
+    }else{
+      nombre_submateria_max = nombre_tiempo_submateria_max.get(0).getNombre();
+      tiempo_submateria_max = nombre_tiempo_submateria_max.get(0).getTiempo().intValue();
+    }
+
     return new InfoTabla(cantidad_sesiones, cantidad_tiempo,
         cantidad_clientes, nombre_cliente_max, tiempo_cliente_max,
         cantidad_materias, nombre_materia_max, tiempo_materia_max,

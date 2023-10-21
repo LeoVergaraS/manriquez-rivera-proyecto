@@ -172,6 +172,7 @@ const Youtube = () => {
   };
 
   const getConsultasSesiones = async () => {
+    console.log("dropAnio: ",dropAnio)
     try {
       let url =
         "http://localhost:8090/consultas/sesiones/" +
@@ -203,9 +204,7 @@ const Youtube = () => {
     getConsultasMaterias();
     getConsultasSesiones();
     getEstadisticas();
-  }, [fechaFin, fechaInicio, dropSelect, dropSiempre]);
-
-  console.log(fechaInicio, fechaFin);
+  }, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio]);
 
   return (
     <>
