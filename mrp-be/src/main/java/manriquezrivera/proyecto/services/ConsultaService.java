@@ -40,9 +40,12 @@ public class ConsultaService {
     return consultaClienteRepository.getConsultaClientes(id, fechaInicio, fechaFin);
   }
 
-  public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre) {
+  public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre,
+      Integer dropAnio) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+    // Si la opción ingresada es "Desde siempre", se obtiene la fecha de la primera
+    // sesión creada
     if (dropSiempre == 1) {
       List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
       fechaInicio = allConsultas.get(0).getFecha().toString();
@@ -60,7 +63,6 @@ public class ConsultaService {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-
     }
 
     List<ConsultaSesiones> consultaSesiones = consultaSesionesRepository.getConsultaSesionesDias(fechaInicio, fechaFin);
@@ -70,10 +72,20 @@ public class ConsultaService {
     // fechaFin
     List<String> fechas = new ArrayList<String>();
     fechas.add(fechaFin);
+
+    if (dropAnio == 1) {
+      dropSelect = getCantidadDiasDeUnAnio(2023)-1;
+      // System.out.println("dropSelect: " + dropSelect);
+    }
     int i = 1;
     while (i <= dropSelect) {
       Calendar instance = Calendar.getInstance();
       Date date = new Date();
+      try {
+        date = sdf.parse(fechaFin);
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
       instance.setTime(date);
       instance.add(Calendar.DATE, -i);
       String fechaString = sdf.format(instance.getTime());
@@ -109,6 +121,13 @@ public class ConsultaService {
     }
 
     return consultaSesiones2;
+  }
+
+  public Integer getCantidadDiasDeUnAnio(Integer anio) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(anio, 11, 31);
+    Integer cantidadDias = calendar.get(Calendar.DAY_OF_YEAR);
+    return cantidadDias;
   }
 
   // cantidad de sesiones

@@ -19,6 +19,7 @@ const Youtube = () => {
 
   const [dropSelect, setDropSelect] = useState(7);
   const [dropSiempre, setDropSiempre] = useState(0);
+  const [dropAnio, setDropAnio] = useState(0);
 
   const [estadisticas, setEstadisticas] = useState([]);
 
@@ -176,7 +177,7 @@ const Youtube = () => {
         "http://localhost:8090/consultas/sesiones/" +
         fechaInicio +
         "/" +
-        fechaFin + "/" + dropSelect + "/" + dropSiempre;
+        fechaFin + "/" + dropSelect + "/" + dropSiempre + "/" + dropAnio;
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasS(response.data);
@@ -235,6 +236,7 @@ const Youtube = () => {
           setFF={setFechaFin}
           setDropSelect={setDropSelect}
           setDropSiempre={setDropSiempre}
+          setDropAnio={setDropAnio}
         />
       </div>
 
