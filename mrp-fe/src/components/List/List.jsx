@@ -1,13 +1,8 @@
 import ListGroup from 'react-bootstrap/ListGroup';
-import Badge from 'react-bootstrap/Badge';
 import './list.scss'
-import Card from 'react-bootstrap/Card';
-import Table from 'react-bootstrap/Table';
 import castTime from '../../utils/functions/castTime';
 
 const List = ({estadisticas}) => {
-
-    console.log(estadisticas);
 
     return (
             <ListGroup as="ol">

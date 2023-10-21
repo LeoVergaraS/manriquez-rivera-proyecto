@@ -1,13 +1,9 @@
-import { Button, Card, Container, Form, Modal } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import "./youtube.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
-//import Table_01 from "../components/Table_01/Table_01";
-//import GraficoGernal1 from "../components/Graficos/GraficoGernal1";
 import DropdownR from "../../components/Dropdown/DropdownR";
-//import List from "../../components/List/List";
 import formatearFecha from "../../utils/functions/formatearFecha";
-import { addDays, format } from "date-fns";
 import General from "./General";
 import Clientes from "./Clientes";
 import Materias from "./Materias";
@@ -20,6 +16,8 @@ const Youtube = () => {
     fechaInicio: new Date(),
     fechaFin: new Date(),
   });
+
+  const [dropSelect, setDropSelect] = useState(7);
 
   const [estadisticas, setEstadisticas] = useState([]);
 
@@ -181,12 +179,13 @@ const Youtube = () => {
   };
 
   const getConsultasSesiones = async () => {
+    console.log(dropSelect);
     try {
       let url =
         "http://localhost:8090/consultas/sesiones/" +
         fechaInicio +
         "/" +
-        fechaFin;
+        fechaFin + "/" + dropSelect;
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasS(response.data);
@@ -195,25 +194,6 @@ const Youtube = () => {
       console.error(err.message);
     }
   };
-
-  const fechaIni = new Date(fechaInicio);
-  const fechaFini = new Date(fechaFin);
-  const fechas = [];
-  let currentDate = fechaIni;
-  while (currentDate <= fechaFini) {
-    fechas.push(format(currentDate, "yyyy-MM-dd"));
-    currentDate = addDays(currentDate, 1);
-  }
-
-  const query = `
-  SELECT fecha, COALESCE(SUM(tiempo), 0) AS tiempo_total
-  FROM mrp.sesion
-  WHERE borrado = 0 AND fecha IN (${fechas
-      .map((date) => `'${date}'`)
-      .join(", ")})
-  GROUP BY fecha
-  ORDER BY fecha;
-`;
 
   const getEstadisticas = async () => {
     try {
@@ -227,105 +207,101 @@ const Youtube = () => {
     }
   };
 
-  console.log(estadisticas);
-  console.log(estadisticas.cantidad_sesiones);
-  
+  useEffect(() => {
+    //getConsultasMateria(filtro);
+    //getClientes();
+    getConsultasSesiones();
+    getEstadisticas();
+  }, [fechaFin, fechaInicio]);
 
+  console.log(consultasS);
 
-    //console.log(fechaInicio, fechaFin);
+  return (
+    <>
+      <div className="navegador">
+        <ul className="navegador__tabs">
+          <p
+            className={"navegador__tabs-item " + selectedGeneral}
+            onClick={() => handleSelected("general")}
+          >
+            General
+          </p>
+          <p
+            className={"navegador__tabs-item " + selectedCliente}
+            onClick={() => handleSelected("cliente")}
+          >
+            Clientes
+          </p>
+          <p
+            className={"navegador__tabs-item " + selectedMateria}
+            onClick={() => handleSelected("materia")}
+          >
+            Materia
+          </p>
+        </ul>
+        <DropdownR
+          className="navegador__tiempo"
+          setFI={setFechaInicio}
+          setFF={setFechaFin}
+          setDropSelect={setDropSelect}
+        />
+      </div>
 
-    useEffect(() => {
-      //getConsultasMateria(filtro);
-      //getClientes();
-      //getConsultasSesiones();
-      getEstadisticas();
-    }, [fechaFin, fechaInicio]);
+      {selectedGeneral === "selected" ? (
+        <General consultasS={consultasS} estadisticas={estadisticas} />) : null}
 
-    return (
-      <>
-        <div className="navegador">
-          <ul className="navegador__tabs">
-            <p
-              className={"navegador__tabs-item " + selectedGeneral}
-              onClick={() => handleSelected("general")}
-            >
-              General
-            </p>
-            <p
-              className={"navegador__tabs-item " + selectedCliente}
-              onClick={() => handleSelected("cliente")}
-            >
-              Clientes
-            </p>
-            <p
-              className={"navegador__tabs-item " + selectedMateria}
-              onClick={() => handleSelected("materia")}
-            >
-              Materia
-            </p>
-          </ul>
-          <DropdownR
-            className="navegador__tiempo"
-            setFI={setFechaInicio}
-            setFF={setFechaFin}
-          />
-        </div>
+      {selectedCliente === "selected" ? (
+        <Clientes consultasS={consultasS} />) : null}
 
-        {selectedGeneral === "selected" ? (
-          <General consultasS={consultasS} estadisticas={estadisticas}/>) : null}
+      {selectedMateria === "selected" ? (
+        <Materias consultasS={consultasS} />) : null}
 
-        {selectedCliente === "selected" ? (
-          <Clientes consultasS={consultasS} />) : null}
+      <Modal show={showModal} onHide={handleModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Rango de tiempo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Fecha inicio</Form.Label>
+              <Form.Control
+                type="date"
+                value={formatDate(personalizado.fechaInicio)}
+                onChange={(e) =>
+                  setPersonalizado({
+                    ...personalizado,
+                    fechaInicio: new Date(e.target.value),
+                  })
+                }
+              />
+            </Form.Group>
 
-        {selectedMateria === "selected" ? (
-          <Materias consultasS={consultasS} />) : null}
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Fecha fin</Form.Label>
+              <Form.Control
+                type="date"
+                value={formatDate(personalizado.fechaFin)}
+                onChange={(e) =>
+                  setPersonalizado({
+                    ...personalizado,
+                    fechaFin: new Date(e.target.value),
+                  })
+                }
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModal}>
+            Cancelar
+          </Button>
+          <Button variant="success" onClick={handleSearch}>
+            Buscar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
 
-        <Modal show={showModal} onHide={handleModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Rango de tiempo</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Fecha inicio</Form.Label>
-                <Form.Control
-                  type="date"
-                  value={formatDate(personalizado.fechaInicio)}
-                  onChange={(e) =>
-                    setPersonalizado({
-                      ...personalizado,
-                      fechaInicio: new Date(e.target.value),
-                    })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Fecha fin</Form.Label>
-                <Form.Control
-                  type="date"
-                  value={formatDate(personalizado.fechaFin)}
-                  onChange={(e) =>
-                    setPersonalizado({
-                      ...personalizado,
-                      fechaFin: new Date(e.target.value),
-                    })
-                  }
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleModal}>
-              Cancelar
-            </Button>
-            <Button variant="success" onClick={handleSearch}>
-              Buscar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  };
-
-  export default Youtube;
+export default Youtube;

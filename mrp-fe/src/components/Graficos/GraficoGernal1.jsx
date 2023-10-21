@@ -1,12 +1,13 @@
-import React, { Component, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Chart } from 'chart.js';
 import 'chart.js/auto';
 
-const dias = ['2023-10-13','2023-10-14','2023-10-15','2023-10-16','2023-10-17','2023-10-18','2023-10-19']
-const sesiones = [420, 0, 0, 480, 400, 460, 395]
-//const colores = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
-
 const GraficoGernal1 = ({title, tiempoSesiones}) =>{
+
+
+    const tiempos = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo }) : [];
+    const dias1 = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.fecha }) : [];
+
     const chartRef = useRef();
     const myChartRef = useRef(null);
 
@@ -21,11 +22,11 @@ const GraficoGernal1 = ({title, tiempoSesiones}) =>{
         const myChart = new Chart(chartRef.current, {
             type: 'line',
             data: {
-                labels: dias,
+                labels: dias1,
                 datasets: [
                     {   
                         label: "Sesiones",
-                        data: sesiones,
+                        data: tiempos,
                         fill: false,
                         borderColor: 'lightBlue',
                         tension: 0.3,

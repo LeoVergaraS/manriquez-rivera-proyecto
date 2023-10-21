@@ -51,9 +51,9 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultasMaterias);
   }
 
-    @GetMapping("/sesiones/{fi}/{ff}")
-  public ResponseEntity<List<ConsultaSesiones>> getConsultasSesiones(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin){
-    List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin);
+    @GetMapping("/sesiones/{fi}/{ff}/{dropSelect}")
+  public ResponseEntity<List<ConsultaSesiones>> getConsultasSesiones(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect){
+    List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin,dropSelect);
     if(consultaSesiones == null){
       return ResponseEntity.notFound().build();
     }
