@@ -27,7 +27,7 @@ public class ConsultaService {
   @Autowired
   ConsultaSesionesRepository consultaSesionesRepository;
 
-  public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin) {
+  public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer dropSelect) {
     return consultaMateriaRepository.getConsultaMateria(fechaInicio, fechaFin);
   }
 
@@ -65,7 +65,6 @@ public class ConsultaService {
     int j = 0;
     while(i < dropSelect){
       if(j <consultaSesiones.size()){
-        System.out.println(fechasInvertidas.get(i) + "==" + consultaSesiones.get(j).getFecha().toString() + "?");
         if(fechasInvertidas.get(i).equals(consultaSesiones.get(j).getFecha().toString())){
           consultaSesiones2.add(consultaSesiones.get(j));
           i++;
@@ -83,8 +82,6 @@ public class ConsultaService {
         j=0;
       }
     }
-
-    System.out.println("consultaSesiones2: " + consultaSesiones2);
 
     return consultaSesiones2;
   }

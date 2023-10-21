@@ -42,9 +42,9 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultasCliente);
   }
   
-  @GetMapping("/materia/{fi}/{ff}")
-  public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin){
-    List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin);
+  @GetMapping("/materia/{fi}/{ff}/{dropSelect}")
+  public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect){
+    List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin,dropSelect);
     if(consultasMaterias == null){
       return ResponseEntity.notFound().build();
     }

@@ -73,22 +73,14 @@ const Youtube = () => {
     }
   };
 
-  const getConsultasMateria = async (
-    filtro,
-    fechaInicio = null,
-    fechaFin = null
-  ) => {
+  const getConsultasMaterias = async () => {
+    console.log(dropSelect);
     try {
-      let ff, fi;
-      fechaFin === null ? (ff = new Date()) : (ff = new Date(fechaFin));
-      fechaInicio === null
-        ? (fi = getFechaFin(ff, filtro))
-        : (fi = new Date(fechaInicio));
       let url =
         "http://localhost:8090/consultas/materia/" +
-        formatDate(fi) +
+        fechaInicio +
         "/" +
-        formatDate(ff);
+        fechaFin + "/" + dropSelect;
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasM(response.data);
@@ -208,13 +200,12 @@ const Youtube = () => {
   };
 
   useEffect(() => {
-    //getConsultasMateria(filtro);
-    //getClientes();
+    getConsultasMaterias();
     getConsultasSesiones();
     getEstadisticas();
   }, [fechaFin, fechaInicio]);
 
-  console.log(consultasS);
+  console.log(consultasM);
 
   return (
     <>
@@ -248,10 +239,10 @@ const Youtube = () => {
       </div>
 
       {selectedGeneral === "selected" ? (
-        <General consultasS={consultasS} estadisticas={estadisticas} />) : null}
+        <General consultasS={consultasS} estadisticas={estadisticas} consultasM={consultasM}/>) : null}
 
       {selectedCliente === "selected" ? (
-        <Clientes consultasS={consultasS} />) : null}
+        <Clientes consultasS={consultasM} />) : null}
 
       {selectedMateria === "selected" ? (
         <Materias consultasS={consultasS} />) : null}

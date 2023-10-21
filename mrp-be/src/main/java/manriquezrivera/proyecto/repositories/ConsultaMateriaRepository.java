@@ -15,7 +15,7 @@ public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria
   @Query(value = "SELECT m.nombre, sum(tiempo) as tiempo " + 
                  "FROM sesion as s, caso as c, materia as m " + 
                  "WHERE c.id_materia = m.id AND c.id = s.id_caso " + 
-                 "AND s.borrado = 0 AND fecha BETWEEN :fechaInicio " + 
+                 "AND s.borrado = 0 AND s.fecha BETWEEN :fechaInicio " + 
                  "AND :fechaFin GROUP BY m.nombre", nativeQuery = true)
   List<ConsultaMateria> getConsultaMateria(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
 

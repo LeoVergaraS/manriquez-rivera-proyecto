@@ -1,8 +1,9 @@
 import { Card, Row, Col } from "react-bootstrap";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
+import GraficoGernal2 from "../../components/Graficos/GraficoGeneral2";
 import List from "../../components/List/List";
 
-const General = ({consultasS,estadisticas}) => {
+const General = ({consultasS,estadisticas,consultasM}) => {
 
 	return (
 		<>
@@ -28,7 +29,7 @@ const General = ({consultasS,estadisticas}) => {
 						}}
 					>
 						<Card.Body>
-							<GraficoGernal1 title={"Tiempo de materias por día"} />
+							<GraficoGernal2 consultasM={consultasM} title={"Tiempo de materias por día"} />
 						</Card.Body>
 					</Card>
 				</Col>
