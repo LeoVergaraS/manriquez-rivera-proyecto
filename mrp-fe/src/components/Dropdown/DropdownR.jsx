@@ -5,13 +5,15 @@ import opciones from "./Opciones";
 import meses from "../../data/meses";
 import formatearFecha from "../../utils/functions/formatearFecha";
 import formatFechaAnios from "../../utils/functions/formatFechaAnios";
+import formatFechaMeses from "../../utils/functions/formatFechaMeses";
 
 const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio }) => {
   const mesActual = new Date().getMonth();
+
   const anioActual = new Date().getFullYear();
   const anioAnterior = anioActual - 1;
 
-  // primer dia del año
+  // primer dia del año. Opciones 2023 - 2022
   const primerDia = new Date(anioActual, 0, 1);
   const ultimoDia = new Date(anioActual, 11, 31);
   const primerDiaAnterior = new Date(anioAnterior, 0, 1);
@@ -23,7 +25,7 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio })
     setSelectedValue(opciones[eventKey - 1].nombre);
 
     if (eventKey == 1 || eventKey == 2 || eventKey == 3 || eventKey == 4) {
-      setFF(formatearFecha(new Date(), 1, 0)); 
+      setFF(formatearFecha(new Date(), 1, 0));
       if (eventKey == 1) {
         setFI(formatearFecha(new Date(), 0, 7));
         setDropSelect(7);
@@ -50,25 +52,44 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio })
       }
     }
 
-    if(eventKey == 5){
+    if (eventKey == 5) {
       setFF(formatearFecha(new Date(), 1, 0));
       setDropSiempre(1);
       setDropAnio(0);
     }
 
-    if(eventKey == 6){
+    if (eventKey == 6) {
       setFF(formatFechaAnios(ultimoDia));
       setFI(formatFechaAnios(primerDia));
       setDropSiempre(0);
       setDropAnio(1);
     }
 
-    if(eventKey == 7){
+    if (eventKey == 7) {
       setFF(formatFechaAnios(ultimoDiaAnterior));
       setFI(formatFechaAnios(primerDiaAnterior));
       setDropSiempre(0);
       setDropAnio(1);
     }
+
+    if(eventKey == 8){
+      formatFechaMeses(1,setFI,setFF,setDropSelect);
+      setDropSiempre(0);
+      setDropAnio(0);
+    }
+
+    if(eventKey == 9){
+      formatFechaMeses(2,setFI,setFF,setDropSelect);
+      setDropSiempre(0);
+      setDropAnio(0);
+    }
+
+    if(eventKey == 10){
+      formatFechaMeses(3,setFI,setFF,setDropSelect);
+      setDropSiempre(0);
+      setDropAnio(0);
+    }
+
   };
 
   useEffect(() => {
