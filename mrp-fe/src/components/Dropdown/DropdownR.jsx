@@ -4,10 +4,15 @@ import { useEffect, useState } from "react";
 import opciones from "./Opciones";
 import meses from "../../data/meses";
 import formatearFecha from "../../utils/functions/formatearFecha";
+import formatFechaAnios from "../../utils/functions/formatFechaAnios";
 
 const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre }) => {
   const mesActual = new Date().getMonth();
   const anioActual = new Date().getFullYear();
+
+  // primer dia del año
+  const primerDia = new Date(anioActual, 0, 1);
+  const ultimoDia = new Date(anioActual, 11, 31);
 
   const [selectedValue, setSelectedValue] = useState(opciones[0].nombre);
 
@@ -41,6 +46,12 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre }) => {
     if(eventKey == 5){
       setFF(formatearFecha(new Date(), 1, 0));
       setDropSiempre(1);
+    }
+
+    if(eventKey == 6){
+      setFF(formatFechaAnios(ultimoDia));
+      setFI(formatFechaAnios(primerDia));
+      setDropSiempre(0);
     }
   };
 

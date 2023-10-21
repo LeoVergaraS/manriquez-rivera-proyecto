@@ -204,6 +204,8 @@ const Youtube = () => {
     getEstadisticas();
   }, [fechaFin, fechaInicio, dropSelect, dropSiempre]);
 
+  console.log(fechaInicio, fechaFin);
+
   return (
     <>
       <div className="navegador">
