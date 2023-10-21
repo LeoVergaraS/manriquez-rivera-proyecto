@@ -5,7 +5,7 @@ import opciones from "./Opciones";
 import meses from "../../data/meses";
 import formatearFecha from "../../utils/functions/formatearFecha";
 
-const DropdownR = ({ setFI, setFF, setDropSelect }) => {
+const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre }) => {
   const mesActual = new Date().getMonth();
   const anioActual = new Date().getFullYear();
 
@@ -19,19 +19,28 @@ const DropdownR = ({ setFI, setFF, setDropSelect }) => {
       if (eventKey == 1) {
         setFI(formatearFecha(new Date(), 0, 7));
         setDropSelect(7);
+        setDropSiempre(0);
       }
       if (eventKey == 2) {
         setFI(formatearFecha(new Date(), 0, 28));
         setDropSelect(28);
+        setDropSiempre(0);
       }
       if (eventKey == 3) {
         setFI(formatearFecha(new Date(), 0, 90));
         setDropSelect(90);
+        setDropSiempre(0);
       }
       if (eventKey == 4) {
         setFI(formatearFecha(new Date(), 0, 365));
         setDropSelect(365);
+        setDropSiempre(0);
       }
+    }
+
+    if(eventKey == 5){
+      setFF(formatearFecha(new Date(), 1, 0));
+      setDropSiempre(1);
     }
   };
 

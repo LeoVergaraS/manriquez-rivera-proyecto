@@ -4,19 +4,11 @@ import 'chart.js/auto';
 
 const GraficoGernal1 = ({title, consultasM}) =>{
 
-
     const tiempos = consultasM !== undefined ? consultasM.map((consulta) => { return consulta.tiempo }) : [];
     const materia = consultasM !== undefined ? consultasM.map((consulta) => { return consulta.nombre }) : [];
     
-    console.log(consultasM);
-    console.log(tiempos);
-    console.log(materia);
-
     const chartRef = useRef();
     const myChartRef = useRef(null);
-
-    //const dias = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.fecha }) : [];
-    //const sesiones = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo }) : [];
 
     useEffect(() => {
         if (myChartRef.current) {

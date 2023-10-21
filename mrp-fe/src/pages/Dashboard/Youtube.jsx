@@ -18,6 +18,7 @@ const Youtube = () => {
   });
 
   const [dropSelect, setDropSelect] = useState(7);
+  const [dropSiempre, setDropSiempre] = useState(0);
 
   const [estadisticas, setEstadisticas] = useState([]);
 
@@ -74,13 +75,12 @@ const Youtube = () => {
   };
 
   const getConsultasMaterias = async () => {
-    console.log(dropSelect);
     try {
       let url =
         "http://localhost:8090/consultas/materia/" +
         fechaInicio +
         "/" +
-        fechaFin + "/" + dropSelect;
+        fechaFin + "/" + dropSelect + "/" + dropSiempre;
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasM(response.data);
@@ -171,13 +171,12 @@ const Youtube = () => {
   };
 
   const getConsultasSesiones = async () => {
-    console.log(dropSelect);
     try {
       let url =
         "http://localhost:8090/consultas/sesiones/" +
         fechaInicio +
         "/" +
-        fechaFin + "/" + dropSelect;
+        fechaFin + "/" + dropSelect + "/" + dropSiempre;
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasS(response.data);
@@ -189,7 +188,7 @@ const Youtube = () => {
 
   const getEstadisticas = async () => {
     try {
-      let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin;
+      let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre;
       const response = await axios.get(url);
       if (response.status === 200) {
         setEstadisticas(response.data);
@@ -203,9 +202,7 @@ const Youtube = () => {
     getConsultasMaterias();
     getConsultasSesiones();
     getEstadisticas();
-  }, [fechaFin, fechaInicio]);
-
-  console.log(consultasM);
+  }, [fechaFin, fechaInicio, dropSelect, dropSiempre]);
 
   return (
     <>
@@ -235,6 +232,7 @@ const Youtube = () => {
           setFI={setFechaInicio}
           setFF={setFechaFin}
           setDropSelect={setDropSelect}
+          setDropSiempre={setDropSiempre}
         />
       </div>
 

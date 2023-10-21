@@ -42,18 +42,18 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultasCliente);
   }
   
-  @GetMapping("/materia/{fi}/{ff}/{dropSelect}")
-  public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect){
-    List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin,dropSelect);
+  @GetMapping("/materia/{fi}/{ff}/{dropSelect}/{dropSiempre}")
+  public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect, @PathVariable("dropSiempre") Integer dropSiempre){
+    List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin,dropSelect, dropSiempre);
     if(consultasMaterias == null){
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok().body(consultasMaterias);
   }
 
-    @GetMapping("/sesiones/{fi}/{ff}/{dropSelect}")
-  public ResponseEntity<List<ConsultaSesiones>> getConsultasSesiones(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect){
-    List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin,dropSelect);
+    @GetMapping("/sesiones/{fi}/{ff}/{dropSelect}/{dropSiempre}")
+  public ResponseEntity<List<ConsultaSesiones>> getConsultasSesiones(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect, @PathVariable("dropSiempre") Integer dropSiempre){
+    List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin,dropSelect,dropSiempre);
     if(consultaSesiones == null){
       return ResponseEntity.notFound().build();
     }
@@ -78,9 +78,9 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultaTiempoSesiones);
   }
 
-  @GetMapping("/prueba/{fi}/{ff}")
-  public ResponseEntity<InfoTabla> getPrueba(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin){
-    InfoTabla consultaInfotabla = consultaService.getInfoTabla(fechaInicio, fechaFin);
+  @GetMapping("/prueba/{fi}/{ff}/{dropSiempre}")
+  public ResponseEntity<InfoTabla> getPrueba(@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("dropSiempre") Integer dropSiempre){
+    InfoTabla consultaInfotabla = consultaService.getInfoTabla(fechaInicio, fechaFin, dropSiempre);
     if(consultaInfotabla == null){
       return ResponseEntity.notFound().build();
     }

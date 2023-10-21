@@ -1,5 +1,6 @@
 package manriquezrivera.proyecto.services;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,7 +28,11 @@ public class ConsultaService {
   @Autowired
   ConsultaSesionesRepository consultaSesionesRepository;
 
-  public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer dropSelect) {
+  public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre) {
+    if (dropSiempre == 1) {
+      List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
+      fechaInicio = allConsultas.get(0).getFecha().toString();
+    }
     return consultaMateriaRepository.getConsultaMateria(fechaInicio, fechaFin);
   }
 
@@ -35,13 +40,34 @@ public class ConsultaService {
     return consultaClienteRepository.getConsultaClientes(id, fechaInicio, fechaFin);
   }
 
-  public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer dropSelect) {
+  public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    if (dropSiempre == 1) {
+      List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
+      fechaInicio = allConsultas.get(0).getFecha().toString();
+      Date fechaFinAux = new Date();
+      Date fechaInicioAux;
+      try {
+        fechaInicioAux = sdf.parse(fechaInicio);
+        Calendar instance1 = Calendar.getInstance();
+        Calendar instance2 = Calendar.getInstance();
+        instance2.setTime(fechaFinAux);
+        instance1.setTime(fechaInicioAux);
+        Integer dias = instance2.get(Calendar.DAY_OF_YEAR) - instance1.get(Calendar.DAY_OF_YEAR);
+        dropSelect = dias;
+      } catch (ParseException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+
+    }
+
     List<ConsultaSesiones> consultaSesiones = consultaSesionesRepository.getConsultaSesionesDias(fechaInicio, fechaFin);
     List<ConsultaSesiones> consultaSesiones2 = new ArrayList<ConsultaSesiones>();
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-    // Se crea un arreglo que contenga las fechas que existen entre fechaInicio y fechaFin
+    // Se crea un arreglo que contenga las fechas que existen entre fechaInicio y
+    // fechaFin
     List<String> fechas = new ArrayList<String>();
     fechas.add(fechaFin);
     int i = 1;
@@ -63,23 +89,22 @@ public class ConsultaService {
 
     i = 0;
     int j = 0;
-    while(i < dropSelect){
-      if(j <consultaSesiones.size()){
-        if(fechasInvertidas.get(i).equals(consultaSesiones.get(j).getFecha().toString())){
+    while (i < dropSelect) {
+      if (j < consultaSesiones.size()) {
+        if (fechasInvertidas.get(i).equals(consultaSesiones.get(j).getFecha().toString())) {
           consultaSesiones2.add(consultaSesiones.get(j));
           i++;
           j++;
-        }else{
+        } else {
           j++;
         }
-      }
-      else{
+      } else {
         ConsultaSesiones consultaNueva = new ConsultaSesiones();
         consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(i)));
         consultaNueva.setTiempo(0L);
         consultaSesiones2.add(consultaNueva);
         i++;
-        j=0;
+        j = 0;
       }
     }
 
@@ -107,7 +132,11 @@ public class ConsultaService {
    * }
    */
 
-  public InfoTabla getInfoTabla(String fechaInicio, String fechaFin) {
+  public InfoTabla getInfoTabla(String fechaInicio, String fechaFin, Integer dropSiempre) {
+    if (dropSiempre == 1) {
+      List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
+      fechaInicio = allConsultas.get(0).getFecha().toString();
+    }
     Integer cantidad_sesiones = consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
     Integer cantidad_tiempo = consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
     Integer cantidad_clientes = consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
