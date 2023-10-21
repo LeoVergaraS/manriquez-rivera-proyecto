@@ -97,17 +97,15 @@ const Youtube = () => {
   };
 
   const handleSearch = () => {
-    getConsultasMateria(
-      filtro,
-      personalizado.fechaInicio,
-      personalizado.fechaFin
-    );
-    getConsultasCliente(
-      cliente,
-      filtro,
-      personalizado.fechaInicio,
-      personalizado.fechaFin
-    );
+    setFechaInicio(formatDate(personalizado.fechaInicio));
+    setFechaFin(formatDate(personalizado.fechaFin));
+    console.log("fechaInicio: ", fechaInicio);
+    console.log("fechaFin: ", fechaFin);
+    const difMS = personalizado.fechaFin - personalizado.fechaInicio;
+    const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+    setDropSelect(difDias+1);
+    setDropSiempre(0);
+    setDropAnio(0);
     handleModal();
   };
 
@@ -236,6 +234,7 @@ const Youtube = () => {
           setDropSelect={setDropSelect}
           setDropSiempre={setDropSiempre}
           setDropAnio={setDropAnio}
+          setShowModal={setShowModal}
         />
       </div>
 

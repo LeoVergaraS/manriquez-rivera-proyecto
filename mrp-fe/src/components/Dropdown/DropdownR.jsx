@@ -7,7 +7,7 @@ import formatearFecha from "../../utils/functions/formatearFecha";
 import formatFechaAnios from "../../utils/functions/formatFechaAnios";
 import formatFechaMeses from "../../utils/functions/formatFechaMeses";
 
-const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio }) => {
+const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, setShowModal }) => {
   const mesActual = new Date().getMonth();
 
   const anioActual = new Date().getFullYear();
@@ -86,6 +86,12 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio })
 
     if(eventKey == 10){
       formatFechaMeses(3,setFI,setFF,setDropSelect);
+      setDropSiempre(0);
+      setDropAnio(0);
+    }
+
+    if(eventKey == 11){
+      setShowModal(true);
       setDropSiempre(0);
       setDropAnio(0);
     }
