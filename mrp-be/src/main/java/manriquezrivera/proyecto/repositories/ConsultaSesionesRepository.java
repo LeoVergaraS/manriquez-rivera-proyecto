@@ -30,4 +30,7 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
 
   @Query(value = "SELECT * FROM mrp.sesion WHERE borrado = 0", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesiones();
+
+    @Query(value = "SELECT fecha, tiempo FROM mrp.sesion WHERE borrado = 0 AND :id = id_caso ORDER BY fecha ASC", nativeQuery = true)
+  List<ConsultaSesiones> getConsultaSesionesByIdCaso(@Param ("id") Long id);
 }

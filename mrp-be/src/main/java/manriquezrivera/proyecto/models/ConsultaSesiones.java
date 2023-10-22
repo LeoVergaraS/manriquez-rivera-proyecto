@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class  ConsultaSesiones{
     @Id
-    private Long tiempo;
     private Date fecha;
+    private Long tiempo;
 }

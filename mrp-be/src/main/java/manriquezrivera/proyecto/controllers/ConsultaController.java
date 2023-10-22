@@ -100,4 +100,12 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultaInfotabla);
   }
 
+  @GetMapping("/sesiones/id_caso/{id}")
+  public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntity(@PathVariable("id") Long id){
+    List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id);
+    if(consultas == null){
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(consultas);
+  }
 }

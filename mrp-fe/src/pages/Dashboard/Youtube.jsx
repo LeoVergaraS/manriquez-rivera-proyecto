@@ -1,4 +1,4 @@
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Form, Modal, Row } from "react-bootstrap";
 import "./youtube.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -7,6 +7,7 @@ import formatearFecha from "../../utils/functions/formatearFecha";
 import General from "./General";
 import Clientes from "./Clientes";
 import Materias from "./Materias";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const Youtube = () => {
   const [selectedCliente, setSelectedCliente] = useState("");
@@ -37,11 +38,17 @@ const Youtube = () => {
   const [clientes, setClientes] = useState([]);
   const [cliente, setCliente] = useState(0);
   const [filtro, setFiltro] = useState(0);
+  const [abogado, setAbogado] = useState("Abogado")
 
+  
   const headerMateria = ["Materia", "Tiempo"];
   const headerClientes = ["Fecha", "Tiempo"];
 
   const handleModal = () => setShowModal(!showModal);
+
+  const AbogadoSelect = (eventKey) => {
+    setAbogado(eventKey);
+  }
 
   const handleSelected = (type) => {
     if (type === "cliente") {
@@ -103,7 +110,7 @@ const Youtube = () => {
     console.log("fechaFin: ", fechaFin);
     const difMS = personalizado.fechaFin - personalizado.fechaInicio;
     const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
-    setDropSelect(difDias+1);
+    setDropSelect(difDias + 1);
     setDropSiempre(0);
     setDropAnio(0);
     handleModal();
@@ -170,7 +177,7 @@ const Youtube = () => {
   };
 
   const getConsultasSesiones = async () => {
-    console.log("dropAnio: ",dropAnio)
+    console.log("dropAnio: ", dropAnio)
     try {
       let url =
         "http://localhost:8090/consultas/sesiones/" +
@@ -198,6 +205,8 @@ const Youtube = () => {
     }
   };
 
+
+  
   useEffect(() => {
     getConsultasMaterias();
     getConsultasSesiones();
@@ -227,19 +236,46 @@ const Youtube = () => {
             Materia
           </p>
         </ul>
-        <DropdownR
-          className="navegador__tiempo"
-          setFI={setFechaInicio}
-          setFF={setFechaFin}
-          setDropSelect={setDropSelect}
-          setDropSiempre={setDropSiempre}
-          setDropAnio={setDropAnio}
-          setShowModal={setShowModal}
-        />
+        <div className="dropDowns" >
+
+            <Dropdown onSelect={AbogadoSelect}>
+              <Dropdown.Toggle
+                variant="secondary"
+                id="dropdown-basic"
+                style={{
+                  backgroundColor: "#235c62",
+                  width: "161px",
+                }}
+              >
+                {abogado}
+              </Dropdown.Toggle>
+              <Dropdown.Menu style={{ backgroundColor: "#235c62" }}>
+                <Dropdown.Item key="0" eventKey={"Daniel Manriquez"}>
+                  Daniel Manriquez
+                </Dropdown.Item>
+                <Dropdown.Item key="1" eventKey={"Manuel Rivera"}>
+                  Manuel Rivera
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+
+            <DropdownR
+              className="navegador__tiempo"
+              setFI={setFechaInicio}
+              setFF={setFechaFin}
+              setDropSelect={setDropSelect}
+              setDropSiempre={setDropSiempre}
+              setDropAnio={setDropAnio}
+              setShowModal={setShowModal}
+            />
+
+        </div>
       </div>
 
+
+
       {selectedGeneral === "selected" ? (
-        <General consultasS={consultasS} estadisticas={estadisticas} consultasM={consultasM}/>) : null}
+        <General consultasS={consultasS} estadisticas={estadisticas} consultasM={consultasM} />) : null}
 
       {selectedCliente === "selected" ? (
         <Clientes consultasS={consultasM} />) : null}

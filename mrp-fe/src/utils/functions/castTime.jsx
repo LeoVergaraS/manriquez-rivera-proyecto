@@ -1,4 +1,5 @@
 const castTime = (time) => {
+  console.log(time, typeof time);
     if (time < 3600) {
       // Si es menor a una hora, muestra solo minutos
       const minutos = Math.floor(time / 60);

@@ -160,6 +160,10 @@ public class ConsultaService {
     return consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
   }
 
+  public List<ConsultaSesiones> getConsultasByCaso(Long idCaso){
+    return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso);
+  }
+
   /*
    * public String getPrueba(String fechaInicio, String fechaFin){
    * return consultaClienteRepository.getConsultaNombreClienteMax(fechaInicio,
@@ -223,4 +227,6 @@ public class ConsultaService {
         cantidad_materias, nombre_materia_max, tiempo_materia_max,
         cantidad_submateria, nombre_submateria_max, tiempo_submateria_max);
   }
+
+  
 }
