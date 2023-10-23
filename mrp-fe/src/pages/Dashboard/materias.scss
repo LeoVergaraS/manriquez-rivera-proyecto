@@ -1,13 +1,76 @@
+@use '../../utils/scss/variables.scss' as *;
+
 .layout-materias{
+  height: calc(100vh + 100px);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 3fr 2fr 1fr;
+  margin-top: 10px
 }
 
-.materias-upper{
-  grid-column: 1 / 4;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: red;
+.materias{
+  &__title{
+    place-self: center;
+    color: $color-secundario;
+    padding: 5px;
+    border-bottom: 2px solid $color-secundario;
+  }
+
+  &__fieldset-select{
+    grid-column: 2 / 4;
+    width: 80%;
+    place-self: center left;
+  }
+
+  &__legend{
+    color: $color-secundario;
+  }
+}
+
+.card-grafico{
+  grid-column: 1/4;
+  width: 80%;
+  height: 100%;
+  place-self: center;
+}
+
+.card-estadisticas{
+  place-self: center;
+  width: 70%;
+  height: 80%;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
+  transition: scale 0.4s ease-in-out;
+
+  &__header{
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__icon{
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  &__title{
+    
+  }
+
+  &__estadistica{
+    font-size: 55px;
+    text-align: center;
+    color: $color-oscuro;
+  }
+
+  &__caption{
+    text-align: center;
+    font-size: 30px;
+    color: $color-secundario;
+    font-weight: lighter;
+  }
+
+  &:hover{
+    scale: 1.05;
+  }
 }

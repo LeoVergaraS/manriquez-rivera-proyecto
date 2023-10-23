@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import manriquezrivera.proyecto.models.InfoTabla;
+import manriquezrivera.proyecto.models.InfoTablaMateria;
 import manriquezrivera.proyecto.models.ConsultaCliente;
 import manriquezrivera.proyecto.models.ConsultaMateria;
 import manriquezrivera.proyecto.models.ConsultaSesiones;
@@ -228,5 +229,17 @@ public class ConsultaService {
         cantidad_submateria, nombre_submateria_max, tiempo_submateria_max);
   }
 
+  /*
+    PARA LA VISTA CONSULTA-MATERIA 
+  */
+
+  public InfoTablaMateria getInfoTablaMateria(String abogado, Long id_materia, String fi, String ff){
+    List<ConsultaMateria> sesiones = consultaMateriaRepository.getSesionesByMateriaAndAbogadoAndTiempo(abogado, id_materia, fi, ff);
+    List<Integer> clientes = consultaMateriaRepository.getCantidadUsuariosByMateriaAndAbogadoAndTiempo(abogado, id_materia, fi, ff);
+    Integer tiempo_total = consultaMateriaRepository.getTiempoSesionesByMateriaAndAbogadoAndTiempo(abogado, id_materia, fi, ff);
+    Integer cantidad_sesiones = sesiones.size();
+    Integer cantidad_clientes = clientes.size();
+    return new InfoTablaMateria(cantidad_sesiones, tiempo_total, cantidad_clientes);
+  }
   
 }

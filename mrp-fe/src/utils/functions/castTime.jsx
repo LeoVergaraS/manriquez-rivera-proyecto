@@ -1,5 +1,4 @@
 const castTime = (time) => {
-  console.log(time, typeof time);
     if(time < 60){
       return `${time} seg`;
     } else if (time < 3600) {

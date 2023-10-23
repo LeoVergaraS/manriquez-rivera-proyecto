@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart } from 'chart.js';
 import 'chart.js/auto';
+import castTime from '../../utils/functions/castTime';
 
 const GraficoGernal1 = ({title, tiempoSesiones}) =>{
 
 
-    const tiempos = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo }) : [];
+    const tiempos = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo}) : [];
     const dias1 = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.fecha }) : [];
 
     const chartRef = useRef();
@@ -36,6 +37,22 @@ const GraficoGernal1 = ({title, tiempoSesiones}) =>{
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var label = ' ';
+                                if (context.parsed.y !== null) {
+                                    label += castTime(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
                 scales: {
                     x: {
                         title: {
@@ -73,9 +90,11 @@ const GraficoGernal1 = ({title, tiempoSesiones}) =>{
                 <div className="card-header"> 
                     <h4 className="card-title text-center" >{title}</h4>
                 </div>
-                <div className="card-body" >
+                <div className="card-body" style={{height:"100%"}}>
                     <canvas
                         id="myChart"
+                        width={100}
+                        height={100}
                         ref={chartRef}
                     />
                 </div>
