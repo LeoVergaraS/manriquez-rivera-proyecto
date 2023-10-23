@@ -60,6 +60,13 @@ VALUES
     ( '2022-06-03', 0,  300, 3),
     ( '2023-10-02', 0,  100, 8);
     
+    INSERT INTO mrp.abogado (nombre)
+VALUES
+    ('Daniel Manriquez'),
+    ( 'Manuel Rivera'),
+    ( 'Arturo Terra'),
+    ( 'Papi Micky');
+   
 
     
 

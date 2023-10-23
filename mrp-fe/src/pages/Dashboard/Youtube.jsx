@@ -7,7 +7,7 @@ import formatearFecha from "../../utils/functions/formatearFecha";
 import General from "./General";
 import Clientes from "./Clientes";
 import Materias from "./Materias";
-import Dropdown from "react-bootstrap/Dropdown";
+import DropdownAbogado from "../../components/Dropdown/DropdownAbogado";
 
 const Youtube = () => {
   const [selectedCliente, setSelectedCliente] = useState("");
@@ -22,6 +22,8 @@ const Youtube = () => {
   const [dropSiempre, setDropSiempre] = useState(0);
   const [dropAnio, setDropAnio] = useState(0);
 
+  const [flag, setFlag] = useState(0);
+
   const [estadisticas, setEstadisticas] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -32,22 +34,19 @@ const Youtube = () => {
   );
 
   const [consultasS, setConsultasS] = useState([]);
-  const [consultasC, setConsultasC] = useState([]);
   const [consultasM, setConsultasM] = useState([]);
-  const [consultasG, setConsultasG] = useState([]);
-  const [clientes, setClientes] = useState([]);
-  const [cliente, setCliente] = useState(0);
-  const [filtro, setFiltro] = useState(0);
-  const [abogado, setAbogado] = useState("Abogado")
+  const [abogado, setAbogado] = useState({
+    nombre:"Abogados",
+    id:0,
+  });
 
-  
-  const headerMateria = ["Materia", "Tiempo"];
-  const headerClientes = ["Fecha", "Tiempo"];
+  const [abogados, setAbogados] = useState([]);
 
   const handleModal = () => setShowModal(!showModal);
 
-  const AbogadoSelect = (eventKey) => {
-    setAbogado(eventKey);
+  const abogadoSelect = (eventKey) => {
+    setAbogado(abogados[eventKey - 1]);
+    console.log("abogado:",abogados[0]);
   }
 
   const handleSelected = (type) => {
@@ -63,22 +62,6 @@ const Youtube = () => {
       setSelectedGeneral("selected");
       setSelectedCliente("");
       setSelectedMateria("");
-    }
-  };
-
-  const getFechaFin = (fi, filtro) => {
-    if (filtro === 0) {
-      return new Date(fi.getFullYear(), fi.getMonth(), fi.getDate() - 7);
-    } else if (filtro === 1) {
-      return new Date(fi.getFullYear(), fi.getMonth() - 1, fi.getDate());
-    } else if (filtro === 2) {
-      return new Date(fi.getFullYear(), fi.getMonth() - 3, fi.getDate());
-    } else if (filtro === 3) {
-      return new Date(fi.getFullYear(), fi.getMonth() - 6, fi.getDate());
-    } else if (filtro === 4) {
-      return new Date(fi.getFullYear() - 1, fi.getMonth(), fi.getDate());
-    } else {
-      return new Date();
     }
   };
 
@@ -98,28 +81,15 @@ const Youtube = () => {
     }
   };
 
-  const handleSelect = (e) => {
-    setCliente(e.target.value);
-    getConsultasCliente(e.target.value, filtro);
-  };
-
   const handleSearch = () => {
     setFechaInicio(formatDate(personalizado.fechaInicio));
     setFechaFin(formatDate(personalizado.fechaFin));
-    console.log("fechaInicio: ", fechaInicio);
-    console.log("fechaFin: ", fechaFin);
     const difMS = personalizado.fechaFin - personalizado.fechaInicio;
     const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
     setDropSelect(difDias + 1);
     setDropSiempre(0);
     setDropAnio(0);
     handleModal();
-  };
-
-  const handleFiltro = (filtro) => {
-    setFiltro(filtro);
-    getConsultasCliente(cliente, filtro);
-    getConsultasMateria(filtro);
   };
 
   const formatDate = (date) => {
@@ -135,49 +105,7 @@ const Youtube = () => {
     return yyyy + "-" + mm + "-" + dd;
   };
 
-  const getConsultasCliente = async (
-    cliente,
-    filtro,
-    fechaInicio = null,
-    fechaFin = null
-  ) => {
-    try {
-      let ff, fi;
-      fechaFin === null ? (ff = new Date()) : (ff = new Date(fechaFin));
-      fechaInicio === null
-        ? (fi = getFechaFin(ff, filtro))
-        : (fi = new Date(fechaInicio));
-      let url =
-        "http://localhost:8090/consultas/cliente/" +
-        cliente +
-        "/" +
-        formatDate(fi) +
-        "/" +
-        formatDate(ff);
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        console.log(response.data);
-        setConsultasC(response.data);
-      }
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const getClientes = async () => {
-    try {
-      let url = "http://localhost:8090/clientes";
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        setClientes(response.data);
-      }
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
   const getConsultasSesiones = async () => {
-    console.log("dropAnio: ", dropAnio)
     try {
       let url =
         "http://localhost:8090/consultas/sesiones/" +
@@ -205,13 +133,24 @@ const Youtube = () => {
     }
   };
 
+  const getAbogados = async () => {
+    try {
+      let url = "http://localhost:8090/abogados";
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setAbogados(response.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-  
   useEffect(() => {
     getConsultasMaterias();
     getConsultasSesiones();
     getEstadisticas();
-  }, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio]);
+    getAbogados();
+  }, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio,abogado,flag]);
 
   return (
     <>
@@ -238,36 +177,22 @@ const Youtube = () => {
         </ul>
         <div className="dropDowns" >
 
-            <Dropdown onSelect={AbogadoSelect}>
-              <Dropdown.Toggle
-                variant="secondary"
-                id="dropdown-basic"
-                style={{
-                  backgroundColor: "#235c62",
-                  width: "161px",
-                }}
-              >
-                {abogado}
-              </Dropdown.Toggle>
-              <Dropdown.Menu style={{ backgroundColor: "#235c62" }}>
-                <Dropdown.Item key="0" eventKey={"Daniel Manriquez"}>
-                  Daniel Manriquez
-                </Dropdown.Item>
-                <Dropdown.Item key="1" eventKey={"Manuel Rivera"}>
-                  Manuel Rivera
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-
-            <DropdownR
-              className="navegador__tiempo"
-              setFI={setFechaInicio}
-              setFF={setFechaFin}
-              setDropSelect={setDropSelect}
-              setDropSiempre={setDropSiempre}
-              setDropAnio={setDropAnio}
-              setShowModal={setShowModal}
-            />
+          <DropdownAbogado 
+            dropSelect = {abogadoSelect} 
+            abogados= {abogados}
+            abogado= {abogado}
+          />
+          
+          <DropdownR
+            className="navegador__tiempo"
+            setFI={setFechaInicio}
+            setFF={setFechaFin}
+            setDropSelect={setDropSelect}
+            setDropSiempre={setDropSiempre}
+            setDropAnio={setDropAnio}
+            setShowModal={setShowModal}
+            setFlag={setFlag}
+          />
 
         </div>
       </div>
@@ -278,7 +203,10 @@ const Youtube = () => {
         <General consultasS={consultasS} estadisticas={estadisticas} consultasM={consultasM} />) : null}
 
       {selectedCliente === "selected" ? (
-        <Clientes consultasS={consultasM} />) : null}
+        <Clientes consultasS={consultasM}
+          fechaInicio={fechaInicio}
+          fechaFin={fechaFin} 
+          flag={flag}/>) : null}
 
       {selectedMateria === "selected" ? (
         <Materias consultasS={consultasS} />) : null}

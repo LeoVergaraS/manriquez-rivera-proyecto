@@ -7,7 +7,7 @@ import formatearFecha from "../../utils/functions/formatearFecha";
 import formatFechaAnios from "../../utils/functions/formatFechaAnios";
 import formatFechaMeses from "../../utils/functions/formatFechaMeses";
 
-const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, setShowModal }) => {
+const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, setShowModal, setFlag}) => {
   const mesActual = new Date().getMonth();
 
   const anioActual = new Date().getFullYear();
@@ -31,24 +31,28 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, s
         setDropSelect(7);
         setDropSiempre(0);
         setDropAnio(0);
+        setFlag(0);
       }
       if (eventKey == 2) {
         setFI(formatearFecha(new Date(), 0, 28));
         setDropSelect(28);
         setDropSiempre(0);
         setDropAnio(0);
+        setFlag(0);
       }
       if (eventKey == 3) {
         setFI(formatearFecha(new Date(), 0, 90));
         setDropSelect(90);
         setDropSiempre(0);
         setDropAnio(0);
+        setFlag(0);
       }
       if (eventKey == 4) {
         setFI(formatearFecha(new Date(), 0, 365));
         setDropSelect(365);
         setDropSiempre(0);
         setDropAnio(0);
+        setFlag(0);
       }
     }
 
@@ -56,6 +60,7 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, s
       setFF(formatearFecha(new Date(), 1, 0));
       setDropSiempre(1);
       setDropAnio(0);
+      setFlag(1);
     }
 
     if (eventKey == 6) {
@@ -63,6 +68,7 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, s
       setFI(formatFechaAnios(primerDia));
       setDropSiempre(0);
       setDropAnio(1);
+      setFlag(0);
     }
 
     if (eventKey == 7) {
@@ -70,30 +76,35 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, s
       setFI(formatFechaAnios(primerDiaAnterior));
       setDropSiempre(0);
       setDropAnio(1);
+      setFlag(0);
     }
 
     if(eventKey == 8){
       formatFechaMeses(1,setFI,setFF,setDropSelect);
       setDropSiempre(0);
       setDropAnio(0);
+      setFlag(0);
     }
 
     if(eventKey == 9){
       formatFechaMeses(2,setFI,setFF,setDropSelect);
       setDropSiempre(0);
       setDropAnio(0);
+      setFlag(0);
     }
 
     if(eventKey == 10){
       formatFechaMeses(3,setFI,setFF,setDropSelect);
       setDropSiempre(0);
       setDropAnio(0);
+      setFlag(0);
     }
 
     if(eventKey == 11){
       setShowModal(true);
       setDropSiempre(0);
       setDropAnio(0);
+      setFlag(0);
     }
 
   };
