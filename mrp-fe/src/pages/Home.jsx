@@ -262,6 +262,12 @@ function Home() {
     },
   });
 
+  const createCasoOption = (caso) => {
+    return (
+     {label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre} - ${formatDateShow(caso.fecha)}`,
+      value: caso.id}
+    )
+  }
   useEffect(() => {
     getSesiones();
     getClientes();
@@ -284,7 +290,13 @@ function Home() {
       <Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
         <fieldset className="fieldset-select">
           <legend className="fieldset-select__legend"> Buscar caso </legend>
-          <InputSelect className="fieldset-select__input-select" casos={casos} setCaso={setCasoSeleccionado} />
+          <InputSelect 
+            className="fieldset-select__input-select" 
+            objects={casos}
+            placeholder={"Seleccione un caso"}
+            set={setCasoSeleccionado}
+            createOption={createCasoOption}
+            />
         </fieldset>
       </Row>
 
