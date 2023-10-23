@@ -268,6 +268,7 @@ function Home() {
       value: caso.id}
     )
   }
+  
   useEffect(() => {
     getSesiones();
     getClientes();

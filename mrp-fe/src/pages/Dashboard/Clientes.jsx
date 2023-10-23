@@ -6,6 +6,7 @@ import Table_01 from "../../components/Table_01/Table_01";
 import { useEffect, useState } from "react";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import axios from 'axios';
+import formatDateShow from "../../utils/functions/formatDateShow";
 
 const Clientes = ({ consultasS }) => {
 
@@ -26,7 +27,7 @@ const Clientes = ({ consultasS }) => {
 		}
 	};
 
-	const getSesionesByIdCaso = async(id) => {
+	const getSesionesByIdCaso = async (id) => {
 	try {
 		let url = "http://localhost:8090/consultas/sesiones/id_caso/" + id;
 		const response = await axios.get(url);
@@ -44,15 +45,27 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-	getSesionesByIdCaso(caso.id);
+	if(caso.id !== undefined) getSesionesByIdCaso(caso.id);
 }, [caso])
+
+const createCasoOption = (caso) => {
+	return (
+	 {label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre} - ${formatDateShow(caso.fecha)}`,
+		value: caso.id}
+	)
+}
 
 return (
 	<>
 		<Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
 			<fieldset className="fieldset-select">
 				<legend className="fieldset-select__legend"> Buscar caso </legend>
-				<InputSelect className="fieldset-select__input-select" casos={casos} setCaso={setCaso} />
+				<InputSelect 
+					objects={casos} 
+					set={setCaso} 
+					createOption={createCasoOption}
+					placeholder={"Seleccione un caso"}
+					/>
 			</fieldset>
 		</Row>
 		<Row style={{ width: "100%" }}>
