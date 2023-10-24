@@ -36,8 +36,8 @@
 
 .card-estadisticas{
   place-self: center;
-  width: 70%;
-  height: 80%;
+  width: 80%;
+  height: 90%;
   box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
   transition: scale 0.4s ease-in-out;
 
@@ -51,10 +51,6 @@
   &__icon{
     font-size: 20px;
     font-weight: bold;
-  }
-
-  &__title{
-    
   }
 
   &__estadistica{
