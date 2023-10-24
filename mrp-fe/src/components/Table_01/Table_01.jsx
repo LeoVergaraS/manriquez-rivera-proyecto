@@ -1,9 +1,9 @@
 import "./table_01.scss";
 import castTime from "../../utils/functions/castTime";
 
-const Table_01 = ({header,listObject}) => {
+const Table_01 = ({ header, listObject }) => {
   const keys = () => {
-    if(listObject === null || listObject === undefined || listObject.length === 0) return [];
+    if (listObject === null || listObject === undefined || listObject.length === 0) return [];
     const k = Object.keys(listObject[0]);
     return k;
   }
@@ -18,13 +18,17 @@ const Table_01 = ({header,listObject}) => {
     return castTime(total);
   }
 
-  if(listObject === null || listObject === undefined || listObject.length === 0) return <div></div>;
+  if (listObject === null || listObject === undefined || listObject.length === 0) return <div></div>;
 
   return (
     <div className="tabla">
       <div className="tabla__row">
         <div className="tabla__cabecera">
-          {header.map((item) => <p className="tabla__cabecera-item">{item}</p>)}
+          {header.map((item, index) => (
+            <p key={`header_${index}`} className="tabla__cabecera-item">
+              {item}
+            </p>
+          ))}
         </div>
       </div>
       {listObject.map((consulta) => {

@@ -1,14 +1,13 @@
 import { Card, Row, Col } from "react-bootstrap";
 import ListGroup from 'react-bootstrap/ListGroup';
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
-import List from "../../components/List/List";
 import Table_01 from "../../components/Table_01/Table_01";
 import { useEffect, useState } from "react";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import axios from 'axios';
 import formatDateShow from "../../utils/functions/formatDateShow";
 
-const Clientes = ({ consultasS }) => {
+const Clientes = ({ consultasS, fechaInicio, fechaFin,flag }) => {
 
 	const headerClientes = ["Sesiones", "Tiempo"];
 	const [casos, setCasos] = useState([]);
@@ -29,7 +28,7 @@ const Clientes = ({ consultasS }) => {
 
 	const getSesionesByIdCaso = async (id) => {
 	try {
-		let url = "http://localhost:8090/consultas/sesiones/id_caso/" + id;
+		let url = "http://localhost:8090/consultas/sesiones/id_caso/" + id + "/"+fechaInicio + "/" + fechaFin + "/" + flag;
 		const response = await axios.get(url);
 		if (response.status === 200) {
 			console.log(response.data);
@@ -41,12 +40,13 @@ const Clientes = ({ consultasS }) => {
 };
 
 useEffect(() => {
+	console.log(fechaInicio,fechaFin)
 	getCasos();
-}, [])
+}, [fechaInicio,fechaFin,flag])
 
 useEffect(() => {
 	if(caso.id !== undefined) getSesionesByIdCaso(caso.id);
-}, [caso])
+}, [caso,fechaInicio,fechaFin,flag])
 
 const createCasoOption = (caso) => {
 	return (
@@ -80,7 +80,7 @@ return (
 						}}
 					>
 						<Card.Body>
-							<Card.Text style={{ color: "white" }}><h3>Gráfico</h3>
+							<Card.Text style={{ color: "white" }}>Gráfico
 							</Card.Text>
 							<GraficoGernal1 tiempoSesiones={sesionesByCaso} title={"Sesiones del cliente"} />
 						</Card.Body>
@@ -91,7 +91,7 @@ return (
 						marginLeft: "50px", marginTop: "50px", backgroundColor: "#235c62", borderColor: "#DFBF68"
 					}}>
 						<Card.Body>
-							<Card.Text style={{ color: "white" }}><h3>Estadísticas generales</h3>
+							<Card.Text style={{ color: "white" }}>Estadísticas generales
 							</Card.Text>
 							<Row>
 								<Col className="d-flex justify-content-center align-items-center"
@@ -189,7 +189,7 @@ return (
 								marginLeft: "50px", marginTop: "50px", backgroundColor: "#235c62", borderColor: "#DFBF68"
 							}}>
 								<Card.Body>
-									<Card.Text style={{ color: "white", textAlign: "center" }}><h3>Sesiones del caso</h3>
+									<Card.Text style={{ color: "white", textAlign: "center" }}>Sesiones del caso
 									</Card.Text>
 									<Table_01 header={headerClientes}
 										listObject={sesionesByCaso} />

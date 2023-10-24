@@ -69,7 +69,8 @@ public class ConsultaService {
     // Se obtienen las sesiones con las fechas inicio y fin establecidas
     List<ConsultaSesiones> consultaSesiones = consultaSesionesRepository.getConsultaSesionesDias(fechaInicio, fechaFin);
 
-    // Se crea una lista de sesiones vacía. Esta lista será la que se devuelva al final
+    // Se crea una lista de sesiones vacía. Esta lista será la que se devuelva al
+    // final
     List<ConsultaSesiones> consultaSesiones2 = new ArrayList<ConsultaSesiones>();
 
     // Se crea un arreglo que contenga las fechas que existen entre fechaInicio y
@@ -77,7 +78,8 @@ public class ConsultaService {
     List<String> fechas = new ArrayList<String>();
     fechas.add(fechaFin);
 
-    // Si la opción ingresada es un año, se obtiene la cantidad de días que tiene ese año. Pueden ser 365 o 366
+    // Si la opción ingresada es un año, se obtiene la cantidad de días que tiene
+    // ese año. Pueden ser 365 o 366
     if (dropAnio == 1) {
       dropSelect = getCantidadDiasDeUnAnio(2023) - 1;
     }
@@ -161,8 +163,20 @@ public class ConsultaService {
     return consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
   }
 
-  public List<ConsultaSesiones> getConsultasByCaso(Long idCaso){
-    return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso);
+  public List<ConsultaSesiones> getConsultasByCaso(Long idCaso, String fechaInicio, String fechaFin, Integer flag) {
+    if (flag == 1) {
+      System.out.println("flag 1");
+      List<ConsultaSesiones> consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCaso2(idCaso);
+      if (consultasAux.size() == 0) {
+        List<ConsultaSesiones> consultasNull = new ArrayList<ConsultaSesiones>();
+        return consultasNull;
+      } else {
+        fechaInicio = consultasAux.get(0).getFecha().toString();
+        return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
+      }
+    } else {
+      return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
+    }
   }
 
   /*
@@ -178,47 +192,49 @@ public class ConsultaService {
       fechaInicio = allConsultas.get(0).getFecha().toString();
     }
     Integer cantidad_sesiones = consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
-    System.out.println(fechaInicio + " " + fechaFin);
     Integer cantidad_tiempo = consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
 
     Integer cantidad_clientes = consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
 
-    List<ConsultaMateria> nombre_tiempo_cliente_max = consultaMateriaRepository.getConsultaNombreTiempoClienteMax(fechaInicio,
+    List<ConsultaMateria> nombre_tiempo_cliente_max = consultaMateriaRepository.getConsultaNombreTiempoClienteMax(
+        fechaInicio,
         fechaFin);
     String nombre_cliente_max;
     Integer tiempo_cliente_max;
-    if(nombre_tiempo_cliente_max.size()==0){
+    if (nombre_tiempo_cliente_max.size() == 0) {
       nombre_cliente_max = "No hay clientes";
       tiempo_cliente_max = 0;
-    }else{
+    } else {
       nombre_cliente_max = nombre_tiempo_cliente_max.get(0).getNombre();
       tiempo_cliente_max = nombre_tiempo_cliente_max.get(0).getTiempo().intValue();
     }
 
     Integer cantidad_materias = consultaMateriaRepository.getConsultaCantidadMaterias(fechaInicio, fechaFin);
 
-    List<ConsultaMateria> nombre_tiempo_materia_max = consultaMateriaRepository.getConsultaNombreTiempoMateriaMax(fechaInicio,
+    List<ConsultaMateria> nombre_tiempo_materia_max = consultaMateriaRepository.getConsultaNombreTiempoMateriaMax(
+        fechaInicio,
         fechaFin);
     String nombre_materia_max;
     Integer tiempo_materia_max;
-    if(nombre_tiempo_materia_max.size()==0){
+    if (nombre_tiempo_materia_max.size() == 0) {
       nombre_materia_max = "No hay materias";
       tiempo_materia_max = 0;
-    }else{
+    } else {
       nombre_materia_max = nombre_tiempo_materia_max.get(0).getNombre();
       tiempo_materia_max = nombre_tiempo_materia_max.get(0).getTiempo().intValue();
     }
 
     Integer cantidad_submateria = consultaMateriaRepository.getConsultaCantidadSubmaterias(fechaInicio, fechaFin);
 
-    List<ConsultaMateria> nombre_tiempo_submateria_max = consultaMateriaRepository.getConsultaNombreTiempoSubmateriaMax(fechaInicio,
+    List<ConsultaMateria> nombre_tiempo_submateria_max = consultaMateriaRepository.getConsultaNombreTiempoSubmateriaMax(
+        fechaInicio,
         fechaFin);
     String nombre_submateria_max;
     Integer tiempo_submateria_max;
-    if(nombre_tiempo_submateria_max.size()==0){
+    if (nombre_tiempo_submateria_max.size() == 0) {
       nombre_submateria_max = "No hay submaterias";
       tiempo_submateria_max = 0;
-    }else{
+    } else {
       nombre_submateria_max = nombre_tiempo_submateria_max.get(0).getNombre();
       tiempo_submateria_max = nombre_tiempo_submateria_max.get(0).getTiempo().intValue();
     }

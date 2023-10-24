@@ -100,9 +100,9 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultaInfotabla);
   }
 
-  @GetMapping("/sesiones/id_caso/{id}")
-  public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntity(@PathVariable("id") Long id){
-    List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id);
+  @GetMapping("/sesiones/id_caso/{id}/{fi}/{ff}/{flag}")
+  public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntity(@PathVariable("id") Long id, @PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("flag") Integer flag){
+    List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id, fechaInicio, fechaFin, flag);
     if(consultas == null){
       return ResponseEntity.notFound().build();
     }
