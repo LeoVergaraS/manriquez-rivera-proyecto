@@ -1,11 +1,11 @@
-table{
+.table-home{
     color: black;
     font-size: 30px;
     table-layout: fixed;
     border-collapse: collapse;
 }
 
-tbody{
+.tbody-home{
     align-items: center;
     justify-content: center;
     min-height: 80%;
@@ -17,19 +17,19 @@ tbody{
     justify-content: center;
 }
 
-thead{
+.thead-home{
     background: #3B575A;
     color: white;
 }
 
-th{
+.th-home{
     padding: 20px 15px;
     font-weight: 700;
     text-align: center;
     border-bottom: 3px solid #DFBF68;
 }
 
-td {
+.td-home {
     padding: 15px;
     border-bottom: solid 1px rgb(225, 21, 212);
     text-align: center;

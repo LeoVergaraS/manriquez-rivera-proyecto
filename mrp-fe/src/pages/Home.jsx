@@ -363,41 +363,42 @@ function Home() {
                     </Row>
                   </Col>
                   <Col>
-                    <table>
-                      <thead>
-                        <tr style={{ background: "#235c62" }}>
-                          <th>Cliente</th>
-                          <th>Materia</th>
-                          <th>Sub Materia</th>
-                          <th>Abogado</th>
-                          <th></th>
+                    <table className="table-home">
+                      <thead className="thead-home">
+                        <tr className="tr-home" style={{ background: "#235c62" }}>
+                          <th className="th-home">Cliente</th>
+                          <th className="th-home">Materia</th>
+                          <th className="th-home">Sub Materia</th>
+                          <th className="th-home">Abogado</th>
+                          <th ></th>
                         </tr>
                         <tr className="special-row"></tr>
                       </thead>
-                      <tbody style={{ color: "white" }}>
+                      <tbody className="tbody-home"style={{ color: "white" }}>
                         <tr
                           key={setCasoSeleccionado.id}
                           style={{ background: "#235c62" }}
+                          className="tr-home"
                         >
-                          <td>
+                          <td className="td-home">
                             {casoSeleccionado == undefined ||
                               casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_cliente.nombre}
                           </td>
-                          <td>
+                          <td className="td-home">
                             {casoSeleccionado == undefined ||
                               casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_materia.nombre}
                           </td>
-                          <td>
+                          <td className="td-home">
                             {casoSeleccionado == undefined ||
                               casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_submateria.nombre}
                           </td>
-                          <td>
+                          <td className="td-home">
                             {casoSeleccionado == undefined ||
                               casoSeleccionado === null
                               ? "-"
