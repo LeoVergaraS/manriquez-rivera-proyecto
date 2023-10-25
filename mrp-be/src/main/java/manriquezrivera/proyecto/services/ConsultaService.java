@@ -9,11 +9,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import manriquezrivera.proyecto.models.InfoTabla;
-import manriquezrivera.proyecto.models.InfoTablaMateria;
+
 import manriquezrivera.proyecto.models.ConsultaCliente;
 import manriquezrivera.proyecto.models.ConsultaMateria;
 import manriquezrivera.proyecto.models.ConsultaSesiones;
+import manriquezrivera.proyecto.models.InfoTabla;
+import manriquezrivera.proyecto.models.InfoTablaCliente;
+import manriquezrivera.proyecto.models.InfoTablaMateria;
 import manriquezrivera.proyecto.repositories.ConsultaClienteRepository;
 import manriquezrivera.proyecto.repositories.ConsultaMateriaRepository;
 import manriquezrivera.proyecto.repositories.ConsultaSesionesRepository;
@@ -257,5 +259,16 @@ public class ConsultaService {
     Integer cantidad_clientes = clientes.size();
     return new InfoTablaMateria(cantidad_sesiones, tiempo_total, cantidad_clientes);
   }
+
+  /*
+   * PARA LA VISTA CONSULTA-CLIENTE
+   */
   
+  public InfoTablaCliente getInfoTablaCliente(String abogado, Long id_caso, String fi, String ff){
+    Integer cantidadSesiones = consultaClienteRepository.getCantidadSesionesPorCliente(abogado, fi, ff, id_caso);
+    Integer tiempoSesiones = consultaClienteRepository.getTiempoSesionesPorCliente(abogado, fi, ff, id_caso);
+    return new InfoTablaCliente(cantidadSesiones, tiempoSesiones);
+  }
+
+
 }

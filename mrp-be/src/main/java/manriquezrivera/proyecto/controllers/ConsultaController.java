@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import manriquezrivera.proyecto.models.InfoTabla;
+import manriquezrivera.proyecto.models.InfoTablaCliente;
 import manriquezrivera.proyecto.models.InfoTablaMateria;
 import manriquezrivera.proyecto.models.ConsultaCliente;
 import manriquezrivera.proyecto.models.ConsultaSesiones;
@@ -114,5 +115,12 @@ public class ConsultaController {
       @PathVariable("ff") String fechaFin) {
     InfoTablaMateria consultaEstadisticasMateria = consultaService.getInfoTablaMateria(abogado, id_materia, fechaInicio, fechaFin);
     return ResponseEntity.ok().body(consultaEstadisticasMateria);
+  }
+
+  @GetMapping("/cliente/estadisticas/{abo}/{id}/{fi}/{ff}")
+    public ResponseEntity<InfoTablaCliente> getEstadisticasCliente(@PathVariable("abo") String abogado, @PathVariable("id") Long id_caso, @PathVariable("fi") String fechaInicio,
+      @PathVariable("ff") String fechaFin) {
+    InfoTablaCliente consultaEstadisticasCliente = consultaService.getInfoTablaCliente(abogado, id_caso, fechaInicio, fechaFin);
+    return ResponseEntity.ok().body(consultaEstadisticasCliente);
   }
 }

@@ -1,19 +1,19 @@
-import { Card, Row, Col, Container, Badge, Table } from "react-bootstrap";
-import ListGroup from 'react-bootstrap/ListGroup';
+import { Card, Badge, Table } from "react-bootstrap";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
-import Table_01 from "../../components/Table_01/Table_01";
 import { useEffect, useState } from "react";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import axios from 'axios';
 import formatDateShow from "../../utils/functions/formatDateShow";
 import "./cliente.scss";
+import castTime from "../../utils/functions/castTime";
+import { BiUser, BiTime, BiClipboard } from "react-icons/bi";
 
 const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 
-	const headerClientes = ["Sesiones", "Tiempo"];
 	const [casos, setCasos] = useState([]);
 	const [caso, setCaso] = useState([]);
 	const [sesionesByCaso, setSesionesByCaso] = useState([]);
+	const [estadisticas, setEstadisticas] = useState([]);
 
 	const getCasos = async () => {
 		try {
@@ -40,13 +40,28 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 		}
 	};
 
+	const getEstadisticas = async (abogado, id_caso, fechaInicio, fechaFin) => {
+		try {
+			let url = `http://localhost:8090/consultas/cliente/estadisticas/${abogado}/${id_caso}/${fechaInicio}/${fechaFin}`;
+			const response = await axios.get(url);
+			if (response.status === 200) {
+				setEstadisticas(response.data);
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	}; 
+
 	useEffect(() => {
-		console.log(fechaInicio, fechaFin)
+		//console.log(fechaInicio, fechaFin)
 		getCasos();
 	}, [fechaInicio, fechaFin, flag])
 
 	useEffect(() => {
-		if (caso.id !== undefined) getSesionesByIdCaso(caso.id);
+		if (caso.id !== undefined){
+			getSesionesByIdCaso(caso.id);
+			getEstadisticas("Daniel Manriquez", caso.id, fechaInicio, fechaFin);
+		} 
 	}, [caso, fechaInicio, fechaFin, flag])
 
 	const createCasoOption = (caso) => {
@@ -57,6 +72,8 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 			}
 		)
 	}
+
+	console.log("sesiones by caso: ",sesionesByCaso);
 
 	return (
 		<>
@@ -75,33 +92,28 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 				<Card className="card-grafico">
 					<GraficoGernal1 tiempoSesiones={sesionesByCaso} title={"Sesiones del cliente"} />
 				</Card>
+				
+				<div style={{display: "flex", justifyContent: "center",alignItems:"center", gap:"50px", gridColumn:"1/4"}}>
 
 				<Card className="card-estadisticas">
 					<div className="card-estadisticas__header">
 						<h2 className="card-estadisticas__title">Sesiones</h2>
-						<Badge className="card-estadisticas__icon">Bi</Badge>
+						<Badge className="card-estadisticas__icon"><BiClipboard/></Badge>
 					</div>
-					<h1 className="card-estadisticas__estadistica">12</h1>
+					<h1 className="card-estadisticas__estadistica">{estadisticas.cantidad_sesiones}</h1>
 					<p className="card-estadisticas__caption">Sesiones realizadas</p>
 				</Card>
 
 				<Card className="card-estadisticas">
 					<div className="card-estadisticas__header">
 						<h2 className="card-estadisticas__title">Tiempo total</h2>
-						<Badge className="card-estadisticas__icon">Bi</Badge>
+						<Badge className="card-estadisticas__icon"><BiTime/></Badge>
 					</div>
-					<h1 className="card-estadisticas__estadistica">8h 17m</h1>
+					<h1 className="card-estadisticas__estadistica">{castTime(estadisticas.tiempo_total)}</h1>
 					<p className="card-estadisticas__caption">Tiempo trabajado</p>
 				</Card>
 
-				<Card className="card-estadisticas">
-					<div className="card-estadisticas__header">
-						<h2 className="card-estadisticas__title">Otra estadistica</h2>
-						<Badge className="card-estadisticas__icon">Bi</Badge>
-					</div>
-					<h1 className="card-estadisticas__estadistica">-----</h1>
-					<p className="card-estadisticas__caption">------</p>
-				</Card>
+				</div>
 
 				<Card className="card-sesiones">
 					<Card.Body>
@@ -114,10 +126,12 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>2021-10-01</td>
-									<td>1h 30m</td>
-								</tr>
+								{sesionesByCaso.map((sesion, index) => (
+									<tr key={index}>
+										<td>{formatDateShow(sesion.fecha)}</td>
+										<td>{castTime(sesion.tiempo)}</td>
+									</tr>
+								))}
 							</tbody>
 						</Table>
 					</Card.Body>

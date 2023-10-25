@@ -2,6 +2,7 @@ package manriquezrivera.proyecto.repositories;
 
 import java.util.List;
 
+import org.antlr.v4.runtime.atn.SemanticContext.AND;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,5 +36,11 @@ public interface ConsultaClienteRepository extends JpaRepository<ConsultaCliente
     //                               "se.fecha  BETWEEN :fechaInicio AND :fechaFin "+
     //                               "group by cl.nombre) as clTiempo", nativeQuery=true)
     // int getConsultaTiempoClienteMax(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+
+    @Query(value = "SELECT count(*) FROM sesion as s, caso as c WHERE c.abogado = :abogado AND  c.id = :id_caso AND s.id_caso = c.id AND s.borrado = 0 AND s.fecha BETWEEN :fi AND :ff", nativeQuery = true)
+    Integer getCantidadSesionesPorCliente(@Param("abogado") String abogado, @Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
+
+    @Query(value = "SELECT sum(s.tiempo) as tiempo FROM sesion as s, caso as c WHERE c.abogado = :abogado AND  c.id = :id_caso AND id_caso = c.id AND s.borrado = 0 AND s.fecha BETWEEN :fi AND :ff GROUP BY s.id_caso", nativeQuery = true)
+    Integer getTiempoSesionesPorCliente(@Param("abogado") String abogado, @Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
 
 }
