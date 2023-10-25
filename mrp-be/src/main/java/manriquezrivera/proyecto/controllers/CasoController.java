@@ -1,15 +1,18 @@
 package manriquezrivera.proyecto.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import manriquezrivera.proyecto.services.CasoAbogadoService;
 import manriquezrivera.proyecto.services.CasoService;
 import manriquezrivera.proyecto.services.ClienteService;
 import manriquezrivera.proyecto.entity.Caso;
 import manriquezrivera.proyecto.entity.Cliente;
+import manriquezrivera.proyecto.entity.CasoAbogado;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +30,9 @@ public class CasoController {
 
     @Autowired
     ClienteService clienteService;
+
+    @Autowired
+    CasoAbogadoService casoAbogadoService;
 
     @GetMapping
     public ResponseEntity<List<Caso>> getCasos(){
@@ -47,17 +53,8 @@ public class CasoController {
     }
 
     @PostMapping
-    public ResponseEntity<Caso> postCaso(@RequestBody Caso caso){
-      String nombreCliente = caso.getId_cliente().getNombre();
-      Cliente cliente = clienteService.getClienteByNombre(nombreCliente);
-      if(cliente == null){
-        Cliente clienteCreado = clienteService.saveCliente(new Cliente(null, nombreCliente, false)); 
-        caso.setId_cliente(clienteCreado);
-        Caso casoGuardado = casoService.saveCaso(caso);
-        return ResponseEntity.ok().body(casoGuardado);
-      }
-      caso.setId_cliente(cliente);
-      Caso casoGuardado = casoService.saveCaso(caso);
+    public ResponseEntity<Caso> postCaso(@RequestBody Map<Caso,List<Long>>  request){
+      Caso casoGuardado = casoService.saveCaso(request);
       return ResponseEntity.ok().body(casoGuardado);
     }
 

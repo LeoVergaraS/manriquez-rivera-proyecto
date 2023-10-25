@@ -74,6 +74,7 @@ function Home() {
   const [materias, setMaterias] = useState([]);
   const [subMaterias, setSubMaterias] = useState([]);
   const [casos, setCasos] = useState([]);
+  const [idAbogados, setIdAbogados] = useState([1]);
 
   const [sesion, setSesion] = useState({
     id: null,
@@ -194,10 +195,10 @@ function Home() {
     }
   };
 
-  const createCaso = async (item) => {
+  const createCaso = async (request) => {
     try {
       let url = "http://localhost:8090/casos";
-      const response = await axios.post(url, item);
+      const response = await axios.post(url, request);
       if (response.status === 200) {
         handleCloseCreate();
         getCasos();
@@ -224,6 +225,18 @@ function Home() {
     }
   };
 
+  const getAbogados = async () => {
+    try {
+      let url = "http://localhost:8090/abogados";
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setAbogados(response.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   const [editedItem, setEditedItem] = useState({
     id: null,
     fecha: null,
@@ -247,7 +260,6 @@ function Home() {
     id: null,
     fecha: null,
     tiempo: null,
-    abogado: "",
     id_materia: {
       id: null,
       nombre: "",
@@ -262,6 +274,8 @@ function Home() {
     },
   });
 
+  const [abogadosCaso, setAbogadosCaso] = useState([]);
+
   const createCasoOption = (caso) => {
     return (
      {label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre} - ${formatDateShow(caso.fecha)}`,
@@ -275,6 +289,7 @@ function Home() {
     getMaterias();
     getSubMaterias();
     getCasos();
+    getAbogados();
   }, []);
 
   return (
@@ -402,7 +417,7 @@ function Home() {
                             {casoSeleccionado == undefined ||
                               casoSeleccionado === null
                               ? "-"
-                              : casoSeleccionado.abogado}
+                              : "Daniel Manriquez"}
                           </td>
                         </tr>
                       </tbody>

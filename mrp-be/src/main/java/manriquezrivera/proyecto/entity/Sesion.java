@@ -24,4 +24,9 @@ public class Sesion {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Caso id_caso;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_abogado")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Abogado id_abogado;
+
 }
