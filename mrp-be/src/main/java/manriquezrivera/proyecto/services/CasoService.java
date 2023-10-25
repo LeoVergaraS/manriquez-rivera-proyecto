@@ -1,10 +1,13 @@
 package manriquezrivera.proyecto.services;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import manriquezrivera.proyecto.entity.Caso;
 import manriquezrivera.proyecto.entity.Abogado;
@@ -12,6 +15,10 @@ import manriquezrivera.proyecto.entity.CasoAbogado;
 import manriquezrivera.proyecto.entity.Cliente;
 import manriquezrivera.proyecto.repositories.CasoAbogadoRepository;
 import manriquezrivera.proyecto.repositories.CasoRepository;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 
 @Service
 public class CasoService{
@@ -34,10 +41,35 @@ public class CasoService{
         return casoRepository.getById(id);
     }
 
-    public Caso saveCaso(Map<Caso,List<Long>>  request){
-        
-        List<Long> abogados = request.get("abogados");
-        Caso caso = (Caso) request.get("caso");
+    private List<Long> castRequestToIds(ObjectNode request){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            ObjectReader reader = mapper.readerFor(new TypeReference<List<Long>>() {});
+            List<Long> abogados = reader.readValue(request.get("abogados"));
+            return abogados;
+        } catch (IOException e) {
+            // Handle the exception here
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Caso castRequestToCaso(ObjectNode request){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            ObjectReader reader = mapper.readerFor(new TypeReference<Caso>() {});
+            Caso caso = reader.readValue(request.get("caso"));
+            return caso;
+        } catch (IOException e) {
+            // Handle the exception here
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Caso saveCaso(ObjectNode request){
+        List<Long> abogados = castRequestToIds(request);
+        Caso caso = castRequestToCaso(request);
 
         String nombreCliente = caso.getId_cliente().getNombre();
         Cliente cliente = clienteService.getClienteByNombre(nombreCliente);
@@ -50,13 +82,14 @@ public class CasoService{
         }
 
         Caso casoGuardado = casoRepository.save(caso);
+
         //creacion de tupla en tabla intermdia
         for(Long id_abogado : abogados){
             CasoAbogado nuevoCasoAbogado = new CasoAbogado(null, casoGuardado , new Abogado(id_abogado,null));
             casoAbogadoRepository.save(nuevoCasoAbogado);
         }
 
-        return casoRepository.save(caso);
+        return casoGuardado;
     }
 
     public Caso deleteCaso(Caso caso){

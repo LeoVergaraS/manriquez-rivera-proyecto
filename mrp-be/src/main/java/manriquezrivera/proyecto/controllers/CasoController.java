@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import manriquezrivera.proyecto.services.CasoAbogadoService;
 import manriquezrivera.proyecto.services.CasoService;
 import manriquezrivera.proyecto.services.ClienteService;
@@ -53,7 +55,7 @@ public class CasoController {
     }
 
     @PostMapping
-    public ResponseEntity<Caso> postCaso(@RequestBody Map<Caso,List<Long>>  request){
+    public ResponseEntity<Caso> postCaso(@RequestBody ObjectNode request){
       Caso casoGuardado = casoService.saveCaso(request);
       return ResponseEntity.ok().body(casoGuardado);
     }

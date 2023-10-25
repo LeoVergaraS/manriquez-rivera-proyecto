@@ -94,7 +94,6 @@ function Home() {
   const [casoSeleccionado, setCasoSeleccionado] = useState({
     id: 0,
     fecha: "-",
-    abogado: "-",
     id_materia: {
       id: null,
       nombre: "-",
@@ -197,8 +196,10 @@ function Home() {
 
   const createCaso = async (request) => {
     try {
+      console.log(request);
       let url = "http://localhost:8090/casos";
       const response = await axios.post(url, request);
+
       if (response.status === 200) {
         handleCloseCreate();
         getCasos();
@@ -240,8 +241,6 @@ function Home() {
   const [editedItem, setEditedItem] = useState({
     id: null,
     fecha: null,
-    tiempo: null,
-    abogado: "",
     id_materia: {
       id: null,
       nombre: "",
@@ -259,7 +258,6 @@ function Home() {
   const [defaultItem, setDefaultItem] = useState({
     id: null,
     fecha: null,
-    tiempo: null,
     id_materia: {
       id: null,
       nombre: "",
@@ -530,6 +528,7 @@ function Home() {
             handleClose={handleCloseCreate}
             materias={materias}
             subMaterias={subMaterias}
+            abogados={[]}
           />
         </Modal.Body>
       </Modal>
