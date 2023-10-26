@@ -73,8 +73,6 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 		)
 	}
 
-	console.log("sesiones by caso: ",sesionesByCaso);
-
 	return (
 		<>
 			<main className="layout-clientes">

@@ -7,8 +7,6 @@ import castTime from "../../utils/functions/castTime";
 
 const General = ({ consultasS, estadisticas, consultasM }) => {
 
-	console.log(estadisticas);
-
 	return (
 		<>
 
