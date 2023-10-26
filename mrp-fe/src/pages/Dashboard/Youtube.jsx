@@ -36,7 +36,7 @@ const Youtube = () => {
   const [consultasS, setConsultasS] = useState([]);
   const [consultasM, setConsultasM] = useState([]);
   const [abogado, setAbogado] = useState({
-    nombre:"Abogados",
+    nombre:"Todos",
     id:0,
   });
 
@@ -45,8 +45,14 @@ const Youtube = () => {
   const handleModal = () => setShowModal(!showModal);
 
   const abogadoSelect = (eventKey) => {
-    setAbogado(abogados[eventKey - 1]);
-    console.log("abogado:",abogados[0]);
+    if(eventKey === -1){
+      setAbogado({
+        nombre:"Todos",
+        id:0,
+      });
+    }else{
+      setAbogado(abogados[eventKey]);
+    }
   }
 
   const handleSelected = (type) => {
