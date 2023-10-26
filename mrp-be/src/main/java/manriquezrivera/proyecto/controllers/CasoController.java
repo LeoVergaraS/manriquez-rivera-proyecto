@@ -44,6 +44,15 @@ public class CasoController {
       }
       return ResponseEntity.ok().body(casos);
     }
+    
+    @GetMapping("/abogado/{id}")
+    public ResponseEntity<List<Caso>> getCasos(@PathVariable(value = "id") Long id){
+      List<Caso> casos = casoService.getCasoByIdAbogado(id);
+      if(casos == null){
+        return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok().body(casos);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Caso> getCaso(@PathVariable(value = "id") Long id){

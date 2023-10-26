@@ -41,6 +41,9 @@ public class CasoService{
         return casoRepository.getById(id);
     }
 
+    public List<Caso> getCasoByIdAbogado(Long id){
+        return casoRepository.getByIdAbogado(id);
+    }
     private List<Long> castRequestToIds(ObjectNode request){
         ObjectMapper mapper = new ObjectMapper();
         try {

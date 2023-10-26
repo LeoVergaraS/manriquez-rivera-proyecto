@@ -31,6 +31,15 @@ public class SesionController {
       return ResponseEntity.ok().body(sesiones);
     }
 
+    @GetMapping("/{idAbogado}")
+    public ResponseEntity<List<Sesion>> getByIdAbogado(@PathVariable(value = "idAbogado") Long idAbogado){
+    List<Sesion> sesiones = sesionService.getSesionByIdAbogado(idAbogado);
+    if(sesiones == null){
+      return ResponseEntity.notFound().build();
+    }
+      return ResponseEntity.ok().body(sesiones);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Sesion> getSesion(@PathVariable(value = "id") Long id){
       Sesion sesion = sesionService.getSesionById(id);

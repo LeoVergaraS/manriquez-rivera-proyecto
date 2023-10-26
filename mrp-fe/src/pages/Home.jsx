@@ -194,6 +194,19 @@ function Home() {
     }
   };
 
+
+  const getCasoByIdAbogado = async (idAbogado) => {
+    try {
+      let url = "http://localhost:8090/casos/abogado/" + idAbogado;
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setCasos(response.data);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   const createCaso = async (request) => {
     try {
       console.log(request);
@@ -286,8 +299,9 @@ function Home() {
     getClientes();
     getMaterias();
     getSubMaterias();
-    getCasos();
+    //getCasos();
     getAbogados();
+    getCasoByIdAbogado(1);
   }, []);
 
   return (
@@ -382,7 +396,6 @@ function Home() {
                           <th className="th-home">Cliente</th>
                           <th className="th-home">Materia</th>
                           <th className="th-home">Sub Materia</th>
-                          <th className="th-home">Abogado</th>
                           <th ></th>
                         </tr>
                         <tr className="special-row"></tr>
@@ -410,12 +423,6 @@ function Home() {
                               casoSeleccionado === null
                               ? "-"
                               : casoSeleccionado.id_submateria.nombre}
-                          </td>
-                          <td className="td-home">
-                            {casoSeleccionado == undefined ||
-                              casoSeleccionado === null
-                              ? "-"
-                              : "Daniel Manriquez"}
                           </td>
                         </tr>
                       </tbody>

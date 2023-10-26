@@ -21,6 +21,10 @@ public class SesionService{
         return sesionRepository.getById(id);
     }
 
+    public List<Sesion> getSesionByIdAbogado(Long id){
+        return sesionRepository.getByIdAbogado(id);
+    }
+
     public Sesion saveSesion(Sesion sesion){
         return sesionRepository.save(sesion);
     }

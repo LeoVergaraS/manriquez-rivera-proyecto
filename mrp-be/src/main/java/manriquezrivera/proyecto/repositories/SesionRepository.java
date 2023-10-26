@@ -16,4 +16,7 @@ public interface SesionRepository extends JpaRepository<Sesion, Long>{
 
     @Query(value = "SELECT * FROM sesion WHERE borrado = 0 AND id = :id", nativeQuery = true)
     Sesion getById(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM sesion WHERE borrado = 0 AND id_abogado = :idAbogado", nativeQuery = true)
+    List<Sesion> getByIdAbogado(@Param("idAbogado") Long idAbogado);
 }
