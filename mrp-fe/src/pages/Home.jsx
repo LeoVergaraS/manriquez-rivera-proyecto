@@ -23,11 +23,16 @@ function Home() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [hoveredCard1, setHoveredCard1] = useState("");
   const [hoveredCard2, setHoveredCard2] = useState("");
+  const [sesiones, setSesiones] = useState([]);
+  const [clientes, setClientes] = useState([]);
+  const [materias, setMaterias] = useState([]);
+  const [subMaterias, setSubMaterias] = useState([]);
+  const [casos, setCasos] = useState([]);
+  //const [idAbogados, setIdAbogados] = useState([1]);
 
   const [ts, setTs] = useState(60);
 
   const handleSelectTs = (e) => {
-    console.log(e.value);
     setTs(e.value);
   }
 
@@ -69,13 +74,6 @@ function Home() {
     setShowEdit(false);
   };
 
-  const [sesiones, setSesiones] = useState([]);
-  const [clientes, setClientes] = useState([]);
-  const [materias, setMaterias] = useState([]);
-  const [subMaterias, setSubMaterias] = useState([]);
-  const [casos, setCasos] = useState([]);
-  const [idAbogados, setIdAbogados] = useState([1]);
-
   const [sesion, setSesion] = useState({
     id: null,
     fecha: null,
@@ -90,7 +88,6 @@ function Home() {
     },
   });
 
-  const [idCasoSeleccionado, setIdCasosSeleccionado] = useState(0);
   const [casoSeleccionado, setCasoSeleccionado] = useState({
     id: 0,
     fecha: "-",
@@ -107,20 +104,6 @@ function Home() {
       nombre: "-",
     },
   });
-  const [clienteSeleccionado, setClienteSeleccionado] = useState({
-    id: null,
-    nombre: "seleccione un cliente",
-    borrado: null,
-  });
-
-  const handleSelect = (e) => {
-    setIdCasosSeleccionado(e.target.value);
-    let idCaso = parseInt(e.target.value);
-    let foundCliente = clientes.find((cliente) => cliente.id === idCaso);
-    //setClienteSeleccionado(foundCliente);
-    let foundCaso = casos.find((caso) => caso.id === idCaso);
-    setCasoSeleccionado(foundCaso);
-  };
 
   const getSesiones = async () => {
     try {
@@ -239,18 +222,6 @@ function Home() {
     }
   };
 
-  const getAbogados = async () => {
-    try {
-      let url = "http://localhost:8090/abogados";
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        setAbogados(response.data);
-      }
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
   const [editedItem, setEditedItem] = useState({
     id: null,
     fecha: null,
@@ -285,7 +256,7 @@ function Home() {
     },
   });
 
-  const [abogadosCaso, setAbogadosCaso] = useState([]);
+  //const [abogadosCaso, setAbogadosCaso] = useState([]);
 
   const createCasoOption = (caso) => {
     return (
@@ -300,7 +271,6 @@ function Home() {
     getMaterias();
     getSubMaterias();
     //getCasos();
-    getAbogados();
     getCasoByIdAbogado(1);
   }, []);
 
@@ -535,7 +505,6 @@ function Home() {
             handleClose={handleCloseCreate}
             materias={materias}
             subMaterias={subMaterias}
-            abogados={[]}
           />
         </Modal.Body>
       </Modal>

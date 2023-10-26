@@ -16,4 +16,8 @@ public class AbogadoService {
   public List<Abogado> getAbogados() {
     return abogadoRepository.findAll();
   }
+
+  public List<Abogado> getAbogadosByCaso(Long id_caso) {
+    return abogadoRepository.getByCaso(id_caso);
+  }
 }
