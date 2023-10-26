@@ -1,7 +1,13 @@
 import Dropdown from "react-bootstrap/Dropdown";
 import "./dropdownR.scss";
+import { useEffect } from "react";
 
 const DropdownAbogado = ({dropSelect, abogados, abogado}) => {
+
+    useEffect(() => {
+        console.log(abogado)
+    }, [abogado])
+
     return (
         <>  
             <Dropdown onSelect={dropSelect}>
@@ -16,7 +22,7 @@ const DropdownAbogado = ({dropSelect, abogados, abogado}) => {
                     {abogado.nombre}
                 </Dropdown.Toggle>
                 <Dropdown.Menu style={{ backgroundColor: "#235c62" }}>
-                    <Dropdown.Item eventKey={-1}>Todos</Dropdown.Item>
+                    <Dropdown.Item eventKey="-1">Todos</Dropdown.Item>
                     {abogados.map((abogadoOpcion, index) => (
                         <Dropdown.Item key={abogadoOpcion.id} eventKey={index}>
                             {abogadoOpcion.nombre}
