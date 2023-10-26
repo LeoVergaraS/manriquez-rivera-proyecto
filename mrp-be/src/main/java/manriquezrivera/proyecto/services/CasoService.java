@@ -68,6 +68,7 @@ public class CasoService{
     }
 
     public Caso saveCaso(ObjectNode request){
+        System.out.println(request);
         List<Long> abogados = castRequestToIds(request);
         Caso caso = castRequestToCaso(request);
 
@@ -85,8 +86,12 @@ public class CasoService{
 
         //creacion de tupla en tabla intermdia
         for(Long id_abogado : abogados){
-            CasoAbogado nuevoCasoAbogado = new CasoAbogado(null, casoGuardado , new Abogado(id_abogado,null));
-            casoAbogadoRepository.save(nuevoCasoAbogado);
+            System.out.println(id_abogado);
+            CasoAbogado ca = casoAbogadoRepository.getByCasoByAbogado(casoGuardado.getId(), id_abogado);
+            if(ca == null){
+                CasoAbogado nuevoCasoAbogado = new CasoAbogado(null, casoGuardado , new Abogado(id_abogado, null, false));
+                casoAbogadoRepository.save(nuevoCasoAbogado);
+            } 
         }
 
         return casoGuardado;

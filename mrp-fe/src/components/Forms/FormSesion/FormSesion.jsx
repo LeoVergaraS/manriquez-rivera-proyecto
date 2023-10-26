@@ -155,6 +155,7 @@ const FormSesion = ({
                   <Form.Label>Abogado</Form.Label>
                   <MySelect
                     name="abogado"
+                    placeholder="Seleccione uno o más abogados"
                     options={options}
                     onChange={setFieldValue}
                     onBlur={setFieldTouched}
