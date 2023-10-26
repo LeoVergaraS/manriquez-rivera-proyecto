@@ -24,4 +24,5 @@ public class Abogado {
   private Long id;
 
   private String nombre;
+  private boolean borrado;
 }

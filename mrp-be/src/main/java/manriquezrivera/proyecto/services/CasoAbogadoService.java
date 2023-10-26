@@ -11,14 +11,14 @@ import manriquezrivera.proyecto.repositories.CasoAbogadoRepository;
 
 @Service
 public class CasoAbogadoService {
-      @Autowired
+  @Autowired
   CasoAbogadoRepository casoAbogadoRepository;
 
   public List<CasoAbogado> getAbogados() {
     return casoAbogadoRepository.findAll();
   }
 
-     public CasoAbogado saveCasoAbogado(CasoAbogado casoAbogado){
-        return casoAbogadoRepository.save(casoAbogado);
-    }
+  public CasoAbogado saveCasoAbogado(CasoAbogado casoAbogado) {
+    return casoAbogadoRepository.save(casoAbogado);
+  }
 }

@@ -15,6 +15,7 @@ const MySelect = (props) => {
       <Select
         name={props.name}
         options={props.options}
+        placeholder={props.placeholder}
         isMulti
         isClearable={false}
         onChange={handleChange}
