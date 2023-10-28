@@ -8,16 +8,19 @@ import "./cliente.scss";
 import castTime from "../../utils/functions/castTime";
 import { BiUser, BiTime, BiClipboard } from "react-icons/bi";
 
-const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
+const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 
 	const [casos, setCasos] = useState([]);
 	const [caso, setCaso] = useState([]);
 	const [sesionesByCaso, setSesionesByCaso] = useState([]);
 	const [estadisticas, setEstadisticas] = useState([]);
 
+	//console.log("id abo",id_abo);
+	//console.log("flag",flag);
+
 	const getCasos = async () => {
 		try {
-			let url = "http://localhost:8090/casos";
+			let url = "http://localhost:8090/casos/abogado/" + id_abo;
 			const response = await axios.get(url);
 			if (response.status === 200) {
 				setCasos(response.data);
@@ -29,10 +32,10 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 
 	const getSesionesByIdCaso = async (id) => {
 		try {
-			let url = "http://localhost:8090/consultas/sesiones/id_caso/" + id + "/" + fechaInicio + "/" + fechaFin + "/" + flag;
+			let url = "http://localhost:8090/consultas/sesiones/id_caso/" + id + "/" + fechaInicio + "/" + fechaFin + "/" + flag + "/" + id_abo;
 			const response = await axios.get(url);
 			if (response.status === 200) {
-				console.log(response.data);
+				//console.log(response.data);
 				setSesionesByCaso(response.data);
 			}
 		} catch (err) {
@@ -40,9 +43,9 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 		}
 	};
 
-	const getEstadisticas = async (abogado, id_caso, fechaInicio, fechaFin) => {
+	const getEstadisticas = async (id_caso, fechaInicio, fechaFin, id_abo, flag) => {
 		try {
-			let url = `http://localhost:8090/consultas/cliente/estadisticas/${abogado}/${id_caso}/${fechaInicio}/${fechaFin}`;
+			let url = `http://localhost:8090/consultas/cliente/estadisticas/${id_caso}/${fechaInicio}/${fechaFin}/${id_abo}/${flag}`;
 			const response = await axios.get(url);
 			if (response.status === 200) {
 				setEstadisticas(response.data);
@@ -53,16 +56,15 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 	}; 
 
 	useEffect(() => {
-		//console.log(fechaInicio, fechaFin)
 		getCasos();
-	}, [fechaInicio, fechaFin, flag])
+	}, [fechaInicio, fechaFin, flag, id_abo])
 
 	useEffect(() => {
 		if (caso.id !== undefined){
 			getSesionesByIdCaso(caso.id);
-			getEstadisticas("Daniel Manriquez", caso.id, fechaInicio, fechaFin);
+			getEstadisticas(caso.id, fechaInicio, fechaFin, id_abo, flag);
 		} 
-	}, [caso, fechaInicio, fechaFin, flag])
+	}, [caso, fechaInicio, fechaFin, flag, id_abo])
 
 	const createCasoOption = (caso) => {
 		return (
@@ -72,6 +74,8 @@ const Clientes = ({ consultasS, fechaInicio, fechaFin, flag }) => {
 			}
 		)
 	}
+
+	//console.log(sesionesByCaso);
 
 	return (
 		<>

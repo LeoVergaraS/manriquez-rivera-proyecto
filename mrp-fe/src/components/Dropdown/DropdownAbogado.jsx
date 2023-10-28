@@ -5,7 +5,7 @@ import { useEffect } from "react";
 const DropdownAbogado = ({dropSelect, abogados, abogado}) => {
 
     useEffect(() => {
-        console.log(abogado)
+        //console.log(abogado)
     }, [abogado])
 
     return (

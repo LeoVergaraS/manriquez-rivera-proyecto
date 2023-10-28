@@ -101,9 +101,9 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultaInfotabla);
   }
 
-  @GetMapping("/sesiones/id_caso/{id}/{fi}/{ff}/{flag}")
-  public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntity(@PathVariable("id") Long id, @PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("flag") Integer flag){
-    List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id, fechaInicio, fechaFin, flag);
+  @GetMapping("/sesiones/id_caso/{id}/{fi}/{ff}/{flag}/{id_abo}")
+  public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntity(@PathVariable("id") Long id, @PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("flag") Integer flag, @PathVariable("id_abo") Long id_abo){
+    List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id, fechaInicio, fechaFin, flag, id_abo);
     if(consultas == null){
       return ResponseEntity.notFound().build();
     }
@@ -117,10 +117,10 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultaEstadisticasMateria);
   }
 
-  @GetMapping("/cliente/estadisticas/{abo}/{id}/{fi}/{ff}")
-    public ResponseEntity<InfoTablaCliente> getEstadisticasCliente(@PathVariable("abo") String abogado, @PathVariable("id") Long id_caso, @PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin) {
-    InfoTablaCliente consultaEstadisticasCliente = consultaService.getInfoTablaCliente(abogado, id_caso, fechaInicio, fechaFin);
+  @GetMapping("/cliente/estadisticas/{id}/{fi}/{ff}/{id_abo}/{flag}")
+    public ResponseEntity<InfoTablaCliente> getEstadisticasCliente(@PathVariable("id") Long id_caso, @PathVariable("fi") String fechaInicio,
+      @PathVariable("ff") String fechaFin, @PathVariable("id_abo") Long id_abo, @PathVariable("flag") Integer flag) {
+    InfoTablaCliente consultaEstadisticasCliente = consultaService.getInfoTablaCliente(id_caso, fechaInicio, fechaFin,  id_abo, flag);
     return ResponseEntity.ok().body(consultaEstadisticasCliente);
   }
 }

@@ -158,7 +158,8 @@ const Youtube = () => {
     getConsultasSesiones();
     getEstadisticas();
     getAbogados();
-  }, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio,abogado,flag]);
+    //console.log("abogadoaa",abogado);
+  }, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio,abogado, flag, abogado]);
 
   return (
     <>
@@ -205,16 +206,15 @@ const Youtube = () => {
         </div>
       </div>
 
-
-
       {selectedGeneral === "selected" ? (
         <General consultasS={consultasS} estadisticas={estadisticas} consultasM={consultasM} />) : null}
 
       {selectedCliente === "selected" ? (
-        <Clientes consultasS={consultasM}
-          fechaInicio={fechaInicio}
+        <Clientes fechaInicio={fechaInicio}
           fechaFin={fechaFin} 
-          flag={flag}/>) : null}
+          flag={flag}
+          id_abo={abogado.id}/>) : null}
+          
 
       {selectedMateria === "selected" ? (
         <Materias consultasS={consultasS} />) : null}

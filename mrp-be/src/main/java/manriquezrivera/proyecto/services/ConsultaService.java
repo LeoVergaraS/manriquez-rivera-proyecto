@@ -22,253 +22,314 @@ import manriquezrivera.proyecto.repositories.ConsultaSesionesRepository;
 
 @Service
 public class ConsultaService {
-  @Autowired
-  ConsultaClienteRepository consultaClienteRepository;
+	@Autowired
+	ConsultaClienteRepository consultaClienteRepository;
 
-  @Autowired
-  ConsultaMateriaRepository consultaMateriaRepository;
+	@Autowired
+	ConsultaMateriaRepository consultaMateriaRepository;
 
-  @Autowired
-  ConsultaSesionesRepository consultaSesionesRepository;
+	@Autowired
+	ConsultaSesionesRepository consultaSesionesRepository;
 
-  public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre) {
-    if (dropSiempre == 1) {
-      List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
-      fechaInicio = allConsultas.get(0).getFecha().toString();
-    }
-    return consultaMateriaRepository.getConsultaMateria(fechaInicio, fechaFin);
-  }
+	public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre) {
+		if (dropSiempre == 1) {
+			List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
+			fechaInicio = allConsultas.get(0).getFecha().toString();
+		}
+		return consultaMateriaRepository.getConsultaMateria(fechaInicio, fechaFin);
+	}
 
-  public List<ConsultaCliente> getCC(Long id, String fechaInicio, String fechaFin) {
-    return consultaClienteRepository.getConsultaClientes(id, fechaInicio, fechaFin);
-  }
+	public List<ConsultaCliente> getCC(Long id, String fechaInicio, String fechaFin) {
+		return consultaClienteRepository.getConsultaClientes(id, fechaInicio, fechaFin);
+	}
 
-  public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre,
-      Integer dropAnio) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre,
+			Integer dropAnio) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    // Si la opción ingresada es "Desde siempre", se obtiene la fecha de la primera
-    // sesión creada
-    if (dropSiempre == 1) {
-      List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
-      fechaInicio = allConsultas.get(0).getFecha().toString();
-      Date fechaFinAux = new Date();
-      Date fechaInicioAux;
-      try {
-        fechaInicioAux = sdf.parse(fechaInicio);
-        Calendar instance1 = Calendar.getInstance();
-        Calendar instance2 = Calendar.getInstance();
-        instance2.setTime(fechaFinAux);
-        instance1.setTime(fechaInicioAux);
-        Integer dias = instance2.get(Calendar.DAY_OF_YEAR) - instance1.get(Calendar.DAY_OF_YEAR);
-        dropSelect = dias;
-      } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
+		// Si la opción ingresada es "Desde siempre", se obtiene la fecha de la primera
+		// sesión creada
+		if (dropSiempre == 1) {
+			List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
+			fechaInicio = allConsultas.get(0).getFecha().toString();
+			Date fechaFinAux = new Date();
+			Date fechaInicioAux;
+			try {
+				fechaInicioAux = sdf.parse(fechaInicio);
+				Calendar instance1 = Calendar.getInstance();
+				Calendar instance2 = Calendar.getInstance();
+				instance2.setTime(fechaFinAux);
+				instance1.setTime(fechaInicioAux);
+				Integer dias = instance2.get(Calendar.DAY_OF_YEAR) - instance1.get(Calendar.DAY_OF_YEAR);
+				dropSelect = dias;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
-    // Se obtienen las sesiones con las fechas inicio y fin establecidas
-    List<ConsultaSesiones> consultaSesiones = consultaSesionesRepository.getConsultaSesionesDias(fechaInicio, fechaFin);
+		// Se obtienen las sesiones con las fechas inicio y fin establecidas
+		List<ConsultaSesiones> consultaSesiones = consultaSesionesRepository.getConsultaSesionesDias(fechaInicio,
+				fechaFin);
 
-    // Se crea una lista de sesiones vacía. Esta lista será la que se devuelva al
-    // final
-    List<ConsultaSesiones> consultaSesiones2 = new ArrayList<ConsultaSesiones>();
+		// Se crea una lista de sesiones vacía. Esta lista será la que se devuelva al
+		// final
+		List<ConsultaSesiones> consultaSesiones2 = new ArrayList<ConsultaSesiones>();
 
-    // Se crea un arreglo que contenga las fechas que existen entre fechaInicio y
-    // fechaFin
-    List<String> fechas = new ArrayList<String>();
-    fechas.add(fechaFin);
+		// Se crea un arreglo que contenga las fechas que existen entre fechaInicio y
+		// fechaFin
+		List<String> fechas = new ArrayList<String>();
+		fechas.add(fechaFin);
 
-    // Si la opción ingresada es un año, se obtiene la cantidad de días que tiene
-    // ese año. Pueden ser 365 o 366
-    if (dropAnio == 1) {
-      dropSelect = getCantidadDiasDeUnAnio(2023) - 1;
-    }
+		// Si la opción ingresada es un año, se obtiene la cantidad de días que tiene
+		// ese año. Pueden ser 365 o 366
+		if (dropAnio == 1) {
+			dropSelect = getCantidadDiasDeUnAnio(2023) - 1;
+		}
 
-    // Se obtienen las fechas entre fechaInicio y fechaFin
-    int i = 1;
-    while (i <= dropSelect) {
-      Calendar instance = Calendar.getInstance();
-      Date date = new Date();
-      try {
-        date = sdf.parse(fechaFin);
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
-      instance.setTime(date);
-      instance.add(Calendar.DATE, -i);
-      String fechaString = sdf.format(instance.getTime());
-      fechas.add(fechaString);
-      i++;
-    }
+		// Se obtienen las fechas entre fechaInicio y fechaFin
+		int i = 1;
+		while (i <= dropSelect) {
+			Calendar instance = Calendar.getInstance();
+			Date date = new Date();
+			try {
+				date = sdf.parse(fechaFin);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			instance.setTime(date);
+			instance.add(Calendar.DATE, -i);
+			String fechaString = sdf.format(instance.getTime());
+			fechas.add(fechaString);
+			i++;
+		}
 
-    // invertir orden de un arrgelo
-    List<String> fechasInvertidas = new ArrayList<String>();
-    for (int j = fechas.size() - 1; j >= 0; j--) {
-      fechasInvertidas.add(fechas.get(j));
-    }
+		// invertir orden de un arrgelo
+		List<String> fechasInvertidas = new ArrayList<String>();
+		for (int j = fechas.size() - 1; j >= 0; j--) {
+			fechasInvertidas.add(fechas.get(j));
+		}
 
-    // Se pone de tiempo 0 en las fechas que no se encontraron seriones
-    i = 0;
-    int j = 0;
-    while (i < dropSelect) {
-      if (consultaSesiones.size() == 0) {
-        int k = 0;
-        while (k < dropSelect) {
-          ConsultaSesiones consultaNueva = new ConsultaSesiones();
-          consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(k)));
-          consultaNueva.setTiempo(0L);
-          consultaSesiones2.add(consultaNueva);
-          k++;
-        }
-        break;
-      } else if (j < consultaSesiones.size()) {
-        if (fechasInvertidas.get(i).equals(consultaSesiones.get(j).getFecha().toString())) {
-          consultaSesiones2.add(consultaSesiones.get(j));
-          i++;
-          j++;
-        } else {
-          j++;
-        }
-      } else {
-        ConsultaSesiones consultaNueva = new ConsultaSesiones();
-        consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(i)));
-        consultaNueva.setTiempo(0L);
-        consultaSesiones2.add(consultaNueva);
-        i++;
-        j = 0;
-      }
-    }
+		// Se pone de tiempo 0 en las fechas que no se encontraron seriones
+		i = 0;
+		int j = 0;
+		while (i < dropSelect) {
+			if (consultaSesiones.size() == 0) {
+				int k = 0;
+				while (k < dropSelect) {
+					ConsultaSesiones consultaNueva = new ConsultaSesiones();
+					consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(k)));
+					consultaNueva.setTiempo(0L);
+					consultaSesiones2.add(consultaNueva);
+					k++;
+				}
+				break;
+			} else if (j < consultaSesiones.size()) {
+				if (fechasInvertidas.get(i).equals(consultaSesiones.get(j).getFecha().toString())) {
+					consultaSesiones2.add(consultaSesiones.get(j));
+					i++;
+					j++;
+				} else {
+					j++;
+				}
+			} else {
+				ConsultaSesiones consultaNueva = new ConsultaSesiones();
+				consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(i)));
+				consultaNueva.setTiempo(0L);
+				consultaSesiones2.add(consultaNueva);
+				i++;
+				j = 0;
+			}
+		}
 
-    return consultaSesiones2;
-  }
+		return consultaSesiones2;
+	}
 
-  public Integer getCantidadDiasDeUnAnio(Integer anio) {
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(anio, 11, 31);
-    Integer cantidadDias = calendar.get(Calendar.DAY_OF_YEAR);
-    return cantidadDias;
-  }
+	public Integer getCantidadDiasDeUnAnio(Integer anio) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(anio, 11, 31);
+		Integer cantidadDias = calendar.get(Calendar.DAY_OF_YEAR);
+		return cantidadDias;
+	}
 
-  // cantidad de sesiones
-  public int getCCS(String fechaInicio, String fechaFin) {
-    return consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
-  }
+	// cantidad de sesiones
+	public int getCCS(String fechaInicio, String fechaFin) {
+		return consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
+	}
 
-  // tiempo total de sesiones
-  public int getCCT(String fechaInicio, String fechaFin) {
-    return consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
-  }
+	// tiempo total de sesiones
+	public int getCCT(String fechaInicio, String fechaFin) {
+		return consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
+	}
 
-  public int getCantidadClientes(String fechaInicio, String fechaFin) {
-    return consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
-  }
+	public int getCantidadClientes(String fechaInicio, String fechaFin) {
+		return consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
+	}
 
-  public List<ConsultaSesiones> getConsultasByCaso(Long idCaso, String fechaInicio, String fechaFin, Integer flag) {
-    if (flag == 1) {
-      System.out.println("flag 1");
-      List<ConsultaSesiones> consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCaso2(idCaso);
-      if (consultasAux.size() == 0) {
-        List<ConsultaSesiones> consultasNull = new ArrayList<ConsultaSesiones>();
-        return consultasNull;
-      } else {
-        fechaInicio = consultasAux.get(0).getFecha().toString();
-        return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
-      }
-    } else {
-      return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
-    }
-  }
+	public List<ConsultaSesiones> getConsultasByCaso(Long idCaso, String fechaInicio, String fechaFin, Integer flag,
+			Long idAbo) {
+		if (flag == 1) {
+			List<ConsultaSesiones> consultasAux = new ArrayList<ConsultaSesiones>();
+			if (idAbo == 0) {
+				consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCaso2(idCaso);
+			} else {
+				consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado2(idCaso, idAbo);
+			}
+			if (consultasAux.size() == 0) {
+				List<ConsultaSesiones> consultasNull = new ArrayList<ConsultaSesiones>();
+				return consultasNull;
+			} else {
+				fechaInicio = consultasAux.get(0).getFecha().toString();
+				if (idAbo == 0) {
+					return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
+				} else {
+					return consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado(idCaso, fechaInicio,
+							fechaFin, idAbo);
+				}
+			}
+		} else {
+			if (idAbo == 0) {
+				return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
+			} else {
+				return consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado(idCaso, fechaInicio, fechaFin,
+						idAbo);
+			}
+		}
+	}
 
-  /*
-   * public String getPrueba(String fechaInicio, String fechaFin){
-   * return consultaClienteRepository.getConsultaNombreClienteMax(fechaInicio,
-   * fechaFin);
-   * }
-   */
+	/*
+	 * public String getPrueba(String fechaInicio, String fechaFin){
+	 * return consultaClienteRepository.getConsultaNombreClienteMax(fechaInicio,
+	 * fechaFin);
+	 * }
+	 */
 
-  public InfoTabla getInfoTabla(String fechaInicio, String fechaFin, Integer dropSiempre) {
-    if (dropSiempre == 1) {
-      List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
-      fechaInicio = allConsultas.get(0).getFecha().toString();
-    }
-    Integer cantidad_sesiones = consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
-    Integer cantidad_tiempo = consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
+	public InfoTabla getInfoTabla(String fechaInicio, String fechaFin, Integer dropSiempre) {
+		if (dropSiempre == 1) {
+			List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
+			fechaInicio = allConsultas.get(0).getFecha().toString();
+		}
+		Integer cantidad_sesiones = consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
+		Integer cantidad_tiempo = consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
 
-    Integer cantidad_clientes = consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
+		Integer cantidad_clientes = consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
 
-    List<ConsultaMateria> nombre_tiempo_cliente_max = consultaMateriaRepository.getConsultaNombreTiempoClienteMax(
-        fechaInicio,
-        fechaFin);
-    String nombre_cliente_max;
-    Integer tiempo_cliente_max;
-    if (nombre_tiempo_cliente_max.size() == 0) {
-      nombre_cliente_max = "No hay clientes";
-      tiempo_cliente_max = 0;
-    } else {
-      nombre_cliente_max = nombre_tiempo_cliente_max.get(0).getNombre();
-      tiempo_cliente_max = nombre_tiempo_cliente_max.get(0).getTiempo().intValue();
-    }
+		List<ConsultaMateria> nombre_tiempo_cliente_max = consultaMateriaRepository.getConsultaNombreTiempoClienteMax(
+				fechaInicio,
+				fechaFin);
+		String nombre_cliente_max;
+		Integer tiempo_cliente_max;
+		if (nombre_tiempo_cliente_max.size() == 0) {
+			nombre_cliente_max = "No hay clientes";
+			tiempo_cliente_max = 0;
+		} else {
+			nombre_cliente_max = nombre_tiempo_cliente_max.get(0).getNombre();
+			tiempo_cliente_max = nombre_tiempo_cliente_max.get(0).getTiempo().intValue();
+		}
 
-    Integer cantidad_materias = consultaMateriaRepository.getConsultaCantidadMaterias(fechaInicio, fechaFin);
+		Integer cantidad_materias = consultaMateriaRepository.getConsultaCantidadMaterias(fechaInicio, fechaFin);
 
-    List<ConsultaMateria> nombre_tiempo_materia_max = consultaMateriaRepository.getConsultaNombreTiempoMateriaMax(
-        fechaInicio,
-        fechaFin);
-    String nombre_materia_max;
-    Integer tiempo_materia_max;
-    if (nombre_tiempo_materia_max.size() == 0) {
-      nombre_materia_max = "No hay materias";
-      tiempo_materia_max = 0;
-    } else {
-      nombre_materia_max = nombre_tiempo_materia_max.get(0).getNombre();
-      tiempo_materia_max = nombre_tiempo_materia_max.get(0).getTiempo().intValue();
-    }
+		List<ConsultaMateria> nombre_tiempo_materia_max = consultaMateriaRepository.getConsultaNombreTiempoMateriaMax(
+				fechaInicio,
+				fechaFin);
+		String nombre_materia_max;
+		Integer tiempo_materia_max;
+		if (nombre_tiempo_materia_max.size() == 0) {
+			nombre_materia_max = "No hay materias";
+			tiempo_materia_max = 0;
+		} else {
+			nombre_materia_max = nombre_tiempo_materia_max.get(0).getNombre();
+			tiempo_materia_max = nombre_tiempo_materia_max.get(0).getTiempo().intValue();
+		}
 
-    Integer cantidad_submateria = consultaMateriaRepository.getConsultaCantidadSubmaterias(fechaInicio, fechaFin);
+		Integer cantidad_submateria = consultaMateriaRepository.getConsultaCantidadSubmaterias(fechaInicio, fechaFin);
 
-    List<ConsultaMateria> nombre_tiempo_submateria_max = consultaMateriaRepository.getConsultaNombreTiempoSubmateriaMax(
-        fechaInicio,
-        fechaFin);
-    String nombre_submateria_max;
-    Integer tiempo_submateria_max;
-    if (nombre_tiempo_submateria_max.size() == 0) {
-      nombre_submateria_max = "No hay submaterias";
-      tiempo_submateria_max = 0;
-    } else {
-      nombre_submateria_max = nombre_tiempo_submateria_max.get(0).getNombre();
-      tiempo_submateria_max = nombre_tiempo_submateria_max.get(0).getTiempo().intValue();
-    }
+		List<ConsultaMateria> nombre_tiempo_submateria_max = consultaMateriaRepository
+				.getConsultaNombreTiempoSubmateriaMax(
+						fechaInicio,
+						fechaFin);
+		String nombre_submateria_max;
+		Integer tiempo_submateria_max;
+		if (nombre_tiempo_submateria_max.size() == 0) {
+			nombre_submateria_max = "No hay submaterias";
+			tiempo_submateria_max = 0;
+		} else {
+			nombre_submateria_max = nombre_tiempo_submateria_max.get(0).getNombre();
+			tiempo_submateria_max = nombre_tiempo_submateria_max.get(0).getTiempo().intValue();
+		}
 
-    return new InfoTabla(cantidad_sesiones, cantidad_tiempo,
-        cantidad_clientes, nombre_cliente_max, tiempo_cliente_max,
-        cantidad_materias, nombre_materia_max, tiempo_materia_max,
-        cantidad_submateria, nombre_submateria_max, tiempo_submateria_max);
-  }
+		return new InfoTabla(cantidad_sesiones, cantidad_tiempo,
+				cantidad_clientes, nombre_cliente_max, tiempo_cliente_max,
+				cantidad_materias, nombre_materia_max, tiempo_materia_max,
+				cantidad_submateria, nombre_submateria_max, tiempo_submateria_max);
+	}
 
-  /*
-    PARA LA VISTA CONSULTA-MATERIA 
-  */
+	/*
+	 * PARA LA VISTA CONSULTA-MATERIA
+	 */
 
-  public InfoTablaMateria getInfoTablaMateria(String abogado, Long id_materia, String fi, String ff){
-    List<ConsultaMateria> sesiones = consultaMateriaRepository.getSesionesByMateriaAndAbogadoAndTiempo(abogado, id_materia, fi, ff);
-    List<Integer> clientes = consultaMateriaRepository.getCantidadUsuariosByMateriaAndAbogadoAndTiempo(abogado, id_materia, fi, ff);
-    Integer tiempo_total = consultaMateriaRepository.getTiempoSesionesByMateriaAndAbogadoAndTiempo(abogado, id_materia, fi, ff);
-    Integer cantidad_sesiones = sesiones.size();
-    Integer cantidad_clientes = clientes.size();
-    return new InfoTablaMateria(cantidad_sesiones, tiempo_total, cantidad_clientes);
-  }
+	public InfoTablaMateria getInfoTablaMateria(String abogado, Long id_materia, String fi, String ff) {
+		List<ConsultaMateria> sesiones = consultaMateriaRepository.getSesionesByMateriaAndAbogadoAndTiempo(abogado,
+				id_materia, fi, ff);
+		List<Integer> clientes = consultaMateriaRepository.getCantidadUsuariosByMateriaAndAbogadoAndTiempo(abogado,
+				id_materia, fi, ff);
+		Integer tiempo_total = consultaMateriaRepository.getTiempoSesionesByMateriaAndAbogadoAndTiempo(abogado,
+				id_materia,
+				fi, ff);
+		Integer cantidad_sesiones = sesiones.size();
+		Integer cantidad_clientes = clientes.size();
+		return new InfoTablaMateria(cantidad_sesiones, tiempo_total, cantidad_clientes);
+	}
 
-  /*
-   * PARA LA VISTA CONSULTA-CLIENTE
-   */
-  
-  public InfoTablaCliente getInfoTablaCliente(String abogado, Long id_caso, String fi, String ff){
-    Integer cantidadSesiones = consultaClienteRepository.getCantidadSesionesPorCliente(abogado, fi, ff, id_caso);
-    Integer tiempoSesiones = consultaClienteRepository.getTiempoSesionesPorCliente(abogado, fi, ff, id_caso);
-    return new InfoTablaCliente(cantidadSesiones, tiempoSesiones);
-  }
+	/*
+	 * PARA LA VISTA CONSULTA-CLIENTE
+	 */
 
+	public InfoTablaCliente getInfoTablaCliente(Long id_caso, String fi, String ff, Long id_abo, Integer flag) {
+		Integer cantidadSesiones = 0;
+		Integer tiempoSesiones = 0;
+
+		if (flag == 1) {
+			List<ConsultaSesiones> consultasAux = new ArrayList<ConsultaSesiones>();
+			if (id_abo == 0) {
+				consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCaso2(id_caso);
+				if (consultasAux.size() == 0) {
+					cantidadSesiones = 0;
+					tiempoSesiones = 0;
+				} else {
+					fi = consultasAux.get(0).getFecha().toString();
+					cantidadSesiones = consultaClienteRepository.getCantidadSesionesPorCliente(fi, ff, id_caso);
+					tiempoSesiones = consultaClienteRepository.getTiempoSesionesPorCliente(fi, ff, id_caso);
+				}
+			} else {
+				consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado2(id_caso, id_abo);
+				if (consultasAux.size() == 0) {
+					cantidadSesiones = 0;
+					tiempoSesiones = 0;
+				} else {
+					fi = consultasAux.get(0).getFecha().toString();
+					cantidadSesiones = consultaClienteRepository.getCantidadSesionesPorClienteConAbogado(id_abo, fi, ff,
+							id_caso);
+					tiempoSesiones = consultaClienteRepository.getTiempoSesionesPorClienteConAbogado(id_abo, fi, ff,
+							id_caso);
+				}
+			}
+		} else {
+			if (id_abo == 0) {
+				cantidadSesiones = consultaClienteRepository.getCantidadSesionesPorCliente(fi, ff, id_caso);
+				tiempoSesiones = consultaClienteRepository.getTiempoSesionesPorCliente(fi, ff, id_caso);
+			} else {
+				cantidadSesiones = consultaClienteRepository.getCantidadSesionesPorClienteConAbogado(id_abo, fi, ff,
+						id_caso);
+				tiempoSesiones = consultaClienteRepository.getTiempoSesionesPorClienteConAbogado(id_abo, fi, ff,
+						id_caso);
+						if(tiempoSesiones == null){
+							tiempoSesiones = 0;
+						}
+			}
+		}
+
+		return new InfoTablaCliente(cantidadSesiones, tiempoSesiones);
+	}
 
 }

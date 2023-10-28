@@ -37,10 +37,22 @@ public interface ConsultaClienteRepository extends JpaRepository<ConsultaCliente
     //                               "group by cl.nombre) as clTiempo", nativeQuery=true)
     // int getConsultaTiempoClienteMax(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
 
-    @Query(value = "SELECT count(*) FROM sesion as s, caso as c WHERE c.abogado = :abogado AND  c.id = :id_caso AND s.id_caso = c.id AND s.borrado = 0 AND s.fecha BETWEEN :fi AND :ff", nativeQuery = true)
-    Integer getCantidadSesionesPorCliente(@Param("abogado") String abogado, @Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
+    @Query(value = "SELECT count(*)\n" + //
+            "FROM sesion as s, caso as c\n" + //
+            "WHERE s.id_caso = c.id AND c.id = :id_caso AND s.borrado = 0 AND s.fecha BETWEEN :fi AND :ff", nativeQuery = true)
+    Integer getCantidadSesionesPorCliente(@Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
 
-    @Query(value = "SELECT sum(s.tiempo) as tiempo FROM sesion as s, caso as c WHERE c.abogado = :abogado AND  c.id = :id_caso AND id_caso = c.id AND s.borrado = 0 AND s.fecha BETWEEN :fi AND :ff GROUP BY s.id_caso", nativeQuery = true)
-    Integer getTiempoSesionesPorCliente(@Param("abogado") String abogado, @Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
+    @Query(value = "SELECT count(*)\n" + //
+            "FROM sesion as s, caso as c,  caso_abogado as ca\n" + //
+            "WHERE s.id_abogado = ca.id_abogado AND ca.id_abogado = :id_abo AND s.id_caso = c.id AND c.id = :id_caso AND ca.id_caso = c.id AND s.borrado = 0 AND s.fecha BETWEEN :fi AND :ff", nativeQuery = true)
+    Integer getCantidadSesionesPorClienteConAbogado(@Param("id_abo") Long id_abo, @Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
+
+    @Query(value = "SELECT sum(tiempo)\n" + //
+            "FROM sesion as s, caso as c\n" + //
+            "WHERE s.id_caso = c.id AND c.id = :id_caso AND s.borrado = 0 AND s.fecha BETWEEN :fi AND :ff", nativeQuery = true)
+    Integer getTiempoSesionesPorCliente(@Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
+
+    @Query(value = "SELECT sum(tiempo) FROM sesion as s, caso as c, caso_abogado as ca WHERE s.id_caso = c.id AND c.id = :id_caso AND s.borrado = 0 AND s.id_abogado = ca.id_abogado AND ca.id_abogado = :id_abo AND ca.id_caso = c.id AND s.fecha BETWEEN :fi AND :ff", nativeQuery = true)
+    Integer getTiempoSesionesPorClienteConAbogado(@Param("id_abo") Long id_abo, @Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
 
 }
