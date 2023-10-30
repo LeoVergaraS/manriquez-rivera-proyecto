@@ -124,6 +124,7 @@ const FormSesion = ({
         touched,
         setFieldValue,
         setFieldTouched,
+        handleBlur
       }) => (
         <Form noValidate onSubmit={handleSubmit}>
           <Row>
@@ -132,14 +133,15 @@ const FormSesion = ({
                 <Form.Label>Cliente</Form.Label>
                 <Form.Control
                   name="id_cliente"
+                  placeholder="Ingrese un cliente"
                   type="text"
                   value={values.id_cliente}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
-                {errors.id_cliente && touched.id_cliente && (
-                  <div style={{ color: "red", marginTop: ".5rem" }}>
-                    {errors.id_materia}
-                  </div>
+                {errors.id_cliente && 
+                  touched.id_cliente && (
+                    <div style={{ color: "red", marginTop: ".5rem" }}>{errors.id_cliente}</div>
                 )}
               </Form.Group>
 
@@ -150,6 +152,7 @@ const FormSesion = ({
                   aria-label="select"
                   onChange={handleChange}
                   value={values.id_materia}
+                  onBlur={handleBlur}
                 >
                   <option key={0} value={0}>
                     Seleccione una opción
@@ -189,6 +192,7 @@ const FormSesion = ({
                   name="id_submateria"
                   onChange={handleChange}
                   value={values.id_submateria}
+                  onBlur={handleBlur}
                 >
                   <option key={0} value={0}>
                     Seleccione una opción
