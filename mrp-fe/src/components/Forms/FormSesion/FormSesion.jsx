@@ -28,6 +28,7 @@ const FormSesion = ({
   const { Formik } = formik;
   const [options, setOptions] = useState([]);
   const [initialAbogados, setInitialAbogados] = useState(null);
+  const [numbersAbogados, setNumbersAbogados] = useState(null);
 
   const validations = yup.object().shape({
     id_materia: yup
@@ -46,6 +47,7 @@ const FormSesion = ({
     abogado: yup
       .array()
       .min(1, "Seleccione al menos un abogado")
+      .test("Abogados", "No puede eliminar un abogado del caso", function(value){return value.length >= numbersAbogados})
       .of(
         yup.object().shape({
           value: yup.string().required(),
@@ -83,6 +85,7 @@ const FormSesion = ({
             label: abogado.nombre,
           }))
         );
+        setNumbersAbogados(response.data.length);
       }
     } catch (err) {
       console.log(err.message);
