@@ -111,9 +111,9 @@ public class ConsultaController {
   }
 
   @GetMapping("/materia/estadisticas/{abo}/{id}/{fi}/{ff}")
-  public ResponseEntity<InfoTablaMateria> getEstadisticasMateria(@PathVariable("abo") String abogado, @PathVariable("id") Long id_materia, @PathVariable("fi") String fechaInicio,
+  public ResponseEntity<InfoTablaMateria> getEstadisticasMateria(@PathVariable("abo") Long id_abogado, @PathVariable("id") Long id_materia, @PathVariable("fi") String fechaInicio,
       @PathVariable("ff") String fechaFin) {
-    InfoTablaMateria consultaEstadisticasMateria = consultaService.getInfoTablaMateria(abogado, id_materia, fechaInicio, fechaFin);
+    InfoTablaMateria consultaEstadisticasMateria = consultaService.getInfoTablaMateria(id_abogado, id_materia, fechaInicio, fechaFin);
     return ResponseEntity.ok().body(consultaEstadisticasMateria);
   }
 

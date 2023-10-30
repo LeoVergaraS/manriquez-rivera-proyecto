@@ -6,7 +6,7 @@ import { Badge, Card } from "react-bootstrap";
 import { BiUser, BiTime, BiClipboard } from "react-icons/bi";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 
-const Materias = ({ consultasS }) => {
+const Materias = ( props ) => {
   const [materias, setMaterias] = useState([]);
   const [materia, setMateria] = useState({});
 
@@ -64,12 +64,16 @@ const Materias = ({ consultasS }) => {
 
   }, []);
 
+
+
   useEffect(() => {
-    if (materia.id !== undefined){
-			getEstadisticas("Daniel Manriquez", materia.id, "2021-01-01", "2023-10-23");
+    if (materia.id !== undefined && props.abogado.id !== 0){
+			getEstadisticas(props.abogado.id, materia.id, props.fechaInicio, props.fechaFin);
 		};
-		console.log(estadisticas, materia.id);
-  }, [materia]);
+		console.log(materia.id);
+    console.log(props.abogado, props.abogado.id)
+    console.log(props.fechaInicio, props.fechaFin)
+  }, [materia, props.abogado, props.fechaInicio, props.fechaFin]);
 
   return (
     <main className="layout-materias">
@@ -84,7 +88,7 @@ const Materias = ({ consultasS }) => {
         />
       </fieldset>
 			<Card className="card-grafico">
-				<GraficoGernal1 tiempoSesiones={consultasS} title={"Tiempo de sesiones por día"} />
+				<GraficoGernal1 tiempoSesiones={[]} title={"Tiempo de sesiones por día"} />
 			</Card>
       <Card className="card-estadisticas">
         <div className="card-estadisticas__header">

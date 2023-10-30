@@ -46,11 +46,10 @@ const Youtube = () => {
   const handleModal = () => setShowModal(!showModal);
 
   const abogadoSelect = (eventKey) => {
-    console.log(typeof eventKey);
     if(eventKey === "-1"){
       setAbogado({
         nombre:"Todos",
-        id:0,
+        id:-1,
       });
     }else{
       setAbogado(abogados[eventKey]);
@@ -217,7 +216,7 @@ const Youtube = () => {
           
 
       {selectedMateria === "selected" ? (
-        <Materias consultasS={consultasS} />) : null}
+        <Materias abogado={abogado} fechaInicio={fechaInicio} fechaFin={fechaFin} />) : null}
 
       <Modal show={showModal} onHide={handleModal}>
         <Modal.Header closeButton>

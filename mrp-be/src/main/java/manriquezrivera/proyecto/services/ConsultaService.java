@@ -268,14 +268,15 @@ public class ConsultaService {
 	 * PARA LA VISTA CONSULTA-MATERIA
 	 */
 
-	public InfoTablaMateria getInfoTablaMateria(String abogado, Long id_materia, String fi, String ff) {
-		List<ConsultaMateria> sesiones = consultaMateriaRepository.getSesionesByMateriaAndAbogadoAndTiempo(abogado,
+	public InfoTablaMateria getInfoTablaMateria(Long id_abogado, Long id_materia, String fi, String ff) {
+		List<ConsultaMateria> sesiones = consultaMateriaRepository.getSesionesByMateriaAndAbogadoAndTiempo(id_abogado,
 				id_materia, fi, ff);
-		List<Integer> clientes = consultaMateriaRepository.getCantidadUsuariosByMateriaAndAbogadoAndTiempo(abogado,
+		List<Integer> clientes = consultaMateriaRepository.getCantidadUsuariosByMateriaAndAbogadoAndTiempo(id_abogado,
 				id_materia, fi, ff);
-		Integer tiempo_total = consultaMateriaRepository.getTiempoSesionesByMateriaAndAbogadoAndTiempo(abogado,
+		Integer tiempo_total = consultaMateriaRepository.getTiempoSesionesByMateriaAndAbogadoAndTiempo(id_abogado,
 				id_materia,
 				fi, ff);
+		System.out.println(sesiones);
 		Integer cantidad_sesiones = sesiones.size();
 		Integer cantidad_clientes = clientes.size();
 		return new InfoTablaMateria(cantidad_sesiones, tiempo_total, cantidad_clientes);

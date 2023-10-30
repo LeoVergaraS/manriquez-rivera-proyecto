@@ -97,28 +97,28 @@ public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria
                  "FROM sesion s, caso c " +
                  "WHERE s.borrado = 0 AND " +
                  "      c.id = s.id_caso AND " +
-                 "      c.abogado = :abogado AND " +
+                 "      s.id_abogado = :id_abogado AND " +
                  "      c.id_materia = :id_materia AND " +
                  "      s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
-    List<ConsultaMateria> getSesionesByMateriaAndAbogadoAndTiempo(@Param("abogado") String abogado, @Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+    List<ConsultaMateria> getSesionesByMateriaAndAbogadoAndTiempo(@Param("id_abogado") Long id_abogado, @Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
 
     @Query(value="SELECT coalesce(sum(s.tiempo),0) as tiempo " + 
                  "FROM sesion s, caso c " +
                  "WHERE s.borrado = 0 AND " +
                  "      c.id = s.id_caso AND " +
-                 "      c.abogado = :abogado AND " +
+                 "      s.id_abogado = :id_abogado AND " +
                  "      c.id_materia = :id_materia AND " +
                  "      s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
-    Integer getTiempoSesionesByMateriaAndAbogadoAndTiempo(@Param("abogado") String abogado, @Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+    Integer getTiempoSesionesByMateriaAndAbogadoAndTiempo(@Param("id_abogado") Long id_abogado, @Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
 
     @Query(value="SELECT count(*)" + 
                  "FROM sesion s, caso c " +
                  "WHERE s.borrado = 0 AND " +
                  "      c.id = s.id_caso AND " +
-                 "      c.abogado = :abogado AND " +
+                 "      s.id_abogado = :id_abogado AND " +
                  "      c.id_materia = :id_materia AND " +
                  "      s.fecha BETWEEN :fechaInicio AND :fechaFin " + 
                  "GROUP BY c.id_cliente", nativeQuery = true)
-    List<Integer> getCantidadUsuariosByMateriaAndAbogadoAndTiempo(@Param("abogado") String abogado, @Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+    List<Integer> getCantidadUsuariosByMateriaAndAbogadoAndTiempo(@Param("id_abogado") Long id_abogado, @Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
 
 }
