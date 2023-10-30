@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import axios from 'axios';
 import formatDateShow from "../../utils/functions/formatDateShow";
-import "./cliente.scss";
+import "./clientes.scss";
 import castTime from "../../utils/functions/castTime";
 import { BiUser, BiTime, BiClipboard } from "react-icons/bi";
 
@@ -97,22 +97,22 @@ const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 				
 				<div style={{display: "flex", justifyContent: "center",alignItems:"center", gap:"50px", gridColumn:"1/4"}}>
 
-				<Card className="card-estadisticas">
+				<Card className="card-estadisticas-c">
 					<div className="card-estadisticas__header">
-						<h2 className="card-estadisticas__title">Sesiones</h2>
-						<Badge className="card-estadisticas__icon"><BiClipboard/></Badge>
+						<h2 className="card-estadisticas-c__title">Sesiones</h2>
+						<Badge className="card-estadisticas-c__icon"><BiClipboard/></Badge>
 					</div>
-					<h1 className="card-estadisticas__estadistica">{estadisticas.cantidad_sesiones}</h1>
-					<p className="card-estadisticas__caption">Sesiones realizadas</p>
+					<h1 className="card-estadisticas-c__estadistica">{estadisticas.cantidad_sesiones}</h1>
+					<p className="card-estadisticas-c__caption">Sesiones realizadas</p>
 				</Card>
 
-				<Card className="card-estadisticas">
-					<div className="card-estadisticas__header">
-						<h2 className="card-estadisticas__title">Tiempo total</h2>
-						<Badge className="card-estadisticas__icon"><BiTime/></Badge>
+				<Card className="card-estadisticas-c">
+					<div className="card-estadisticas-c__header">
+						<h2 className="card-estadisticas-c__title">Tiempo total</h2>
+						<Badge className="card-estadisticas-c__icon"><BiTime/></Badge>
 					</div>
-					<h1 className="card-estadisticas__estadistica">{castTime(estadisticas.tiempo_total)}</h1>
-					<p className="card-estadisticas__caption">Tiempo trabajado</p>
+					<h1 className="card-estadisticas-c__estadistica">{castTime(estadisticas.tiempo_total)}</h1>
+					<p className="card-estadisticas-c__caption">De tiempo trabajado</p>
 				</Card>
 
 				</div>
@@ -120,11 +120,11 @@ const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 				<Card className="card-sesiones">
 					<Card.Body>
 						<Card.Title >Sesiones registradas</Card.Title>
-						<Table responsive="sm" hover >
+						<Table className="table-sesiones">
 							<thead>
 								<tr>
-									<th style={{ width: '100px' }}>Fecha</th>
-									<th style={{ width: '100px' }}>Tiempo</th>
+									<th>Fecha</th>
+									<th>Tiempo</th>
 								</tr>
 							</thead>
 							<tbody>

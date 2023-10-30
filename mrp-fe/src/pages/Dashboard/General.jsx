@@ -13,8 +13,9 @@ const General = ({ consultasS, estadisticas, consultasM }) => {
 			<main className="layout-general">
 				<h2 className="general__title">Resumen general</h2>
 				<Card
-					className="card-grafico-1"
+					className="card-grafico-1" style={{alignSelf:"top"}}
 				>
+					
 					<Card.Body>
 						<GraficoGernal1 tiempoSesiones={consultasS} title={"Tiempo de sesiones por día"} />
 					</Card.Body>
