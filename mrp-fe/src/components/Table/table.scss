@@ -87,4 +87,29 @@
             }
         }
     }
+
+    &__pagination{
+        margin-top: 10px;
+        justify-content: center;
+        border-radius: 0;
+    }
+}
+
+.page-link{
+    background-color: rgb(0, 0, 0,0);
+    color: $color-secundario;
+    border: 1px solid $color-secundario;
+    border-radius: 0;
+    font-size: 20px;
+    padding: 5px 15px;
+    &:hover{
+        background-color: $color-primario;
+        color: $color-secundario;
+    }
+}
+
+.active>.page-link{
+    background-color: $color-primario;
+    border-color: $color-primario;
+    color: $color-secundario;
 }

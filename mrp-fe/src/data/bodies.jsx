@@ -1,4 +1,6 @@
 import { VscTrash, VscEdit } from "react-icons/vsc";
+import castTime from "../utils/functions/castTime";
+import formatDateShow from "../utils/functions/formatDateShow";
 
 const bodyAbogado = (abogado) => {
   return (
@@ -17,7 +19,7 @@ const bodyCaso = (caso) => {
   return (
     <tr key={caso.id} className="table-paginated-body__row">
       <td>{caso.id}</td>
-      <td>{caso.fecha}</td>
+      <td>{formatDateShow(caso.fecha)}</td>
       <td>{caso.id_materia.nombre}</td>
       <td>{caso.id_submateria.nombre}</td>
       <td>{caso.id_cliente.nombre}</td>
@@ -59,8 +61,8 @@ const bodySesion = (sesion) => {
   return (
     <tr key={sesion.id} className="table-paginated-body__row">
       <td>{sesion.id}</td>
-      <td>{sesion.tiempo}</td>
-      <td>{sesion.fecha}</td>
+      <td>{castTime(sesion.tiempo)}</td>
+      <td>{formatDateShow(sesion.fecha)}</td>
       <td>{sesion.id_caso.id}</td>
       <td>{sesion.id_abogado.nombre}</td>
       <td className="table-paginated-body__actions">
