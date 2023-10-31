@@ -38,7 +38,7 @@ const Youtube = () => {
 
   const [abogado, setAbogado] = useState({
     nombre:"Abogados",
-    id:0,
+    id:-1,
   });
 
   const [abogados, setAbogados] = useState([]);
