@@ -15,8 +15,8 @@ import Select from 'react-select'
 function Cronometro({ id_caso, ts, setIsDisabled }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
- 
-
+  // abogado default (Daniel manriqurez id=1)
+  const [idLogeado, setIdLogeado] = useState(1);
   const tiempoInicial = parseInt(localStorage.getItem("tiempoCronometro")) || 0;
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
@@ -28,6 +28,9 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
     tiempo: null,
     id_caso: {
       id: 0,
+    },
+    id_abogado: {
+      id:0,
     },
   });
 
@@ -133,7 +136,10 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
         sesion.tiempo = tiempo;
         sesion.fecha = formatDate(new Date());
         sesion.id_caso.id = id_caso;
-        console.log(sesion);
+        // abogado por default
+        sesion.id_abogado.id = idLogeado;
+        //console.log(sesion);
+        console.log(sesion.id_abogado.id);
         createSesion(sesion);
         reset();
       }
