@@ -44,14 +44,14 @@ const bodyCliente = (cliente, edit, deleted) => {
   );
 };
 
-const bodyMateria = (materia) => {
+const bodyMateria = (materia, edit, deleted) => {
   return (
     <tr key={materia.id} className="table-paginated-body__row">
       <td>{materia.id}</td>
       <td>{materia.nombre}</td>
       <td className="table-paginated-body__actions">
-        <VscEdit className="table-paginated-body__actions-item table-paginated-body__actions-item--edit" />
-        <VscTrash className="table-paginated-body__actions-item table-paginated-body__actions-item--delete" />
+        <VscEdit onClick={() => edit(materia)} className="table-paginated-body__actions-item table-paginated-body__actions-item--edit" />
+        <VscTrash onClick={() => deleted(materia)} className="table-paginated-body__actions-item table-paginated-body__actions-item--delete" />
       </td>
     </tr>
   );
