@@ -16,6 +16,7 @@ import Swal from "sweetalert2";
 import InputSelect from "../components/InputSelect/InputSelect";
 import Alerta from "../components/Alerta/Alerta";
 import Select from "react-select";
+import Cookies from 'js-cookie';
 
 function Home() {
   const [showCreate, setShowCreate] = useState(false);
@@ -107,8 +108,11 @@ function Home() {
 
   const getSesiones = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/sesiones";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setSesiones(response.data);
       }
@@ -119,8 +123,12 @@ function Home() {
 
   const getClientes = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
+      console.log("config:",config);
       let url = "http://localhost:8090/clientes";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setClientes(response.data);
       }
@@ -131,8 +139,11 @@ function Home() {
 
   const getMaterias = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/materias";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setMaterias(response.data);
       }
@@ -143,8 +154,11 @@ function Home() {
 
   const getSubMaterias = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/submaterias";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setSubMaterias(response.data);
       }
@@ -155,8 +169,11 @@ function Home() {
 
   const getCasos = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/casos";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasos(response.data);
       }
@@ -167,8 +184,11 @@ function Home() {
 
   const getCasoById = async (id) => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/casos/" + id;
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasoSeleccionado(response.data);
       }
@@ -180,8 +200,11 @@ function Home() {
 
   const getCasoByIdAbogado = async (idAbogado) => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/casos/abogado/" + idAbogado;
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasos(response.data);
       }
@@ -192,9 +215,12 @@ function Home() {
 
   const createCaso = async (request) => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       console.log(request);
       let url = "http://localhost:8090/casos";
-      const response = await axios.post(url, request);
+      const response = await axios.post(url, request, config);
 
       if (response.status === 200) {
         handleCloseCreate();
@@ -208,9 +234,12 @@ function Home() {
 
   const updateCaso = async (item) => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       console.log(item);
       let url = "http://localhost:8090/casos";
-      const response = await axios.post(url, item);
+      const response = await axios.post(url, item, config);
       if (response.status === 200) {
         handleCloseEdit();
         getCasos();
@@ -260,18 +289,20 @@ function Home() {
 
   const createCasoOption = (caso) => {
     return (
-     {label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre} - ${formatDateShow(caso.fecha)}`,
-      value: caso.id}
+      {
+        label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre} - ${formatDateShow(caso.fecha)}`,
+        value: caso.id
+      }
     )
   }
-  
+
   useEffect(() => {
-    getSesiones();
+    //getSesiones();
     getClientes();
-    getMaterias();
-    getSubMaterias();
+    //getMaterias();
+    //getSubMaterias();
     //getCasos();
-    getCasoByIdAbogado(1);
+    //getCasoByIdAbogado(1);
   }, []);
 
   return (
@@ -288,13 +319,13 @@ function Home() {
       <Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
         <fieldset className="fieldset-select">
           <legend className="fieldset-select__legend"> Buscar caso </legend>
-          <InputSelect 
-            className="fieldset-select__input-select" 
+          <InputSelect
+            className="fieldset-select__input-select"
             objects={casos}
             placeholder={"Seleccione un caso"}
             set={setCasoSeleccionado}
             createOption={createCasoOption}
-            />
+          />
         </fieldset>
       </Row>
 
@@ -370,7 +401,7 @@ function Home() {
                         </tr>
                         <tr className="special-row"></tr>
                       </thead>
-                      <tbody className="tbody-home"style={{ color: "white" }}>
+                      <tbody className="tbody-home" style={{ color: "white" }}>
                         <tr
                           key={setCasoSeleccionado.id}
                           style={{ background: "#235c62" }}
