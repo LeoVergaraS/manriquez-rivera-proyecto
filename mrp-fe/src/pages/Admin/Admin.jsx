@@ -4,6 +4,7 @@ import Tabla from "../../components/Table/Tabla";
 import headers from "../../data/headers";
 import { bodyAbogado, bodyCaso, bodyCliente, bodyMateria, bodySesion, bodySubmateria } from "../../data/bodies";
 import FormAbogado from "../../components/Forms/FormAbogado/FormAbogado";
+import FormCliente from "../../components/Forms/FormCliente/FormCliente";
 
 const Admin = () => {
   const [selected, setSelected] = useState(1);
@@ -55,7 +56,7 @@ const Admin = () => {
         <h1 className="admin-content__title">{content}</h1>
         {selected === 1 ? (<Tabla content={"abogados"} headers={headers.abogados} body={bodyAbogado} form={FormAbogado} />) : null}
         {selected === 2 ? (<Tabla content={"casos"} headers={headers.casos} body={bodyCaso} />) : null}
-        {selected === 3 ? (<Tabla content={"clientes"} headers={headers.clientes} body={bodyCliente} />) : null}
+        {selected === 3 ? (<Tabla content={"clientes"} headers={headers.clientes} body={bodyCliente} form={FormCliente} />) : null}
         {selected === 4 ? (<Tabla content={"materias"} headers={headers.materias} body={bodyMateria} />) : null}
         {selected === 5 ? (<Tabla content={"sesiones"} headers={headers.sesiones} body={bodySesion} />) : null}
         {selected === 6 ? (<Tabla content={"submaterias"} headers={headers.submaterias} body={bodySubmateria} />) : null}

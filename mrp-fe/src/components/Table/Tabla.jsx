@@ -254,7 +254,7 @@ const Tabla = (props) => {
         <h3>{"Eliminar " + props.content.substring(0,props.content.length -1)}</h3>
       </Modal.Header>
       <Modal.Body>
-        <h5>{"¿Está seguro que desea eliminar el " + props.content.substring(0,props.content.length -1) + "?"}</h5>
+        <h5>¿Está seguro que desea eliminar el item?</h5>
       </Modal.Body>
       <Modal.Footer>
         <VscClose onClick={toggleDeleted} style={{cursor: "pointer", color: "red", fontSize: 30}} />
