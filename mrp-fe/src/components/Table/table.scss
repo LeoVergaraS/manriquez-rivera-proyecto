@@ -1,53 +1,90 @@
-.table-home{
-    color: black;
-    font-size: 30px;
-    table-layout: fixed;
-    border-collapse: collapse;
-}
+@use '../../utils/scss/variables.scss' as *;
 
-.tbody-home{
-    align-items: center;
-    justify-content: center;
-    min-height: 80%;
-    background: white;
-}
+.table-paginated{
+    margin: 0;
 
-.container2{
-    display: flex;
-    justify-content: center;
-}
+    &-head{
+        &__row{
+            text-align: center;
+        }
+    }
 
-.thead-home{
-    background: #3B575A;
-    color: white;
-}
+    &-body{
+        &__row{
+            text-align: center;
+        }
 
-.th-home{
-    padding: 20px 15px;
-    font-weight: 700;
-    text-align: center;
-    border-bottom: 3px solid #DFBF68;
-}
+        &__actions{
+            &-item{
+                font-size: 25px;
+                cursor: pointer;
+                transition: font-size 0.2s ease-in-out;
+                &:hover{
+                    font-size: 27px;
+                }
+                &--edit{
+                    color: $color-secundario;
+                }
+                &--delete{
+                    color: $color-oscuro;
+                }
+            }
+        }
+    }
 
-.td-home {
-    padding: 15px;
-    border-bottom: solid 1px rgb(225, 21, 212);
-    text-align: center;
-    border: 2px solid white;
-    //border-radius: 10px;
-}
+    &-footer{
+        display: flex;
+        width: 100%;
+        height: auto;
+        background-color: white;
+        justify-content: right;
+        align-items: center;
+        gap: 15px;
+        padding: 5px;
 
-tbody tr:hover{
-    background: rgb(219, 215, 215);
-}
+        &__page-size{
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 5px
+        }
 
-.special-column {
-    background-color: white;
-    cursor: pointer;
-    border-radius: 0%;
-    border-bottom: 3px solid white;
-}
+        &__size-item{
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+            &:hover{
+                color: $color-secundario;
+            }
+            &--selected{
+                color: $color-secundario;
+            }
+        }
 
-.special-row{
-    height: 5px;
+        &__divider{
+            height: 30px;
+            width: 1px;
+            border-width: 0;
+            color: #000;
+            background-color: #000;
+            margin: 0;
+        }
+
+        &__actions{
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            gap: 3px;
+        }
+
+        &__actions-item{
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+            &:hover{
+                color: $color-secundario;
+            }
+        }
+    }
 }

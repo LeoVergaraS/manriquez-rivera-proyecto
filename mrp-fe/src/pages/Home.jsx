@@ -4,7 +4,6 @@ import { BiSearchAlt } from "react-icons/bi";
 import { AiOutlinePlusCircle, AiFillSave } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import "./home.scss";
-import "../components/Table/table.scss";
 import { useState, useEffect } from "react";
 import Cronometro from "../components/Cronometro/Cronometro";
 import axios from "axios";
