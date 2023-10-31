@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +29,15 @@ public class AbogadoController {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok().body(abogados);
+  }
+
+  @PostMapping
+  public ResponseEntity<Abogado> saveAbogado(@RequestBody Abogado abogado){
+    Abogado abogadoSaved = abogadoService.saveAbogado(abogado);
+    if(abogadoSaved == null){
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(abogadoSaved);
   }
 
   @GetMapping("/caso/{id_caso}")

@@ -42,7 +42,7 @@ const FormSesion = ({
     id_cliente: yup
       .string()
       .required("Ingrese un cliente válido")
-      .min(1, "Seleccione una opción válida")
+      .min(1, "Mínimo 1 caracter")
       .max(255, "Máximo 255 caracteres"),
     abogado: yup
       .array()

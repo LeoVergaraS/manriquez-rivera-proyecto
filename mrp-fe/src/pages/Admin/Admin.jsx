@@ -3,6 +3,7 @@ import "./admin.scss";
 import Tabla from "../../components/Table/Tabla";
 import headers from "../../data/headers";
 import { bodyAbogado, bodyCaso, bodyCliente, bodyMateria, bodySesion, bodySubmateria } from "../../data/bodies";
+import FormAbogado from "../../components/Forms/FormAbogado/FormAbogado";
 
 const Admin = () => {
   const [selected, setSelected] = useState(1);
@@ -21,11 +22,6 @@ const Admin = () => {
     });
     element.classList.add("admin-nav__item--selected");
   };
-
-  useEffect(() => {
-    console.log(typeof selected);
-  }, [selected]);
-
 
   return (
     <main className="layout-admin">
@@ -57,7 +53,7 @@ const Admin = () => {
       </aside>
       <div className="admin-content">
         <h1 className="admin-content__title">{content}</h1>
-        {selected === 1 ? (<Tabla content={"abogados"} headers={headers.abogados} body={bodyAbogado} />) : null}
+        {selected === 1 ? (<Tabla content={"abogados"} headers={headers.abogados} body={bodyAbogado} form={FormAbogado} />) : null}
         {selected === 2 ? (<Tabla content={"casos"} headers={headers.casos} body={bodyCaso} />) : null}
         {selected === 3 ? (<Tabla content={"clientes"} headers={headers.clientes} body={bodyCliente} />) : null}
         {selected === 4 ? (<Tabla content={"materias"} headers={headers.materias} body={bodyMateria} />) : null}
