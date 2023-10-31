@@ -30,8 +30,9 @@
 .card-grafico{
   grid-column: 1/4;
   width: 80%;
-  height: 100%;
+  height: auto;
   place-self: center;
+  align-self: baseline;
 }
 
 .card-estadisticas{
