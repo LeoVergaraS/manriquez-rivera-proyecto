@@ -6,19 +6,32 @@ import axios from "axios";
 import MySelect from "../MySelect/MySelect";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 
-const FormCaso = ({
+const FormCasoAdmin = ({
   caso,
   postCaso,
   handleClose,
-  materias,
-  subMaterias,
 }) => {
+
+  const caso = props.item;
+  const close = props.close;
+  const post = props.post;
+
   const { Formik } = formik;
-  const [options, setOptions] = useState([]);
+
+  // Opciones de los selects
+  const [optionsAbogados, setOptionsAbogados] = useState([]);
+  const [optionsMaterias, setOptionsMaterias] = useState([]);
+  const [optionsSubmaterias, setOptionsSubmaterias] = useState([]);
+
+  // Abogados del caso, si se esta editando
   const [initialAbogados, setInitialAbogados] = useState(null);
   const [numbersAbogados, setNumbersAbogados] = useState(null);
 
   const validations = yup.object().shape({
+    fecha: yup
+      .date()
+      .required("Ingrese una fecha válida")
+      .max(formatDateUpload(new Date()), "La fecha no puede ser mayor a la actual"),
     id_materia: yup
       .number()
       .required("Ingrese una materia válida")
@@ -50,10 +63,46 @@ const FormCaso = ({
       const response = await axios.get(url);
       if (response.status === 200) {
         const abogados = response.data;
-        setOptions(
+        setOptionsAbogados(
           abogados.map((abogado) => ({
             value: abogado.id,
             label: abogado.nombre,
+          }))
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getMaterias = async () => {
+    try {
+      let url = "http://localhost:8090/materias";
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        const materias = response.data;
+        setOptionsMaterias(
+          materias.map((materia) => ({
+            value: materia.id,
+            label: materia.nombre,
+          }))
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getSubmaterias = async () => {
+    try {
+      let url = "http://localhost:8090/submaterias";
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        const submaterias = response.data;
+        setOptionsSubmaterias(
+          submaterias.map((submateria) => ({
+            value: submateria.id,
+            label: submateria.nombre,
           }))
         );
       }
@@ -82,6 +131,8 @@ const FormCaso = ({
 
   useEffect(() => {
     getAbogados();
+    getMaterias();
+    getSubmaterias();
     caso.id === null ? null : getAbogadosByCaso(caso.id);
   }, [caso.id]);
 
@@ -92,13 +143,16 @@ const FormCaso = ({
         const abogados = values.abogado.map((item) => {
           return item.value;
         });
-        const item = { ...caso };
-        item.id_cliente = { nombre: values.id_cliente };
-        item.id_materia = { id: values.id_materia };
-        item.id_submateria = { id: values.id_submateria };
-        item.fecha = formatDateUpload(new Date());
-        const request = { caso: item, abogados: abogados };
-        postCaso(request);
+        const object = {
+          id: caso !== null ? caso.id : null,
+          id_cliente: { nombre: values.id_cliente },
+          id_materia: { id: values.id_materia },
+          id_submateria: { id: values.id_submateria },
+          fecha: values.fecha,
+          borrado: caso !== null ? caso.borrado : false,
+        }
+        const request = { caso: object, abogados: abogados };
+        postCaso("Casos",request);
       }}
       initialValues={{
         id_materia: caso.id_materia.id,
@@ -167,7 +221,7 @@ const FormCaso = ({
                 <MySelect
                   name="abogado"
                   placeholder="Seleccione uno o más abogados"
-                  options={options}
+                  options={optionsAbogados}
                   onChange={setFieldValue}
                   onBlur={setFieldTouched}
                   value={values.abogado}
@@ -230,4 +284,4 @@ const FormCaso = ({
   );
 };
 
-export default FormCaso;
+export default FormCasoAdmin;

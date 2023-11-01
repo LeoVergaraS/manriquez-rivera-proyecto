@@ -26,6 +26,7 @@ public class SesionService{
     }
 
     public Sesion saveSesion(Sesion sesion){
+        System.out.println(sesion);
         return sesionRepository.save(sesion);
     }
 

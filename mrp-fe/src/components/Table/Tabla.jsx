@@ -12,6 +12,7 @@ const Tabla = (props) => {
   const [sliceData, setSliceData] = useState(null);
   const [item, setItem] = useState(null);
 
+  const name = props.name;
   const body = props.body;
 
   const paginatedData = (data) => {
@@ -54,8 +55,10 @@ const Tabla = (props) => {
     try {
       const mapping = content.toLowerCase();
       const url = `http://localhost:8090/${mapping}`;
+      console.log('item:', item)
       const response = await axios.post(url, item);
       if (response.status === 200) {
+        console.log('reponse:', response.data)
         toggleCreate();
         Alerta.fire({
           icon: "success",
@@ -71,8 +74,10 @@ const Tabla = (props) => {
     try {
       const mapping = content.toLowerCase();
       const url = `http://localhost:8090/${mapping}`;
+      console.log('item:', item)
       const response = await axios.post(url, item);
       if (response.status === 200) {
+        console.log('reponse:', response.data)
         toggleEdit();
         Alerta.fire({
           icon: "success",
@@ -231,7 +236,7 @@ const Tabla = (props) => {
     {/* MODAL CREATE */}
     <Modal show={create} onHide={toggleCreate}>
       <Modal.Header closeButton>
-        <h3>{"Crear " + props.content.substring(0,props.content.length -1)}</h3>
+        <h3>{"Crear " + name}</h3>
       </Modal.Header>
       <Modal.Body>
         <props.form item={null} close={toggleCreate} post={createItem}/>
@@ -241,7 +246,7 @@ const Tabla = (props) => {
     {/* MODAL EDIT */}
     <Modal show={edit} onHide={toggleEdit}>
       <Modal.Header closeButton>
-        <h3>{"Editar " + props.content.substring(0,props.content.length -1)}</h3>
+        <h3>{"Editar " + name}</h3>
       </Modal.Header>
       <Modal.Body>
         <props.form item={item} close={toggleEdit} post={editItem}/>
@@ -251,7 +256,7 @@ const Tabla = (props) => {
     {/* MODAL DELETE */}
     <Modal show={deleted} onHide={toggleDeleted}>
       <Modal.Header closeButton>
-        <h3>{"Eliminar " + props.content.substring(0,props.content.length -1)}</h3>
+        <h3>{"Eliminar " + name}</h3>
       </Modal.Header>
       <Modal.Body>
         <h5>¿Está seguro que desea eliminar el item?</h5>
