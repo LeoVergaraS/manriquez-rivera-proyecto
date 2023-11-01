@@ -7,7 +7,7 @@ import "./home.scss";
 import { useState, useEffect } from "react";
 import Cronometro from "../components/Cronometro/Cronometro";
 import axios from "axios";
-import FormSesion from "../components/Forms/FormSesion/FormSesion";
+import FormCaso from "../components/Forms/FormCaso/FormCaso";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import formatDateShow from "../utils/functions/formatDateShow";
@@ -498,9 +498,9 @@ function Home() {
           <Modal.Title>Crear Caso</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormSesion
-            sesion={editedItem}
-            postSesion={createCaso}
+          <FormCaso
+            caso={editedItem}
+            postCaso={createCaso}
             handleClose={handleCloseCreate}
             materias={materias}
             subMaterias={subMaterias}
@@ -513,9 +513,9 @@ function Home() {
           <Modal.Title>Editar Caso</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormSesion
-            sesion={casoSeleccionado}
-            postSesion={updateCaso}
+          <FormCaso
+            caso={casoSeleccionado}
+            postCaso={updateCaso}
             handleClose={handleCloseEdit}
             materias={materias}
             subMaterias={subMaterias}
