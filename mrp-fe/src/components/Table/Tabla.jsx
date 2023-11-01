@@ -91,9 +91,8 @@ const Tabla = (props) => {
 
   const deleteItem = async (content, item) => {
     try {
-      item.borrado = true;
       const mapping = content.toLowerCase();
-      const url = `http://localhost:8090/${mapping}`;
+      const url = `http://localhost:8090/${mapping}/delete`;
       const response = await axios.post(url, item);
       if (response.status === 200) {
         toggleDeleted();

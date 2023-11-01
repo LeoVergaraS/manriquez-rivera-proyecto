@@ -4,19 +4,7 @@ import * as formik from "formik";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {VscCheck, VscClose} from "react-icons/vsc";
-
-const formatDate = (date) => {
-  let dd = date.getDate();
-  let mm = date.getMonth() + 1;
-  let yyyy = date.getFullYear();
-  if (dd < 10) {
-    dd = "0" + dd;
-  }
-  if (mm < 10) {
-    mm = "0" + mm;
-  }
-  return yyyy + "-" + mm + "-" + dd;
-};
+import formatDateUpload from "../../../utils/functions/formatDateUpload";
 
 const FormSesion = (props) => {
   const sesion = props.item;
@@ -24,6 +12,7 @@ const FormSesion = (props) => {
   const post = props.post;
 
   const { Formik } = formik;
+  
   const [options, setOptions] = useState([]);
 
   const validations = yup.object().shape({
@@ -45,7 +34,7 @@ const FormSesion = (props) => {
     fecha: yup
       .date()
       .required("Ingrese una fecha válida")
-      .max(formatDate(new Date()), "La fecha no puede ser mayor a la actual"),
+      .max(formatDateUpload(new Date()), "La fecha no puede ser mayor a la actual"),
     id_caso: yup
       .number()
       .required("Ingrese un caso válido")

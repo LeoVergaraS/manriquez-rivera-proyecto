@@ -49,4 +49,10 @@ public class AbogadoController {
     return ResponseEntity.ok().body(abogados);
   }
 
+  @PostMapping("/delete")
+  public ResponseEntity<String> deleteAbogado(@RequestBody Abogado abogado){
+    abogadoService.deleteAbogado(abogado);
+    return ResponseEntity.ok().body("Abogado eliminado correctamente");
+  }
+
 }

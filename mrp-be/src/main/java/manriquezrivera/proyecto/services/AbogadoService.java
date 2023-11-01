@@ -24,4 +24,9 @@ public class AbogadoService {
   public List<Abogado> getAbogadosByCaso(Long id_caso) {
     return abogadoRepository.getByCaso(id_caso);
   }
+
+  public Abogado deleteAbogado(Abogado abogado){
+    abogado.setBorrado(true);
+    return abogadoRepository.save(abogado);
+  }
 }

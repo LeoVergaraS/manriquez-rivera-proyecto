@@ -3,11 +3,7 @@ import "./admin.scss";
 import Tabla from "../../components/Table/Tabla";
 import headers from "../../data/headers";
 import { bodyAbogado, bodyCaso, bodyCliente, bodyMateria, bodySesion, bodySubmateria } from "../../data/bodies";
-import FormAbogado from "../../components/Forms/FormAbogado/FormAbogado";
-import FormCliente from "../../components/Forms/FormCliente/FormCliente";
-import FormMateria from "../../components/Forms/FormMateria/FormMateria";
-import FormSubmateria from "../../components/Forms/FormSubmateria/FormSubmateria";
-import FormSesion from "../../components/Forms/FormSesion/FormSesion";
+import {FormAbogado, FormCasoAdmin, FormCliente, FormMateria, FormSesion, FormSubmateria} from "../../components/Forms";
 
 const Admin = () => {
   const [selected, setSelected] = useState(1);
@@ -58,7 +54,7 @@ const Admin = () => {
       <div className="admin-content">
         <h1 className="admin-content__title">{content}</h1>
         {selected === 1 ? (<Tabla content={"abogados"} name={"abogado"} headers={headers.abogados} body={bodyAbogado} form={FormAbogado} />) : null}
-        {selected === 2 ? (<Tabla content={"casos"} name={"caso"} headers={headers.casos} body={bodyCaso} />) : null}
+        {selected === 2 ? (<Tabla content={"casos"} name={"caso"} headers={headers.casos} body={bodyCaso} form={FormCasoAdmin} />) : null}
         {selected === 3 ? (<Tabla content={"clientes"} name={"cliente"} headers={headers.clientes} body={bodyCliente} form={FormCliente} />) : null}
         {selected === 4 ? (<Tabla content={"materias"} name={"materia"} headers={headers.materias} body={bodyMateria} form={FormMateria} />) : null}
         {selected === 5 ? (<Tabla content={"sesiones"} name={"sesión"} headers={headers.sesiones} body={bodySesion} form={FormSesion} />)  : null}
