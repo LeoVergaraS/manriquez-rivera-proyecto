@@ -73,15 +73,15 @@ const bodySesion = (sesion) => {
   );
 };
 
-const bodySubmateria = (submateria) => {
+const bodySubmateria = (submateria, edit, deleted) => {
   return (
     <tr key={submateria.id} className="table-paginated-body__row">
       <td>{submateria.id}</td>
       <td>{submateria.nombre}</td>
       <td>{submateria.id_materia.nombre}</td>
       <td className="table-paginated-body__actions">
-        <VscEdit className="table-paginated-body__actions-item table-paginated-body__actions-item--edit" />
-        <VscTrash className="table-paginated-body__actions-item table-paginated-body__actions-item--delete" />
+        <VscEdit onClick={() => edit(submateria)} className="table-paginated-body__actions-item table-paginated-body__actions-item--edit" />
+        <VscTrash onClick={() => deleted(submateria)} className="table-paginated-body__actions-item table-paginated-body__actions-item--delete" />
       </td>
     </tr>
   );

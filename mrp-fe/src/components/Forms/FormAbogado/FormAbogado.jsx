@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import * as formik from "formik";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import {VscCheck, VscClose} from "react-icons/vsc";
 
 const FormAbogado = (props) => {
