@@ -11,7 +11,10 @@ const Tabla = (props) => {
   const [data, setData] = useState(null);
   const [sliceData, setSliceData] = useState(null);
   const [item, setItem] = useState(null);
+  const [pagesCount, setPagesCount] = useState(null);
 
+
+  const pagesToShow = 5;
   const name = props.name;
   const body = props.body;
 
@@ -45,6 +48,7 @@ const Tabla = (props) => {
       if (response.status === 200) {
         setData(response.data);
         paginatedData(response.data);
+        setPagesCount(Math.ceil(response.data.length / pageSize));
       }
     } catch (err) {
       console.error(err);
@@ -106,8 +110,15 @@ const Tabla = (props) => {
     }
   };
 
+  const infoFooter = () => {
+    if(pageSize*currentPage > data.length){
+      return `${1 + (pageSize*(currentPage - 1))}-${data.length} de ${data.length}`
+    }
+    return `${1 + (pageSize*(currentPage - 1))}-${pageSize*currentPage} de ${data.length}`
+  };
+
   const handlePageChange = (page) => {
-    if (page < 1 || page > Math.ceil(data / pageSize)) return;
+    if (page < 1 || page > Math.ceil(data.length / pageSize)) return;
     setCurrentPage(page);
   };
 
@@ -116,7 +127,10 @@ const Tabla = (props) => {
   }, [props.content]);
 
   useEffect(() => {
-    if (data !== null) paginatedData(data);
+    if (data !== null){ 
+      paginatedData(data);
+      setPagesCount(Math.ceil(data.length / pageSize));
+    };
   }, [currentPage, pageSize]);
 
 
@@ -153,6 +167,10 @@ const Tabla = (props) => {
         </tbody>
       </Table>
       <div className="table-paginated-footer">
+        <div className="table-paginated-footer__info">
+          <p className="table-paginated-footer__info-text">
+            {data !== null && infoFooter()}
+          </p>
         <ul className="table-paginated-footer__page-size">
           <li
             id={1}
@@ -183,6 +201,7 @@ const Tabla = (props) => {
             100
           </li>
         </ul>
+        </div>
         <hr className="table-paginated-footer__divider" />
         <div className="table-paginated-footer__actions">
           <VscAdd 
@@ -195,19 +214,15 @@ const Tabla = (props) => {
           />
         </div>
       </div>
-      {data !== null && (
+      {pagesCount !== null && (
         <Pagination className="table-paginated__pagination">
           <Pagination.First
             onClick={() => handlePageChange(1)}
             className="table-paginated__pagination-first"
           />
           <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} className="table-paginated__pagination-prev" />
-          {[...Array(Math.ceil(data.length / pageSize)).keys()].map((page) => {
-            if (
-              page === 0 ||
-              page === Math.ceil(data.length / pageSize) - 1 ||
-              (currentPage - 2 <= page && page <= currentPage + 2)
-            ) {
+          {[...Array(pagesCount).keys()].map((page) => {
+            if(pagesCount <= 5){
               return (
                 <Pagination.Item
                   key={page + 1}
@@ -218,11 +233,45 @@ const Tabla = (props) => {
                   {page + 1}
                 </Pagination.Item>
               );
-            } else if (page === currentPage - 3 || page === currentPage + 3) {
-              return <Pagination.Ellipsis className="table-paginated__pagination-ellipsis" />;
-            }
-            return null;
-          })}
+            }else{
+              if(currentPage <= 3 && page <= 5){
+                if(page === 5) return <Pagination.Ellipsis className="table-paginated__pagination-ellipsis" />
+                return (
+                  <Pagination.Item
+                    key={page + 1}
+                    active={page + 1 === currentPage}
+                    onClick={() => handlePageChange(page + 1)}
+                    className="table-paginated__pagination-item"
+                  >
+                    {page + 1}
+                  </Pagination.Item>
+                );
+              }else if(currentPage >= pagesCount - 2 && page >= pagesCount - 6){
+                if(page === pagesCount - 6) return <Pagination.Ellipsis className="table-paginated__pagination-ellipsis" />
+                return (
+                  <Pagination.Item
+                    key={page + 1}
+                    active={page + 1 === currentPage}
+                    onClick={() => handlePageChange(page + 1)}
+                    className="table-paginated__pagination-item"
+                  >
+                    {page + 1}
+                  </Pagination.Item>
+                )
+              }else  if(currentPage - 4 <= page && page <= currentPage + 2){
+                if(currentPage - 4 === page || currentPage + 2 === page) return <Pagination.Ellipsis className="table-paginated__pagination-ellipsis" />
+                return (
+                  <Pagination.Item
+                    key={page + 1}
+                    active={page + 1 === currentPage}
+                    onClick={() => handlePageChange(page + 1)}
+                    className="table-paginated__pagination-item"
+                  >
+                    {page + 1}
+                  </Pagination.Item>
+                )
+              }
+            }})}
           <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} className="table-paginated__pagination-next"/>
           <Pagination.Last
             onClick={() => handlePageChange(Math.ceil(data.length / pageSize)) }

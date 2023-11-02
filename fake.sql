@@ -13,6 +13,11 @@ VALUES
     ('María', 0),
     ('Carlos', 0),
     ('Laura', 0),
+    ('Pedro', 0),
+    ('Juan', 0),
+    ('María', 0),
+    ('Carlos', 0),
+    ('Laura', 0),
     ('Pedro', 0);
 
 INSERT INTO mrp.caso (fecha, borrado, id_cliente, id_materia, id_submateria)
