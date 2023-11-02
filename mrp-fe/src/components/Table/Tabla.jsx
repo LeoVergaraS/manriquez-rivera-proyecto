@@ -59,10 +59,8 @@ const Tabla = (props) => {
     try {
       const mapping = content.toLowerCase();
       const url = `http://localhost:8090/${mapping}`;
-      console.log('item:', item)
       const response = await axios.post(url, item);
       if (response.status === 200) {
-        console.log('reponse:', response.data)
         toggleCreate();
         Alerta.fire({
           icon: "success",
@@ -78,10 +76,8 @@ const Tabla = (props) => {
     try {
       const mapping = content.toLowerCase();
       const url = `http://localhost:8090/${mapping}`;
-      console.log('item:', item)
       const response = await axios.post(url, item);
       if (response.status === 200) {
-        console.log('reponse:', response.data)
         toggleEdit();
         Alerta.fire({
           icon: "success",

@@ -6,6 +6,7 @@ import axios from "axios";
 import MySelect from "../MySelect/MySelect";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import { VscCheck, VscClose } from "react-icons/vsc";
+import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
 
 const FormCasoAdmin = (props) => {
   const caso = props.item;
@@ -155,7 +156,7 @@ const FormCasoAdmin = (props) => {
             id_cliente: { nombre: values.id_cliente },
             id_materia: { id: values.id_materia },
             id_submateria: { id: values.id_submateria },
-            fecha: values.fecha,
+            fecha: sumOneDayToDate(values.fecha),
             borrado: caso !== null ? caso.borrado : false,
           };
           const request = { caso: object, abogados: abogados };

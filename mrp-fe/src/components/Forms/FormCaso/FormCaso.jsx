@@ -6,13 +6,7 @@ import axios from "axios";
 import MySelect from "../MySelect/MySelect";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 
-const FormCaso = ({
-  caso,
-  postCaso,
-  handleClose,
-  materias,
-  subMaterias,
-}) => {
+const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
   const { Formik } = formik;
   const [options, setOptions] = useState([]);
   const [initialAbogados, setInitialAbogados] = useState(null);
@@ -35,7 +29,13 @@ const FormCaso = ({
     abogado: yup
       .array()
       .min(1, "Seleccione al menos un abogado")
-      .test("Abogados", "No puede eliminar un abogado del caso", function(value){return value.length >= numbersAbogados})
+      .test(
+        "Abogados",
+        "No puede eliminar un abogado del caso",
+        function (value) {
+          return value.length >= numbersAbogados;
+        }
+      )
       .of(
         yup.object().shape({
           value: yup.string().required(),
@@ -86,146 +86,154 @@ const FormCaso = ({
   }, [caso.id]);
 
   const Formulario = () => {
-    return ( <Formik
-      validationSchema={validations}
-      onSubmit={(values) => {
-        const abogados = values.abogado.map((item) => {
-          return item.value;
-        });
-        const item = { ...caso };
-        item.id_cliente = { nombre: values.id_cliente };
-        item.id_materia = { id: values.id_materia };
-        item.id_submateria = { id: values.id_submateria };
-        item.fecha = formatDateUpload(new Date());
-        const request = { caso: item, abogados: abogados };
-        postCaso(request);
-      }}
-      initialValues={{
-        id_materia: caso.id_materia.id,
-        id_submateria: caso.id_submateria.id,
-        id_cliente: caso.id_cliente.nombre,
-        abogado: caso.id === null ? [] : initialAbogados,
-      }}
-    >
-      {({
-        handleSubmit,
-        handleChange,
-        values,
-        errors,
-        touched,
-        setFieldValue,
-        setFieldTouched,
-        handleBlur
-      }) => (
-        <Form noValidate onSubmit={handleSubmit}>
-          <Row>
-            <Col>
-              <Form.Group className="mb-3" controlId="input-cliente">
-                <Form.Label>Cliente</Form.Label>
-                <Form.Control
-                  name="id_cliente"
-                  placeholder="Ingrese un cliente"
-                  type="text"
-                  value={values.id_cliente}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.id_cliente && 
-                  touched.id_cliente && (
-                    <div style={{ color: "red", marginTop: ".5rem" }}>{errors.id_cliente}</div>
-                )}
-              </Form.Group>
+    return (
+      <Formik
+        validationSchema={validations}
+        onSubmit={(values) => {
+          const abogados = values.abogado.map((item) => {
+            return item.value;
+          });
+          const fecha = new Date();
+          const item = { ...caso };
+          item.id_cliente = { nombre: values.id_cliente };
+          item.id_materia = { id: values.id_materia };
+          item.id_submateria = { id: values.id_submateria };
+          item.fecha = formatDateUpload(
+            new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate() + 1)
+          );
+          const request = { caso: item, abogados: abogados };
+          postCaso(request);
+        }}
+        initialValues={{
+          id_materia: caso.id_materia.id,
+          id_submateria: caso.id_submateria.id,
+          id_cliente: caso.id_cliente.nombre,
+          abogado: caso.id === null ? [] : initialAbogados,
+        }}
+      >
+        {({
+          handleSubmit,
+          handleChange,
+          values,
+          errors,
+          touched,
+          setFieldValue,
+          setFieldTouched,
+          handleBlur,
+        }) => (
+          <Form noValidate onSubmit={handleSubmit}>
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="input-cliente">
+                  <Form.Label>Cliente</Form.Label>
+                  <Form.Control
+                    name="id_cliente"
+                    placeholder="Ingrese un cliente"
+                    type="text"
+                    value={values.id_cliente}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.id_cliente && touched.id_cliente && (
+                    <div style={{ color: "red", marginTop: ".5rem" }}>
+                      {errors.id_cliente}
+                    </div>
+                  )}
+                </Form.Group>
 
-              <Form.Group className="mb-3" controlId="input-materia">
-                <Form.Label>Materia</Form.Label>
-                <Form.Select
-                  name="id_materia"
-                  aria-label="select"
-                  onChange={handleChange}
-                  value={values.id_materia}
-                  onBlur={handleBlur}
-                >
-                  <option key={0} value={0}>
-                    Seleccione una opción
-                  </option>
-                  {materias.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.nombre}
+                <Form.Group className="mb-3" controlId="input-materia">
+                  <Form.Label>Materia</Form.Label>
+                  <Form.Select
+                    name="id_materia"
+                    aria-label="select"
+                    onChange={handleChange}
+                    value={values.id_materia}
+                    onBlur={handleBlur}
+                  >
+                    <option key={0} value={0}>
+                      Seleccione una opción
                     </option>
-                  ))}
-                </Form.Select>
-                {errors.id_materia && touched.id_materia && (
-                  <div style={{ color: "red", marginTop: ".5rem" }}>
-                    {errors.id_materia}
-                  </div>
-                )}
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group className="mb-3" controlId="input-abogado">
-                <Form.Label>Abogado</Form.Label>
-                <MySelect
-                  name="abogado"
-                  placeholder="Seleccione uno o más abogados"
-                  options={options}
-                  onChange={setFieldValue}
-                  onBlur={setFieldTouched}
-                  value={values.abogado}
-                  error={errors.abogado}
-                  touched={touched.abogado}
-                />
-              </Form.Group>
+                    {materias.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.nombre}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  {errors.id_materia && touched.id_materia && (
+                    <div style={{ color: "red", marginTop: ".5rem" }}>
+                      {errors.id_materia}
+                    </div>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="input-abogado">
+                  <Form.Label>Abogado</Form.Label>
+                  <MySelect
+                    name="abogado"
+                    placeholder="Seleccione uno o más abogados"
+                    options={options}
+                    onChange={setFieldValue}
+                    onBlur={setFieldTouched}
+                    value={values.abogado}
+                    error={errors.abogado}
+                    touched={touched.abogado}
+                  />
+                </Form.Group>
 
-              <Form.Group className="mb-3" controlId="input-submateria">
-                <Form.Label>Submateria</Form.Label>
-                <Form.Select
-                  aria-label="select"
-                  name="id_submateria"
-                  onChange={handleChange}
-                  value={values.id_submateria}
-                  onBlur={handleBlur}
-                >
-                  <option key={0} value={0}>
-                    Seleccione una opción
-                  </option>
-                  {subMaterias.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.nombre}
+                <Form.Group className="mb-3" controlId="input-submateria">
+                  <Form.Label>Submateria</Form.Label>
+                  <Form.Select
+                    aria-label="select"
+                    name="id_submateria"
+                    onChange={handleChange}
+                    value={values.id_submateria}
+                    onBlur={handleBlur}
+                  >
+                    <option key={0} value={0}>
+                      Seleccione una opción
                     </option>
-                  ))}
-                </Form.Select>
-                {errors.id_submateria && touched.id_submateria && (
-                  <div style={{ color: "red", marginTop: ".5rem" }}>
-                    {errors.id_submateria}
-                  </div>
-                )}
-              </Form.Group>
-            </Col>
-          </Row>
+                    {subMaterias.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.nombre}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  {errors.id_submateria && touched.id_submateria && (
+                    <div style={{ color: "red", marginTop: ".5rem" }}>
+                      {errors.id_submateria}
+                    </div>
+                  )}
+                </Form.Group>
+              </Col>
+            </Row>
 
-          <div>
-            <hr></hr>
-            <div style={{ display: "flex", justifyContent: "end" }}>
-              <Button
-                variant="secondary"
-                style={{ marginRight: 2 }}
-                onClick={handleClose}
-              >
-                Cerrar
-              </Button>
-              <Button variant="primary" type="submit">
-                Guardar
-              </Button>
+            <div>
+              <hr></hr>
+              <div style={{ display: "flex", justifyContent: "end" }}>
+                <Button
+                  variant="secondary"
+                  style={{ marginRight: 2 }}
+                  onClick={handleClose}
+                >
+                  Cerrar
+                </Button>
+                <Button variant="primary" type="submit">
+                  Guardar
+                </Button>
+              </div>
             </div>
-          </div>
-        </Form>
-      )}
-    </Formik>)
+          </Form>
+        )}
+      </Formik>
+    );
   };
 
   return (
     <div>
-      {caso.id === null ? Formulario() : initialAbogados !== null && Formulario()}
+      {caso.id === null
+        ? Formulario()
+        : initialAbogados !== null && Formulario()}
     </div>
   );
 };

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {VscCheck, VscClose} from "react-icons/vsc";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
+import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
 
 const FormSesion = (props) => {
   const sesion = props.item;
@@ -12,7 +13,7 @@ const FormSesion = (props) => {
   const post = props.post;
 
   const { Formik } = formik;
-  
+
   const [options, setOptions] = useState([]);
 
   const validations = yup.object().shape({
@@ -75,7 +76,7 @@ const FormSesion = (props) => {
           const object = {
             id: sesion !== null ? sesion.id : null,
             tiempo: values.horas * 3600 + values.minutos * 60 + values.segundos,
-            fecha: values.fecha,
+            fecha: sumOneDayToDate(values.fecha),
             id_caso: { id: values.id_caso },
             id_abogado: { id: values.id_abogado },
             borrado: sesion !== null ? sesion.borrado : false,
