@@ -45,4 +45,16 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
   @Query(value = "SELECT s.fecha, s.tiempo FROM mrp.sesion as s, mrp.caso_abogado as ca WHERE s.borrado = 0 AND :id = s.id_caso AND s.id_caso = ca.id_caso AND :id_abo = ca.id_abogado AND s.id_abogado = ca.id_abogado ORDER BY fecha ASC", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesionesByIdCasoConAbogado2(@Param("id") Long id, @Param("id_abo") Long id_abo);
 
+  // consulta sesiones para vista materia
+  // get all
+  @Query(value = "SELECT distinct s.fecha, s.tiempo" +
+  "FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c" +
+  "WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo", nativeQuery = true)
+  List<ConsultaSesiones>  getConsultaSesionesByIdMateriaConAbogado(@Param("id_mat") Long id_mat, @Param("id_abo") Long id_abo);
+  // get por fecha
+  @Query(value = "SELECT distinct s.fecha, s.tiempo" +
+  "FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c" +
+  "WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo AND"+
+  "s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
+  List<ConsultaSesiones>  getConsultaSesionesByIdMateriaConAbogadoFecha(@Param("id_mat") Long id_mat, @Param("id_abo") Long id_abo, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin );  
 }
