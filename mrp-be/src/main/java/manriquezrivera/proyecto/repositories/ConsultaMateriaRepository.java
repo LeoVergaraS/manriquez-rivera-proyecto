@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import manriquezrivera.proyecto.models.ConsultaMateria;
+import manriquezrivera.proyecto.models.ConsultaSesiones;
 
 @Repository
 public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria, Long> {
@@ -120,5 +121,23 @@ public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria
                  "      s.fecha BETWEEN :fechaInicio AND :fechaFin " + 
                  "GROUP BY c.id_cliente", nativeQuery = true)
     List<Integer> getCantidadUsuariosByMateriaAndAbogadoAndTiempo(@Param("id_abogado") Long id_abogado, @Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+
+
+  // QUERY PARA EL GRÁFICO DE MATERIAS DE LA VISTA GENERAL
+	@Query(value = "SELECT m.nombre as nombre, sum(s.tiempo) as tiempo FROM mrp.sesion as s, mrp.caso as c, mrp.materia as m "
+			+
+			"WHERE s.borrado = 0 AND c.id = s.id_caso AND c.id_materia = m.id AND " +
+			"s.fecha BETWEEN :fechaInicio AND :fechaFin " +
+			"GROUP BY m.nombre", nativeQuery = true)
+	List<ConsultaMateria> getConsultaSesionesMaterias(@Param("fechaInicio") String fechaInicio,
+			@Param("fechaFin") String fechaFin);
+
+	@Query(value = "SELECT m.nombre as nombre, sum(s.tiempo) as tiempo FROM mrp.sesion as s, mrp.caso as c, mrp.materia as m "
+			+
+			"WHERE s.borrado = 0 AND c.id = s.id_caso AND c.id_materia = m.id AND s.id_abogado = :idAbogado AND" +
+			"s.fecha BETWEEN :fechaInicio AND :fechaFin " +
+			"GROUP BY m.nombre", nativeQuery = true)
+	List<ConsultaMateria> getConsultaSesionesMateriasByIdAbogado(@Param("fechaInicio") String fechaInicio,
+			@Param("fechaFin") String fechaFin, @Param("idAbogado") Long idAbogado);
 
 }

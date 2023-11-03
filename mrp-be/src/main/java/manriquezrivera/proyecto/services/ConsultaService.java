@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.sound.midi.SysexMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import manriquezrivera.proyecto.models.InfoTablaMateria;
 import manriquezrivera.proyecto.repositories.ConsultaClienteRepository;
 import manriquezrivera.proyecto.repositories.ConsultaMateriaRepository;
 import manriquezrivera.proyecto.repositories.ConsultaSesionesRepository;
+
 //import manriquezrivera.proyecto.util.Util;
 @Service
 public class ConsultaService {
@@ -30,71 +33,98 @@ public class ConsultaService {
 	@Autowired
 	ConsultaSesionesRepository consultaSesionesRepository;
 
-	//public Util util; 
+	// public Util util;
 
-	public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer cantidadDias, Integer dropSiempre) {
-		if (dropSiempre == 1) {
-			List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
-			fechaInicio = allConsultas.get(0).getFecha().toString();
+	// gráfico de la vista general
+	public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer cantidadDias, Integer dropSiempre, Long idAbogado) {
+
+		List<ConsultaSesiones> allConsultas;
+
+		// ABOGADO EN ESPECIFICO
+		if(idAbogado!=-1){
+			// si se selecciona desde siempre se setea la fecha de inicio con la primera sesión del abogado
+			if(dropSiempre==1){
+				allConsultas = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
+				fechaInicio = allConsultas.get(0).getFecha().toString();
+			}
+			return consultaMateriaRepository.getConsultaSesionesMateriasByIdAbogado(fechaInicio, fechaFin, idAbogado);
 		}
-		return consultaMateriaRepository.getConsultaMateria(fechaInicio, fechaFin);
+		
+		// TODOS LOS ABOGADOS
+		else{
+			if(dropSiempre==1){
+				allConsultas = consultaSesionesRepository.getConsultaSesiones();
+				fechaInicio = allConsultas.get(0).getFecha().toString();
+			}
+			return consultaMateriaRepository.getConsultaSesionesMaterias(fechaInicio, fechaFin);
+		}
+	
 	}
-
+	
 	public List<ConsultaCliente> getCC(Long id, String fechaInicio, String fechaFin) {
 		return consultaClienteRepository.getConsultaClientes(id, fechaInicio, fechaFin);
 	}
-	// OBTIENEN SESIONES DE ABOGADOS CON INTERVALOS DE TIEMPO DE DIAS (NO INCLUYE DESDE SIEMPRE)
+
+	// OBTIENEN SESIONES DE ABOGADOS CON INTERVALOS DE TIEMPO DE DIAS (NO INCLUYE
+	// DESDE SIEMPRE)
 	public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer cantidadDias,
 			Long idAbogado) {
 		List<ConsultaSesiones> consultaSesiones;
 		// Se obtienen las sesiones con las fechas inicio y fin establecidas
 
 		// ABOGADO EN ESPECIFICO
-		if(idAbogado!=-1){
-		consultaSesiones = consultaSesionesRepository.getConsultaSesionesByIdAbogado(fechaInicio,
-				fechaFin, idAbogado);
-			 }
-		// TODOS LOS ABOGADOS 
-		 else{
-		consultaSesiones = consultaSesionesRepository.getConsultaSesiones(fechaInicio,
-				fechaFin);
-		} 
-		// se obtiene la lista con las fechas vacias rellenadas de ceros (PARA EL GRAFICO)
-		List<ConsultaSesiones> consultaSesionesActualizado = rellenadorDeCeros(consultaSesiones,fechaFin,cantidadDias);
+		if (idAbogado != -1) {
+			consultaSesiones = consultaSesionesRepository.getConsultaSesionesByIdAbogado(fechaInicio,
+					fechaFin, idAbogado);
+		}
+		// TODOS LOS ABOGADOS
+		else {
+			consultaSesiones = consultaSesionesRepository.getConsultaSesiones(fechaInicio,
+					fechaFin);
+		}
+		// se obtiene la lista con las fechas vacias rellenadas de ceros (PARA EL
+		// GRAFICO)
+		List<ConsultaSesiones> consultaSesionesActualizado = rellenadorDeCeros(consultaSesiones, fechaFin,
+				cantidadDias);
 
 		return consultaSesionesActualizado;
 	}
 
-		// OBTIENEN SESIONES DE ABOGADOS DESDE SIEMPRE (NO INCLUYE POR DIAS)
+	// OBTIENEN SESIONES DE ABOGADOS DESDE SIEMPRE (NO INCLUYE POR DIAS)
 	public List<ConsultaSesiones> getCSdesdeSiempre(Long idAbogado) {
 		List<ConsultaSesiones> consultaSesiones;
 		Integer cantidadDias;
 		// Obtenemos una fecha actual
 		// ABOGADO EN ESPECIFICO
-		if(idAbogado!=-1){
-		consultaSesiones = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
-			 }
-		// TODOS LOS ABOGADOS 
-		 else{
-		consultaSesiones = consultaSesionesRepository.getConsultaSesiones();
-		} 
-		cantidadDias = calcularDias();
-		System.out.println(cantidadDias);
-		String fechaFin= fechaActualString();
+		if (idAbogado != -1) {
+			consultaSesiones = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
+			//return consultaSesiones; // descomentar para mostrar sin rellenado de ceros
+		}
+		// TODOS LOS ABOGADOS
+		else {
+			consultaSesiones = consultaSesionesRepository.getConsultaSesiones();
+		}
 
-		
-		// se obtiene la lista con las fechas vacias rellenadas de ceros (PARA EL GRAFICO)
-		List<ConsultaSesiones> consultaSesionesActualizado = rellenadorDeCeros(consultaSesiones,fechaFin,cantidadDias);
+		cantidadDias = calcularDias(idAbogado);
+		System.out.println("cantidad de dias: " + cantidadDias);
+		String fechaFin = fechaActualString();
+
+		// se obtiene la lista con las fechas vacias rellenadas de ceros (PARA EL
+		// GRAFICO)
+		List<ConsultaSesiones> consultaSesionesActualizado = rellenadorDeCeros(consultaSesiones, fechaFin,
+				cantidadDias);
 
 		return consultaSesionesActualizado;
 	}
 
-	/*public Integer getCantidadDiasDeUnAnio(Integer anio) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(anio, 11, 31);
-		Integer cantidadDias = calendar.get(Calendar.DAY_OF_YEAR);
-		return cantidadDias;
-	}*/
+	/*
+	 * public Integer getCantidadDiasDeUnAnio(Integer anio) {
+	 * Calendar calendar = Calendar.getInstance();
+	 * calendar.set(anio, 11, 31);
+	 * Integer cantidadDias = calendar.get(Calendar.DAY_OF_YEAR);
+	 * return cantidadDias;
+	 * }
+	 */
 
 	// cantidad de sesiones
 	public int getCCS(String fechaInicio, String fechaFin) {
@@ -112,11 +142,6 @@ public class ConsultaService {
 
 	public List<ConsultaSesiones> getConsultasByCaso(Long idCaso, String fechaInicio, String fechaFin, Integer flag,
 			Long idAbo) {
-				System.out.println("idcaso:"+idCaso);
-				System.out.println("fechaInicio:"+fechaInicio);
-				System.out.println("fechaFin:"+fechaFin);
-				System.out.println("flag:"+flag);
-				System.out.println("idAbo:"+idAbo);
 		if (flag == 1) {
 			List<ConsultaSesiones> consultasAux = new ArrayList<ConsultaSesiones>();
 			if (idAbo == -1) {
@@ -138,7 +163,6 @@ public class ConsultaService {
 			}
 		} else {
 			if (idAbo == -1) {
-				System.out.println(consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin));
 				return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
 			} else {
 				return consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado(idCaso, fechaInicio, fechaFin,
@@ -226,7 +250,6 @@ public class ConsultaService {
 		Integer tiempo_total = consultaMateriaRepository.getTiempoSesionesByMateriaAndAbogadoAndTiempo(id_abogado,
 				id_materia,
 				fi, ff);
-		System.out.println(sesiones);
 		Integer cantidad_sesiones = sesiones.size();
 		Integer cantidad_clientes = clientes.size();
 		return new InfoTablaMateria(cantidad_sesiones, tiempo_total, cantidad_clientes);
@@ -274,20 +297,22 @@ public class ConsultaService {
 						id_caso);
 				tiempoSesiones = consultaClienteRepository.getTiempoSesionesPorClienteConAbogado(id_abo, fi, ff,
 						id_caso);
-						if(tiempoSesiones == null){
-							tiempoSesiones = 0;
-						}
+				if (tiempoSesiones == null) {
+					tiempoSesiones = 0;
+				}
 			}
 		}
 
 		return new InfoTablaCliente(cantidadSesiones, tiempoSesiones);
 	}
+
 	// FUNCIONES DE UTILIDAD -----------------------------------------------
-	public List<ConsultaSesiones> rellenadorDeCeros (List<ConsultaSesiones> consultaSesiones, String fechaFin, Integer cantidadDias){ 
-        // Se crea una lista de sesiones vacía. Esta lista será la que se devuelva al
+	public List<ConsultaSesiones> rellenadorDeCeros(List<ConsultaSesiones> consultaSesiones, String fechaFin,
+			Integer cantidadDias) {
+		// Se crea una lista de sesiones vacía. Esta lista será la que se devuelva al
 		// final
 		List<ConsultaSesiones> consultaSesiones2 = new ArrayList<ConsultaSesiones>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		// Se crea un arreglo que contenga las fechas que existen entre fechaInicio y
 		// fechaFin
 		List<String> fechas = new ArrayList<String>();
@@ -346,17 +371,29 @@ public class ConsultaService {
 				j = 0;
 			}
 		}
-        return consultaSesiones2;
-     }
-	 // Funcion que calcula dias (se utiliza en el desde siempre)
-	 Integer calcularDias(){
+		return consultaSesiones2;
+	}
+
+	// Funcion que calcula dias (se utiliza en el desde siempre)
+	Integer calcularDias(Long idAbogado) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesionesFechasOrdenadas();
-		String fechaInicio = allConsultas.get(0).getFecha().toString();
-		System.out.println(fechaInicio + " ESTA ES");
-		Date fechaFinAux=new Date();
-		String fechaFin= sdf.format(fechaFinAux);
+		List<ConsultaSesiones> allConsultas;
+		if(idAbogado != -1){
+			allConsultas = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
+		}else{
+			allConsultas = consultaSesionesRepository.getConsultaSesiones();
+		}
+	
+		if (allConsultas.isEmpty()) {
+			// No hay consultas, por lo que no podemos calcular días.
+			return null;
+		}
+	
+		String fechaInicio = sdf.format(allConsultas.get(0).getFecha());
+		Date fechaFinAux = new Date();
+		String fechaFin = sdf.format(fechaFinAux);
 		Date fechaInicioAux;
+		
 		try {
 			fechaInicioAux = sdf.parse(fechaInicio);
 			Date fechaFinAuxAux = sdf.parse(fechaFin);
@@ -364,25 +401,29 @@ public class ConsultaService {
 			Calendar instance2 = Calendar.getInstance();
 			instance2.setTime(fechaFinAuxAux);
 			instance1.setTime(fechaInicioAux);
-			System.out.println("/n");
-
-			System.out.println(fechaInicioAux);
-			System.out.println(fechaFinAuxAux);
-			Integer dias = instance2.get(Calendar.DAY_OF_YEAR) - instance1.get(Calendar.DAY_OF_YEAR);
-			return  dias;
+	
+			int dias = 0;
+	
+			while (!instance1.after(instance2)) {
+				instance1.add(Calendar.DAY_OF_YEAR, 1);
+				dias++;
+			}
+	
+			return dias;
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
-	// funcion que retorna una fecha actual en formato STRING
-	String fechaActualString(){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date fechaFinAux=new Date();
-		String fechaFin= sdf.format(fechaFinAux);
-		return fechaFin;
 	
-		
+
+	// funcion que retorna una fecha actual en formato STRING
+	String fechaActualString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date fechaFinAux = new Date();
+		String fechaFin = sdf.format(fechaFinAux);
+		return fechaFin;
+
 	}
 }

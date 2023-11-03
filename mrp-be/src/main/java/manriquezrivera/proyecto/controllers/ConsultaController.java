@@ -46,11 +46,11 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultasCliente);
   }
 
-  @GetMapping("/materia/{fi}/{ff}/{dropSelect}/{dropSiempre}")
+  @GetMapping("/materia/{fi}/{ff}/{dropSelect}/{dropSiempre}/{idAbogado}")
   public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(@PathVariable("fi") String fechaInicio,
       @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect,
-      @PathVariable("dropSiempre") Integer dropSiempre) {
-    List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin, dropSelect, dropSiempre);
+      @PathVariable("dropSiempre") Integer dropSiempre, @PathVariable("idAbogado") Long idAbogado) {
+    List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin, dropSelect, dropSiempre, idAbogado);
     if (consultasMaterias == null) {
       return ResponseEntity.notFound().build();
     }
