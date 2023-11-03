@@ -55,4 +55,12 @@ public interface ConsultaClienteRepository extends JpaRepository<ConsultaCliente
     @Query(value = "SELECT sum(tiempo) FROM sesion as s, caso as c, caso_abogado as ca WHERE s.id_caso = c.id AND c.id = :id_caso AND s.borrado = 0 AND s.id_abogado = ca.id_abogado AND ca.id_abogado = :id_abo AND ca.id_caso = c.id AND s.fecha BETWEEN :fi AND :ff", nativeQuery = true)
     Integer getTiempoSesionesPorClienteConAbogado(@Param("id_abo") Long id_abo, @Param("fi") String fi, @Param("ff") String ff, @Param("id_caso") Long id_caso);
 
+    // PARA INFOTABLA CON ABOGADO
+      @Query(value =    "SELECT count(*) as cantidadClientes " +
+                    "FROM (SELECT distinct cl.nombre " + 
+                        "FROM mrp.sesion as se, mrp.cliente as cl, mrp.caso as ca "+
+                        "WHERE cl.borrado = 0 AND cl.id = ca.id_cliente AND se.id_caso = ca.id AND se.id_abogado = :idAbogado AND "+
+                              "se.fecha  BETWEEN :fechaInicio AND :fechaFin) as clientes", nativeQuery = true)
+  int getConsultaCantidadClientesByIdAbogado(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin, @Param("idAbogado") Long idAbogado);
+
 }

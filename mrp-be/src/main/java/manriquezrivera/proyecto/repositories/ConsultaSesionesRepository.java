@@ -40,9 +40,6 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
 			"GROUP BY fecha ORDER BY fecha", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesDesdeSiempreByIdAbogado(@Param("idAbogado") Long idAbogado);
 
-	// ---------------------------------------
-
-
 	// -----------------------------------------
 	@Query(value = "SELECT count(*) as cantidadSesiones FROM mrp.sesion " +
 			"WHERE borrado = 0 AND " +
@@ -86,4 +83,17 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
 			"s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesByIdMateriaConAbogadoFecha(@Param("id_mat") Long id_mat,
 			@Param("id_abo") Long id_abo, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+
+	// INFO TABLA CON ABOGADO
+	@Query(value = "SELECT count(*) as cantidadSesiones FROM mrp.sesion " +
+			"WHERE borrado = 0 AND " +
+			"fecha BETWEEN :fechaInicio AND :fechaFin AND id_abogado = :idAbogado", nativeQuery = true)
+	int getConsultaCantidadSesionesByIdAbogado(@Param("fechaInicio") String fechaInicio,
+			@Param("fechaFin") String fechaFin, @Param("idAbogado") Long idAbogado);
+
+	@Query(value = "SELECT COALESCE(sum(tiempo), 0) as cantidadTiempo FROM mrp.sesion " +
+			"WHERE borrado = 0 AND " +
+			"fecha BETWEEN :fechaInicio AND :fechaFin AND id_abogado = :idAbogado", nativeQuery = true)
+	int getConsultaCantidadTiempoByIdAbogado(@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin, @Param("idAbogado") Long idAbogado);
+
 }

@@ -103,10 +103,10 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultaTiempoSesiones);
   }
 
-  @GetMapping("/prueba/{fi}/{ff}/{dropSiempre}")
+  @GetMapping("/prueba/{fi}/{ff}/{dropSiempre}/{idAbogado}")
   public ResponseEntity<InfoTabla> getPrueba(@PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin, @PathVariable("dropSiempre") Integer dropSiempre) {
-    InfoTabla consultaInfotabla = consultaService.getInfoTabla(fechaInicio, fechaFin, dropSiempre);
+      @PathVariable("ff") String fechaFin, @PathVariable("dropSiempre") Integer dropSiempre, @PathVariable("idAbogado") Long idAbogado) {
+    InfoTabla consultaInfotabla = consultaService.getInfoTabla(fechaInicio, fechaFin, dropSiempre, idAbogado);
     if (consultaInfotabla == null) {
       return ResponseEntity.notFound().build();
     }
@@ -128,7 +128,6 @@ public class ConsultaController {
     InfoTablaMateria consultaEstadisticasMateria = consultaService.getInfoTablaMateria(id_abogado, id_materia, fechaInicio, fechaFin);
     return ResponseEntity.ok().body(consultaEstadisticasMateria);
   }
-
 
   // Para los 2 cards que salen en la vista Dashboard-Cliente
   @GetMapping("/cliente/estadisticas/{id}/{fi}/{ff}/{id_abo}/{flag}")

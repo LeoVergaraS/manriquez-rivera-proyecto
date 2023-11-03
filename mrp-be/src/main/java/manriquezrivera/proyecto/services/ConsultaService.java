@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.sound.midi.SysexMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,31 +34,33 @@ public class ConsultaService {
 	// public Util util;
 
 	// gráfico de la vista general
-	public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer cantidadDias, Integer dropSiempre, Long idAbogado) {
+	public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer cantidadDias, Integer dropSiempre,
+			Long idAbogado) {
 
 		List<ConsultaSesiones> allConsultas;
 
 		// ABOGADO EN ESPECIFICO
-		if(idAbogado!=-1){
-			// si se selecciona desde siempre se setea la fecha de inicio con la primera sesión del abogado
-			if(dropSiempre==1){
+		if (idAbogado != -1) {
+			// si se selecciona desde siempre se setea la fecha de inicio con la primera
+			// sesión del abogado
+			if (dropSiempre == 1) {
 				allConsultas = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
 				fechaInicio = allConsultas.get(0).getFecha().toString();
 			}
 			return consultaMateriaRepository.getConsultaSesionesMateriasByIdAbogado(fechaInicio, fechaFin, idAbogado);
 		}
-		
+
 		// TODOS LOS ABOGADOS
-		else{
-			if(dropSiempre==1){
+		else {
+			if (dropSiempre == 1) {
 				allConsultas = consultaSesionesRepository.getConsultaSesiones();
 				fechaInicio = allConsultas.get(0).getFecha().toString();
 			}
 			return consultaMateriaRepository.getConsultaSesionesMaterias(fechaInicio, fechaFin);
 		}
-	
+
 	}
-	
+
 	public List<ConsultaCliente> getCC(Long id, String fechaInicio, String fechaFin) {
 		return consultaClienteRepository.getConsultaClientes(id, fechaInicio, fechaFin);
 	}
@@ -98,7 +98,7 @@ public class ConsultaService {
 		// ABOGADO EN ESPECIFICO
 		if (idAbogado != -1) {
 			consultaSesiones = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
-			//return consultaSesiones; // descomentar para mostrar sin rellenado de ceros
+			// return consultaSesiones; // descomentar para mostrar sin rellenado de ceros
 		}
 		// TODOS LOS ABOGADOS
 		else {
@@ -178,64 +178,130 @@ public class ConsultaService {
 	 * }
 	 */
 
-	public InfoTabla getInfoTabla(String fechaInicio, String fechaFin, Integer dropSiempre) {
+	public InfoTabla getInfoTabla(String fechaInicio, String fechaFin, Integer dropSiempre, Long idAbogado) {
 		if (dropSiempre == 1) {
 			List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
 			fechaInicio = allConsultas.get(0).getFecha().toString();
 		}
-		Integer cantidad_sesiones = consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
-		Integer cantidad_tiempo = consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
 
-		Integer cantidad_clientes = consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
+		// SIN ABOGADO
+		if (idAbogado == -1) {
+			Integer cantidad_sesiones = consultaSesionesRepository.getConsultaCantidadSesiones(fechaInicio, fechaFin);
+			Integer cantidad_tiempo = consultaSesionesRepository.getConsultaCantidadTiempo(fechaInicio, fechaFin);
 
-		List<ConsultaMateria> nombre_tiempo_cliente_max = consultaMateriaRepository.getConsultaNombreTiempoClienteMax(
-				fechaInicio,
-				fechaFin);
-		String nombre_cliente_max;
-		Integer tiempo_cliente_max;
-		if (nombre_tiempo_cliente_max.size() == 0) {
-			nombre_cliente_max = "No hay clientes";
-			tiempo_cliente_max = 0;
-		} else {
-			nombre_cliente_max = nombre_tiempo_cliente_max.get(0).getNombre();
-			tiempo_cliente_max = nombre_tiempo_cliente_max.get(0).getTiempo().intValue();
+			Integer cantidad_clientes = consultaClienteRepository.getConsultaCantidadClientes(fechaInicio, fechaFin);
+
+			List<ConsultaMateria> nombre_tiempo_cliente_max = consultaMateriaRepository
+					.getConsultaNombreTiempoClienteMax(fechaInicio, fechaFin);
+			String nombre_cliente_max;
+			Integer tiempo_cliente_max;
+			if (nombre_tiempo_cliente_max.size() == 0) {
+				nombre_cliente_max = "No hay clientes";
+				tiempo_cliente_max = 0;
+			} else {
+				nombre_cliente_max = nombre_tiempo_cliente_max.get(0).getNombre();
+				tiempo_cliente_max = nombre_tiempo_cliente_max.get(0).getTiempo().intValue();
+			}
+
+			Integer cantidad_materias = consultaMateriaRepository.getConsultaCantidadMaterias(fechaInicio, fechaFin);
+
+			List<ConsultaMateria> nombre_tiempo_materia_max = consultaMateriaRepository
+					.getConsultaNombreTiempoMateriaMax(fechaInicio, fechaFin);
+			String nombre_materia_max;
+			Integer tiempo_materia_max;
+			if (nombre_tiempo_materia_max.size() == 0) {
+				nombre_materia_max = "No hay materias";
+				tiempo_materia_max = 0;
+			} else {
+				nombre_materia_max = nombre_tiempo_materia_max.get(0).getNombre();
+				tiempo_materia_max = nombre_tiempo_materia_max.get(0).getTiempo().intValue();
+			}
+
+			Integer cantidad_submateria = consultaMateriaRepository.getConsultaCantidadSubmaterias(fechaInicio,
+					fechaFin);
+
+			List<ConsultaMateria> nombre_tiempo_submateria_max = consultaMateriaRepository
+					.getConsultaNombreTiempoSubmateriaMax(fechaInicio, fechaFin);
+			String nombre_submateria_max;
+			Integer tiempo_submateria_max;
+			if (nombre_tiempo_submateria_max.size() == 0) {
+				nombre_submateria_max = "No hay submaterias";
+				tiempo_submateria_max = 0;
+			} else {
+				nombre_submateria_max = nombre_tiempo_submateria_max.get(0).getNombre();
+				tiempo_submateria_max = nombre_tiempo_submateria_max.get(0).getTiempo().intValue();
+			}
+
+			return new InfoTabla(cantidad_sesiones, cantidad_tiempo,
+					cantidad_clientes, nombre_cliente_max, tiempo_cliente_max,
+					cantidad_materias, nombre_materia_max, tiempo_materia_max,
+					cantidad_submateria, nombre_submateria_max, tiempo_submateria_max);
+		}else{
+			Integer cantidad_sesiones = consultaSesionesRepository.getConsultaCantidadSesionesByIdAbogado(fechaInicio, fechaFin, idAbogado);
+			Integer cantidad_tiempo = consultaSesionesRepository.getConsultaCantidadTiempoByIdAbogado(fechaInicio, fechaFin, idAbogado);
+
+			Integer cantidad_clientes = consultaClienteRepository.getConsultaCantidadClientesByIdAbogado(fechaInicio, fechaFin, idAbogado);
+
+			List<ConsultaMateria> nombre_tiempo_cliente_max = consultaMateriaRepository
+					.getConsultaNombreTiempoClienteMaxByIdAbogado(fechaInicio, fechaFin, idAbogado);
+			String nombre_cliente_max;
+			Integer tiempo_cliente_max;
+			if (nombre_tiempo_cliente_max.size() == 0) {
+				nombre_cliente_max = "No hay clientes";
+				tiempo_cliente_max = 0;
+			} else {
+				nombre_cliente_max = nombre_tiempo_cliente_max.get(0).getNombre();
+				tiempo_cliente_max = nombre_tiempo_cliente_max.get(0).getTiempo().intValue();
+			}
+
+			Integer cantidad_materias = consultaMateriaRepository.getConsultaCantidadMateriasByIdAbogado(fechaInicio, fechaFin, idAbogado);
+
+			List<ConsultaMateria> nombre_tiempo_materia_max = consultaMateriaRepository
+					.getConsultaNombreTiempoMateriaMaxByIdAbogado(fechaInicio, fechaFin, idAbogado);
+			String nombre_materia_max;
+			Integer tiempo_materia_max;
+			if (nombre_tiempo_materia_max.size() == 0) {
+				nombre_materia_max = "No hay materias";
+				tiempo_materia_max = 0;
+			} else {
+				nombre_materia_max = nombre_tiempo_cliente_max.get(0).getNombre();
+				tiempo_materia_max = nombre_tiempo_cliente_max.get(0).getTiempo().intValue();
+			}
+
+			Integer cantidad_submateria = consultaMateriaRepository.getConsultaCantidadSubmateriasByIdAbogado(fechaInicio, fechaFin, idAbogado);
+
+			List<ConsultaMateria> nombre_tiempo_submateria_max = consultaMateriaRepository
+					.getConsultaNombreTiempoSubmateriaMaxByIdAbogado(fechaInicio, fechaFin, idAbogado);
+			String nombre_submateria_max;
+			Integer tiempo_submateria_max;
+			if (nombre_tiempo_submateria_max.size() == 0) {
+				nombre_submateria_max = "No hay submaterias";
+				tiempo_submateria_max = 0;
+			} else {
+				nombre_submateria_max = nombre_tiempo_submateria_max.get(0).getNombre();
+				tiempo_submateria_max = nombre_tiempo_submateria_max.get(0).getTiempo().intValue();
+			}
+
+
+			System.out.println("cantidad_sesiones: " + cantidad_sesiones);
+			System.out.println("cantidad_tiempo: " + cantidad_tiempo);
+			System.out.println("cantidad_clientes: " + cantidad_clientes);
+			System.out.println("nombre_cliente_max: " + nombre_cliente_max);
+			System.out.println("tiempo_cliente_max: " + tiempo_cliente_max);
+			System.out.println("cantidad_materias: " + cantidad_materias);
+			System.out.println("nombre_materia_max: " + nombre_materia_max);
+			System.out.println("tiempo_materia_max: " + tiempo_materia_max);
+			System.out.println("cantidad_submateria: " + cantidad_submateria);
+			System.out.println("nombre_submateria_max: " + nombre_submateria_max);
+			System.out.println("tiempo_submateria_max: " + tiempo_submateria_max);
+			
+			return new InfoTabla(cantidad_sesiones, cantidad_tiempo,
+					cantidad_clientes, nombre_cliente_max, tiempo_cliente_max,
+					cantidad_materias, nombre_materia_max, tiempo_materia_max,
+					cantidad_submateria, nombre_submateria_max, tiempo_submateria_max);
 		}
 
-		Integer cantidad_materias = consultaMateriaRepository.getConsultaCantidadMaterias(fechaInicio, fechaFin);
 
-		List<ConsultaMateria> nombre_tiempo_materia_max = consultaMateriaRepository.getConsultaNombreTiempoMateriaMax(
-				fechaInicio,
-				fechaFin);
-		String nombre_materia_max;
-		Integer tiempo_materia_max;
-		if (nombre_tiempo_materia_max.size() == 0) {
-			nombre_materia_max = "No hay materias";
-			tiempo_materia_max = 0;
-		} else {
-			nombre_materia_max = nombre_tiempo_materia_max.get(0).getNombre();
-			tiempo_materia_max = nombre_tiempo_materia_max.get(0).getTiempo().intValue();
-		}
-
-		Integer cantidad_submateria = consultaMateriaRepository.getConsultaCantidadSubmaterias(fechaInicio, fechaFin);
-
-		List<ConsultaMateria> nombre_tiempo_submateria_max = consultaMateriaRepository
-				.getConsultaNombreTiempoSubmateriaMax(
-						fechaInicio,
-						fechaFin);
-		String nombre_submateria_max;
-		Integer tiempo_submateria_max;
-		if (nombre_tiempo_submateria_max.size() == 0) {
-			nombre_submateria_max = "No hay submaterias";
-			tiempo_submateria_max = 0;
-		} else {
-			nombre_submateria_max = nombre_tiempo_submateria_max.get(0).getNombre();
-			tiempo_submateria_max = nombre_tiempo_submateria_max.get(0).getTiempo().intValue();
-		}
-
-		return new InfoTabla(cantidad_sesiones, cantidad_tiempo,
-				cantidad_clientes, nombre_cliente_max, tiempo_cliente_max,
-				cantidad_materias, nombre_materia_max, tiempo_materia_max,
-				cantidad_submateria, nombre_submateria_max, tiempo_submateria_max);
 	}
 
 	/*
@@ -378,22 +444,22 @@ public class ConsultaService {
 	Integer calcularDias(Long idAbogado) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		List<ConsultaSesiones> allConsultas;
-		if(idAbogado != -1){
+		if (idAbogado != -1) {
 			allConsultas = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
-		}else{
+		} else {
 			allConsultas = consultaSesionesRepository.getConsultaSesiones();
 		}
-	
+
 		if (allConsultas.isEmpty()) {
 			// No hay consultas, por lo que no podemos calcular días.
 			return null;
 		}
-	
+
 		String fechaInicio = sdf.format(allConsultas.get(0).getFecha());
 		Date fechaFinAux = new Date();
 		String fechaFin = sdf.format(fechaFinAux);
 		Date fechaInicioAux;
-		
+
 		try {
 			fechaInicioAux = sdf.parse(fechaInicio);
 			Date fechaFinAuxAux = sdf.parse(fechaFin);
@@ -401,22 +467,21 @@ public class ConsultaService {
 			Calendar instance2 = Calendar.getInstance();
 			instance2.setTime(fechaFinAuxAux);
 			instance1.setTime(fechaInicioAux);
-	
+
 			int dias = 0;
-	
+
 			while (!instance1.after(instance2)) {
 				instance1.add(Calendar.DAY_OF_YEAR, 1);
 				dias++;
 			}
-	
+
 			return dias;
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
 
 	// funcion que retorna una fecha actual en formato STRING
 	String fechaActualString() {

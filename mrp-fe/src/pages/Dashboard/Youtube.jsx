@@ -169,7 +169,7 @@ const Youtube = () => {
 
 	const getEstadisticas = async () => {
 		try {
-			let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre;
+			let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre + "/" + abogado.id;
 			const response = await axios.get(url);
 			if (response.status === 200) {
 				setEstadisticas(response.data);
