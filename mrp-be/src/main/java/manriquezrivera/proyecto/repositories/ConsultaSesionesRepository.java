@@ -12,12 +12,41 @@ import manriquezrivera.proyecto.models.ConsultaSesiones;
 
 @Repository
 public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesiones, Long> {
-  @Query(value = "SELECT fecha , sum(tiempo) as tiempo FROM mrp.sesion " +
-      "WHERE borrado = 0 AND " +
-      "fecha BETWEEN :fechaInicio AND :fechaFin " +
-      "GROUP BY fecha", nativeQuery = true)
-  List<ConsultaSesiones> getConsultaSesionesDias(@Param("fechaInicio") String fechaInicio,
+// QUERY PARA LOS DIAS   
+@Query(value ="SELECT fecha , sum(tiempo) as tiempo FROM mrp.sesion " +
+  "WHERE borrado = 0 AND id_abogado = :idAbogado AND " +
+  "fecha BETWEEN :fechaInicio AND :fechaFin " +
+  "GROUP BY fecha", nativeQuery = true)
+  List<ConsultaSesiones> getConsultaSesionesByIdAbogado(@Param("fechaInicio") String fechaInicio,
+      @Param("fechaFin") String fechaFin, @Param("idAbogado") Long idAbogado);
+
+  @Query(value ="SELECT fecha , sum(tiempo) as tiempo FROM mrp.sesion " +
+  "WHERE borrado = 0 AND " +
+  "fecha BETWEEN :fechaInicio AND :fechaFin " +
+  "GROUP BY fecha", nativeQuery = true)
+  List<ConsultaSesiones> getConsultaSesiones(@Param("fechaInicio") String fechaInicio,
       @Param("fechaFin") String fechaFin);
+// ---------------------------------------
+// QUERY DESDE SIEMPRE (TODOS ABOGADOS)
+    @Query(value ="SELECT fecha , sum(tiempo) as tiempo FROM mrp.sesion " +
+  "WHERE borrado = 0 "+
+  "GROUP BY fecha"
+, nativeQuery = true)
+  List<ConsultaSesiones> getConsultaSesionesDesdeSiempre();
+// QUERY DESDE SIEMPRE (ABOGADO ESPECIFICO)
+  @Query(value ="SELECT fecha , sum(tiempo) as tiempo FROM mrp.sesion " +
+  "WHERE borrado = 0 AND id_abogado = :idAbogado "+
+  "GROUP BY fecha"
+, nativeQuery = true)
+  List<ConsultaSesiones> getConsultaSesionesDesdeSiempreByIdAbogado(@Param("idAbogado") Long idAbogado);
+
+  @Query(value ="SELECT * FROM mrp.sesion " + 
+          "ORDER BY fecha asc", nativeQuery=true)
+  List<ConsultaSesiones> getConsultaSesionesFechasOrdenadas();
+// -----------------------------------------
+
+
+
 
   @Query(value = "SELECT count(*) as cantidadSesiones FROM mrp.sesion " +
       "WHERE borrado = 0 AND " +
@@ -31,6 +60,8 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
 
   @Query(value = "SELECT * FROM mrp.sesion WHERE borrado = 0", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesiones();
+
+  
 
   @Query(value = "SELECT fecha, sum(tiempo) as tiempo FROM mrp.sesion WHERE borrado = 0 AND :id = id_caso AND fecha BETWEEN :fechaInicio AND :fechaFin GROUP BY fecha ORDER BY fecha ASC", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesionesByIdCaso(@Param("id") Long id, @Param("fechaInicio") String fechaInicio,

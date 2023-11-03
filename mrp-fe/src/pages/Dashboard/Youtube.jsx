@@ -32,7 +32,8 @@ const Youtube = () => {
   const [fechaInicio, setFechaInicio] = useState(
     formatearFecha(new Date(), 0, 7)
   );
-
+  // Variable que almacena las consultas de vista GENERAL
+  // se les aplica todos los filtros  
   const [consultasS, setConsultasS] = useState([]);
   const [consultasM, setConsultasM] = useState([]);
 
@@ -111,14 +112,38 @@ const Youtube = () => {
     }
     return yyyy + "-" + mm + "-" + dd;
   };
-
+  // aqui se obtienen las consultas de sesiones
   const getConsultasSesiones = async () => {
     try {
+      // si es que se selecciono desde siempre
+      if (dropSiempre==1){
+        console.log("ENTRE?")
+        getConsultasSesionesDesdeSiempre();
+      }
+      else{
+      // todas las otras opciones
+      console.log("Porfa hace algo");
       let url =
         "http://localhost:8090/consultas/sesiones/" +
         fechaInicio +
         "/" +
-        fechaFin + "/" + dropSelect + "/" + dropSiempre + "/" + dropAnio;
+        fechaFin + "/" + dropSelect + "/" + abogado.id;
+      const response = await axios.get(url);
+     
+      if (response.status === 200) {
+        setConsultasS(response.data);
+      }
+
+    }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getConsultasSesionesDesdeSiempre = async () => {
+    try {
+      let url =
+        "http://localhost:8090/consultas/sesiones/" + abogado.id;
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasS(response.data);

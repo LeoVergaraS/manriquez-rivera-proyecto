@@ -19,19 +19,20 @@ import manriquezrivera.proyecto.models.InfoTablaMateria;
 import manriquezrivera.proyecto.repositories.ConsultaClienteRepository;
 import manriquezrivera.proyecto.repositories.ConsultaMateriaRepository;
 import manriquezrivera.proyecto.repositories.ConsultaSesionesRepository;
-
+//import manriquezrivera.proyecto.util.Util;
 @Service
 public class ConsultaService {
 	@Autowired
 	ConsultaClienteRepository consultaClienteRepository;
-
 	@Autowired
 	ConsultaMateriaRepository consultaMateriaRepository;
 
 	@Autowired
 	ConsultaSesionesRepository consultaSesionesRepository;
 
-	public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre) {
+	//public Util util; 
+
+	public List<ConsultaMateria> getCM(String fechaInicio, String fechaFin, Integer cantidadDias, Integer dropSiempre) {
 		if (dropSiempre == 1) {
 			List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
 			fechaInicio = allConsultas.get(0).getFecha().toString();
@@ -42,115 +43,58 @@ public class ConsultaService {
 	public List<ConsultaCliente> getCC(Long id, String fechaInicio, String fechaFin) {
 		return consultaClienteRepository.getConsultaClientes(id, fechaInicio, fechaFin);
 	}
-
-	public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer dropSelect, Integer dropSiempre,
-			Integer dropAnio) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-		// Si la opción ingresada es "Desde siempre", se obtiene la fecha de la primera
-		// sesión creada
-		if (dropSiempre == 1) {
-			List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesiones();
-			fechaInicio = allConsultas.get(0).getFecha().toString();
-			Date fechaFinAux = new Date();
-			Date fechaInicioAux;
-			try {
-				fechaInicioAux = sdf.parse(fechaInicio);
-				Calendar instance1 = Calendar.getInstance();
-				Calendar instance2 = Calendar.getInstance();
-				instance2.setTime(fechaFinAux);
-				instance1.setTime(fechaInicioAux);
-				Integer dias = instance2.get(Calendar.DAY_OF_YEAR) - instance1.get(Calendar.DAY_OF_YEAR);
-				dropSelect = dias;
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+	// OBTIENEN SESIONES DE ABOGADOS CON INTERVALOS DE TIEMPO DE DIAS (NO INCLUYE DESDE SIEMPRE)
+	public List<ConsultaSesiones> getCS(String fechaInicio, String fechaFin, Integer cantidadDias,
+			Long idAbogado) {
+		List<ConsultaSesiones> consultaSesiones;
 		// Se obtienen las sesiones con las fechas inicio y fin establecidas
-		List<ConsultaSesiones> consultaSesiones = consultaSesionesRepository.getConsultaSesionesDias(fechaInicio,
+
+		// ABOGADO EN ESPECIFICO
+		if(idAbogado!=-1){
+		consultaSesiones = consultaSesionesRepository.getConsultaSesionesByIdAbogado(fechaInicio,
+				fechaFin, idAbogado);
+			 }
+		// TODOS LOS ABOGADOS 
+		 else{
+		consultaSesiones = consultaSesionesRepository.getConsultaSesiones(fechaInicio,
 				fechaFin);
+		} 
+		// se obtiene la lista con las fechas vacias rellenadas de ceros (PARA EL GRAFICO)
+		List<ConsultaSesiones> consultaSesionesActualizado = rellenadorDeCeros(consultaSesiones,fechaFin,cantidadDias);
 
-		// Se crea una lista de sesiones vacía. Esta lista será la que se devuelva al
-		// final
-		List<ConsultaSesiones> consultaSesiones2 = new ArrayList<ConsultaSesiones>();
-
-		// Se crea un arreglo que contenga las fechas que existen entre fechaInicio y
-		// fechaFin
-		List<String> fechas = new ArrayList<String>();
-		fechas.add(fechaFin);
-
-		// Si la opción ingresada es un año, se obtiene la cantidad de días que tiene
-		// ese año. Pueden ser 365 o 366
-		if (dropAnio == 1) {
-			dropSelect = getCantidadDiasDeUnAnio(2023) - 1;
-		}
-
-		// Se obtienen las fechas entre fechaInicio y fechaFin
-		int i = 1;
-		while (i <= dropSelect) {
-			Calendar instance = Calendar.getInstance();
-			Date date = new Date();
-			try {
-				date = sdf.parse(fechaFin);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			instance.setTime(date);
-			instance.add(Calendar.DATE, -i);
-			String fechaString = sdf.format(instance.getTime());
-			fechas.add(fechaString);
-			i++;
-		}
-
-		// invertir orden de un arrgelo
-		List<String> fechasInvertidas = new ArrayList<String>();
-		for (int j = fechas.size() - 1; j >= 0; j--) {
-			fechasInvertidas.add(fechas.get(j));
-		}
-
-		// Se pone de tiempo 0 en las fechas que no se encontraron seriones
-		i = 0;
-		int j = 0;
-		while (i < dropSelect) {
-			if (consultaSesiones.size() == 0) {
-				int k = 0;
-				while (k < dropSelect) {
-					ConsultaSesiones consultaNueva = new ConsultaSesiones();
-					consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(k)));
-					consultaNueva.setTiempo(0L);
-					consultaSesiones2.add(consultaNueva);
-					k++;
-				}
-				break;
-			} else if (j < consultaSesiones.size()) {
-				if (fechasInvertidas.get(i).equals(consultaSesiones.get(j).getFecha().toString())) {
-					consultaSesiones2.add(consultaSesiones.get(j));
-					i++;
-					j++;
-				} else {
-					j++;
-				}
-			} else {
-				ConsultaSesiones consultaNueva = new ConsultaSesiones();
-				consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(i)));
-				consultaNueva.setTiempo(0L);
-				consultaSesiones2.add(consultaNueva);
-				i++;
-				j = 0;
-			}
-		}
-
-		return consultaSesiones2;
+		return consultaSesionesActualizado;
 	}
 
-	public Integer getCantidadDiasDeUnAnio(Integer anio) {
+		// OBTIENEN SESIONES DE ABOGADOS DESDE SIEMPRE (NO INCLUYE POR DIAS)
+	public List<ConsultaSesiones> getCSdesdeSiempre(Long idAbogado) {
+		List<ConsultaSesiones> consultaSesiones;
+		Integer cantidadDias;
+		// Obtenemos una fecha actual
+		// ABOGADO EN ESPECIFICO
+		if(idAbogado!=-1){
+		consultaSesiones = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
+			 }
+		// TODOS LOS ABOGADOS 
+		 else{
+		consultaSesiones = consultaSesionesRepository.getConsultaSesiones();
+		} 
+		cantidadDias = calcularDias();
+		System.out.println(cantidadDias);
+		String fechaFin= fechaActualString();
+
+		
+		// se obtiene la lista con las fechas vacias rellenadas de ceros (PARA EL GRAFICO)
+		List<ConsultaSesiones> consultaSesionesActualizado = rellenadorDeCeros(consultaSesiones,fechaFin,cantidadDias);
+
+		return consultaSesionesActualizado;
+	}
+
+	/*public Integer getCantidadDiasDeUnAnio(Integer anio) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(anio, 11, 31);
 		Integer cantidadDias = calendar.get(Calendar.DAY_OF_YEAR);
 		return cantidadDias;
-	}
+	}*/
 
 	// cantidad de sesiones
 	public int getCCS(String fechaInicio, String fechaFin) {
@@ -338,5 +282,107 @@ public class ConsultaService {
 
 		return new InfoTablaCliente(cantidadSesiones, tiempoSesiones);
 	}
+	// FUNCIONES DE UTILIDAD -----------------------------------------------
+	public List<ConsultaSesiones> rellenadorDeCeros (List<ConsultaSesiones> consultaSesiones, String fechaFin, Integer cantidadDias){ 
+        // Se crea una lista de sesiones vacía. Esta lista será la que se devuelva al
+		// final
+		List<ConsultaSesiones> consultaSesiones2 = new ArrayList<ConsultaSesiones>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		// Se crea un arreglo que contenga las fechas que existen entre fechaInicio y
+		// fechaFin
+		List<String> fechas = new ArrayList<String>();
+		fechas.add(fechaFin);
 
+		// Se obtienen las fechas entre fechaInicio y fechaFin
+		int i = 1;
+		while (i <= cantidadDias) {
+			Calendar instance = Calendar.getInstance();
+			Date date = new Date();
+			try {
+				date = sdf.parse(fechaFin);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			instance.setTime(date);
+			instance.add(Calendar.DATE, -i);
+			String fechaString = sdf.format(instance.getTime());
+			fechas.add(fechaString);
+			i++;
+		}
+		// invertir orden de un arrgelo
+		List<String> fechasInvertidas = new ArrayList<String>();
+		for (int j = fechas.size() - 1; j >= 0; j--) {
+			fechasInvertidas.add(fechas.get(j));
+		}
+
+		// Se pone de tiempo 0 en las fechas que no se encontraron seriones
+		i = 0;
+		int j = 0;
+		while (i < cantidadDias) {
+			if (consultaSesiones.size() == 0) {
+				int k = 0;
+				while (k < cantidadDias) {
+					ConsultaSesiones consultaNueva = new ConsultaSesiones();
+					consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(k)));
+					consultaNueva.setTiempo(0L);
+					consultaSesiones2.add(consultaNueva);
+					k++;
+				}
+				break;
+			} else if (j < consultaSesiones.size()) {
+				if (fechasInvertidas.get(i).equals(consultaSesiones.get(j).getFecha().toString())) {
+					consultaSesiones2.add(consultaSesiones.get(j));
+					i++;
+					j++;
+				} else {
+					j++;
+				}
+			} else {
+				ConsultaSesiones consultaNueva = new ConsultaSesiones();
+				consultaNueva.setFecha(java.sql.Date.valueOf(fechasInvertidas.get(i)));
+				consultaNueva.setTiempo(0L);
+				consultaSesiones2.add(consultaNueva);
+				i++;
+				j = 0;
+			}
+		}
+        return consultaSesiones2;
+     }
+	 // Funcion que calcula dias (se utiliza en el desde siempre)
+	 Integer calcularDias(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<ConsultaSesiones> allConsultas = consultaSesionesRepository.getConsultaSesionesFechasOrdenadas();
+		String fechaInicio = allConsultas.get(0).getFecha().toString();
+		System.out.println(fechaInicio + " ESTA ES");
+		Date fechaFinAux=new Date();
+		String fechaFin= sdf.format(fechaFinAux);
+		Date fechaInicioAux;
+		try {
+			fechaInicioAux = sdf.parse(fechaInicio);
+			Date fechaFinAuxAux = sdf.parse(fechaFin);
+			Calendar instance1 = Calendar.getInstance();
+			Calendar instance2 = Calendar.getInstance();
+			instance2.setTime(fechaFinAuxAux);
+			instance1.setTime(fechaInicioAux);
+			System.out.println("/n");
+
+			System.out.println(fechaInicioAux);
+			System.out.println(fechaFinAuxAux);
+			Integer dias = instance2.get(Calendar.DAY_OF_YEAR) - instance1.get(Calendar.DAY_OF_YEAR);
+			return  dias;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	// funcion que retorna una fecha actual en formato STRING
+	String fechaActualString(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date fechaFinAux=new Date();
+		String fechaFin= sdf.format(fechaFinAux);
+		return fechaFin;
+	
+		
+	}
 }

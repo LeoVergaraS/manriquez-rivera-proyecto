@@ -56,13 +56,25 @@ public class ConsultaController {
     }
     return ResponseEntity.ok().body(consultasMaterias);
   }
-
-  @GetMapping("/sesiones/{fi}/{ff}/{dropSelect}/{dropSiempre}/{dropAnio}")
+  // funcion que obtiene las sesiones con respecto a los filtros
+  // VISTA GENERAL
+  @GetMapping("/sesiones/{fi}/{ff}/{dropSelect}/{idAbogado}")
   public ResponseEntity<List<ConsultaSesiones>> getConsultasSesiones(@PathVariable("fi") String fechaInicio,
       @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect,
-      @PathVariable("dropSiempre") Integer dropSiempre, @PathVariable("dropAnio") Integer dropAnio) {
-    List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin, dropSelect, dropSiempre,
-        dropAnio);
+      @PathVariable("idAbogado") Long idAbogado) {
+    List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin, dropSelect,
+        idAbogado);
+    if (consultaSesiones == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(consultaSesiones);
+  }
+
+    // funcion que obtiene las sesiones con respecto a los filtros
+  // VISTA GENERAL
+  @GetMapping("/sesiones/{idAbogado}")
+  public ResponseEntity<List<ConsultaSesiones>> getConsultasSesionesDesdeSiempre(@PathVariable("idAbogado") Long idAbogado) {
+    List<ConsultaSesiones> consultaSesiones = consultaService.getCSdesdeSiempre(idAbogado);
     if (consultaSesiones == null) {
       return ResponseEntity.notFound().build();
     }
