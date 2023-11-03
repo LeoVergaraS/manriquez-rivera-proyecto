@@ -78,7 +78,6 @@ public class CasoService {
     public Caso saveCaso(ObjectNode request) {
         List<Long> abogados = castRequestToIds(request);
         Caso caso = castRequestToCaso(request);
-
         String nombreCliente = caso.getId_cliente().getNombre();
         Cliente cliente = clienteService.getClienteByNombre(nombreCliente);
 

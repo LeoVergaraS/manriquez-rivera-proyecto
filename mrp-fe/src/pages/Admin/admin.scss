@@ -1,6 +1,13 @@
+// import variables.scss
+@use '../../utils/scss/variables.scss' as *;
+
+.layout-admin{
+  display: flex;
+}
+
 .admin-nav{
-  border-left: 2px solid #DFBF68;
-  background-color: #DFBF68;
+  border-left: 2px solid $color-secundario;
+  background-color: $color-secundario;
   height: calc(100vh - (71px));
   width: 20%;
 
@@ -8,20 +15,37 @@
     display: flex;
     padding: 10px;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
+    justify-content: space-around;
+    align-items: center;
     height: 100%;
   }
 
   &__item{
     text-align: center;
     font-size: 25px;
-    border-bottom: 2px solid #1E464B;
-    transition: width 0.5s ease-in-out;
+    border-bottom: 2px solid $color-oscuro;
+    transition: font-size 0.2s ease-in-out;
     width: auto;
     cursor: pointer;
     &:hover{
-      width: 160px;
+      font-size: 30px;
     }
+    &--selected{
+      font-size: 30px;
+    }
+  }
+}
+
+.admin-content{
+  width: 80%;
+  height: calc(100vh - (71px));
+  background-color: $color-oscuro;
+  padding: 10px;
+
+  &__title{
+    text-align: center;
+    color: $color-secundario;
+    font-size: 40px;
+    margin: 0;
   }
 }

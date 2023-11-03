@@ -71,6 +71,7 @@ public class CasoController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteCaso(@RequestBody Caso caso){
+
       casoService.deleteCaso(caso);
       return ResponseEntity.ok().body("Caso eliminado correctamente");
     }
