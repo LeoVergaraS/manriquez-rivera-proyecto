@@ -168,9 +168,14 @@ public class ConsultaService {
 
 	public List<ConsultaSesiones> getConsultasByCaso(Long idCaso, String fechaInicio, String fechaFin, Integer flag,
 			Long idAbo) {
+				System.out.println("idcaso:"+idCaso);
+				System.out.println("fechaInicio:"+fechaInicio);
+				System.out.println("fechaFin:"+fechaFin);
+				System.out.println("flag:"+flag);
+				System.out.println("idAbo:"+idAbo);
 		if (flag == 1) {
 			List<ConsultaSesiones> consultasAux = new ArrayList<ConsultaSesiones>();
-			if (idAbo == 0) {
+			if (idAbo == -1) {
 				consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCaso2(idCaso);
 			} else {
 				consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado2(idCaso, idAbo);
@@ -180,7 +185,7 @@ public class ConsultaService {
 				return consultasNull;
 			} else {
 				fechaInicio = consultasAux.get(0).getFecha().toString();
-				if (idAbo == 0) {
+				if (idAbo == -1) {
 					return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
 				} else {
 					return consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado(idCaso, fechaInicio,
@@ -188,7 +193,8 @@ public class ConsultaService {
 				}
 			}
 		} else {
-			if (idAbo == 0) {
+			if (idAbo == -1) {
+				System.out.println(consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin));
 				return consultaSesionesRepository.getConsultaSesionesByIdCaso(idCaso, fechaInicio, fechaFin);
 			} else {
 				return consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado(idCaso, fechaInicio, fechaFin,
@@ -292,7 +298,7 @@ public class ConsultaService {
 
 		if (flag == 1) {
 			List<ConsultaSesiones> consultasAux = new ArrayList<ConsultaSesiones>();
-			if (id_abo == 0) {
+			if (id_abo == -1) {
 				consultasAux = consultaSesionesRepository.getConsultaSesionesByIdCaso2(id_caso);
 				if (consultasAux.size() == 0) {
 					cantidadSesiones = 0;
@@ -316,7 +322,7 @@ public class ConsultaService {
 				}
 			}
 		} else {
-			if (id_abo == 0) {
+			if (id_abo == -1) {
 				cantidadSesiones = consultaClienteRepository.getCantidadSesionesPorCliente(fi, ff, id_caso);
 				tiempoSesiones = consultaClienteRepository.getTiempoSesionesPorCliente(fi, ff, id_caso);
 			} else {

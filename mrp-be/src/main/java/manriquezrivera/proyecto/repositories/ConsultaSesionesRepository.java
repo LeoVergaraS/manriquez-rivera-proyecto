@@ -32,17 +32,17 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
   @Query(value = "SELECT * FROM mrp.sesion WHERE borrado = 0", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesiones();
 
-  @Query(value = "SELECT fecha, tiempo FROM mrp.sesion WHERE borrado = 0 AND :id = id_caso AND fecha BETWEEN :fechaInicio AND :fechaFin ORDER BY fecha ASC", nativeQuery = true)
+  @Query(value = "SELECT fecha, sum(tiempo) as tiempo FROM mrp.sesion WHERE borrado = 0 AND :id = id_caso AND fecha BETWEEN :fechaInicio AND :fechaFin GROUP BY fecha ORDER BY fecha ASC", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesionesByIdCaso(@Param("id") Long id, @Param("fechaInicio") String fechaInicio,
       @Param("fechaFin") String fechaFin);
 
-  @Query(value = "SELECT s.fecha, s.tiempo FROM mrp.sesion as s, mrp.caso_abogado as ca WHERE s.borrado = 0 AND :id = s.id_caso AND s.id_caso = ca.id_caso AND :id_abo = ca.id_abogado AND s.id_abogado = ca.id_abogado AND fecha BETWEEN :fechaInicio AND :fechaFin ORDER BY fecha ASC", nativeQuery = true)
+  @Query(value = "SELECT s.fecha, sum(tiempo) as tiempo FROM mrp.sesion as s, mrp.caso_abogado as ca WHERE s.borrado = 0 AND :id = s.id_caso AND s.id_caso = ca.id_caso AND :id_abo = ca.id_abogado AND s.id_abogado = ca.id_abogado AND fecha BETWEEN :fechaInicio AND :fechaFin GROUP by s.fecha ORDER BY fecha ASC", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesionesByIdCasoConAbogado(@Param("id") Long id, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin, @Param("id_abo") Long id_abo);
 
-  @Query(value = "SELECT fecha, tiempo FROM mrp.sesion WHERE borrado = 0 AND :id = id_caso ORDER BY fecha ASC", nativeQuery = true)
+  @Query(value = "SELECT fecha, sum(tiempo) as tiempo FROM mrp.sesion WHERE borrado = 0 AND :id = id_caso GROUP BY fecha ORDER BY fecha ASC", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesionesByIdCaso2(@Param("id") Long id);
 
-  @Query(value = "SELECT s.fecha, s.tiempo FROM mrp.sesion as s, mrp.caso_abogado as ca WHERE s.borrado = 0 AND :id = s.id_caso AND s.id_caso = ca.id_caso AND :id_abo = ca.id_abogado AND s.id_abogado = ca.id_abogado ORDER BY fecha ASC", nativeQuery = true)
+  @Query(value = "SELECT s.fecha, sum(tiempo) as tiempo FROM mrp.sesion as s, mrp.caso_abogado as ca WHERE s.borrado = 0 AND :id = s.id_caso AND s.id_caso = ca.id_caso AND :id_abo = ca.id_abogado AND s.id_abogado = ca.id_abogado GROUP by s.fecha ORDER BY fecha ASC", nativeQuery = true)
   List<ConsultaSesiones> getConsultaSesionesByIdCasoConAbogado2(@Param("id") Long id, @Param("id_abo") Long id_abo);
 
   // consulta sesiones para vista materia

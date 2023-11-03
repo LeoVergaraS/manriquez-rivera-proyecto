@@ -117,6 +117,8 @@ public class ConsultaController {
     return ResponseEntity.ok().body(consultaEstadisticasMateria);
   }
 
+
+  // Para los 2 cards que salen en la vista Dashboard-Cliente
   @GetMapping("/cliente/estadisticas/{id}/{fi}/{ff}/{id_abo}/{flag}")
     public ResponseEntity<InfoTablaCliente> getEstadisticasCliente(@PathVariable("id") Long id_caso, @PathVariable("fi") String fechaInicio,
       @PathVariable("ff") String fechaFin, @PathVariable("id_abo") Long id_abo, @PathVariable("flag") Integer flag) {

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 
 @Service
-public class CasoService{
+public class CasoService {
     @Autowired
     private CasoRepository casoRepository;
 
@@ -30,28 +30,28 @@ public class CasoService{
     @Autowired
     private CasoAbogadoRepository casoAbogadoRepository;
 
-    
-
-    public List<Caso> getAllCasos(){
+    public List<Caso> getAllCasos() {
         return casoRepository.getAll();
     }
 
-    public Caso getCasoById(Long id){
+    public Caso getCasoById(Long id) {
         return casoRepository.getById(id);
     }
 
-    public List<Caso> getCasoByIdAbogado(Integer id){
+    public List<Caso> getCasoByIdAbogado(Integer id) {
         Long idLong = id.longValue();
-        if(idLong == 0){
+        if (idLong == -1) {
             return casoRepository.getAll();
-        }else{
+        } else {
             return casoRepository.getByIdAbogado(idLong);
         }
     }
-    private List<Long> castRequestToIds(ObjectNode request){
+
+    private List<Long> castRequestToIds(ObjectNode request) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            ObjectReader reader = mapper.readerFor(new TypeReference<List<Long>>() {});
+            ObjectReader reader = mapper.readerFor(new TypeReference<List<Long>>() {
+            });
             List<Long> abogados = reader.readValue(request.get("abogados"));
             return abogados;
         } catch (IOException e) {
@@ -61,10 +61,11 @@ public class CasoService{
         return null;
     }
 
-    private Caso castRequestToCaso(ObjectNode request){
+    private Caso castRequestToCaso(ObjectNode request) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            ObjectReader reader = mapper.readerFor(new TypeReference<Caso>() {});
+            ObjectReader reader = mapper.readerFor(new TypeReference<Caso>() {
+            });
             Caso caso = reader.readValue(request.get("caso"));
             return caso;
         } catch (IOException e) {
@@ -74,35 +75,36 @@ public class CasoService{
         return null;
     }
 
-    public Caso saveCaso(ObjectNode request){
+    public Caso saveCaso(ObjectNode request) {
         List<Long> abogados = castRequestToIds(request);
         Caso caso = castRequestToCaso(request);
 
         String nombreCliente = caso.getId_cliente().getNombre();
         Cliente cliente = clienteService.getClienteByNombre(nombreCliente);
 
-        if(cliente == null){
-            Cliente clienteCreado = clienteService.saveCliente(new Cliente(null, nombreCliente, false)); 
+        if (cliente == null) {
+            Cliente clienteCreado = clienteService.saveCliente(new Cliente(null, nombreCliente, false));
             caso.setId_cliente(clienteCreado);
-        }else{
+        } else {
             caso.setId_cliente(cliente);
         }
 
         Caso casoGuardado = casoRepository.save(caso);
 
-        //creacion de tupla en tabla intermdia
-        for(Long id_abogado : abogados){
+        // creacion de tupla en tabla intermdia
+        for (Long id_abogado : abogados) {
             CasoAbogado ca = casoAbogadoRepository.getByCasoByAbogado(casoGuardado.getId(), id_abogado);
-            if(ca == null){
-                CasoAbogado nuevoCasoAbogado = new CasoAbogado(null, casoGuardado , new Abogado(id_abogado, null, false));
+            if (ca == null) {
+                CasoAbogado nuevoCasoAbogado = new CasoAbogado(null, casoGuardado,
+                        new Abogado(id_abogado, null, false));
                 casoAbogadoRepository.save(nuevoCasoAbogado);
-            } 
+            }
         }
 
         return casoGuardado;
     }
 
-    public Caso deleteCaso(Caso caso){
+    public Caso deleteCaso(Caso caso) {
         caso.setBorrado(true);
         return casoRepository.save(caso);
     }
