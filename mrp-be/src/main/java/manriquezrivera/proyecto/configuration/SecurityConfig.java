@@ -1,4 +1,4 @@
-package manriquezrivera.proyecto.config;
+package manriquezrivera.proyecto.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

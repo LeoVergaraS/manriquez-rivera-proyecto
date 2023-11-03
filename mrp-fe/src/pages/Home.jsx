@@ -12,7 +12,6 @@ import FormSesion from "../components/Forms/FormSesion/FormSesion";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import formatDateShow from "../utils/functions/formatDateShow";
-import Swal from "sweetalert2";
 import InputSelect from "../components/InputSelect/InputSelect";
 import Alerta from "../components/Alerta/Alerta";
 import Select from "react-select";
@@ -24,12 +23,9 @@ function Home() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [hoveredCard1, setHoveredCard1] = useState("");
   const [hoveredCard2, setHoveredCard2] = useState("");
-  const [sesiones, setSesiones] = useState([]);
-  const [clientes, setClientes] = useState([]);
   const [materias, setMaterias] = useState([]);
   const [subMaterias, setSubMaterias] = useState([]);
   const [casos, setCasos] = useState([]);
-  //const [idAbogados, setIdAbogados] = useState([1]);
 
   const [ts, setTs] = useState(60);
 
@@ -75,20 +71,6 @@ function Home() {
     setShowEdit(false);
   };
 
-  const [sesion, setSesion] = useState({
-    id: null,
-    fecha: null,
-    tiempo: null,
-    materia: {
-      id: null,
-      nombre: "Seleccione un cliente",
-    },
-    cliente: {
-      id: null,
-      nombre: "Seleccione un cliente",
-    },
-  });
-
   const [casoSeleccionado, setCasoSeleccionado] = useState({
     id: 0,
     fecha: "-",
@@ -105,37 +87,6 @@ function Home() {
       nombre: "-",
     },
   });
-
-  const getSesiones = async () => {
-    try {
-      const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-      };
-      let url = "http://localhost:8090/sesiones";
-      const response = await axios.get(url, config);
-      if (response.status === 200) {
-        setSesiones(response.data);
-      }
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
-  const getClientes = async () => {
-    try {
-      const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-      };
-      console.log("config:",config);
-      let url = "http://localhost:8090/clientes";
-      const response = await axios.get(url, config);
-      if (response.status === 200) {
-        setClientes(response.data);
-      }
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
 
   const getMaterias = async () => {
     try {
@@ -172,6 +123,7 @@ function Home() {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
+      console.log(config);
       let url = "http://localhost:8090/casos";
       const response = await axios.get(url, config);
       if (response.status === 200) {
@@ -285,8 +237,6 @@ function Home() {
     },
   });
 
-  //const [abogadosCaso, setAbogadosCaso] = useState([]);
-
   const createCasoOption = (caso) => {
     return (
       {
@@ -297,11 +247,9 @@ function Home() {
   }
 
   useEffect(() => {
-    //getSesiones();
-    getClientes();
     //getMaterias();
     //getSubMaterias();
-    //getCasos();
+    getCasos();
     //getCasoByIdAbogado(1);
   }, []);
 
