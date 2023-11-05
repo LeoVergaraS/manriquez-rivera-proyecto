@@ -1,22 +1,22 @@
-import { Card, Badge, Table } from "react-bootstrap";
-import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
-import { useEffect, useState } from "react";
-import InputSelect from "../../components/InputSelect/InputSelect";
-import axios from 'axios';
-import formatDateShow from "../../utils/functions/formatDateShow";
 import "./clientes.scss";
+import axios from 'axios';
+import { useEffect, useState } from "react";
+import { BiTime, BiClipboard } from "react-icons/bi";
+import { Card, Badge, Table } from "react-bootstrap";
 import castTime from "../../utils/functions/castTime";
-import { BiUser, BiTime, BiClipboard } from "react-icons/bi";
+import formatDateShow from "../../utils/functions/formatDateShow";
+import InputSelect from "../../components/InputSelect/InputSelect";
+import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 
 const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 
 	const [casos, setCasos] = useState([]);
 	const [caso, setCaso] = useState([]);
 	const [sesionesByCaso, setSesionesByCaso] = useState([]);
-	const [estadisticas, setEstadisticas] = useState([]);
-
-	//console.log("id abo",id_abo);
-	//console.log("flag",flag);
+	const [estadisticas, setEstadisticas] = useState({
+		cantidad_sesiones: 0,
+		tiempo_total: 0,
+	  });
 
 	const getCasos = async () => {
 		try {
@@ -74,8 +74,6 @@ const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 			}
 		)
 	}
-
-	//console.log(sesionesByCaso);
 
 	return (
 		<>

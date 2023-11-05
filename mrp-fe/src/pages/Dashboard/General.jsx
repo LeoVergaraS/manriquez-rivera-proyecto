@@ -1,9 +1,9 @@
+import "./general.scss";
 import { Card, Badge, Table } from "react-bootstrap";
+import castTime from "../../utils/functions/castTime";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 import GraficoGernal2 from "../../components/Graficos/GraficoGeneral2";
-import "./general.scss";
-import { BiUser, BiTime, BiClipboard, BiBookmark, BiBookmarks } from "react-icons/bi";
-import castTime from "../../utils/functions/castTime";
+import { BiUser, BiClipboard, BiBookmark, BiBookmarks } from "react-icons/bi";
 
 const General = ({ consultasS, estadisticas, consultasM }) => {
 
@@ -12,6 +12,7 @@ const General = ({ consultasS, estadisticas, consultasM }) => {
 
 			<main className="layout-general">
 				<h2 className="general__title">Resumen general</h2>
+				
 				<Card
 					className="card-grafico-1" style={{alignSelf:"top"}}
 				>
