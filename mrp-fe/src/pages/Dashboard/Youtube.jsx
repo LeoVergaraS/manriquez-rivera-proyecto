@@ -92,8 +92,6 @@ const Youtube = () => {
 	const handleSearch = () => {
 		setFechaInicio(formatDate(personalizado.fechaInicio));
 		setFechaFin(formatDate(personalizado.fechaFin));
-		console.log("personalizado.fechaInicio", personalizado.fechaInicio)
-		console.log("personalizado.fechaFin", personalizado.fechaFin)
 		const difMS = personalizado.fechaFin - personalizado.fechaInicio;
 		const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
 		setDropSelect(difDias + 1);
@@ -117,10 +115,8 @@ const Youtube = () => {
 	// aqui se obtienen las consultas de sesiones
 	const getConsultasSesiones = async () => {
 		try {
-
 			// si es que se selecciono desde siempre
 			if (dropSiempre == 1) {
-				console.log("ENTRE?")
 				getConsultasSesionesDesdeSiempre();
 			}
 			else {
@@ -135,8 +131,6 @@ const Youtube = () => {
 					setDropSelect(difDias + 1);
 				}
 
-				// todas las otras opciones
-				console.log("Porfa hace algo");
 				let url =
 					"http://localhost:8090/consultas/sesiones/" +
 					fechaInicio +
@@ -147,7 +141,6 @@ const Youtube = () => {
 				if (response.status === 200) {
 					setConsultasS(response.data);
 				}
-
 			}
 		} catch (err) {
 			console.error(err.message);
@@ -196,10 +189,6 @@ const Youtube = () => {
 		getConsultasSesiones();
 		getEstadisticas();
 		getAbogados();
-		console.log("fecha inicio", fechaInicio);
-		console.log("fecha fin", fechaFin);
-		console.log("dropSelect", dropSelect);
-		//console.log("abogadoaa",abogado);
 	}, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio, abogado, flag, abogado]);
 
 	return (
@@ -253,12 +242,21 @@ const Youtube = () => {
 			{selectedCliente === "selected" ? (
 				<Clientes fechaInicio={fechaInicio}
 					fechaFin={fechaFin}
-					flag={flag}
-					id_abo={abogado.id} />) : null}
+					dropSiempre={dropSiempre} 
+					id_abo={abogado.id}
+					dropSelect={dropSelect}
+					dropAnio={dropAnio}
+					setDropSelect={setDropSelect} />) : null}
 
 
 			{selectedMateria === "selected" ? (
-				<Materias id_abogado={abogado.id} fechaInicio={fechaInicio} fechaFin={fechaFin} dropSelect={dropSelect} dropSiempre={dropSiempre} dropAnio={dropAnio} setDropSelect={setDropSelect} />) : null}
+				<Materias id_abogado={abogado.id} 
+						  fechaInicio={fechaInicio} 
+						  fechaFin={fechaFin} 
+						  dropSelect={dropSelect} 
+						  dropSiempre={dropSiempre} 
+						  dropAnio={dropAnio} 
+						  setDropSelect={setDropSelect} />) : null}
 
 			<Modal show={showModal} onHide={handleModal}>
 				<Modal.Header closeButton>

@@ -8,7 +8,7 @@ import formatDateShow from "../../utils/functions/formatDateShow";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 
-const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
+const Clientes = ({ fechaInicio, fechaFin, dropSiempre, id_abo, dropSelect, dropAnio, setDropSelect }) => {
 
 	const [casos, setCasos] = useState([]);
 	const [caso, setCaso] = useState([]);
@@ -16,7 +16,7 @@ const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 	const [estadisticas, setEstadisticas] = useState({
 		cantidad_sesiones: 0,
 		tiempo_total: 0,
-	  });
+	});
 
 	const getCasos = async () => {
 		try {
@@ -32,20 +32,49 @@ const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 
 	const getSesionesByIdCaso = async (id) => {
 		try {
-			let url = "http://localhost:8090/consultas/sesiones/id_caso/" + id + "/" + fechaInicio + "/" + fechaFin + "/" + flag + "/" + id_abo;
+			// si es que se selecciono desde siempre
+			if (dropSiempre == 1) {
+				getSesionesByIdCasoDesdeSiempre(id);
+			} else {
+
+				// esto calcula la diferencia de dias entre las fechas cuando se selecciona un año en el dropSelect
+				if (dropAnio == 1) {
+					const fechaInicioAux = new Date(fechaInicio);
+					const fechaFinAux = new Date(fechaFin);
+
+					const difMS = fechaFinAux - fechaInicioAux;
+					const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+					setDropSelect(difDias + 1);
+				}
+
+				let url = "http://localhost:8090/consultas/sesiones/id_caso/" + id + "/" + fechaInicio + "/" + fechaFin + "/" + id_abo + "/" + dropSelect;
+				const response = await axios.get(url);
+				if (response.status === 200) {
+					//console.log(response.data);
+					setSesionesByCaso(response.data);
+				}
+			}
+		}
+		catch (err) {
+			console.log(err.message);
+		}
+	};
+
+	const getSesionesByIdCasoDesdeSiempre = async (id) => {
+		try {
+			let url = "http://localhost:8090/consultas/sesiones/" + id + "/" + id_abo;
 			const response = await axios.get(url);
 			if (response.status === 200) {
-				//console.log(response.data);
 				setSesionesByCaso(response.data);
 			}
 		} catch (err) {
 			console.log(err.message);
 		}
-	};
+	}
 
-	const getEstadisticas = async (id_caso, fechaInicio, fechaFin, id_abo, flag) => {
+	const getEstadisticas = async (id_caso, fechaInicio, fechaFin, id_abo, dropSiempre) => {
 		try {
-			let url = `http://localhost:8090/consultas/cliente/estadisticas/${id_caso}/${fechaInicio}/${fechaFin}/${id_abo}/${flag}`;
+			let url = `http://localhost:8090/consultas/cliente/estadisticas/${id_caso}/${fechaInicio}/${fechaFin}/${id_abo}/${dropSiempre}`;
 			const response = await axios.get(url);
 			if (response.status === 200) {
 				setEstadisticas(response.data);
@@ -53,18 +82,18 @@ const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 		} catch (err) {
 			console.error(err);
 		}
-	}; 
+	};
 
 	useEffect(() => {
 		getCasos();
-	}, [fechaInicio, fechaFin, flag, id_abo])
+	}, [fechaInicio, fechaFin, id_abo, dropSiempre])
 
 	useEffect(() => {
-		if (caso.id !== undefined){
+		if (caso.id !== undefined) {
 			getSesionesByIdCaso(caso.id);
-			getEstadisticas(caso.id, fechaInicio, fechaFin, id_abo, flag);
-		} 
-	}, [caso, fechaInicio, fechaFin, flag, id_abo])
+			getEstadisticas(caso.id, fechaInicio, fechaFin, id_abo, dropSiempre);
+		}
+	}, [caso, fechaInicio, fechaFin, id_abo, dropSiempre])
 
 	const createCasoOption = (caso) => {
 		return (
@@ -92,26 +121,26 @@ const Clientes = ({fechaInicio, fechaFin, flag, id_abo}) => {
 				<Card className="card-grafico">
 					<GraficoGernal1 tiempoSesiones={sesionesByCaso} title={"Sesiones del cliente"} />
 				</Card>
-				
-				<div style={{display: "flex", justifyContent: "center",alignItems:"center", gap:"50px", gridColumn:"1/4"}}>
 
-				<Card className="card-estadisticas-c">
-					<div className="card-estadisticas__header">
-						<h2 className="card-estadisticas-c__title">Sesiones</h2>
-						<Badge className="card-estadisticas-c__icon"><BiClipboard/></Badge>
-					</div>
-					<h1 className="card-estadisticas-c__estadistica">{estadisticas.cantidad_sesiones}</h1>
-					<p className="card-estadisticas-c__caption">Sesiones realizadas</p>
-				</Card>
+				<div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "50px", gridColumn: "1/4" }}>
 
-				<Card className="card-estadisticas-c">
-					<div className="card-estadisticas-c__header">
-						<h2 className="card-estadisticas-c__title">Tiempo total</h2>
-						<Badge className="card-estadisticas-c__icon"><BiTime/></Badge>
-					</div>
-					<h1 className="card-estadisticas-c__estadistica">{castTime(estadisticas.tiempo_total)}</h1>
-					<p className="card-estadisticas-c__caption">De tiempo trabajado</p>
-				</Card>
+					<Card className="card-estadisticas-c">
+						<div className="card-estadisticas__header">
+							<h2 className="card-estadisticas-c__title">Sesiones</h2>
+							<Badge className="card-estadisticas-c__icon"><BiClipboard /></Badge>
+						</div>
+						<h1 className="card-estadisticas-c__estadistica">{estadisticas.cantidad_sesiones}</h1>
+						<p className="card-estadisticas-c__caption">Sesiones realizadas</p>
+					</Card>
+
+					<Card className="card-estadisticas-c">
+						<div className="card-estadisticas-c__header">
+							<h2 className="card-estadisticas-c__title">Tiempo total</h2>
+							<Badge className="card-estadisticas-c__icon"><BiTime /></Badge>
+						</div>
+						<h1 className="card-estadisticas-c__estadistica">{castTime(estadisticas.tiempo_total)}</h1>
+						<p className="card-estadisticas-c__caption">De tiempo trabajado</p>
+					</Card>
 
 				</div>
 

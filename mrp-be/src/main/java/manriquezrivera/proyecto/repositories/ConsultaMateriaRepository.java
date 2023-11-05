@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import manriquezrivera.proyecto.models.ConsultaMateria;
-import manriquezrivera.proyecto.models.ConsultaSesiones;
 
 @Repository
 public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria, Long> {

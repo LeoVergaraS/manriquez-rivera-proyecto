@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import manriquezrivera.proyecto.entity.Caso;
-import manriquezrivera.proyecto.entity.Sesion;
 
 @Repository
 public interface CasoRepository extends JpaRepository<Caso, Long>{
