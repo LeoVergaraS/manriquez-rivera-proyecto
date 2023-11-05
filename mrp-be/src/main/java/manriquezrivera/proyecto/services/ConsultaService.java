@@ -521,11 +521,9 @@ public class ConsultaService {
 	Integer calcularDias(Long idAbogado) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		List<ConsultaSesiones> allConsultas;
-		if (idAbogado != -1) {
-			allConsultas = consultaSesionesRepository.getConsultaSesionesDesdeSiempreByIdAbogado(idAbogado);
-		} else {
-			allConsultas = consultaSesionesRepository.getConsultaSesiones();
-		}
+
+		allConsultas = consultaSesionesRepository.getConsultaSesiones();
+		
 
 		if (allConsultas.isEmpty()) {
 			// No hay consultas, por lo que no podemos calcular días.
