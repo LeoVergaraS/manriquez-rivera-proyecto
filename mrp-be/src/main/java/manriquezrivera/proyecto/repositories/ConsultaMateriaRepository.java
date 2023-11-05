@@ -111,6 +111,16 @@ public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria
 			@Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio,
 			@Param("fechaFin") String fechaFin);
 
+	// desde siempre con abogado
+				@Query(value = "SELECT \"NOMBRE\" as nombre, tiempo " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      s.id_abogado = :id_abogado AND " +
+			"      c.id_materia = :id_materia ", nativeQuery = true)
+	List<ConsultaMateria> getSesionesByMateriaAndAbogadoDesdeSiempre(@Param("id_abogado") Long id_abogado,
+			@Param("id_materia") Long id_materia);
+
 	@Query(value = "SELECT coalesce(sum(s.tiempo),0) as tiempo " +
 			"FROM sesion s, caso c " +
 			"WHERE s.borrado = 0 AND " +
@@ -122,7 +132,16 @@ public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria
 			@Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio,
 			@Param("fechaFin") String fechaFin);
 
-	@Query(value = "SELECT count(*)" +
+				@Query(value = "SELECT coalesce(sum(s.tiempo),0) as tiempo " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      s.id_abogado = :id_abogado AND " +
+			"      c.id_materia = :id_materia", nativeQuery = true)
+	Integer getTiempoSesionesByMateriaAndAbogadoDesdeSiempre(@Param("id_abogado") Long id_abogado,
+			@Param("id_materia") Long id_materia);
+
+	@Query(value = "SELECT count(*) " +
 			"FROM sesion s, caso c " +
 			"WHERE s.borrado = 0 AND " +
 			"      c.id = s.id_caso AND " +
@@ -133,6 +152,80 @@ public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria
 	List<Integer> getCantidadUsuariosByMateriaAndAbogadoAndTiempo(@Param("id_abogado") Long id_abogado,
 			@Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio,
 			@Param("fechaFin") String fechaFin);
+
+				@Query(value = "SELECT count(*) " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      s.id_abogado = :id_abogado AND " +
+			"      c.id_materia = :id_materia " +
+			"GROUP BY c.id_cliente", nativeQuery = true)
+	List<Integer> getCantidadUsuariosByMateriaAndAbogadoDesdeSiempre(@Param("id_abogado") Long id_abogado,
+			@Param("id_materia") Long id_materia);
+	// SIN ABOGADOS FECHAS
+		@Query(value = "SELECT \"NOMBRE\" as nombre, tiempo " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      c.id_materia = :id_materia AND " +
+			"      s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
+	List<ConsultaMateria> getSesionesByMateriaAndTiempo(
+			@Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio,
+			@Param("fechaFin") String fechaFin);
+
+				@Query(value = "SELECT coalesce(sum(s.tiempo),0) as tiempo " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      c.id_materia = :id_materia AND " +
+			"      s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
+	Integer getTiempoSesionesByMateriaAndTiempo(
+			@Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio,
+			@Param("fechaFin") String fechaFin);
+
+				@Query(value = "SELECT count(*) " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      c.id_materia = :id_materia AND " +
+			"      s.fecha BETWEEN :fechaInicio AND :fechaFin " +
+			"GROUP BY c.id_cliente", nativeQuery = true)
+	List<Integer> getCantidadUsuariosByMateriaAndTiempo(
+			@Param("id_materia") Long id_materia, @Param("fechaInicio") String fechaInicio,
+			@Param("fechaFin") String fechaFin);
+
+// SIN ABOGADOS DESDE SIEMPRE
+				@Query(value = "SELECT \"NOMBRE\" as nombre, tiempo " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      c.id_materia = :id_materia ", nativeQuery = true)
+	List<ConsultaMateria> getSesionesByMateriaDesdeSiempre(
+			@Param("id_materia") Long id_materia);
+
+							@Query(value = "SELECT coalesce(sum(s.tiempo),0) as tiempo " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      c.id_materia = :id_materia", nativeQuery = true)
+	Integer getTiempoSesionesByMateriaDesdeSiempre(
+			@Param("id_materia") Long id_materia);
+
+			@Query(value = "SELECT count(*) " +
+			"FROM sesion s, caso c " +
+			"WHERE s.borrado = 0 AND " +
+			"      c.id = s.id_caso AND " +
+			"      c.id_materia = :id_materia " +
+			"GROUP BY c.id_cliente", nativeQuery = true)
+	List<Integer> getCantidadUsuariosByMateriaDesdeSiempre(
+			@Param("id_materia") Long id_materia);
+
+
+
+
+
+
+
 
 	// QUERY PARA EL GRÁFICO DE MATERIAS DE LA VISTA GENERAL
 	@Query(value = "SELECT m.nombre as nombre, sum(s.tiempo) as tiempo FROM mrp.sesion as s, mrp.caso as c, mrp.materia as m "

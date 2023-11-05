@@ -6,15 +6,15 @@ import { Badge, Card } from "react-bootstrap";
 import { BiUser, BiTime, BiClipboard } from "react-icons/bi";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 
-const Materias = ( props ) => {
+const Materias = ({ id_abogado, fechaInicio, fechaFin, dropSelect, dropSiempre, dropAnio, setDropSelect }) => {
   const [materias, setMaterias] = useState([]);
-  const [materia, setMateria] = useState({});
-
-	const [estadisticas, setEstadisticas] = useState({
-		cantidad_sesiones: 0,
-		tiempo_total: 0,
-		cantidad_clientes: 0,
-	});
+  const [materia, setMateria] = useState({ id: 0 });
+  const [sesionesMateria, setSesionesMateria] = useState([]);
+  const [estadisticas, setEstadisticas] = useState({
+    cantidad_sesiones: 0,
+    tiempo_total: 0,
+    cantidad_clientes: 0,
+  });
 
   const getMaterias = async () => {
     try {
@@ -28,29 +28,61 @@ const Materias = ( props ) => {
     }
   };
 
-  const getSesionesByMateria = async (id) => {
+  const getSesionesByMateriaDesdeSiempre = async (id_abogado, fechaInicio, fechaFin, dropSelect, dropSiempre) => {
     try {
-      let url = "http://localhost:8090/consultas/sesiones/id_materia/" + id;
+			let url ="http://localhost:8090/consultas/materia/sesiones/" + materia.id + "/" + id_abogado;
+			const response = await axios.get(url);
+			if (response.status === 200) {
+				setSesionesMateria(response.data);
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+
+}; 
+
+  const getSesionesByMateria = async (id_abogado, fechaInicio, fechaFin, dropSelect, dropSiempre, dropAnio) => {
+    try {
+      // si es que se selecciono desde siempre
+      if (dropSiempre == 1) {
+        console.log("ENTRE?")
+        getSesionesByMateriaDesdeSiempre(id_abogado, fechaInicio, fechaFin, dropSelect, dropSiempre);
+      }
+      else {
+        // esto calcula la diferencia de dias entre las fechas cuando se selecciona un año en el dropSelect
+				if (dropAnio == 1) {
+					const fechaInicioAux = new Date(fechaInicio);
+					const fechaFinAux = new Date(fechaFin);
+
+					const difMS = fechaFinAux - fechaInicioAux;
+					const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+					setDropSelect(difDias + 1);
+				}
+        let url = "http://localhost:8090/consultas/materia/sesiones/" + materia.id + "/" + fechaInicio + "/" + fechaFin + "/" + dropSelect + "/" + id_abogado;
+        const response = await axios.get(url);
+        if (response.status === 200) {
+          console.log(response.data);
+          setSesionesMateria(response.data);
+        }
+       }
+      } catch (err) {
+        console.error(err);
+      }
+    
+  };
+
+  const getEstadisticas = async (id_abogado, fechaInicio, fechaFin, dropSiempre) => {
+    try {
+      let url = "http://localhost:8090/consultas/materia/estadisticas/" + id_abogado + "/" + materia.id + 
+      "/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre;
       const response = await axios.get(url);
       if (response.status === 200) {
-        console.log(response.data);
+        setEstadisticas(response.data);
       }
     } catch (err) {
       console.error(err);
     }
   };
-
-	const getEstadisticas = async (abogado, id_materia, fi, ff) => {
-		try {
-			let url = `http://localhost:8090/consultas/materia/estadisticas/${abogado}/${id_materia}/${fi}/${ff}`;
-			const response = await axios.get(url);
-			if (response.status === 200) {
-				setEstadisticas(response.data);
-			}
-		} catch (err) {
-			console.error(err);
-		}
-	}; 
 
   const createMateriaOption = (materia) => {
     return {
@@ -67,13 +99,16 @@ const Materias = ( props ) => {
 
 
   useEffect(() => {
-    if (materia.id !== undefined && props.abogado.id !== 0){
-			getEstadisticas(props.abogado.id, materia.id, props.fechaInicio, props.fechaFin);
-		};
-		console.log(materia.id);
-    console.log(props.abogado, props.abogado.id)
-    console.log(props.fechaInicio, props.fechaFin)
-  }, [materia, props.abogado, props.fechaInicio, props.fechaFin]);
+    /* if (materia.id !== undefined && props.abogado.id !== 0){
+       getEstadisticas(props.abogado.id, materia.id, props.fechaInicio, props.fechaFin);
+     };*/
+    if (materia.id !== 0) {
+      //console.log("ENTRE?");
+      getSesionesByMateria(id_abogado, fechaInicio, fechaFin, dropSelect, dropSiempre, dropAnio);
+      getEstadisticas(id_abogado, fechaInicio, fechaFin, dropSiempre);
+    }
+
+  }, [materia, id_abogado, fechaInicio, fechaFin, dropSelect, dropSiempre,  dropAnio, setDropSelect ]);
 
   return (
     <main className="layout-materias">
@@ -87,32 +122,32 @@ const Materias = ( props ) => {
           createOption={createMateriaOption}
         />
       </fieldset>
-			<Card className="card-grafico">
-				<GraficoGernal1 tiempoSesiones={[]} title={"Tiempo de sesiones por día"} />
-			</Card>
+      <Card className="card-grafico">
+        <GraficoGernal1 tiempoSesiones={sesionesMateria} title={"Tiempo de sesiones por día"} />
+      </Card>
       <Card className="card-estadisticas">
         <div className="card-estadisticas__header">
           <h2 className="card-estadisticas__title">Sesiones</h2>
-          <Badge className="card-estadisticas__icon"><BiClipboard/></Badge>
+          <Badge className="card-estadisticas__icon"><BiClipboard /></Badge>
         </div>
-				<h1 className="card-estadisticas__estadistica">{estadisticas.cantidad_sesiones}</h1>
-				<p className="card-estadisticas__caption">Sesiones realizadas</p>
+        <h1 className="card-estadisticas__estadistica">{estadisticas.cantidad_sesiones}</h1>
+        <p className="card-estadisticas__caption">Sesiones realizadas</p>
       </Card>
       <Card className="card-estadisticas">
         <div className="card-estadisticas__header">
           <h2 className="card-estadisticas__title">Tiempo</h2>
-          <Badge className="card-estadisticas__icon"><BiTime/></Badge>
+          <Badge className="card-estadisticas__icon"><BiTime /></Badge>
         </div>
-				<h1 className="card-estadisticas__estadistica">{estadisticas.tiempo_total}</h1>
-				<p className="card-estadisticas__caption">Hrs trabajadas</p>
+        <h1 className="card-estadisticas__estadistica">{estadisticas.tiempo_total}</h1>
+        <p className="card-estadisticas__caption">Hrs trabajadas</p>
       </Card>
       <Card className="card-estadisticas">
         <div className="card-estadisticas__header">
           <h2 className="card-estadisticas__title">Clientes</h2>
-          <Badge className="card-estadisticas__icon"><BiUser/></Badge>
+          <Badge className="card-estadisticas__icon"><BiUser /></Badge>
         </div>
-				<h1 className="card-estadisticas__estadistica">{estadisticas.cantidad_clientes}</h1>
-				<p className="card-estadisticas__caption">Clientes atendidos</p>
+        <h1 className="card-estadisticas__estadistica">{estadisticas.cantidad_clientes}</h1>
+        <p className="card-estadisticas__caption">Clientes atendidos</p>
       </Card>
     </main>
   );

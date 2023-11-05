@@ -258,7 +258,7 @@ const Youtube = () => {
 
 
 			{selectedMateria === "selected" ? (
-				<Materias abogado={abogado} fechaInicio={fechaInicio} fechaFin={fechaFin} />) : null}
+				<Materias id_abogado={abogado.id} fechaInicio={fechaInicio} fechaFin={fechaFin} dropSelect={dropSelect} dropSiempre={dropSiempre} dropAnio={dropAnio} setDropSelect={setDropSelect} />) : null}
 
 			<Modal show={showModal} onHide={handleModal}>
 				<Modal.Header closeButton>

@@ -68,23 +68,38 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
 	@Query(value = "SELECT s.fecha, sum(tiempo) as tiempo FROM mrp.sesion as s, mrp.caso_abogado as ca WHERE s.borrado = 0 AND :id = s.id_caso AND s.id_caso = ca.id_caso AND :id_abo = ca.id_abogado AND s.id_abogado = ca.id_abogado GROUP by s.fecha ORDER BY fecha ASC", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesByIdCasoConAbogado2(@Param("id") Long id, @Param("id_abo") Long id_abo);
 
-	// consulta sesiones para vista materia
-	// get all
-	@Query(value = "SELECT distinct s.fecha, s.tiempo" +
-			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c" +
+	//------------------ ---QUERYS PARA VISTA MATERIA -----------------------------
+	// Desde siempre
+	@Query(value = "SELECT distinct s.fecha, s.tiempo " +
+			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c " +
 			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesByIdMateriaConAbogado(@Param("id_mat") Long id_mat,
 			@Param("id_abo") Long id_abo);
+	// Desde siempre sin abogado
+		@Query(value = "SELECT distinct s.fecha, s.tiempo " +
+			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c " +
+			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso", nativeQuery = true)
+	List<ConsultaSesiones> getConsultaSesionesByIdMateria(@Param("id_mat") Long id_mat);
 
-	// get por fecha
-	@Query(value = "SELECT distinct s.fecha, s.tiempo" +
-			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c" +
-			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo AND" +
+	// fecha especifico con abogado
+	@Query(value = "SELECT distinct s.fecha, s.tiempo " +
+			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c " +
+			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo AND " +
 			"s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesByIdMateriaConAbogadoFecha(@Param("id_mat") Long id_mat,
 			@Param("id_abo") Long id_abo, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
 
-	// INFO TABLA CON ABOGADO
+	// fecha especifico sin abogado
+		@Query(value = "SELECT distinct s.fecha, s.tiempo " +
+			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c " +
+			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND " +
+			"s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
+	List<ConsultaSesiones> getConsultaSesionesByIdMateriaFecha(@Param("id_mat") Long id_mat, 
+	@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
+
+
+	// ------------------------------------------------------------------
+			// INFO TABLA CON ABOGADO
 	@Query(value = "SELECT count(*) as cantidadSesiones FROM mrp.sesion " +
 			"WHERE borrado = 0 AND " +
 			"fecha BETWEEN :fechaInicio AND :fechaFin AND id_abogado = :idAbogado", nativeQuery = true)
