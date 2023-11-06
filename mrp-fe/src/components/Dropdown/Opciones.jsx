@@ -1,3 +1,6 @@
+import meses from "../../data/meses";
+const mesActual = new Date().getMonth();
+
 const opciones = [
     {
         id: 1, nombre: "Últimos 7 días"
@@ -21,13 +24,13 @@ const opciones = [
         id: 7, nombre: "2022"
     },
     {
-        id: 8, nombre: "Octubre"
+        id: 8, nombre: meses[(mesActual + 12) % 12]
     },
     {
-        id: 9, nombre: "Septiembre"
+        id: 9, nombre: meses[(mesActual + 11) % 12]
     },
     {
-        id: 10, nombre: "Agosto"
+        id: 10, nombre: meses[(mesActual + 10) % 12]
     },
     {
         id: 11, nombre: "Personalizado"
