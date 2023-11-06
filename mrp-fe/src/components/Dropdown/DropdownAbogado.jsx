@@ -15,7 +15,7 @@ const DropdownAbogado = ({dropSelect, abogados, abogado}) => {
                     variant="secondary"
                     id="dropdown-basic"
                     style={{
-                        backgroundColor: "#235c62",
+                        backgroundColor: "rgb(223,191,104,0.9)",
                         width: "161px",
                     }}
                 >

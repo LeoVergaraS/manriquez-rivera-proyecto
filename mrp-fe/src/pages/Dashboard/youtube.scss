@@ -1,12 +1,12 @@
 .layout{}
 
 .navegador{
-  border-bottom: 2px solid #DFBF68;
+  border-bottom: 3.71px solid #DFBF68;
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-
+  background-color: #f2f3f4;
   &__tabs{
     list-style: none;
     display: flex;
