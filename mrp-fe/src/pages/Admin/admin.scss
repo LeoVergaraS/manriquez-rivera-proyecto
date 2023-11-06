@@ -1,48 +1,51 @@
 // import variables.scss
-@use '../../utils/scss/variables.scss' as *;
+@use "../../utils/scss/variables.scss" as *;
 
-.layout-admin{
+.layout-admin {
   display: flex;
 }
 
-.admin-nav{
-  border-left: 2px solid $color-secundario;
+.admin-nav {
   background-color: $color-secundario;
   height: calc(100vh - (71px));
-  width: 20%;
+  width: auto;
 
-  &__column{
-    display: flex;
-    padding: 10px;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 100%;
+  &__column {
+    display: block;
   }
 
-  &__item{
-    text-align: center;
+  &__item {
+    height: auto;
+    width: 100%;
+    color: rgb(0, 0, 0, 0.5);
     font-size: 25px;
-    border-bottom: 2px solid $color-oscuro;
-    transition: font-size 0.2s ease-in-out;
-    width: auto;
+    text-align: center;
     cursor: pointer;
-    &:hover{
-      font-size: 30px;
+    transition: all 0.2s ease-in-out;
+    padding: 20px;
+    &:hover {
+      color: $color-oscuro;
     }
-    &--selected{
-      font-size: 30px;
+    &--selected {
+      background-color: $color-primario;
+      color: $color-oscuro;
+      box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+      -webkit-box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+      -moz-box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+      &:hover {
+        color: $color-oscuro;
+      }
     }
   }
 }
 
-.admin-content{
-  width: 80%;
+.admin-content {
+  width: 100%;
   height: calc(100vh - (71px));
   background-color: $color-oscuro;
   padding: 10px;
 
-  &__title{
+  &__title {
     text-align: center;
     color: $color-secundario;
     font-size: 40px;
