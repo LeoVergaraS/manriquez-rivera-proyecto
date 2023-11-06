@@ -1,4 +1,4 @@
-import { Container, Modal, Pagination, Table } from "react-bootstrap";
+import { Container, Modal, Pagination, Placeholder, Table } from "react-bootstrap";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { VscAdd, VscCheck, VscClose, VscDebugRestart } from "react-icons/vsc";
@@ -159,7 +159,18 @@ const Tabla = (props) => {
           </tr>
         </thead>
         <tbody className="table-paginated-body">
-          {sliceData !== null && sliceData.map((item) => body(item, toggleEdit, toggleDeleted))}
+          {sliceData === null ? 
+          <tr className="table-paginated-body__row">
+            {props.headers.map(( _, index) => (
+              <th className="table-paginated-body__item" key={index}>
+                <Placeholder as="div" animation="glow">
+                  <Placeholder xs={6} bg="warning"/>
+                </Placeholder>
+              </th>
+            ))
+            }
+          </tr>
+          : sliceData.map((item) => body(item, toggleEdit, toggleDeleted))}
         </tbody>
       </Table>
       <div className="table-paginated-footer">

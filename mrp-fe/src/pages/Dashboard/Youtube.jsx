@@ -8,56 +8,48 @@ import General from "./General";
 import Clientes from "./Clientes";
 import Materias from "./Materias";
 import DropdownAbogado from "../../components/Dropdown/DropdownAbogado";
+import { VscChevronRight, VscChevronLeft, VscGlobe, VscPerson, VscLayers } from "react-icons/vsc";
+import formatDateUpload from "../../utils/functions/formatDateUpload";
 
 const Youtube = () => {
-	const [selectedCliente, setSelectedCliente] = useState("");
-	const [selectedGeneral, setSelectedGeneral] = useState("selected");
-	const [selectedMateria, setSelectedMateria] = useState("");
-	const [personalizado, setPersonalizado] = useState({
-		fechaInicio: new Date(),
-		fechaFin: new Date(),
-	});
 
-	const [dropSelect, setDropSelect] = useState(7);
-	const [dropSiempre, setDropSiempre] = useState(0);
-	const [dropAnio, setDropAnio] = useState(0);
+  const [selectedCliente, setSelectedCliente] = useState("");
+  const [selectedGeneral, setSelectedGeneral] = useState("selected");
+  const [selectedMateria, setSelectedMateria] = useState("");
+  const [personalizado, setPersonalizado] = useState({
+    fechaInicio: new Date(),
+    fechaFin: new Date(),
+  });
 
-	const [flag, setFlag] = useState(0);
+  const [dropSelect, setDropSelect] = useState(7);
+  const [dropSiempre, setDropSiempre] = useState(0);
+  const [dropAnio, setDropAnio] = useState(0);
 
-	const [estadisticas, setEstadisticas] = useState([]);
+  const [flag, setFlag] = useState(0);
 
-	const [showModal, setShowModal] = useState(false);
+  const [estadisticas, setEstadisticas] = useState([]);
 
-	const [fechaFin, setFechaFin] = useState(formatearFecha(new Date(), 1, 0));
-	const [fechaInicio, setFechaInicio] = useState(
-		formatearFecha(new Date(), 0, 7)
-	);
-	// Variable que almacena las consultas de vista GENERAL
-	// se les aplica todos los filtros  
-	const [consultasS, setConsultasS] = useState([]);
-	const [consultasM, setConsultasM] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
-	const [abogado, setAbogado] = useState({
-		nombre: "Abogados",
-		id: -1,
-	});
+  const [fechaFin, setFechaFin] = useState(formatearFecha(new Date(), 1, 0));
+  const [fechaInicio, setFechaInicio] = useState(
+    formatearFecha(new Date(), 0, 7)
+  );
+  // Variable que almacena las consultas de vista GENERAL
+  // se les aplica todos los filtros
+  const [consultasS, setConsultasS] = useState([]);
+  const [consultasM, setConsultasM] = useState([]);
 
-	const [abogados, setAbogados] = useState([]);
+  const [abogado, setAbogado] = useState({
+    nombre: "Todos",
+    id: -1,
+  });
 
-	const handleModal = () => setShowModal(!showModal);
+  const [abogados, setAbogados] = useState([]);
 
-	const abogadoSelect = (eventKey) => {
-		if (eventKey === "-1") {
-			setAbogado({
-				nombre: "Todos",
-				id: -1,
-			});
-		} else {
-			setAbogado(abogados[eventKey]);
-		}
-	}
+  const handleModal = () => setShowModal(!showModal);
 
-	const handleSelected = (type) => {
+  const handleSelected = (type) => {
 		if (type === "cliente") {
 			setSelectedCliente("selected");
 			setSelectedMateria("");
@@ -73,237 +65,278 @@ const Youtube = () => {
 		}
 	};
 
-	const getConsultasMaterias = async () => {
-		try {
-			let url =
-				"http://localhost:8090/consultas/materia/" +
-				fechaInicio +
-				"/" +
-				fechaFin + "/" + dropSelect + "/" + dropSiempre + "/" + abogado.id;
-			const response = await axios.get(url);
-			if (response.status === 200) {
-				setConsultasM(response.data);
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
+  const getConsultasMaterias = async () => {
+    try {
+      let url =
+        "http://localhost:8090/consultas/materia/" +
+        fechaInicio +
+        "/" +
+        fechaFin +
+        "/" +
+        dropSelect +
+        "/" +
+        dropSiempre +
+        "/" +
+        abogado.id;
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setConsultasM(response.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-	const handleSearch = () => {
-		setFechaInicio(formatDate(personalizado.fechaInicio));
-		setFechaFin(formatDate(personalizado.fechaFin));
-		const difMS = personalizado.fechaFin - personalizado.fechaInicio;
-		const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
-		setDropSelect(difDias + 1);
-		setDropSiempre(0);
-		setDropAnio(0);
-		handleModal();
-	};
+  const handleSearch = () => {
+    setFechaInicio(formatDateUpload(personalizado.fechaInicio));
+    setFechaFin(formatDateUpload(personalizado.fechaFin));
+    const difMS = personalizado.fechaFin - personalizado.fechaInicio;
+    const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+    setDropSelect(difDias + 1);
+    setDropSiempre(0);
+    setDropAnio(0);
+    handleModal();
+  };
 
-	const formatDate = (date) => {
-		let dd = date.getDate();
-		let mm = date.getMonth() + 1;
-		let yyyy = date.getFullYear();
-		if (dd < 10) {
-			dd = "0" + dd;
-		}
-		if (mm < 10) {
-			mm = "0" + mm;
-		}
-		return yyyy + "-" + mm + "-" + dd;
-	};
-	// aqui se obtienen las consultas de sesiones
-	const getConsultasSesiones = async () => {
-		try {
-			// si es que se selecciono desde siempre
-			if (dropSiempre == 1) {
-				getConsultasSesionesDesdeSiempre();
-			}
-			else {
+  // aqui se obtienen las consultas de sesiones
+  const getConsultasSesiones = async () => {
+    try {
+      // si es que se selecciono desde siempre
+      if (dropSiempre == 1) {
+        getConsultasSesionesDesdeSiempre();
+      } else {
+        // esto calcula la diferencia de dias entre las fechas cuando se selecciona un año en el dropSelect
+        if (dropAnio == 1) {
+          const fechaInicioAux = new Date(fechaInicio);
+          const fechaFinAux = new Date(fechaFin);
 
-				// esto calcula la diferencia de dias entre las fechas cuando se selecciona un año en el dropSelect
-				if (dropAnio == 1) {
-					const fechaInicioAux = new Date(fechaInicio);
-					const fechaFinAux = new Date(fechaFin);
+          const difMS = fechaFinAux - fechaInicioAux;
+          const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+          setDropSelect(difDias + 1);
+        }
 
-					const difMS = fechaFinAux - fechaInicioAux;
-					const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
-					setDropSelect(difDias + 1);
-				}
+        let url =
+          "http://localhost:8090/consultas/sesiones/" +
+          fechaInicio +
+          "/" +
+          fechaFin +
+          "/" +
+          dropSelect +
+          "/" +
+          abogado.id;
+        const response = await axios.get(url);
 
-				let url =
-					"http://localhost:8090/consultas/sesiones/" +
-					fechaInicio +
-					"/" +
-					fechaFin + "/" + dropSelect + "/" + abogado.id;
-				const response = await axios.get(url);
+        if (response.status === 200) {
+          setConsultasS(response.data);
+        }
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-				if (response.status === 200) {
-					setConsultasS(response.data);
-				}
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
+  const getConsultasSesionesDesdeSiempre = async () => {
+    try {
+      let url = "http://localhost:8090/consultas/sesiones/" + abogado.id;
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setConsultasS(response.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-	const getConsultasSesionesDesdeSiempre = async () => {
-		try {
-			let url =
-				"http://localhost:8090/consultas/sesiones/" + abogado.id;
-			const response = await axios.get(url);
-			if (response.status === 200) {
-				setConsultasS(response.data);
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
+  const getEstadisticas = async () => {
+    try {
+      let url =
+        "http://localhost:8090/consultas/prueba/" +
+        fechaInicio +
+        "/" +
+        fechaFin +
+        "/" +
+        dropSiempre +
+        "/" +
+        abogado.id;
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setEstadisticas(response.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-	const getEstadisticas = async () => {
-		try {
-			let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre + "/" + abogado.id;
-			const response = await axios.get(url);
-			if (response.status === 200) {
-				setEstadisticas(response.data);
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
+  const getAbogados = async () => {
+    try {
+      let url = "http://localhost:8090/abogados";
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setAbogados(response.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-	const getAbogados = async () => {
-		try {
-			let url = "http://localhost:8090/abogados";
-			const response = await axios.get(url);
-			if (response.status === 200) {
-				setAbogados(response.data);
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
-	useEffect(() => {
-		getConsultasMaterias();
-		getConsultasSesiones();
-		getEstadisticas();
-		getAbogados();
-	}, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio, abogado, flag, abogado]);
+  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
-	return (
-		<>
-			<div className="navegador">
-				<ul className="navegador__tabs">
-					<p
-						className={"navegador__tabs-item " + selectedGeneral}
-						onClick={() => handleSelected("general")}
-					>
-						General
-					</p>
-					<p
-						className={"navegador__tabs-item " + selectedCliente}
-						onClick={() => handleSelected("cliente")}
-					>
-						Clientes
-					</p>
-					<p
-						className={"navegador__tabs-item " + selectedMateria}
-						onClick={() => handleSelected("materia")}
-					>
-						Materia
-					</p>
-				</ul>
-				<div className="dropDowns" >
+  useEffect(() => {
+    getConsultasMaterias();
+    getConsultasSesiones();
+    getEstadisticas();
+    getAbogados();
+  }, [
+    fechaFin,
+    fechaInicio,
+    dropSelect,
+    dropSiempre,
+    dropAnio,
+    abogado,
+    flag,
+    abogado,
+  ]);
 
-					<DropdownAbogado
-						dropSelect={abogadoSelect}
-						abogados={abogados}
-						abogado={abogado}
-					/>
+  return (
+    <>
+      <div className="filtro">
+        <div className={`filtro__button-collapse ${isCollapsed ? "filtro__button-collapse--collapse" : ""}`}>
+          <VscChevronLeft size={30} onClick={toggleCollapse} />
+        </div>
+				<h4 className="filtro__text">Filtrar por</h4>
+        <div className="filtro__opciones">
+					<fieldset>
+						<label>Abogado: </label>
+						<DropdownAbogado
+            set={setAbogado}
+            abogados={abogados}
+            abogado={abogado}
+          />
+					</fieldset>
+          <fieldset>
+						<label>Fecha: </label>
+						<DropdownR
+            className="filtro__tiempo"
+            setFI={setFechaInicio}
+            setFF={setFechaFin}
+            setDropSelect={setDropSelect}
+            setDropSiempre={setDropSiempre}
+            setDropAnio={setDropAnio}
+            setShowModal={setShowModal}
+            setFlag={setFlag}
+          />
+					</fieldset>
 
-					<DropdownR
-						className="navegador__tiempo"
-						setFI={setFechaInicio}
-						setFF={setFechaFin}
-						setDropSelect={setDropSelect}
-						setDropSiempre={setDropSiempre}
-						setDropAnio={setDropAnio}
-						setShowModal={setShowModal}
-						setFlag={setFlag}
-					/>
+          
+        </div>
+      </div>
+      <main className="dashboard-layout">
+        <aside
+          className={`dashboard-navegador ${
+            isCollapsed ? "dashboard-navegador--collapse" : ""
+          }`}
+        >
+          <div className={`dashboard-navegador-content ${isCollapsed ? "dashboard-navegador-content--collapse" : ""}`}>
+            <ul className="dashboard-navegador-content__tabs">
+							<div className={"dashboard-navegador-content__tabs-item " + selectedGeneral} onClick={() => handleSelected("general")}>
+								<VscGlobe size={40} className="dashboard-navegador-content__tabs-icon" />
+								<p className="dashboard-navegador-content__tabs-text">General</p>
+							</div>
+							<div className={"dashboard-navegador-content__tabs-item " + selectedCliente} onClick={() => handleSelected("cliente")}>
+								<VscPerson size={40} className="dashboard-navegador-content__tabs-icon" />
+								<p className="dashboard-navegador-content__tabs-text">Cliente</p>
+							</div>
+							<div className={"dashboard-navegador-content__tabs-item " + selectedMateria}onClick={() => handleSelected("materia")}>
+								<VscLayers size={40} className="dashboard-navegador-content__tabs-icon" />
+								<p className="dashboard-navegador-content__tabs-text">Materia</p>
+							</div>
+              
+            </ul>
+          </div>
+        </aside>
+        <div className="dashboard-content">
+          {selectedGeneral === "selected" ? (
+            <General
+              consultasS={consultasS}
+              estadisticas={estadisticas}
+              consultasM={consultasM}
+            />
+          ) : null}
 
-				</div>
-			</div>
+          {selectedCliente === "selected" ? (
+            <Clientes
+              fechaInicio={fechaInicio}
+              fechaFin={fechaFin}
+              dropSiempre={dropSiempre}
+              id_abo={abogado.id}
+              dropSelect={dropSelect}
+              dropAnio={dropAnio}
+              setDropSelect={setDropSelect}
+            />
+          ) : null}
 
-			{selectedGeneral === "selected" ? (
-				<General consultasS={consultasS} estadisticas={estadisticas} consultasM={consultasM} />) : null}
+          {selectedMateria === "selected" ? (
+            <Materias
+              id_abogado={abogado.id}
+              fechaInicio={fechaInicio}
+              fechaFin={fechaFin}
+              dropSelect={dropSelect}
+              dropSiempre={dropSiempre}
+              dropAnio={dropAnio}
+              setDropSelect={setDropSelect}
+            />
+          ) : null}
+        </div>
+      </main>
 
-			{selectedCliente === "selected" ? (
-				<Clientes fechaInicio={fechaInicio}
-					fechaFin={fechaFin}
-					dropSiempre={dropSiempre} 
-					id_abo={abogado.id}
-					dropSelect={dropSelect}
-					dropAnio={dropAnio}
-					setDropSelect={setDropSelect} />) : null}
+      <Modal show={showModal} onHide={handleModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Rango de tiempo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Fecha inicio</Form.Label>
+              <Form.Control
+                type="date"
+                value={formatDateUpload(personalizado.fechaInicio)}
+                onChange={(e) =>
+                  setPersonalizado({
+                    ...personalizado,
+                    fechaInicio: new Date(e.target.value),
+                  })
+                }
+              />
+            </Form.Group>
 
-
-			{selectedMateria === "selected" ? (
-				<Materias id_abogado={abogado.id} 
-						  fechaInicio={fechaInicio} 
-						  fechaFin={fechaFin} 
-						  dropSelect={dropSelect} 
-						  dropSiempre={dropSiempre} 
-						  dropAnio={dropAnio} 
-						  setDropSelect={setDropSelect} />) : null}
-
-			<Modal show={showModal} onHide={handleModal}>
-				<Modal.Header closeButton>
-					<Modal.Title>Rango de tiempo</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<Form>
-						<Form.Group className="mb-3" controlId="formBasicEmail">
-							<Form.Label>Fecha inicio</Form.Label>
-							<Form.Control
-								type="date"
-								value={formatDate(personalizado.fechaInicio)}
-								onChange={(e) =>
-									setPersonalizado({
-										...personalizado,
-										fechaInicio: new Date(e.target.value),
-									})
-								}
-							/>
-						</Form.Group>
-
-						<Form.Group className="mb-3" controlId="formBasicPassword">
-							<Form.Label>Fecha fin</Form.Label>
-							<Form.Control
-								type="date"
-								value={formatDate(personalizado.fechaFin)}
-								onChange={(e) =>
-									setPersonalizado({
-										...personalizado,
-										fechaFin: new Date(e.target.value),
-									})
-								}
-							/>
-						</Form.Group>
-					</Form>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleModal}>
-						Cancelar
-					</Button>
-					<Button variant="success" onClick={handleSearch}>
-						Buscar
-					</Button>
-				</Modal.Footer>
-			</Modal>
-		</>
-	);
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Fecha fin</Form.Label>
+              <Form.Control
+                type="date"
+                value={formatDateUpload(personalizado.fechaFin)}
+                onChange={(e) =>
+                  setPersonalizado({
+                    ...personalizado,
+                    fechaFin: new Date(e.target.value),
+                  })
+                }
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModal}>
+            Cancelar
+          </Button>
+          <Button variant="success" onClick={handleSearch}>
+            Buscar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
 };
 
 export default Youtube;
