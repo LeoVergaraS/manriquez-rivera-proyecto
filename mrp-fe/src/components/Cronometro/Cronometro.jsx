@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import Select from 'react-select'
+import Cookies from 'js-cookie';
 
 function Cronometro({ id_caso, ts, setIsDisabled }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -144,8 +145,11 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
 
   const createSesion = async (sesion) => {
     try {
+      const config = {
+				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+			};
       let url = "http://localhost:8090/sesiones";
-      const response = await axios.post(url, sesion);
+      const response = await axios.post(url, sesion,config);
       if (response.status === 200) {
         Swal.fire("Sesión guardada con exito!", "", "success");
       }
