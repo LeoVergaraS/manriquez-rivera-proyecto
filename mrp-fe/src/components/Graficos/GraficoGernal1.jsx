@@ -93,7 +93,7 @@ const GraficoGernal1 = ({title, tiempoSesiones}) =>{
                 </div>
                 <div className="card-body" style={{height:"100%"}}>
                     <canvas
-                        id="myChart"
+                        id="myChart1"
                         ref={chartRef}
                     />
                 </div>

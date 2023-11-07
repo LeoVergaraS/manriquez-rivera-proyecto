@@ -176,15 +176,6 @@ const Materias = ({
     setDropSelect,
   ]);
 
-  const a = () => {
-    return (
-      <main className="layout-materias">
-        <h2 className="materias__title">Resumen</h2>
-
-      </main>
-    );
-  };
-
   return (
     <Container fluid className="mt-3">
       <Row style={{ height: "calc(100vh - 153px)" }}>
@@ -206,9 +197,9 @@ const Materias = ({
                 <Card className="card-estadisticas">
                   <div className="card-estadisticas__header">
                     <h2 className="card-estadisticas__title">Sesiones</h2>
-										<span className="card-estadisticas__icon">
-											<BiClipboard />
-										</span>
+                    <span className="card-estadisticas__icon">
+                      <BiClipboard />
+                    </span>
                   </div>
                   <h1 className="card-estadisticas__estadistica">
                     {estadisticas.cantidad_sesiones}
@@ -222,9 +213,9 @@ const Materias = ({
                 <Card className="card-estadisticas">
                   <div className="card-estadisticas__header">
                     <h2 className="card-estadisticas__title">Tiempo</h2>
-										<span className="card-estadisticas-c__icon">
-										<BiTime />
-										</span>
+                    <span className="card-estadisticas-c__icon">
+                      <BiTime />
+                    </span>
                   </div>
                   <h1 className="card-estadisticas__estadistica">
                     {estadisticas.tiempo_total}
@@ -236,9 +227,9 @@ const Materias = ({
                 <Card className="card-estadisticas">
                   <div className="card-estadisticas__header">
                     <h2 className="card-estadisticas__title">Clientes</h2>
-										<span className="card-estadisticas-c__icon">
-										<BiUser />
-										</span>
+                    <span className="card-estadisticas-c__icon">
+                      <BiUser />
+                    </span>
                   </div>
                   <h1 className="card-estadisticas__estadistica">
                     {estadisticas.cantidad_clientes}
@@ -250,20 +241,20 @@ const Materias = ({
               </Col>
             </Row>
             <Row className="p-2" style={{ height: "450px" }}>
-						<Card className="card-grafico">
-          <GraficoGernal1
-            tiempoSesiones={sesionesMateria}
-            title={"Tiempo de sesiones por día"}
-          />
-        </Card>
-						</Row>
+              <Card className="card-grafico">
+                <GraficoGernal1
+                  tiempoSesiones={sesionesMateria}
+                  title={"Tiempo de sesiones por día"}
+                />
+              </Card>
+            </Row>
           </Container>
         </Col>
         <Col xs={6} className="p-2">
           <Container>
             <Row style={{ height: "35px" }} />
             <Row style={{ height: "calc(100vh - 206px)" }}>
-						<Card className="card-sesiones">
+              <Card className="card-sesiones">
                 <Card.Body>
                   <Card.Title>Sesiones registradas</Card.Title>
                   <Table className="table-sesiones">
@@ -288,7 +279,7 @@ const Materias = ({
                   </Table>
                 </Card.Body>
               </Card>
-						</Row>
+            </Row>
           </Container>
         </Col>
       </Row>
