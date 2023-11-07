@@ -29,8 +29,9 @@ const GraficoGernal1 = ({title, tiempoSesiones}) =>{
                         label: "Sesiones",
                         data: tiempos,
                         fill: false,
-                        borderColor: 'lightBlue',
+                        borderColor: '#DFBF68',
                         tension: 0.3,
+                        pointRadius: tiempos.map(valor => (valor === 0 ? 0 : 3)),
                     }
                 ]
             },
@@ -86,7 +87,7 @@ const GraficoGernal1 = ({title, tiempoSesiones}) =>{
 
         return (
             <>
-            <div className="card">
+            <div className="card" style={{height: "100%"}}>
                 <div className="card-header"> 
                     <h4 className="card-title text-center" >{title}</h4>
                 </div>
