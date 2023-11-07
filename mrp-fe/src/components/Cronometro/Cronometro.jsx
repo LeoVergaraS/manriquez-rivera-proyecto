@@ -168,11 +168,11 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       <div className="cronometro__actions">
         <AiFillSave
           className={
-            id_caso === 0
+            id_caso === 0 || tiempo === 0
               ? "cronometro__actions-save-disabled"
               : "cronometro__actions-save"
           }
-          onClick={id_caso === 0 ? null : save}
+          onClick={id_caso === 0 || tiempo===0 ? null : save}
           data-tooltip-id={id_caso === 0 ? null : "tooltip-cronometro"}
           data-tooltip-content={id_caso === 0 ? null : "Guardar sesión"}
         />
