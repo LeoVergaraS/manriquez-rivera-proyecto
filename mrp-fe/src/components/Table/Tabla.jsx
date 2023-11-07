@@ -1,9 +1,10 @@
-import { Container, Modal, Pagination, Placeholder, Table } from "react-bootstrap";
+import "./table.scss";
 import axios from "axios";
+import Cookies from 'js-cookie';
+import Alerta from "../Alerta/Alerta";
 import { useEffect, useState } from "react";
 import { VscAdd, VscCheck, VscClose, VscDebugRestart } from "react-icons/vsc";
-import "./table.scss";
-import Alerta from "../Alerta/Alerta";
+import { Container, Modal, Pagination, Placeholder, Table } from "react-bootstrap";
 
 const Tabla = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,9 +43,12 @@ const Tabla = (props) => {
 
   const get = async (content) => {
     try {
+      const config = {
+				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+			};
       const mapping = content.toLowerCase();
       const url = `http://localhost:8090/${mapping}`;
-      const response = await axios.get(url);
+      const response = await axios.get(url,config);
       if (response.status === 200) {
         setData(response.data);
         paginatedData(response.data);
@@ -57,9 +61,12 @@ const Tabla = (props) => {
 
   const createItem = async (content, item) => {
     try {
+      const config = {
+				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+			};
       const mapping = content.toLowerCase();
       const url = `http://localhost:8090/${mapping}`;
-      const response = await axios.post(url, item);
+      const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleCreate();
         Alerta.fire({
@@ -74,9 +81,12 @@ const Tabla = (props) => {
 
   const editItem = async (content, item) => {
     try {
+      const config = {
+				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+			};
       const mapping = content.toLowerCase();
       const url = `http://localhost:8090/${mapping}`;
-      const response = await axios.post(url, item);
+      const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleEdit();
         Alerta.fire({
@@ -91,9 +101,12 @@ const Tabla = (props) => {
 
   const deleteItem = async (content, item) => {
     try {
+      const config = {
+				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+			};
       const mapping = content.toLowerCase();
       const url = `http://localhost:8090/${mapping}/delete`;
-      const response = await axios.post(url, item);
+      const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleDeleted();
         Alerta.fire({

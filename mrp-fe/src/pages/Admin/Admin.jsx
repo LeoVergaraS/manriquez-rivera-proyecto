@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import "./admin.scss";
-import Tabla from "../../components/Table/Tabla";
+import { useState } from "react";
 import headers from "../../data/headers";
+import Tabla from "../../components/Table/Tabla";
 import { bodyAbogado, bodyCaso, bodyCliente, bodyMateria, bodySesion, bodySubmateria } from "../../data/bodies";
 import {FormAbogado, FormCasoAdmin, FormCliente, FormMateria, FormSesion, FormSubmateria} from "../../components/Forms";
 
