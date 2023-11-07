@@ -89,8 +89,8 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       text: "No podrá ser recuperado el tiempo transcurrido",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#DFBF68',
+      cancelButtonColor: '#ACACAC',
       confirmButtonText: 'Si, Reiniciar cronómetro',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -102,17 +102,7 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
     })    
   };
 
-  // const getSesiones = async () => {
-  //   try {
-  //     let url = "http://localhost:8090/sesiones";
-  //     const response = await axios.get(url);
-  //     if (response.status === 200) {
-  //       setSesiones(response.data);
-  //     }
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // };
+
 
   const save = () => {
     let estaPausado=0;
@@ -127,8 +117,8 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       text: "Esto no podrá ser modificado después",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#DFBF68',
+      cancelButtonColor: '#ACACAC',
       confirmButtonText: 'Si, Guardar la sesión',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
