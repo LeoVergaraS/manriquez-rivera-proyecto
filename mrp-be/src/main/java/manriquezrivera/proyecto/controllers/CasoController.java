@@ -24,52 +24,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @CrossOrigin
 @RequestMapping("/casos")
 public class CasoController {
-    @Autowired
-    CasoService casoService;
+	@Autowired
+	CasoService casoService;
 
-    @Autowired
-    ClienteService clienteService;
+	@Autowired
+	ClienteService clienteService;
 
-    @Autowired
-    CasoAbogadoService casoAbogadoService;
+	@Autowired
+	CasoAbogadoService casoAbogadoService;
 
-    @GetMapping
-    public ResponseEntity<List<Caso>> getCasos(){
-      List<Caso> casos = casoService.getAllCasos();
-      if(casos == null){
-        return ResponseEntity.notFound().build();
-      }
-      return ResponseEntity.ok().body(casos);
-    }
-    
-    @GetMapping("/abogado/{id}")
-    public ResponseEntity<List<Caso>> getCasos(@PathVariable(value = "id") Integer id){
-      List<Caso> casos = casoService.getCasoByIdAbogado(id);
-      if(casos == null){
-        return ResponseEntity.notFound().build();
-      }
-      return ResponseEntity.ok().body(casos);
-    }
+	@GetMapping
+	public ResponseEntity<List<Caso>> getCasos() {
+		List<Caso> casos = casoService.getAllCasos();
+		if (casos == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(casos);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Caso> getCaso(@PathVariable(value = "id") Long id){
-      Caso caso = casoService.getCasoById(id);
-      if(caso == null){
-        return ResponseEntity.notFound().build();
-      }
-      return ResponseEntity.ok().body(caso);
-    }
+	@GetMapping("/abogado/{id}")
+	public ResponseEntity<List<Caso>> getCasos(@PathVariable(value = "id") Integer id) {
+		List<Caso> casos = casoService.getCasoByIdAbogado(id);
+		if (casos == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(casos);
+	}
 
-    @PostMapping
-    public ResponseEntity<Caso> postCaso(@RequestBody ObjectNode request){
-      Caso casoGuardado = casoService.saveCaso(request);
-      return ResponseEntity.ok().body(casoGuardado);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Caso> getCaso(@PathVariable(value = "id") Long id) {
+		Caso caso = casoService.getCasoById(id);
+		if (caso == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(caso);
+	}
 
-    @PostMapping("/delete")
-    public ResponseEntity<String> deleteCaso(@RequestBody Caso caso){
+	@PostMapping
+	public ResponseEntity<Caso> postCaso(@RequestBody ObjectNode request) {
+		Caso casoGuardado = casoService.saveCaso(request);
+		return ResponseEntity.ok().body(casoGuardado);
+	}
 
-      casoService.deleteCaso(caso);
-      return ResponseEntity.ok().body("Caso eliminado correctamente");
-    }
+	@PostMapping("/delete")
+	public ResponseEntity<String> deleteCaso(@RequestBody Caso caso) {
+		casoService.deleteCaso(caso);
+		return ResponseEntity.ok().body("Caso eliminado correctamente");
+	}
 }

@@ -11,10 +11,10 @@ import FormCaso from "../components/Forms/FormCaso/FormCaso";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import formatDateShow from "../utils/functions/formatDateShow";
-import Swal from "sweetalert2";
 import InputSelect from "../components/InputSelect/InputSelect";
 import Alerta from "../components/Alerta/Alerta";
 import Select from "react-select";
+import Cookies from 'js-cookie';
 
 function Home() {
   const [showCreate, setShowCreate] = useState(false);
@@ -22,12 +22,9 @@ function Home() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [hoveredCard1, setHoveredCard1] = useState("");
   const [hoveredCard2, setHoveredCard2] = useState("");
-  const [sesiones, setSesiones] = useState([]);
-  const [clientes, setClientes] = useState([]);
   const [materias, setMaterias] = useState([]);
   const [subMaterias, setSubMaterias] = useState([]);
   const [casos, setCasos] = useState([]);
-  //const [idAbogados, setIdAbogados] = useState([1]);
 
   const [ts, setTs] = useState(60);
 
@@ -74,6 +71,7 @@ function Home() {
   };
 
 
+
   const [sesion, setSesion] = useState({
     id: null,
     fecha: null,
@@ -89,6 +87,9 @@ function Home() {
   });
 
   const casoPorDefecto = {
+
+  const [casoSeleccionado, setCasoSeleccionado] = useState({
+
     id: 0,
     fecha: "-",
     id_materia: {
@@ -119,22 +120,7 @@ function Home() {
     return casoPorDefecto;
   });
 
-/*const [casoSeleccionado, setCasoSeleccionado] = useState({
-    id: 0,
-    fecha: "-",
-    id_materia: {
-      id: null,
-      nombre: "-",
-    },
-    id_cliente: {
-      id: null,
-      nombre: "-",
-    },
-    id_submateria: {
-      id: null,
-      nombre: "-",
-    },
-  });*/
+
   const [tiempoIsRunning, setTiempoIsRunning] = useState();
   const getTiempo = async (tiempoIsRunning) => {
     setTiempoIsRunning(parseInt(localStorage.getItem("tiempoCronometro")) || 0);
@@ -164,10 +150,14 @@ function Home() {
     }
   };
 
+
   const getMaterias = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/materias";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setMaterias(response.data);
       }
@@ -178,8 +168,11 @@ function Home() {
 
   const getSubMaterias = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/submaterias";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setSubMaterias(response.data);
       }
@@ -190,8 +183,12 @@ function Home() {
 
   const getCasos = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
+      console.log(config);
       let url = "http://localhost:8090/casos";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasos(response.data);
       }
@@ -202,8 +199,11 @@ function Home() {
 
   const getCasoById = async (id) => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/casos/" + id;
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasoSeleccionado(response.data);
       }
@@ -215,8 +215,11 @@ function Home() {
 
   const getCasoByIdAbogado = async (idAbogado) => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       let url = "http://localhost:8090/casos/abogado/" + idAbogado;
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasos(response.data);
       }
@@ -227,9 +230,12 @@ function Home() {
 
   const createCaso = async (request) => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       console.log(request);
       let url = "http://localhost:8090/casos";
-      const response = await axios.post(url, request);
+      const response = await axios.post(url, request, config);
 
       if (response.status === 200) {
         handleCloseCreate();
@@ -243,9 +249,12 @@ function Home() {
 
   const updateCaso = async (item) => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
       console.log(item);
       let url = "http://localhost:8090/casos";
-      const response = await axios.post(url, item);
+      const response = await axios.post(url, item, config);
       if (response.status === 200) {
         handleCloseEdit();
         getCasos();
@@ -291,22 +300,20 @@ function Home() {
     },
   });
 
-  //const [abogadosCaso, setAbogadosCaso] = useState([]);
-
   const createCasoOption = (caso) => {
     return (
-     {label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre} - ${formatDateShow(caso.fecha)}`,
-      value: caso.id}
+      {
+        label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre} - ${formatDateShow(caso.fecha)}`,
+        value: caso.id
+      }
     )
   }
-  
+
   useEffect(() => {
-    getSesiones();
-    getClientes();
-    getMaterias();
-    getSubMaterias();
-    //getCasos();
-    getCasoByIdAbogado(1);
+    //getMaterias();
+    //getSubMaterias();
+    getCasos();
+    //getCasoByIdAbogado(1);
   }, []);
 
 
@@ -325,13 +332,13 @@ function Home() {
       <Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
         <fieldset className="fieldset-select">
           <legend className="fieldset-select__legend"> Buscar caso </legend>
-          <InputSelect 
-            className="fieldset-select__input-select" 
+          <InputSelect
+            className="fieldset-select__input-select"
             objects={casos}
             placeholder={"Seleccione un caso"}
             set={setCasoSeleccionado}
             createOption={createCasoOption}
-            />
+          />
         </fieldset>
       </Row>
 
@@ -407,7 +414,7 @@ function Home() {
                         </tr>
                         <tr className="special-row"></tr>
                       </thead>
-                      <tbody className="tbody-home"style={{ color: "white" }}>
+                      <tbody className="tbody-home" style={{ color: "white" }}>
                         <tr
                           key={setCasoSeleccionado.id}
                           style={{ background: "#235c62" }}
