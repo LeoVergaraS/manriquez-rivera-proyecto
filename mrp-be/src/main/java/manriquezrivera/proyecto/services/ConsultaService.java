@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.sound.midi.SysexMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -462,8 +464,8 @@ public class ConsultaService {
 		fechas.add(fechaFin);
 
 		// Se obtienen las fechas entre fechaInicio y fechaFin
-		int i = 1;
-		while (i <= cantidadDias) {
+		int i = 0;
+		while (i < cantidadDias) {
 			Calendar instance = Calendar.getInstance();
 			Date date = new Date();
 			try {

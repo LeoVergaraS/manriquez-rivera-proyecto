@@ -34,7 +34,8 @@ const Youtube = () => {
 
 	const [fechaFin, setFechaFin] = useState(formatearFecha(new Date(), 1, 0));
 	const [fechaInicio, setFechaInicio] = useState(
-		formatearFecha(new Date(), 0, 7)
+		formatearFecha(new Date(), 0, 6)
+		
 	);
 	// Variable que almacena las consultas de vista GENERAL
 	// se les aplica todos los filtros

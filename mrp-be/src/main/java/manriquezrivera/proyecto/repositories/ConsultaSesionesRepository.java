@@ -22,7 +22,7 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
 	@Query(value = "SELECT fecha , sum(tiempo) as tiempo FROM mrp.sesion " +
 			"WHERE borrado = 0 AND " +
 			"fecha BETWEEN :fechaInicio AND :fechaFin " +
-			"GROUP BY fecha", nativeQuery = true)
+			"GROUP BY fecha ORDER by fecha asc", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesiones(@Param("fechaInicio") String fechaInicio,
 			@Param("fechaFin") String fechaFin);
 
