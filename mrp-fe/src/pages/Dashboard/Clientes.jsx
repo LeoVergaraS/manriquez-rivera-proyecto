@@ -156,7 +156,7 @@ const Clientes = ({fechaInicio, fechaFin, dropSiempre, id_abo, dropSelect, dropA
 										</span>
 									</div>
 									<h1 className="card-estadisticas-c__estadistica">
-										{castTime(estadisticas.tiempo_total)}
+									{estadisticas.tiempo_total === null ? 0 : castTime(estadisticas.tiempo_total)}
 									</h1>
 									<p className="card-estadisticas-c__caption">
 										De tiempo trabajado

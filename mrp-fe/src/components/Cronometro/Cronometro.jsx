@@ -13,11 +13,11 @@ import { Tooltip } from "react-tooltip";
 import Select from 'react-select'
 import Cookies from 'js-cookie';
 
-function Cronometro({ id_caso, ts, setIsDisabled }) {
+function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   // abogado default (Daniel manriqurez id=1)
-  const [idLogeado, setIdLogeado] = useState(1);
+  const [idLogeado, setIdLogeado] = useState(abogadoLogueado_id);
   const tiempoInicial = parseInt(localStorage.getItem("tiempoCronometro")) || 0;
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
@@ -111,7 +111,7 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       estaPausado=1;
       
     }
-    console.log(estaPausado);
+    //console.log(estaPausado);
     pause();
     Swal.fire({
       title: '¿Estás seguro de guardar la sesión?',
@@ -128,9 +128,9 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
         sesion.fecha = formatDate(new Date());
         sesion.id_caso.id = id_caso;
         // abogado por default
-        sesion.id_abogado.id = idLogeado;
+        sesion.id_abogado.id = abogadoLogueado_id;
         //console.log(sesion);
-        console.log(sesion.id_abogado.id);
+        //console.log(idLogeado);
         createSesion(sesion);
         reset();
       }
