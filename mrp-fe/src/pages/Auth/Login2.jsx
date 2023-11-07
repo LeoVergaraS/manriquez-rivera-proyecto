@@ -82,10 +82,10 @@ const Login = () => {
                         </Form.Group>
                         <button className="submit">Iniciar sesión</button>
                     </Form>
-                    {/*<div></div>
+                    <div></div>
                     <div className="banner">
                         <h1 className="wel_text">Vienvenío</h1>
-                    </div>*/}
+                    </div>
                 </div>
             </body>
         </>
