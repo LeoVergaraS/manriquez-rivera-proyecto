@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 import login2 from "./login2.scss";
 
 const Login = () => {
