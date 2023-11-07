@@ -55,10 +55,10 @@ const Login = () => {
 
     return (
         <>
-            <body>
+            <body className="bodyLogin">
                 <div className="wrapper">
-                    <Form onSubmit={handleSubmit} className="form">
-                    <h2 className="tittle">App del abogao Manrique</h2>
+                    <Form onSubmit={handleSubmit} className="formLogin">
+                    <h2 className="tittleLogin">App del abogao Manrique</h2>
                     <br></br>
                         <Form.Group className="mb-3" controlId="formUsuario">
                             <Form.Label>Correo</Form.Label>
@@ -77,10 +77,10 @@ const Login = () => {
                                 placeholder="Ingrese su contraseña"
                                 required />
                             <Form.Text className="text-muted"
-                                style={{ cursor: "pointer", color: "white" }}
+                                style={{ cursor: "pointer"}}
                                 onClick={handleSee}>Mostrar contraseña</Form.Text>
                         </Form.Group>
-                        <button className="submit">Iniciar sesión</button>
+                        <button className="submitLogin">Iniciar sesión</button>
                     </Form>
                     <div></div>
                     <div className="banner">

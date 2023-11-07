@@ -1,17 +1,21 @@
-*{
+/**{
     margin: 0;
     padding: 0;
     font-family: arial;
     color: #fff;
-}
+}*/
 
-body{
+.bodyLogin{
     width: 100vw;
     height: 100vh;
-    background: #081B29;
+    background: #1E464B;
     display: grid;
     justify-content: center;
     align-content: center;
+    margin: 0;
+    padding: 0;
+    font-family: arial;
+    color: #fff;
 }
 
 ::-webkit-input-placeholder{
@@ -29,14 +33,14 @@ body{
     box-shadow: 0 0 10px 0 #bbac82;
 }
 
-.form{
+.formLogin{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.tittle{
+.tittleLogin{
     font-size: 28px;
 }
 
@@ -56,7 +60,7 @@ body{
     color: #0ef
 }
 
-.submit{
+.submitLogin{
     border: none;
     outline: none;
     width: 288px;
@@ -68,17 +72,6 @@ body{
     cursor: pointer;
     background: linear-gradient(45deg, #f7f7f7, #DFBF68);
     color: black;
-}
-
-.footer{
-    margin-top: 30px;
-    letter-spacing: 0.5px;
-    font-size: 14px;
-}
-
-.link{
-    color: #0ef;
-    text-decoration: none;
 }
 
 .banner{
@@ -102,11 +95,4 @@ body{
     font-size: 40px;
     margin-top: -50px;
     line-height: 50px;
-}
-
-.para{
-    margin-top: 10px;
-    font-size: 18px;
-    line-height: 24px;
-    letter-spacing: 1px;
 }

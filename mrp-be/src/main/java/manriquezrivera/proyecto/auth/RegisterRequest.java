@@ -1,7 +1,5 @@
 package manriquezrivera.proyecto.auth;
 
-import javax.management.relation.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
