@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import manriquezrivera.proyecto.jwt.JwtService;
 import manriquezrivera.proyecto.user.Role;
 import manriquezrivera.proyecto.user.User;
-import manriquezrivera.proyecto.user.UserRepository;
+import manriquezrivera.proyecto.repositories.UserRepository;
 
 @Service
 @RequiredArgsConstructor

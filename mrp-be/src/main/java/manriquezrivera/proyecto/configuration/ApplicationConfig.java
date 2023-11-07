@@ -12,7 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
-import manriquezrivera.proyecto.user.UserRepository;
+//import manriquezrivera.proyecto.user.UserRepository;
+import manriquezrivera.proyecto.repositories.UserRepository;
 
 @Configuration
 @RequiredArgsConstructor
