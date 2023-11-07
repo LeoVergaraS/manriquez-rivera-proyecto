@@ -77,7 +77,7 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       pause();
     }
     setTiempo(0);
-    localStorage.setItem("tiempoCronometro", "00:00:00");
+    localStorage.setItem("tiempoCronometro", "0");
   };
 
   const resetButton = () => {

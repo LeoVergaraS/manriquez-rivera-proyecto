@@ -73,6 +73,7 @@ function Home() {
     setShowEdit(false);
   };
 
+
   const [sesion, setSesion] = useState({
     id: null,
     fecha: null,
@@ -87,7 +88,7 @@ function Home() {
     },
   });
 
-  const [casoSeleccionado, setCasoSeleccionado] = useState({
+  const casoPorDefecto = {
     id: 0,
     fecha: "-",
     id_materia: {
@@ -102,7 +103,41 @@ function Home() {
       id: null,
       nombre: "-",
     },
+  };
+
+  const [casoSeleccionado, setCasoSeleccionado] = useState(() => {
+    const valorEnLocalStorage = localStorage.getItem("CasoSeleccionado");
+    if (valorEnLocalStorage) {
+      try {
+        console.log(valorEnLocalStorage);
+        return JSON.parse(valorEnLocalStorage);
+      } catch (error) {
+        console.error('Error al parsear el valor del local storage:', error);
+      }
+    }
+    return casoPorDefecto;
   });
+
+/*  const [casoSeleccionado, setCasoSeleccionado] = useState({
+    id: 0,
+    fecha: "-",
+    id_materia: {
+      id: null,
+      nombre: "-",
+    },
+    id_cliente: {
+      id: null,
+      nombre: "-",
+    },
+    id_submateria: {
+      id: null,
+      nombre: "-",
+    },
+  });*/
+  const [tiempoIsRunning, setTiempoIsRunning] = useState();
+  const getTiempo = async (tiempoIsRunning) => {
+    setTiempoIsRunning(parseInt(localStorage.getItem("tiempoCronometro")) || 0);
+  };
 
   const getSesiones = async () => {
     try {
@@ -272,6 +307,8 @@ function Home() {
     //getCasos();
     getCasoByIdAbogado(1);
   }, []);
+
+
 
   return (
     <Container

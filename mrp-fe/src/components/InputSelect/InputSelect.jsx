@@ -10,12 +10,20 @@ const InputSelect = ({objects, set, createOption, placeholder}) => {
     }else{
       const object = objects.find((obj) => obj.id === e.value);
       set(object);
+      const objectJson = JSON.stringify(object)
+      //console.log(objectJson);
+      localStorage.setItem("CasoSeleccionado", objectJson);
+
+      //const XD = JSON.parse(localStorage.getItem("CasoSeleccionado"));
+  
+      // Imprime el objeto en la consola
+      //console.log(XD);
     }
   }
 
   return (
     <div className="input-select">
-      <Select 
+      <Select
         placeholder={placeholder}
         options={objects.map((obj) => createOption(obj))}
         onChange={handleSelect}

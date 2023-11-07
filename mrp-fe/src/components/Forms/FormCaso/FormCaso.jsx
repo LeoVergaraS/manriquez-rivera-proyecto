@@ -213,12 +213,12 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
               <div style={{ display: "flex", justifyContent: "end" }}>
                 <Button
                   variant="secondary"
-                  style={{ marginRight: 2 }}
+                  style={{ marginRight: 2, backgroundColor: "#ACACAC", border: "none"  }}
                   onClick={handleClose}
                 >
                   Cerrar
                 </Button>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" style={{backgroundColor: "#DFBF68", border:"none" }}>
                   Guardar
                 </Button>
               </div>
