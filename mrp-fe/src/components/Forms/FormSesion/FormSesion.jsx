@@ -1,59 +1,49 @@
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 import * as yup from "yup";
 import * as formik from "formik";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import MySelect from "../MySelect/MySelect";
+import {VscCheck, VscClose} from "react-icons/vsc";
+import formatDateUpload from "../../../utils/functions/formatDateUpload";
+import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
 
-const formatDate = (date) => {
-  let dd = date.getDate();
-  let mm = date.getMonth() + 1;
-  let yyyy = date.getFullYear();
-  if (dd < 10) {
-    dd = "0" + dd;
-  }
-  if (mm < 10) {
-    mm = "0" + mm;
-  }
-  return yyyy + "-" + mm + "-" + dd;
-};
+const FormSesion = (props) => {
+  const sesion = props.item;
+  const close = props.close;
+  const post = props.post;
 
-const FormSesion = ({
-  sesion,
-  postSesion,
-  handleClose,
-  materias,
-  subMaterias,
-}) => {
   const { Formik } = formik;
+
   const [options, setOptions] = useState([]);
-  const [initialAbogados, setInitialAbogados] = useState(null);
-  const [numbersAbogados, setNumbersAbogados] = useState(null);
 
   const validations = yup.object().shape({
-    id_materia: yup
+    horas: yup
       .number()
-      .required("Ingrese una materia válida")
-      .min(1, "Seleccione una opción válida"),
-    id_submateria: yup
+      .required("Ingrese una cantidad de horas válida")
+      .min(0, "Mínimo 0 hora")
+      .max(24, "Máximo 24 horas"),
+    minutos: yup
       .number()
-      .required("Ingrese una submateria válida")
+      .required("Ingrese una cantidad de minutos válida")
+      .min(0, "Mínimo 0 minutos")
+      .max(59, "Máximo 59 minutos"),
+    segundos: yup
+      .number()
+      .required("Ingrese una cantidad de segundos válida")
+      .min(0, "Mínimo 0 segundos")
+      .max(59, "Máximo 59 segundos"),
+    fecha: yup
+      .date()
+      .required("Ingrese una fecha válida")
+      .max(formatDateUpload(new Date()), "La fecha no puede ser mayor a la actual"),
+    id_caso: yup
+      .number()
+      .required("Ingrese un caso válido")
+      .min(1, "Ingrese una opción válida"),
+    id_abogado: yup
+      .number()
+      .required("Ingrese un abogado válido")
       .min(1, "Seleccione una opción válida"),
-    id_cliente: yup
-      .string()
-      .required("Ingrese un cliente válido")
-      .min(1, "Seleccione una opción válida")
-      .max(255, "Máximo 255 caracteres"),
-    abogado: yup
-      .array()
-      .min(1, "Seleccione al menos un abogado")
-      .test("Abogados", "No puede eliminar un abogado del caso", function(value){return value.length >= numbersAbogados})
-      .of(
-        yup.object().shape({
-          value: yup.string().required(),
-          label: yup.string().required(),
-        })
-      ),
   });
 
   const getAbogados = async () => {
@@ -74,172 +64,160 @@ const FormSesion = ({
     }
   };
 
-  const getAbogadosByCaso = async (id) => {
-    try {
-      let url = "http://localhost:8090/abogados/caso/" + id;
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        setInitialAbogados(
-          response.data.map((abogado) => ({
-            value: abogado.id,
-            label: abogado.nombre,
-          }))
-        );
-        setNumbersAbogados(response.data.length);
-      }
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
   useEffect(() => {
     getAbogados();
-    sesion.id === null ? null : getAbogadosByCaso(sesion.id);
-  }, [sesion.id]);
+  }, []);
 
   const Formulario = () => {
-    return ( <Formik
-      validationSchema={validations}
-      onSubmit={(values) => {
-        const abogados = values.abogado.map((item) => {
-          return item.value;
-        });
-        const caso = { ...sesion };
-        caso.id_cliente = { nombre: values.id_cliente };
-        caso.id_materia = { id: values.id_materia };
-        caso.id_submateria = { id: values.id_submateria };
-        caso.fecha = formatDate(new Date());
-        const request = { caso: caso, abogados: abogados };
-        postSesion(request);
-      }}
-      initialValues={{
-        id_materia: sesion.id_materia.id,
-        id_submateria: sesion.id_submateria.id,
-        id_cliente: sesion.id_cliente.nombre,
-        abogado: sesion.id === null ? [] : initialAbogados,
-      }}
-    >
-      {({
-        handleSubmit,
-        handleChange,
-        values,
-        errors,
-        touched,
-        setFieldValue,
-        setFieldTouched,
-        handleBlur
-      }) => (
-        <Form noValidate onSubmit={handleSubmit}>
-          <Row>
-            <Col>
-              <Form.Group className="mb-3" controlId="input-cliente">
-                <Form.Label>Cliente</Form.Label>
+    return (
+      <Formik
+        validationSchema={validations}
+        onSubmit={(values) => {
+          const object = {
+            id: sesion !== null ? sesion.id : null,
+            tiempo: values.horas * 3600 + values.minutos * 60 + values.segundos,
+            fecha: sumOneDayToDate(values.fecha),
+            id_caso: { id: values.id_caso },
+            id_abogado: { id: values.id_abogado },
+            borrado: sesion !== null ? sesion.borrado : false,
+          };
+          post("Sesiones",object);
+        }}
+        initialValues={{
+          horas: sesion !== null ? Math.floor(sesion.tiempo / 3600) : 0,
+          minutos:
+            sesion !== null ? Math.floor((sesion.tiempo % 3600) / 60) : 0,
+          segundos: sesion !== null ? sesion.tiempo % 60 : 0,
+          fecha: sesion !== null ? sesion.fecha : "",
+          id_caso: sesion !== null ? sesion.id_caso.id : 0,
+          id_abogado: sesion !== null ? sesion.id_abogado.id : 0,
+        }}
+      >
+        {({
+          handleSubmit,
+          handleChange,
+          values,
+          errors,
+          touched,
+          handleBlur,
+        }) => (
+          <Form noValidate onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="input-tiempo">
+              <Form.Label>Tiempo</Form.Label>
+              <InputGroup>
                 <Form.Control
-                  name="id_cliente"
-                  placeholder="Ingrese un cliente"
-                  type="text"
-                  value={values.id_cliente}
+                  name="horas"
+                  type="number"
+                  value={values.horas}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  isValid={touched.horas && !errors.horas}
+                  isInvalid={touched.horas && !!errors.horas}
                 />
-                {errors.id_cliente && 
-                  touched.id_cliente && (
-                    <div style={{ color: "red", marginTop: ".5rem" }}>{errors.id_cliente}</div>
-                )}
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="input-materia">
-                <Form.Label>Materia</Form.Label>
-                <Form.Select
-                  name="id_materia"
-                  aria-label="select"
+                <InputGroup.Text>hrs</InputGroup.Text>
+                <Form.Control
+                  name="minutos"
+                  type="number"
+                  value={values.minutos}
                   onChange={handleChange}
-                  value={values.id_materia}
                   onBlur={handleBlur}
-                >
-                  <option key={0} value={0}>
-                    Seleccione una opción
-                  </option>
-                  {materias.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.nombre}
-                    </option>
-                  ))}
-                </Form.Select>
-                {errors.id_materia && touched.id_materia && (
-                  <div style={{ color: "red", marginTop: ".5rem" }}>
-                    {errors.id_materia}
-                  </div>
-                )}
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group className="mb-3" controlId="input-abogado">
-                <Form.Label>Abogado</Form.Label>
-                <MySelect
-                  name="abogado"
-                  placeholder="Seleccione uno o más abogados"
-                  options={options}
-                  onChange={setFieldValue}
-                  onBlur={setFieldTouched}
-                  value={values.abogado}
-                  error={errors.abogado}
-                  touched={touched.abogado}
+                  isValid={touched.minutos && !errors.minutos}
+                  isInvalid={touched.minutos && !!errors.minutos}
                 />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="input-submateria">
-                <Form.Label>Submateria</Form.Label>
-                <Form.Select
-                  aria-label="select"
-                  name="id_submateria"
+                <InputGroup.Text>min</InputGroup.Text>
+                <Form.Control
+                  name="segundos"
+                  type="number"
+                  value={values.segundos}
                   onChange={handleChange}
-                  value={values.id_submateria}
                   onBlur={handleBlur}
-                >
-                  <option key={0} value={0}>
-                    Seleccione una opción
-                  </option>
-                  {subMaterias.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.nombre}
-                    </option>
-                  ))}
-                </Form.Select>
-                {errors.id_submateria && touched.id_submateria && (
-                  <div style={{ color: "red", marginTop: ".5rem" }}>
-                    {errors.id_submateria}
-                  </div>
-                )}
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <div>
-            <hr></hr>
-            <div style={{ display: "flex", justifyContent: "end" }}>
-              <Button
-                variant="secondary"
-                style={{ marginRight: 2 }}
-                onClick={handleClose}
+                  isValid={touched.segundos && !errors.segundos}
+                  isInvalid={touched.segundos && !!errors.segundos}
+                />
+                <InputGroup.Text>seg</InputGroup.Text>
+              </InputGroup>
+              <Form.Control.Feedback type="invalid">
+                {errors.horas}
+              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {errors.minutos}
+              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {errors.segundos}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="input-fecha">
+              <Form.Label>Fecha</Form.Label>
+              <Form.Control
+                name="fecha"
+                type="date"
+                value={values.fecha}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isValid={touched.fecha && !errors.fecha}
+                isInvalid={touched.fecha && !!errors.fecha}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.fecha}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="input-caso">
+              <Form.Label>Caso</Form.Label>
+              <Form.Control
+                name="id_caso"
+                type="number"
+                value={values.id_caso}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isValid={touched.id_caso && !errors.id_caso}
+                isInvalid={touched.id_caso && !!errors.id_caso}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.id_caso}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="input-abogado">
+              <Form.Label>Abogado</Form.Label>
+              <Form.Select
+                name="id_abogado"
+                aria-label="select"
+                onChange={handleChange}
+                value={values.id_abogado}
+                onBlur={handleBlur}
+                isValid={touched.id_abogado && !errors.id_abogado}
+                isInvalid={touched.id_abogado && !!errors.id_abogado}
               >
-                Cerrar
-              </Button>
-              <Button variant="primary" type="submit">
-                Guardar
-              </Button>
+                <option key={0} value={0}>
+                  Seleccione una opción
+                </option>
+                {options.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {errors.id_abogado}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <hr />
+            <div className="d-flex justify-content-end">
+              <VscClose
+                onClick={close}
+                style={{ cursor: "pointer", color: "red", fontSize: 30 }}
+              />
+              <VscCheck
+                onClick={handleSubmit}
+                style={{ cursor: "pointer", color: "green", fontSize: 30 }}
+              />
             </div>
-          </div>
-        </Form>
-      )}
-    </Formik>)
+          </Form>
+        )}
+      </Formik>
+    );
   };
 
-  return (
-    <div>
-      {sesion.id === null ? Formulario() : initialAbogados !== null && Formulario()}
-    </div>
-  );
+  return <div>{options !== null && Formulario()}</div>;
 };
 
 export default FormSesion;

@@ -22,105 +22,161 @@ import manriquezrivera.proyecto.services.ConsultaService;
 @CrossOrigin
 @RequestMapping("/consultas")
 public class ConsultaController {
-  @Autowired
-  ConsultaService consultaService;
+	@Autowired
+	ConsultaService consultaService;
 
-  @GetMapping("/cliente/{id}/{fi}/{ff}")
-  public ResponseEntity<List<ConsultaCliente>> getConsultasCliente(@PathVariable("id") Long id,
-      @PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin) {
-    List<ConsultaCliente> consultasCliente = consultaService.getCC(id, fechaInicio, fechaFin);
-    if (consultasCliente == null) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok().body(consultasCliente);
-  }
+	@GetMapping("/cliente/{id}/{fi}/{ff}")
+	public ResponseEntity<List<ConsultaCliente>> getConsultasCliente(@PathVariable("id") Long id,
+			@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin) {
+		List<ConsultaCliente> consultasCliente = consultaService.getCC(id, fechaInicio, fechaFin);
+		if (consultasCliente == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultasCliente);
+	}
 
-  // cantidad de clientes
-  @GetMapping("/cliente/cantidad/{fi}/{ff}")
-  public ResponseEntity<Integer> getConsultaCantidadClientes(@PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin) {
-    int consultasCliente = consultaService.getCantidadClientes(fechaInicio, fechaFin);
-    if (consultasCliente == 0) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok().body(consultasCliente);
-  }
+	// cantidad de clientes
+	@GetMapping("/cliente/cantidad/{fi}/{ff}")
+	public ResponseEntity<Integer> getConsultaCantidadClientes(@PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin) {
+		int consultasCliente = consultaService.getCantidadClientes(fechaInicio, fechaFin);
+		if (consultasCliente == 0) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultasCliente);
+	}
 
-  @GetMapping("/materia/{fi}/{ff}/{dropSelect}/{dropSiempre}")
-  public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(@PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect,
-      @PathVariable("dropSiempre") Integer dropSiempre) {
-    List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin, dropSelect, dropSiempre);
-    if (consultasMaterias == null) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok().body(consultasMaterias);
-  }
+	@GetMapping("/materia/{fi}/{ff}/{dropSelect}/{dropSiempre}/{idAbogado}")
+	public ResponseEntity<List<ConsultaMateria>> getConsultasMateria(@PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect,
+			@PathVariable("dropSiempre") Integer dropSiempre, @PathVariable("idAbogado") Long idAbogado) {
+		List<ConsultaMateria> consultasMaterias = consultaService.getCM(fechaInicio, fechaFin, dropSelect, dropSiempre,
+				idAbogado);
+		if (consultasMaterias == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultasMaterias);
+	}
 
-  @GetMapping("/sesiones/{fi}/{ff}/{dropSelect}/{dropSiempre}/{dropAnio}")
-  public ResponseEntity<List<ConsultaSesiones>> getConsultasSesiones(@PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect,
-      @PathVariable("dropSiempre") Integer dropSiempre, @PathVariable("dropAnio") Integer dropAnio) {
-    List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin, dropSelect, dropSiempre,
-        dropAnio);
-    if (consultaSesiones == null) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok().body(consultaSesiones);
-  }
+	// funcion que obtiene las sesiones con respecto a los filtros
+	// VISTA GENERAL(Fechas en especifico)
+	@GetMapping("/sesiones/{fi}/{ff}/{dropSelect}/{idAbogado}")
+	public ResponseEntity<List<ConsultaSesiones>> getConsultasSesiones(@PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer dropSelect,
+			@PathVariable("idAbogado") Long idAbogado) {
+		List<ConsultaSesiones> consultaSesiones = consultaService.getCS(fechaInicio, fechaFin, dropSelect,
+				idAbogado);
+		if (consultaSesiones == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultaSesiones);
+	}
 
-  // cantidad de sesiones por tal intervalo de tiempo
-  @GetMapping("/sesiones/cantidad/{fi}/{ff}")
-  public ResponseEntity<Integer> getConsultasCantidadSesiones(@PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin) {
-    int consultaSesiones = consultaService.getCCS(fechaInicio, fechaFin);
-    if (consultaSesiones == 0) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok().body(consultaSesiones);
-  }
+	// funcion que obtiene las sesiones con respecto a los filtros
+	// VISTA GENERAL (DESDE SIEMPRE)
+	@GetMapping("/sesiones/{idAbogado}")
+	public ResponseEntity<List<ConsultaSesiones>> getConsultasSesionesDesdeSiempre(
+			@PathVariable("idAbogado") Long idAbogado) {
+		List<ConsultaSesiones> consultaSesiones = consultaService.getCSdesdeSiempre(idAbogado);
+		if (consultaSesiones == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultaSesiones);
+	}
 
-  // cantidad de tiempo total de sesiones
-  @GetMapping("/sesiones/tiempo/{fi}/{ff}")
-  public ResponseEntity<Integer> getConsultasTiempoSesiones(@PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin) {
-    int consultaTiempoSesiones = consultaService.getCCT(fechaInicio, fechaFin);
-    if (consultaTiempoSesiones == 0) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok().body(consultaTiempoSesiones);
-  }
+	// cantidad de sesiones por tal intervalo de tiempo
+	@GetMapping("/sesiones/cantidad/{fi}/{ff}")
+	public ResponseEntity<Integer> getConsultasCantidadSesiones(@PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin) {
+		int consultaSesiones = consultaService.getCCS(fechaInicio, fechaFin);
+		if (consultaSesiones == 0) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultaSesiones);
+	}
 
-  @GetMapping("/prueba/{fi}/{ff}/{dropSiempre}")
-  public ResponseEntity<InfoTabla> getPrueba(@PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin, @PathVariable("dropSiempre") Integer dropSiempre) {
-    InfoTabla consultaInfotabla = consultaService.getInfoTabla(fechaInicio, fechaFin, dropSiempre);
-    if (consultaInfotabla == null) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok().body(consultaInfotabla);
-  }
+	// cantidad de tiempo total de sesiones
+	@GetMapping("/sesiones/tiempo/{fi}/{ff}")
+	public ResponseEntity<Integer> getConsultasTiempoSesiones(@PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin) {
+		int consultaTiempoSesiones = consultaService.getCCT(fechaInicio, fechaFin);
+		if (consultaTiempoSesiones == 0) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultaTiempoSesiones);
+	}
 
-  @GetMapping("/sesiones/id_caso/{id}/{fi}/{ff}/{flag}/{id_abo}")
-  public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntity(@PathVariable("id") Long id, @PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin, @PathVariable("flag") Integer flag, @PathVariable("id_abo") Long id_abo){
-    List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id, fechaInicio, fechaFin, flag, id_abo);
-    if(consultas == null){
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok().body(consultas);
-  }
+	@GetMapping("/prueba/{fi}/{ff}/{dropSiempre}/{idAbogado}")
+	public ResponseEntity<InfoTabla> getPrueba(@PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin, @PathVariable("dropSiempre") Integer dropSiempre,
+			@PathVariable("idAbogado") Long idAbogado) {
+		InfoTabla consultaInfotabla = consultaService.getInfoTabla(fechaInicio, fechaFin, dropSiempre, idAbogado);
+		if (consultaInfotabla == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultaInfotabla);
+	}
 
-  @GetMapping("/materia/estadisticas/{abo}/{id}/{fi}/{ff}")
-  public ResponseEntity<InfoTablaMateria> getEstadisticasMateria(@PathVariable("abo") String abogado, @PathVariable("id") Long id_materia, @PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin) {
-    InfoTablaMateria consultaEstadisticasMateria = consultaService.getInfoTablaMateria(abogado, id_materia, fechaInicio, fechaFin);
-    return ResponseEntity.ok().body(consultaEstadisticasMateria);
-  }
+	@GetMapping("/sesiones/id_caso/{id}/{fi}/{ff}/{id_abo}/{dropSelect}")
+	public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntity(@PathVariable("id") Long id,
+			@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin,
+			@PathVariable("id_abo") Long id_abo,
+			@PathVariable("dropSelect") Integer dropSelect) {
+		List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id, fechaInicio, fechaFin, id_abo, dropSelect);
+		if (consultas == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultas);
+	}
 
-  @GetMapping("/cliente/estadisticas/{id}/{fi}/{ff}/{id_abo}/{flag}")
-    public ResponseEntity<InfoTablaCliente> getEstadisticasCliente(@PathVariable("id") Long id_caso, @PathVariable("fi") String fechaInicio,
-      @PathVariable("ff") String fechaFin, @PathVariable("id_abo") Long id_abo, @PathVariable("flag") Integer flag) {
-    InfoTablaCliente consultaEstadisticasCliente = consultaService.getInfoTablaCliente(id_caso, fechaInicio, fechaFin,  id_abo, flag);
-    return ResponseEntity.ok().body(consultaEstadisticasCliente);
-  }
+	@GetMapping("/sesiones/{id_caso}/{id_abo}")
+	public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntityDesdeSiempre(@PathVariable("id_caso") Long id_caso,
+			@PathVariable("id_abo") Long id_abo) {
+		List<ConsultaSesiones> consultas = consultaService.getConsultasByCasoDesdeSiempre(id_caso, id_abo);
+		if (consultas == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultas);
+	}
+
+	// ----------------------------Vista Materia ---------------------------------
+	@GetMapping("/materia/estadisticas/{abo}/{id}/{fi}/{ff}/{dropSiempre}")
+	public ResponseEntity<InfoTablaMateria> getEstadisticasMateria(@PathVariable("abo") Long id_abogado,
+			@PathVariable("id") Long id_materia, @PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin, @PathVariable("dropSiempre") Integer dropSiempre) {
+		InfoTablaMateria consultaEstadisticasMateria = consultaService.getInfoTablaMateria(id_abogado, id_materia,
+				fechaInicio, fechaFin, dropSiempre);
+		return ResponseEntity.ok().body(consultaEstadisticasMateria);
+	}
+
+	@GetMapping("/materia/sesiones/{id_materia}/{fi}/{ff}/{dropSelect}/{id_abogado}")
+	public ResponseEntity<List<ConsultaSesiones>> getSesionesMateriaPorFecha(
+			@PathVariable("id_abogado") Long id_abogado,
+			@PathVariable("id_materia") Long id_materia, @PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer cantidadDias) {
+		List<ConsultaSesiones> consultaSesionesMateria = consultaService.getCSMateria(id_materia, fechaInicio, fechaFin,
+				cantidadDias, id_abogado);
+		return ResponseEntity.ok().body(consultaSesionesMateria);
+	}
+
+	@GetMapping("/materia/sesiones/{id_materia}/{id_abogado}")
+	public ResponseEntity<List<ConsultaSesiones>> getSesionesMateria(@PathVariable("id_abogado") Long id_abogado,
+			@PathVariable("id_materia") Long id_materia) {
+		List<ConsultaSesiones> consultaSesionesMateria = consultaService.getCSMateriaDesdeSiempre(id_materia,
+				id_abogado);
+		return ResponseEntity.ok().body(consultaSesionesMateria);
+	}
+
+	// ----------------------------------------------------------------------------
+	// Para los 2 cards que salen en la vista Dashboard-Cliente
+	@GetMapping("/cliente/estadisticas/{id}/{fi}/{ff}/{id_abo}/{flag}")
+	public ResponseEntity<InfoTablaCliente> getEstadisticasCliente(@PathVariable("id") Long id_caso,
+			@PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin, @PathVariable("id_abo") Long id_abo,
+			@PathVariable("flag") Integer flag) {
+		InfoTablaCliente consultaEstadisticasCliente = consultaService.getInfoTablaCliente(id_caso, fechaInicio,
+				fechaFin,
+				id_abo, flag);
+		return ResponseEntity.ok().body(consultaEstadisticasCliente);
+	}
 }

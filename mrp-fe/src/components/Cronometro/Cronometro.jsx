@@ -15,8 +15,8 @@ import Select from 'react-select'
 function Cronometro({ id_caso, ts, setIsDisabled }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
- 
-
+  // abogado default (Daniel manriqurez id=1)
+  const [idLogeado, setIdLogeado] = useState(1);
   const tiempoInicial = parseInt(localStorage.getItem("tiempoCronometro")) || 0;
   const [tiempo, setTiempo] = useState(tiempoInicial);
   const intervalRef = useRef(null);
@@ -28,6 +28,9 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
     tiempo: null,
     id_caso: {
       id: 0,
+    },
+    id_abogado: {
+      id:0,
     },
   });
 
@@ -74,7 +77,7 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       pause();
     }
     setTiempo(0);
-    localStorage.setItem("tiempoCronometro", "00:00:00");
+    localStorage.setItem("tiempoCronometro", "0");
   };
 
   const resetButton = () => {
@@ -86,8 +89,8 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       text: "No podrá ser recuperado el tiempo transcurrido",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#DFBF68',
+      cancelButtonColor: '#ACACAC',
       confirmButtonText: 'Si, Reiniciar cronómetro',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -99,17 +102,7 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
     })    
   };
 
-  // const getSesiones = async () => {
-  //   try {
-  //     let url = "http://localhost:8090/sesiones";
-  //     const response = await axios.get(url);
-  //     if (response.status === 200) {
-  //       setSesiones(response.data);
-  //     }
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // };
+
 
   const save = () => {
     let estaPausado=0;
@@ -124,8 +117,8 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       text: "Esto no podrá ser modificado después",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#DFBF68',
+      cancelButtonColor: '#ACACAC',
       confirmButtonText: 'Si, Guardar la sesión',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -133,7 +126,10 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
         sesion.tiempo = tiempo;
         sesion.fecha = formatDate(new Date());
         sesion.id_caso.id = id_caso;
-        console.log(sesion);
+        // abogado por default
+        sesion.id_abogado.id = idLogeado;
+        //console.log(sesion);
+        console.log(sesion.id_abogado.id);
         createSesion(sesion);
         reset();
       }
@@ -172,11 +168,11 @@ function Cronometro({ id_caso, ts, setIsDisabled }) {
       <div className="cronometro__actions">
         <AiFillSave
           className={
-            id_caso === 0
+            id_caso === 0 || tiempo === 0
               ? "cronometro__actions-save-disabled"
               : "cronometro__actions-save"
           }
-          onClick={id_caso === 0 ? null : save}
+          onClick={id_caso === 0 || tiempo===0 ? null : save}
           data-tooltip-id={id_caso === 0 ? null : "tooltip-cronometro"}
           data-tooltip-content={id_caso === 0 ? null : "Guardar sesión"}
         />

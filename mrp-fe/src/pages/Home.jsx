@@ -4,11 +4,10 @@ import { BiSearchAlt } from "react-icons/bi";
 import { AiOutlinePlusCircle, AiFillSave } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import "./home.scss";
-import "../components/Table/table.scss";
 import { useState, useEffect } from "react";
 import Cronometro from "../components/Cronometro/Cronometro";
 import axios from "axios";
-import FormSesion from "../components/Forms/FormSesion/FormSesion";
+import FormCaso from "../components/Forms/FormCaso/FormCaso";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import formatDateShow from "../utils/functions/formatDateShow";
@@ -71,7 +70,26 @@ function Home() {
     setShowEdit(false);
   };
 
+
+
+  const [sesion, setSesion] = useState({
+    id: null,
+    fecha: null,
+    tiempo: null,
+    materia: {
+      id: null,
+      nombre: "Seleccione un cliente",
+    },
+    cliente: {
+      id: null,
+      nombre: "Seleccione un cliente",
+    },
+  });
+
+  const casoPorDefecto = {
+
   const [casoSeleccionado, setCasoSeleccionado] = useState({
+
     id: 0,
     fecha: "-",
     id_materia: {
@@ -86,7 +104,52 @@ function Home() {
       id: null,
       nombre: "-",
     },
+  };
+
+  const [casoSeleccionado, setCasoSeleccionado] = useState(() => {
+    const valorEnLocalStorage = localStorage.getItem("CasoSeleccionado");
+    if (valorEnLocalStorage) {
+      try {
+        console.log(valorEnLocalStorage);
+        
+        return JSON.parse(valorEnLocalStorage);
+      } catch (error) {
+        console.error('Error al parsear el valor del local storage:', error);
+      }
+    }
+    return casoPorDefecto;
   });
+
+
+  const [tiempoIsRunning, setTiempoIsRunning] = useState();
+  const getTiempo = async (tiempoIsRunning) => {
+    setTiempoIsRunning(parseInt(localStorage.getItem("tiempoCronometro")) || 0);
+  };
+
+  const getSesiones = async () => {
+    try {
+      let url = "http://localhost:8090/sesiones";
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setSesiones(response.data);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const getClientes = async () => {
+    try {
+      let url = "http://localhost:8090/clientes";
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setClientes(response.data);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
 
   const getMaterias = async () => {
     try {
@@ -252,6 +315,8 @@ function Home() {
     getCasos();
     //getCasoByIdAbogado(1);
   }, []);
+
+
 
   return (
     <Container
@@ -478,9 +543,9 @@ function Home() {
           <Modal.Title>Crear Caso</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormSesion
-            sesion={editedItem}
-            postSesion={createCaso}
+          <FormCaso
+            caso={editedItem}
+            postCaso={createCaso}
             handleClose={handleCloseCreate}
             materias={materias}
             subMaterias={subMaterias}
@@ -493,9 +558,9 @@ function Home() {
           <Modal.Title>Editar Caso</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormSesion
-            sesion={casoSeleccionado}
-            postSesion={updateCaso}
+          <FormCaso
+            caso={casoSeleccionado}
+            postCaso={updateCaso}
             handleClose={handleCloseEdit}
             materias={materias}
             subMaterias={subMaterias}

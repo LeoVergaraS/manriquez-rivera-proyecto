@@ -17,7 +17,16 @@ public class AbogadoService {
     return abogadoRepository.findAll();
   }
 
+  public Abogado saveAbogado(Abogado abogado) {
+    return abogadoRepository.save(abogado);
+  }
+
   public List<Abogado> getAbogadosByCaso(Long id_caso) {
     return abogadoRepository.getByCaso(id_caso);
+  }
+
+  public Abogado deleteAbogado(Abogado abogado){
+    abogado.setBorrado(true);
+    return abogadoRepository.save(abogado);
   }
 }

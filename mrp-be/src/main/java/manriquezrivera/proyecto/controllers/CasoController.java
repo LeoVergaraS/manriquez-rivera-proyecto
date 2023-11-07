@@ -1,7 +1,6 @@
 package manriquezrivera.proyecto.controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +12,6 @@ import manriquezrivera.proyecto.services.CasoAbogadoService;
 import manriquezrivera.proyecto.services.CasoService;
 import manriquezrivera.proyecto.services.ClienteService;
 import manriquezrivera.proyecto.entity.Caso;
-import manriquezrivera.proyecto.entity.Cliente;
-import manriquezrivera.proyecto.entity.CasoAbogado;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

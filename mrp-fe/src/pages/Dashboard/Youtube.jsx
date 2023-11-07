@@ -8,8 +8,11 @@ import General from "./General";
 import Clientes from "./Clientes";
 import Materias from "./Materias";
 import DropdownAbogado from "../../components/Dropdown/DropdownAbogado";
+import { VscChevronRight, VscChevronLeft, VscGlobe, VscPerson, VscLayers } from "react-icons/vsc";
+import formatDateUpload from "../../utils/functions/formatDateUpload";
 
 const Youtube = () => {
+
   const [selectedCliente, setSelectedCliente] = useState("");
   const [selectedGeneral, setSelectedGeneral] = useState("selected");
   const [selectedMateria, setSelectedMateria] = useState("");
@@ -32,46 +35,35 @@ const Youtube = () => {
   const [fechaInicio, setFechaInicio] = useState(
     formatearFecha(new Date(), 0, 7)
   );
-
+  // Variable que almacena las consultas de vista GENERAL
+  // se les aplica todos los filtros
   const [consultasS, setConsultasS] = useState([]);
   const [consultasM, setConsultasM] = useState([]);
 
   const [abogado, setAbogado] = useState({
-    nombre:"Abogados",
-    id:0,
+    nombre: "Todos",
+    id: -1,
   });
 
   const [abogados, setAbogados] = useState([]);
 
   const handleModal = () => setShowModal(!showModal);
 
-  const abogadoSelect = (eventKey) => {
-    console.log(typeof eventKey);
-    if(eventKey === "-1"){
-      setAbogado({
-        nombre:"Todos",
-        id:0,
-      });
-    }else{
-      setAbogado(abogados[eventKey]);
-    }
-  }
-
   const handleSelected = (type) => {
-    if (type === "cliente") {
-      setSelectedCliente("selected");
-      setSelectedMateria("");
-      setSelectedGeneral("");
-    } else if (type === "materia") {
-      setSelectedMateria("selected");
-      setSelectedCliente("");
-      setSelectedGeneral("");
-    } else {
-      setSelectedGeneral("selected");
-      setSelectedCliente("");
-      setSelectedMateria("");
-    }
-  };
+		if (type === "cliente") {
+			setSelectedCliente("selected");
+			setSelectedMateria("");
+			setSelectedGeneral("");
+		} else if (type === "materia") {
+			setSelectedMateria("selected");
+			setSelectedCliente("");
+			setSelectedGeneral("");
+		} else {
+			setSelectedGeneral("selected");
+			setSelectedCliente("");
+			setSelectedMateria("");
+		}
+	};
 
   const getConsultasMaterias = async () => {
     try {
@@ -79,7 +71,13 @@ const Youtube = () => {
         "http://localhost:8090/consultas/materia/" +
         fechaInicio +
         "/" +
-        fechaFin + "/" + dropSelect + "/" + dropSiempre;
+        fechaFin +
+        "/" +
+        dropSelect +
+        "/" +
+        dropSiempre +
+        "/" +
+        abogado.id;
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasM(response.data);
@@ -90,8 +88,8 @@ const Youtube = () => {
   };
 
   const handleSearch = () => {
-    setFechaInicio(formatDate(personalizado.fechaInicio));
-    setFechaFin(formatDate(personalizado.fechaFin));
+    setFechaInicio(formatDateUpload(personalizado.fechaInicio));
+    setFechaFin(formatDateUpload(personalizado.fechaFin));
     const difMS = personalizado.fechaFin - personalizado.fechaInicio;
     const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
     setDropSelect(difDias + 1);
@@ -100,26 +98,46 @@ const Youtube = () => {
     handleModal();
   };
 
-  const formatDate = (date) => {
-    let dd = date.getDate();
-    let mm = date.getMonth() + 1;
-    let yyyy = date.getFullYear();
-    if (dd < 10) {
-      dd = "0" + dd;
-    }
-    if (mm < 10) {
-      mm = "0" + mm;
-    }
-    return yyyy + "-" + mm + "-" + dd;
-  };
-
+  // aqui se obtienen las consultas de sesiones
   const getConsultasSesiones = async () => {
     try {
-      let url =
-        "http://localhost:8090/consultas/sesiones/" +
-        fechaInicio +
-        "/" +
-        fechaFin + "/" + dropSelect + "/" + dropSiempre + "/" + dropAnio;
+      // si es que se selecciono desde siempre
+      if (dropSiempre == 1) {
+        getConsultasSesionesDesdeSiempre();
+      } else {
+        // esto calcula la diferencia de dias entre las fechas cuando se selecciona un año en el dropSelect
+        if (dropAnio == 1) {
+          const fechaInicioAux = new Date(fechaInicio);
+          const fechaFinAux = new Date(fechaFin);
+
+          const difMS = fechaFinAux - fechaInicioAux;
+          const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+          setDropSelect(difDias + 1);
+        }
+
+        let url =
+          "http://localhost:8090/consultas/sesiones/" +
+          fechaInicio +
+          "/" +
+          fechaFin +
+          "/" +
+          dropSelect +
+          "/" +
+          abogado.id;
+        const response = await axios.get(url);
+
+        if (response.status === 200) {
+          setConsultasS(response.data);
+        }
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getConsultasSesionesDesdeSiempre = async () => {
+    try {
+      let url = "http://localhost:8090/consultas/sesiones/" + abogado.id;
       const response = await axios.get(url);
       if (response.status === 200) {
         setConsultasS(response.data);
@@ -131,7 +149,15 @@ const Youtube = () => {
 
   const getEstadisticas = async () => {
     try {
-      let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre;
+      let url =
+        "http://localhost:8090/consultas/prueba/" +
+        fechaInicio +
+        "/" +
+        fechaFin +
+        "/" +
+        dropSiempre +
+        "/" +
+        abogado.id;
       const response = await axios.get(url);
       if (response.status === 200) {
         setEstadisticas(response.data);
@@ -153,47 +179,46 @@ const Youtube = () => {
     }
   };
 
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
+
   useEffect(() => {
     getConsultasMaterias();
     getConsultasSesiones();
     getEstadisticas();
     getAbogados();
-    //console.log("abogadoaa",abogado);
-  }, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio,abogado, flag, abogado]);
+  }, [
+    fechaFin,
+    fechaInicio,
+    dropSelect,
+    dropSiempre,
+    dropAnio,
+    abogado,
+    flag,
+    abogado,
+  ]);
 
   return (
     <>
-      <div className="navegador">
-        <ul className="navegador__tabs">
-          <p
-            className={"navegador__tabs-item " + selectedGeneral}
-            onClick={() => handleSelected("general")}
-          >
-            General
-          </p>
-          <p
-            className={"navegador__tabs-item " + selectedCliente}
-            onClick={() => handleSelected("cliente")}
-          >
-            Clientes
-          </p>
-          <p
-            className={"navegador__tabs-item " + selectedMateria}
-            onClick={() => handleSelected("materia")}
-          >
-            Materia
-          </p>
-        </ul>
-        <div className="dropDowns" >
-
-          <DropdownAbogado 
-            dropSelect = {abogadoSelect} 
-            abogados= {abogados}
-            abogado= {abogado}
+      <div className="filtro">
+        <div className={`filtro__button-collapse ${isCollapsed ? "filtro__button-collapse--collapse" : ""}`}>
+          <VscChevronLeft size={30} onClick={toggleCollapse} />
+        </div>
+				<h4 className="filtro__text">Filtrar por</h4>
+        <div className="filtro__opciones">
+					<fieldset>
+						<label>Abogado: </label>
+						<DropdownAbogado
+            set={setAbogado}
+            abogados={abogados}
+            abogado={abogado}
           />
-          
-          <DropdownR
-            className="navegador__tiempo"
+					</fieldset>
+          <fieldset>
+						<label>Fecha: </label>
+						<DropdownR
+            className="filtro__tiempo"
             setFI={setFechaInicio}
             setFF={setFechaFin}
             setDropSelect={setDropSelect}
@@ -202,22 +227,69 @@ const Youtube = () => {
             setShowModal={setShowModal}
             setFlag={setFlag}
           />
+					</fieldset>
 
+          
         </div>
       </div>
+      <main className="dashboard-layout">
+        <aside
+          className={`dashboard-navegador ${
+            isCollapsed ? "dashboard-navegador--collapse" : ""
+          }`}
+        >
+          <div className={`dashboard-navegador-content ${isCollapsed ? "dashboard-navegador-content--collapse" : ""}`}>
+            <ul className="dashboard-navegador-content__tabs">
+							<div className={"dashboard-navegador-content__tabs-item " + selectedGeneral} onClick={() => handleSelected("general")}>
+								<VscGlobe size={40} className="dashboard-navegador-content__tabs-icon" />
+								<p className="dashboard-navegador-content__tabs-text">General</p>
+							</div>
+							<div className={"dashboard-navegador-content__tabs-item " + selectedCliente} onClick={() => handleSelected("cliente")}>
+								<VscPerson size={40} className="dashboard-navegador-content__tabs-icon" />
+								<p className="dashboard-navegador-content__tabs-text">Cliente</p>
+							</div>
+							<div className={"dashboard-navegador-content__tabs-item " + selectedMateria}onClick={() => handleSelected("materia")}>
+								<VscLayers size={40} className="dashboard-navegador-content__tabs-icon" />
+								<p className="dashboard-navegador-content__tabs-text">Materia</p>
+							</div>
+              
+            </ul>
+          </div>
+        </aside>
+        <div className="dashboard-content">
+          {selectedGeneral === "selected" ? (
+            <General
+              consultasS={consultasS}
+              estadisticas={estadisticas}
+              consultasM={consultasM}
+            />
+          ) : null}
 
-      {selectedGeneral === "selected" ? (
-        <General consultasS={consultasS} estadisticas={estadisticas} consultasM={consultasM} />) : null}
+          {selectedCliente === "selected" ? (
+            <Clientes
+              fechaInicio={fechaInicio}
+              fechaFin={fechaFin}
+              dropSiempre={dropSiempre}
+              id_abo={abogado.id}
+              dropSelect={dropSelect}
+              dropAnio={dropAnio}
+              setDropSelect={setDropSelect}
+            />
+          ) : null}
 
-      {selectedCliente === "selected" ? (
-        <Clientes fechaInicio={fechaInicio}
-          fechaFin={fechaFin} 
-          flag={flag}
-          id_abo={abogado.id}/>) : null}
-          
-
-      {selectedMateria === "selected" ? (
-        <Materias consultasS={consultasS} />) : null}
+          {selectedMateria === "selected" ? (
+            <Materias
+              id_abogado={abogado.id}
+              fechaInicio={fechaInicio}
+              fechaFin={fechaFin}
+              dropSelect={dropSelect}
+              dropSiempre={dropSiempre}
+              dropAnio={dropAnio}
+              setDropSelect={setDropSelect}
+            />
+          ) : null}
+        </div>
+      </main>
 
       <Modal show={showModal} onHide={handleModal}>
         <Modal.Header closeButton>
@@ -229,7 +301,7 @@ const Youtube = () => {
               <Form.Label>Fecha inicio</Form.Label>
               <Form.Control
                 type="date"
-                value={formatDate(personalizado.fechaInicio)}
+                value={formatDateUpload(personalizado.fechaInicio)}
                 onChange={(e) =>
                   setPersonalizado({
                     ...personalizado,
@@ -243,7 +315,7 @@ const Youtube = () => {
               <Form.Label>Fecha fin</Form.Label>
               <Form.Control
                 type="date"
-                value={formatDate(personalizado.fechaFin)}
+                value={formatDateUpload(personalizado.fechaFin)}
                 onChange={(e) =>
                   setPersonalizado({
                     ...personalizado,

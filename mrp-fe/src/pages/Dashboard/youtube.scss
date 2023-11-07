@@ -1,55 +1,103 @@
-.layout{}
+@use "../../utils/scss/variables.scss" as *;
 
-.navegador{
-  border-bottom: 2px solid #DFBF68;
+.dashboard-layout {
+  display: flex;
+}
+
+.filtro {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: left;
+  gap: 30px;
   align-items: center;
+  background-color: #f2f3f4;
 
-  &__tabs{
-    list-style: none;
-    display: flex;
-    margin: 0;
-  }
-
-  &__tabs-item{
-    height: 50px;
-    width: 120px;
-    padding: 10px 0 0 16px;
-    color: white;
-    font-size: 25px;
-    margin-bottom: 0;
+  &__button-collapse {
+    width: 112px;
     cursor: pointer;
-    
-    &:hover{
-      color: #DFBF68;
-      transition: all 0.3 ease-in-out;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    &:hover {
+      color: #dfbf68;
+    }
+    &--collapse {
+      transform: rotate(180deg);
     }
   }
 
-  &__tiempo{
+  &__text {
+    width: 200px;
+    margin: 0;
+  }
+
+  &__opciones {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__tiempo {
     margin-left: 5px;
   }
 }
 
-.selected{
-  background-color: #DFBF68;
-  color: #1E464B;
-  &:hover{
-    color: #1E464B;
+.dashboard-navegador {
+  width: 120px;
+  height: calc(100vh - 134px);
+  background-color: $color-secundario;
+  transition: all 0.3s;
+
+  &-content {
+    display: block;
+    transition: display 0.3s;
+    &__tabs {
+      padding: 0;
+      &-item {
+        height: auto;
+        width: 100%;
+        color: rgb(0, 0, 0, 0.5);
+        font-size: 22px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3 ease-in-out;
+        padding: 10px 10px;
+        &:hover {
+          color: $color-oscuro;
+        }
+      }
+
+      &-text {
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    &--collapse {
+      display: none;
+    }
+  }
+
+  &--collapse {
+    width: 0;
   }
 }
 
-.main{
+.selected {
+  background-color: $color-primario;
+  color: $color-oscuro;
+  box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.35);
+  -webkit-box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.35);
+  -moz-box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.35);
+  &:hover {
+    color: $color-oscuro;
+  }
+}
+
+.main {
   display: grid;
   grid-template-columns: 80% 20%;
-  grid-template-rows: 1fr
+  grid-template-rows: 1fr;
 }
 
-.dropDowns{
-  display:flex;
-  gap:10px;
+.dashboard-content {
+  width: 100%;
 }
-
-

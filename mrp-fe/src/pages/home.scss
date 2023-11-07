@@ -1,3 +1,57 @@
+.table-home{
+    color: black;
+    font-size: 30px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.tbody-home{
+    align-items: center;
+    justify-content: center;
+    min-height: 80%;
+    background: white;
+}
+
+.container2{
+    display: flex;
+    justify-content: center;
+}
+
+.thead-home{
+    background: #3B575A;
+    color: white;
+}
+
+.th-home{
+    padding: 20px 15px;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 3px solid #DFBF68;
+}
+
+.td-home {
+    padding: 15px;
+    border-bottom: solid 1px rgb(225, 21, 212);
+    text-align: center;
+    border: 2px solid white;
+    //border-radius: 10px;
+}
+
+tbody tr:hover{
+    background: rgb(219, 215, 215);
+}
+
+.special-column {
+    background-color: white;
+    cursor: pointer;
+    border-radius: 0%;
+    border-bottom: 3px solid white;
+}
+
+.special-row{
+    height: 5px;
+}
+
 .home{
     &__nav-link{
         font-size: 1.5rem;
