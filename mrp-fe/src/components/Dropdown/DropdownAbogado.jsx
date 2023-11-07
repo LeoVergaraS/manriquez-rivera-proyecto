@@ -31,7 +31,7 @@ const DropdownAbogado = (props) => {
         >
           {abogado.nombre}
         </Dropdown.Toggle>
-        <Dropdown.Menu style={{ backgroundColor: "#235c62" }}>
+        <Dropdown.Menu style={{ backgroundColor: "rgb(223,191,104,0.95)" }}>
           <Dropdown.Item eventKey="-1">Todos</Dropdown.Item>
           {abogados.map((abogadoOpcion, index) => (
             <Dropdown.Item key={abogadoOpcion.id} eventKey={index}>

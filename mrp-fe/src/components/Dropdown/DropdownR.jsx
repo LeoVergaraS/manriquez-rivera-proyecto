@@ -125,7 +125,7 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, s
 			>
 				{selectedValue}
 			</Dropdown.Toggle>
-			<Dropdown.Menu style={{ backgroundColor: "#235c62" }}>
+			<Dropdown.Menu style={{ backgroundColor: "rgb(223,191,104,0.95)" }}>
 				{opciones.slice(0, 5).map((opcion) => (
 					<Dropdown.Item key={opcion.id} eventKey={opcion.id}>
 						{opcion.nombre}

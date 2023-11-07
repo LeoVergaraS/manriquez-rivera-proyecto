@@ -110,6 +110,7 @@ function Home() {
     if (valorEnLocalStorage) {
       try {
         console.log(valorEnLocalStorage);
+        
         return JSON.parse(valorEnLocalStorage);
       } catch (error) {
         console.error('Error al parsear el valor del local storage:', error);
@@ -118,7 +119,7 @@ function Home() {
     return casoPorDefecto;
   });
 
-/*  const [casoSeleccionado, setCasoSeleccionado] = useState({
+/*const [casoSeleccionado, setCasoSeleccionado] = useState({
     id: 0,
     fecha: "-",
     id_materia: {
