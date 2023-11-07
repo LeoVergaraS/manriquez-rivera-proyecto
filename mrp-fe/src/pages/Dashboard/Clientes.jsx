@@ -146,9 +146,9 @@ const Clientes = ({
                 <Card className="card-estadisticas-c">
                   <div className="card-estadisticas-c__header">
                     <h2 className="card-estadisticas-c__title">Sesiones</h2>
-										<span className="card-estadisticas-c__icon">
-											<BiClipboard />
-										</span>
+                    <span className="card-estadisticas-c__icon">
+                      <BiClipboard />
+                    </span>
                   </div>
                   <h1 className="card-estadisticas-c__estadistica">
                     {estadisticas.cantidad_sesiones}
@@ -162,9 +162,9 @@ const Clientes = ({
                 <Card className="card-estadisticas-c">
                   <div className="card-estadisticas-c__header">
                     <h2 className="card-estadisticas-c__title">Tiempo total</h2>
-										<span className="card-estadisticas-c__icon">
-										<BiTime />
-										</span>
+                    <span className="card-estadisticas-c__icon">
+                      <BiTime />
+                    </span>
                   </div>
                   <h1 className="card-estadisticas-c__estadistica">
                     {castTime(estadisticas.tiempo_total)}
@@ -186,37 +186,36 @@ const Clientes = ({
           </Container>
         </Col>
         <Col xs={6} className="p-2">
-					<Container>
-						<Row style={{height: "35px"}} />
-						<Row style={{height: "calc(100vh - 206px)"}}>
-						<Card className="card-sesiones">
-            <Card.Body>
-              <Card.Title>Sesiones registradas</Card.Title>
-              <Table className="table-sesiones">
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th>Tiempo</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sesionesByCaso.map((sesion, index) => {
-                    if (sesion.tiempo !== 0) {
-                      return (
-                        <tr key={index}>
-                          <td>{formatDateShow(sesion.fecha)}</td>
-                          <td>{castTime(sesion.tiempo)}</td>
-                        </tr>
-                      );
-                    }
-                  })}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-						</Row>
-					</Container>
-          
+          <Container>
+            <Row style={{ height: "35px" }} />
+            <Row style={{ height: "calc(100vh - 206px)" }}>
+              <Card className="card-sesiones">
+                <Card.Body>
+                  <Card.Title>Sesiones registradas</Card.Title>
+                  <Table className="table-sesiones">
+                    <thead>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Tiempo</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sesionesByCaso.map((sesion, index) => {
+                        if (sesion.tiempo !== 0) {
+                          return (
+                            <tr key={index}>
+                              <td>{formatDateShow(sesion.fecha)}</td>
+                              <td>{castTime(sesion.tiempo)}</td>
+                            </tr>
+                          );
+                        }
+                      })}
+                    </tbody>
+                  </Table>
+                </Card.Body>
+              </Card>
+            </Row>
+          </Container>
         </Col>
       </Row>
     </Container>
