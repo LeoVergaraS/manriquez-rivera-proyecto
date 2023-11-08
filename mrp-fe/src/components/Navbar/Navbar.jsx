@@ -32,7 +32,7 @@ const NavbarResponsive = ({ token }) => {
 
     useEffect(() => {
         getUsuarioLogueado();
-    }, [abogadoLogueado]);
+    }, []);
 
     return (
         <Navbar expand="lg" className="navbar bg-body-tertiary">
