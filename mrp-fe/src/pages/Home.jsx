@@ -29,7 +29,7 @@ function Home() {
     nombre: null,
     borrado: false,
   });
-
+const [home, setHome] = useState(true);
   const tiempos = [
     { label: "1 hora", value: 60 },
     { label: "45 min", value: 45 },
@@ -320,6 +320,7 @@ function Home() {
             placeholder={"Seleccione un caso"}
             set={setCasoSeleccionado}
             createOption={createCasoOption}
+            home={home}
           />
         </fieldset>
       </Row>

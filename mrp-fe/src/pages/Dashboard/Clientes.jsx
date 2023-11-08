@@ -17,6 +17,7 @@ const Clientes = ({fechaInicio, fechaFin, dropSiempre, id_abo, dropSelect, dropA
 		cantidad_sesiones: 0,
 		tiempo_total: 0,
 	});
+	const [home, setHome] = useState(false);
 
 	const getCasos = async () => {
 		try {
@@ -127,6 +128,7 @@ const Clientes = ({fechaInicio, fechaFin, dropSiempre, id_abo, dropSelect, dropA
 									set={setCaso}
 									createOption={createCasoOption}
 									placeholder={"Seleccione un caso"}
+									home={home}
 								/>
 							</fieldset>
 						</Row>

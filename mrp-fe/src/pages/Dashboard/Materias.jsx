@@ -18,6 +18,7 @@ const Materias = ({id_abogado,fechaInicio,fechaFin,dropSelect,dropSiempre,dropAn
 		tiempo_total: 0,
 		cantidad_clientes: 0,
 	});
+	const [home, setHome] = useState(false);
 
 	const getMaterias = async () => {
 		try {
@@ -130,6 +131,7 @@ const Materias = ({id_abogado,fechaInicio,fechaFin,dropSelect,dropSiempre,dropAn
 									placeholder={"Seleccione una materia"}
 									set={setMateria}
 									createOption={createMateriaOption}
+									home={home}
 								/>
 							</fieldset>
 						</Row>
