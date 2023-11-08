@@ -1,7 +1,16 @@
-import { Container, Nav, Navbar } from 'react-bootstrap';
 import './navbar.scss'
+import Cookies from 'js-cookie';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 
-function NavbarResponsive() {
+const NavbarResponsive = ({ token }) => {
+
+    const logout = () => {
+        if (token) {
+            Cookies.remove('token')
+        }
+        window.location.href = '/login'
+    };
+
     return (
         <Navbar expand="lg" className="navbar bg-body-tertiary">
             <Container className='navbar__container'>
@@ -11,6 +20,9 @@ function NavbarResponsive() {
                         <Nav.Link className="navbar__nav-link" href="/">Inicio</Nav.Link>
                         <Nav.Link className="navbar__nav-link" href="/consulta">Dashboard</Nav.Link>
                         <Nav.Link className="navbar__nav-link" href="/admin">Admin</Nav.Link>
+                    </Nav>
+                    <Nav className="navbar__nav justify-content-right" >
+                        <Nav.Link className="navbar__nav-link"  onClick={logout}>{token ? "Cerrar sesión" : "Iniciar sesión"}</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
