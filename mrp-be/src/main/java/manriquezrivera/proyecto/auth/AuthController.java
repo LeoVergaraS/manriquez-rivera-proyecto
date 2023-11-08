@@ -41,7 +41,7 @@ public class AuthController {
         if(usuario == null){
             return ResponseEntity.notFound().build();
         }
-        System.out.println("usuario:"+usuario);
+        //System.out.println("usuario:"+usuario);
         return ResponseEntity.ok().body(usuario);
     }
 

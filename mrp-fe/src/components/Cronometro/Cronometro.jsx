@@ -126,6 +126,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
       if (result.isConfirmed) {
         sesion.tiempo = tiempo;
         sesion.fecha = formatDate(new Date());
+        //console.log("fecha:",sesion.fecha);
         sesion.id_caso.id = id_caso;
         // abogado por default
         sesion.id_abogado.id = abogadoLogueado_id;
@@ -148,6 +149,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
       const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
+      //console.log(sesion);
       let url = "http://localhost:8090/sesiones";
       const response = await axios.post(url, sesion,config);
       if (response.status === 200) {

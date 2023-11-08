@@ -1,5 +1,6 @@
 package manriquezrivera.proyecto.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,9 @@ public class SesionService{
     }
 
     public Sesion saveSesion(Sesion sesion){
-        System.out.println(sesion);
+        //System.out.println(sesion);
+        java.sql.Date fecha = new java.sql.Date(new Date().getTime());   
+        sesion.setFecha(fecha);
         return sesionRepository.save(sesion);
     }
 

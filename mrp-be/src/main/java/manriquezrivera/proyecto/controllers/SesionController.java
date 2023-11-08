@@ -51,6 +51,7 @@ public class SesionController {
 
     @PostMapping
     public ResponseEntity<Sesion> postSesion(@RequestBody Sesion sesion){
+      //System.out.println("sesion controler: "+sesion);
       Sesion sesionGuardada = sesionService.saveSesion(sesion);
       return ResponseEntity.ok().body(sesionGuardada);
     }
