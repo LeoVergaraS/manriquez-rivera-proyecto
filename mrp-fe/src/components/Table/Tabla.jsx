@@ -14,8 +14,6 @@ const Tabla = (props) => {
   const [item, setItem] = useState(null);
   const [pagesCount, setPagesCount] = useState(null);
 
-
-  const pagesToShow = 5;
   const name = props.name;
   const body = props.body;
 
