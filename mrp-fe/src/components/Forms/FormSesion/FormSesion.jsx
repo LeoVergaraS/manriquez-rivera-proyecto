@@ -6,7 +6,7 @@ import axios from "axios";
 import {VscCheck, VscClose} from "react-icons/vsc";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
-
+import Cookies from 'js-cookie';
 const FormSesion = (props) => {
   const sesion = props.item;
   const close = props.close;
@@ -48,8 +48,11 @@ const FormSesion = (props) => {
 
   const getAbogados = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+    };
       let url = "http://localhost:8090/abogados";
-      const response = await axios.get(url);
+      const response = await axios.get(url, config);
       if (response.status === 200) {
         const abogados = response.data;
         setOptions(

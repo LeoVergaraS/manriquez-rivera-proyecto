@@ -11,6 +11,11 @@ const NavbarResponsive = ({ token }) => {
     const logout = () => {
         if (token) {
             Cookies.remove('token')
+            let claveObjeto = "CasoSeleccionado";
+
+            localStorage.removeItem(claveObjeto);
+            claveObjeto = "tiempoCronometro";
+            localStorage.removeItem(claveObjeto);
         }
         window.location.href = '/login'
     };

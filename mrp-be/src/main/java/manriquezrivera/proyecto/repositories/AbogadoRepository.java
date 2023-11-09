@@ -14,6 +14,6 @@ public interface AbogadoRepository extends JpaRepository<Abogado, Long> {
   @Query(value = "SELECT * FROM abogado WHERE borrado = 0", nativeQuery = true)
   List<Abogado> findAll();
 
-  @Query(value = "SELECT a.* FROM abogado a, caso_abogado ca WHERE ca.id_caso = :id_caso AND ca.id_abogado = a.id", nativeQuery = true)
+  @Query(value = "SELECT a.* FROM abogado a, caso_abogado ca WHERE ca.id_caso = :id_caso AND ca.id_abogado = a.id AND a.borrado = 0 ", nativeQuery = true)
   List<Abogado> getByCaso(@Param("id_caso") Long id_caso);
 }

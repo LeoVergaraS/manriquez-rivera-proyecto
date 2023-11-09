@@ -217,7 +217,8 @@ const [home, setHome] = useState(true);
 
       if (response.status === 200) {
         handleCloseCreate();
-        getCasos();
+        //getCasos();
+        getCasoByIdAbogado();
         Alerta.fire({ icon: "success", title: "Caso creado con exito!" });
       }
     } catch (err) {

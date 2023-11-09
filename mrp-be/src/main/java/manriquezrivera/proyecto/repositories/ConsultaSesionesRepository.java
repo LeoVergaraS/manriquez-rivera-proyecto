@@ -71,19 +71,19 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
 	// Desde siempre
 	@Query(value = "SELECT distinct s.fecha, s.tiempo " +
 			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c " +
-			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo", nativeQuery = true)
+			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo AND s.borrado=0 ", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesByIdMateriaConAbogado(@Param("id_mat") Long id_mat,
 			@Param("id_abo") Long id_abo);
 	// Desde siempre sin abogado
 		@Query(value = "SELECT distinct s.fecha, s.tiempo " +
 			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c " +
-			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso", nativeQuery = true)
+			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.borrado=0 ", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesByIdMateria(@Param("id_mat") Long id_mat);
 
 	// fecha especifico con abogado
 	@Query(value = "SELECT distinct s.fecha, s.tiempo " +
 			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c " +
-			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo AND " +
+			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.id_abogado = :id_abo AND s.borrado=0 AND " +
 			"s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesByIdMateriaConAbogadoFecha(@Param("id_mat") Long id_mat,
 			@Param("id_abo") Long id_abo, @Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);
@@ -91,7 +91,7 @@ public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesion
 	// fecha especifico sin abogado
 		@Query(value = "SELECT distinct s.fecha, s.tiempo " +
 			"FROM mrp.sesion as s, mrp.materia as m, mrp.caso as c " +
-			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND " +
+			"WHERE c.id_materia = :id_mat AND c.id = s.id_caso AND s.borrado=0 AND " +
 			"s.fecha BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
 	List<ConsultaSesiones> getConsultaSesionesByIdMateriaFecha(@Param("id_mat") Long id_mat, 
 	@Param("fechaInicio") String fechaInicio, @Param("fechaFin") String fechaFin);

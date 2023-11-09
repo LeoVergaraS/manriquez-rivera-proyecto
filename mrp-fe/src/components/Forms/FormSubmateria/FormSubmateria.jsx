@@ -5,7 +5,7 @@ import { VscCheck, VscClose } from "react-icons/vsc";
 import Select from "react-select";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import Cookies from "js-cookie";
 const FormSubmateria = (props) => {
   const submateria = props.item;
   const close = props.close;
@@ -28,8 +28,11 @@ const FormSubmateria = (props) => {
 
   const getMaterias = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+    };
       let url = "http://localhost:8090/materias";
-      const response = await axios.get(url);
+      const response = await axios.get(url,config);
       if (response.status === 200) {
         const materias = response.data;
         setOptions(
