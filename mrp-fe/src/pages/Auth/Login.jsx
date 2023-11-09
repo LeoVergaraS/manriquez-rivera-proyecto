@@ -61,7 +61,7 @@ const Login = () => {
     <main className="bodyLogin">
       <div className="wrapper">
         <Form onSubmit={handleSubmit} className="form-login">
-          <h2 className="form-login__title">App del abogao Manrique</h2>
+          <h2 className="form-login__title">App Manriquez Rivera</h2>
           <br></br>
           <Form.Group className="mb-3" controlId="formUsuario">
             <Form.Label>Correo</Form.Label>
@@ -95,7 +95,7 @@ const Login = () => {
         </Form>
         <div></div>
         <div className="banner">
-          <h1 className="wel_text">Vienvenío</h1>
+          <h1 className="wel_text">Bienvenido!</h1>
         </div>
       </div>
     </main>
