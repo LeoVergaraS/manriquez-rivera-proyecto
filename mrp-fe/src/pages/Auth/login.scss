@@ -6,20 +6,18 @@
 }*/
 
 .bodyLogin{
-    width: 100vw;
-    height: 100vh;
-    background: #1E464B;
-    display: grid;
+    width: 100%;
+    height: calc(100vh - 71px);
+    display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     margin: 0;
     padding: 0;
-    font-family: arial;
     color: #fff;
 }
 
 ::-webkit-input-placeholder{
-    color: #eee;
+    color: #ccc;
 }
 
 .wrapper{
@@ -33,45 +31,29 @@
     box-shadow: 0 0 10px 0 #bbac82;
 }
 
-.formLogin{
+.form-login{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
 
-.tittleLogin{
-    font-size: 28px;
-}
+    &__title{
+        font-size: 28px;
+    }
 
-.inp{
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
-}
-
-.inputcss{
-    border: none;
-    outline: none;
-    background: none;
-    width: 260px;
-    margin-top: 40px;
-    padding-right: 10px;
-    font-size: 17px;
-    color: #0ef
-}
-
-.submitLogin{
-    border: none;
-    outline: none;
-    width: 288px;
-    margin-top: 25px;
-    padding: 10px 0;
-    font-size: 20px;
-    border-radius: 40px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    background: linear-gradient(45deg, #f7f7f7, #DFBF68);
-    color: black;
+    &__button-submit{
+        border: none;
+        outline: none;
+        width: 288px;
+        margin-top: 25px;
+        padding: 10px 0;
+        font-size: 20px;
+        border-radius: 40px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        background: linear-gradient(45deg, #f7f7f7, #DFBF68);
+        color: black;
+    }
 }
 
 .banner{

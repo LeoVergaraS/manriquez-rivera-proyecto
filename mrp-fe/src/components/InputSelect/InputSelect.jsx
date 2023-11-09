@@ -15,7 +15,6 @@ const InputSelect = ({ objects, set, createOption, placeholder, home }) => {
         const objectJson = JSON.stringify(object)
         //console.log(objectJson);
         localStorage.setItem("CasoSeleccionado", objectJson);
-        console.log("ENTRA");
       }
       //const XD = JSON.parse(localStorage.getItem("CasoSeleccionado"));
 

@@ -192,7 +192,7 @@ const Youtube = () => {
 				<h4 className="filtro__text">Filtrar por</h4>
 				<div className="filtro__opciones">
 					<fieldset>
-						<label>Abogado: </label>
+						<label>Abogado </label>
 						<DropdownAbogado
 							set={setAbogado}
 							abogados={abogados}
@@ -200,7 +200,7 @@ const Youtube = () => {
 						/>
 					</fieldset>
 					<fieldset>
-						<label>Fecha: </label>
+						<label>Fecha </label>
 						<DropdownR
 							className="filtro__tiempo"
 							setFI={setFechaInicio}
