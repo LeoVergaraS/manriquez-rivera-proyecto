@@ -16,6 +16,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -35,8 +36,9 @@ import manriquezrivera.proyecto.entity.Abogado;
 @Table(name = "user", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }) })
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
-    Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
+    Long id;
     @Basic
     @Column(nullable = false)
     String username;

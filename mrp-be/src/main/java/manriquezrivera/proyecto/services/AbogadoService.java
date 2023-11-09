@@ -25,6 +25,10 @@ public class AbogadoService {
     return abogadoRepository.getByCaso(id_caso);
   }
 
+  public Abogado getAbogadoByNombre(String nombre) {
+    return abogadoRepository.getByNombre(nombre);
+  }
+
   public Abogado deleteAbogado(Abogado abogado){
     abogado.setBorrado(true);
     return abogadoRepository.save(abogado);
