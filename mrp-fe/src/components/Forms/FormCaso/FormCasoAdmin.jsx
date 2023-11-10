@@ -287,15 +287,9 @@ const FormCasoAdmin = (props) => {
             </Form.Group>
             <hr />
             <div className="d-flex justify-content-end">
-              <VscClose
-                onClick={close}
-                style={{ cursor: "pointer", color: "red", fontSize: 30 }}
-              />
-              <VscCheck
-                onClick={handleSubmit}
-                style={{ cursor: "pointer", color: "green", fontSize: 30 }}
-              />
-            </div>
+            <VscClose onClick={close} style={{cursor: "pointer", color: "rgb(172, 172, 172)", fontSize: 30}} />
+            <VscCheck onClick={handleSubmit} style={{cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30}} />
+          </div>
           </Form>
         )}
       </Formik>

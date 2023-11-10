@@ -328,8 +328,8 @@ const Tabla = (props) => {
         <h5>¿Está seguro que desea eliminar el item?</h5>
       </Modal.Body>
       <Modal.Footer>
-        <VscClose onClick={toggleDeleted} style={{cursor: "pointer", color: "red", fontSize: 30}} />
-        <VscCheck onClick={() => deleteItem(props.content,item)} style={{cursor: "pointer", color: "green", fontSize: 30}} />
+        <VscClose onClick={toggleDeleted} style={{cursor: "pointer", color: "rgb(172, 172, 172)", fontSize: 30}} />
+        <VscCheck onClick={() => deleteItem(props.content,item)} style={{cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30}} />
       </Modal.Footer>
     </Modal>
     </>

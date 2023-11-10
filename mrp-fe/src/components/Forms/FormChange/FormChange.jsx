@@ -50,32 +50,6 @@ const FormUsuario = ({ item, post, close }) => {
         handleBlur,
       }) => (
         <Form noValidate>
-          {/*<Form.Group className='mb-3' controlId='formUsuario'>
-            <Form.Label>Nombre de usuario</Form.Label>
-            <Form.Control
-              name="usuario"
-              type='text'
-              value={values.usuario}
-              onChange={handleChange}
-              isInvalid={!!errors.usuario}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.usuario}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className='mb-3' controlId='formCorreo'>
-            <Form.Label>Correo</Form.Label>
-            <Form.Control
-              name="correo"
-              type='email'
-              value={values.correo}
-              onChange={handleChange}
-              isInvalid={!!errors.correo}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.correo}
-            </Form.Control.Feedback>
-      </Form.Group>*/}
           <Form.Group className="mb-3" controlId="formContrasena">
             <Form.Label>Contraseña</Form.Label>
             <Form.Control
@@ -110,14 +84,8 @@ const FormUsuario = ({ item, post, close }) => {
           </Form.Group>
           <hr />
           <div className="d-flex justify-content-end">
-            <VscClose
-              onClick={close}
-              style={{ cursor: "pointer", color: "red", fontSize: 30 }}
-            />
-            <VscCheck
-              onClick={handleSubmit}
-              style={{ cursor: "pointer", color: "green", fontSize: 30 }}
-            />
+            <VscClose onClick={close} style={{cursor: "pointer", color: "rgb(172, 172, 172)", fontSize: 30}} />
+            <VscCheck onClick={handleSubmit} style={{cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30}} />
           </div>
         </Form>
       )}
