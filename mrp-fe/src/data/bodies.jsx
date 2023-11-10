@@ -1,13 +1,14 @@
-import { VscTrash, VscEdit } from "react-icons/vsc";
+import { VscTrash, VscEdit, VscLock } from "react-icons/vsc";
 import castTime from "../utils/functions/castTime";
 import formatDateShow from "../utils/functions/formatDateShow";
 
-const bodyAbogado = (abogado, edit, deleted) => {
+const bodyAbogado = (abogado, edit, deleted, change) => {
   return (
     <tr key={abogado.id} className="table-paginated-body__row">
       <td>{abogado.id}</td>
       <td>{abogado.nombre}</td>
       <td className="table-paginated-body__actions">
+        <VscLock onClick={() => change(abogado)} className="table-paginated-body__actions-item table-paginated-body__actions-item--change" />
         <VscEdit onClick={() => edit(abogado)} className="table-paginated-body__actions-item table-paginated-body__actions-item--edit" />
         <VscTrash onClick={() => deleted(abogado)} className="table-paginated-body__actions-item table-paginated-body__actions-item--delete" />
       </td>

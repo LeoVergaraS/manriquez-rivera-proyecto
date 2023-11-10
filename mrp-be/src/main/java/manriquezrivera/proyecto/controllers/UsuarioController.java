@@ -61,8 +61,10 @@ public class UsuarioController {
         }
         // Caso en que el abogado se este editando (el nombre)
         else{
+            System.out.println("Se esta editando el abogado: " + user);
             // Se busca el usuario
             User userExistente = userService.getUserById(user.getId());
+            System.out.println(userExistente);
             // Se actualiza el nombre del abogado
             Abogado abogado = userExistente.getId_abogado();
             abogado.setNombre(user.getUsername());
@@ -78,9 +80,14 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<User> updatePassword(@RequestBody User user) {
-        User userSaved = userService.saveUser(user);
+    @PostMapping("/change")
+    public ResponseEntity<User> changePassword(@RequestBody User user) {
+        // Se busca el usuario
+        User userExistente = userService.getUserById(user.getId());
+        // Se actualiza la contraseña
+        userExistente.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Se guarda el usuario
+        User userSaved = userService.saveUser(userExistente);
         return ResponseEntity.ok().body(userSaved);
     }
     

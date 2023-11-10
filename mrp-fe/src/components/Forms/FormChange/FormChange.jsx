@@ -7,11 +7,6 @@ const FormUsuario = ({ item, post, close }) => {
   const { Formik } = formik;
 
   const formSchema = yup.object().shape({
-    //correo: yup.string().required('Campo requerido').email('Correo inválido'),
-    username: yup
-      .string()
-      .required("Campo requerido")
-      .min(3, "Mínimo 3 caracteres"),
     //usuario: yup.string().required('Campo requerido').min(3, 'Mínimo 3 caracteres'),
     password: yup
       .string()
@@ -31,18 +26,17 @@ const FormUsuario = ({ item, post, close }) => {
       validationSchema={formSchema}
       onSubmit={(values) => {
         const objetoActualizado = {
-          id: null,
+          id: item.id,
           //correo: values.correo,
-          username: values.username,
+          username: item.nombre,
           //usuario: values.usuario,
           password: values.password,
         };
-        post("Usuarios",objetoActualizado);
+        post("Usuarios/change",objetoActualizado);
       }}
       initialValues={{
         //usuario: usuario.usuario,
         //correo: usuario.correo,
-        username: "",
         password: "",
         repetirPassword: "",
       }}
@@ -82,22 +76,6 @@ const FormUsuario = ({ item, post, close }) => {
               {errors.correo}
             </Form.Control.Feedback>
       </Form.Group>*/}
-          <Form.Group className="mb-3" controlId="formNombre">
-            <Form.Label>Nombre de usuario</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Ingrese un nombre de usuario"
-              name="username"
-              value={values.username}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              isValid={touched.username && !errors.username}
-              isInvalid={touched.username && !!errors.username}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.username}
-            </Form.Control.Feedback>
-          </Form.Group>
           <Form.Group className="mb-3" controlId="formContrasena">
             <Form.Label>Contraseña</Form.Label>
             <Form.Control

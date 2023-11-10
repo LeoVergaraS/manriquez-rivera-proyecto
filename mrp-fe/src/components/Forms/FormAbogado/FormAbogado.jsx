@@ -3,6 +3,7 @@ import * as formik from "formik";
 import { Form } from "react-bootstrap";
 import {VscCheck, VscClose} from "react-icons/vsc";
 
+// Form para el edit
 const FormAbogado = (props) => {
   const abogado = props.item;
   const close = props.close;
@@ -23,15 +24,15 @@ const FormAbogado = (props) => {
       validationSchema={validations}
       onSubmit={(values) => {
         const object = {
-          id: abogado !== null ? abogado.id : null,
-          nombre: values.nombre,
-          borrado: abogado !== null ? abogado.borrado : false,
+          id: abogado.id,
+          username: values.nombre,
+          password: null,
         }
-        
-        post("Abogados", object);
+        //console.log(object)
+        post("Usuarios", object);
       }}
       initialValues={{
-        nombre: abogado !== null ? abogado.nombre : "",
+        nombre: abogado !== null && abogado.nombre,
       }}
     >
       {({
