@@ -122,7 +122,8 @@ public class ConsultaController {
 			@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin,
 			@PathVariable("id_abo") Long id_abo,
 			@PathVariable("dropSelect") Integer dropSelect) {
-		List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id, fechaInicio, fechaFin, id_abo, dropSelect);
+		List<ConsultaSesiones> consultas = consultaService.getConsultasByCaso(id, fechaInicio, fechaFin, id_abo,
+				dropSelect);
 		if (consultas == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -133,6 +134,34 @@ public class ConsultaController {
 	public ResponseEntity<List<ConsultaSesiones>> getByidCasoEntityDesdeSiempre(@PathVariable("id_caso") Long id_caso,
 			@PathVariable("id_abo") Long id_abo) {
 		List<ConsultaSesiones> consultas = consultaService.getConsultasByCasoDesdeSiempre(id_caso, id_abo);
+		if (consultas == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(consultas);
+	}
+
+	@GetMapping("/sesiones/tabla/id_caso/{id}/{fi}/{ff}/{id_abo}/{dropSelect}")
+	public ResponseEntity<List<ConsultaSesiones>> getSesionseByIdCasoTabla(@PathVariable("id") Long id,
+			@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin,
+			@PathVariable("id_abo") Long id_abo,
+			@PathVariable("dropSelect") Integer dropSelect) {
+
+		List<ConsultaSesiones> consultas = consultaService.getConsultasByCasoTabla(id, fechaInicio, fechaFin, id_abo,
+				dropSelect);
+		if (consultas == null) {
+			return ResponseEntity.notFound().build();
+		}
+
+		//System.out.println("consultas: " + consultas);
+		return ResponseEntity.ok().body(consultas);
+	}
+
+	@GetMapping("/sesiones/tabla/id_caso/{id}/{id_abo}")
+	public ResponseEntity<List<ConsultaSesiones>> getSesionseByIdCasoTablaDesdeSiempre(
+			@PathVariable("id") Long id,
+			@PathVariable("id_abo") Long id_abo) {
+
+		List<ConsultaSesiones> consultas = consultaService.getConsultasByCasoTablaDesdeSiempre(id, id_abo);
 		if (consultas == null) {
 			return ResponseEntity.notFound().build();
 		}

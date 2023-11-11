@@ -207,13 +207,14 @@ public class ConsultaService {
 		return consultaSesionesActualizado;
 	}
 
+	// GRÁGICO VISTA CLIENTE - INCLUYE DESDE SIEMPRE
 	public List<ConsultaSesiones> getConsultasByCasoDesdeSiempre(Long idCaso, Long idAbo) {
 		List<ConsultaSesiones> consultaSesiones;
 		Integer cantidadDias;
 
-		if(idAbo != -1){
-			consultaSesiones = consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado2(idCaso,idAbo);
-		}else{
+		if (idAbo != -1) {
+			consultaSesiones = consultaSesionesRepository.getConsultaSesionesByIdCasoConAbogado2(idCaso, idAbo);
+		} else {
 			consultaSesiones = consultaSesionesRepository.getConsultaSesionesByIdCaso2(idCaso);
 		}
 
@@ -224,6 +225,36 @@ public class ConsultaService {
 				cantidadDias);
 
 		return consultaSesionesActualizado;
+	}
+
+	// TABLA VISTA CLIENTE - NO INCLUYE DESDE SIEMPRE
+	public List<ConsultaSesiones> getConsultasByCasoTabla(Long idCaso, String fechaInicio, String fechaFin, Long idAbo,
+			Integer cantidadDias) {
+
+		List<ConsultaSesiones> consultaSesiones;
+			
+		if (idAbo != -1) {
+			System.out.println("con abogado y fecha");
+			return consultaSesionesRepository.getConsultaSesionesByIdAbogadoTabla(idAbo, idCaso, fechaInicio, fechaFin);
+		} else {
+			System.out.println("sin abogado y fecha");
+			System.out.println("idCaso: " + idCaso + " fechaInicio: " + fechaInicio + " fechaFin: " + fechaFin);
+			consultaSesiones  = consultaSesionesRepository.getConsultaSesionesTabla(idCaso, fechaInicio, fechaFin);
+			System.out.println(consultaSesiones);
+			return consultaSesiones;
+		}
+	}
+
+	// TABLA VISTA CLIENTE - INCLUYE DESDE SIEMPRE
+	public List<ConsultaSesiones> getConsultasByCasoTablaDesdeSiempre(Long idCaso, Long idAbo){
+
+		if (idAbo != -1) {
+			System.out.println("con abogado y ds");
+			return consultaSesionesRepository.getConsultaSesionesByIdAbogadoTablaDesdeSiempre(idAbo, idCaso);
+		} else {
+			System.out.println("sin abogado y ds");
+			return consultaSesionesRepository.getConsultaSesionesTablaDesdeSiempre(idCaso);
+		}
 	}
 
 	public InfoTabla getInfoTabla(String fechaInicio, String fechaFin, Integer dropSiempre, Long idAbogado) {
@@ -525,7 +556,6 @@ public class ConsultaService {
 		List<ConsultaSesiones> allConsultas;
 
 		allConsultas = consultaSesionesRepository.getConsultaSesiones();
-		
 
 		if (allConsultas.isEmpty()) {
 			// No hay consultas, por lo que no podemos calcular días.
