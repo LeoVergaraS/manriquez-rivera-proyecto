@@ -120,20 +120,47 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
       showCancelButton: true,
       confirmButtonColor: '#DFBF68',
       cancelButtonColor: '#ACACAC',
-      confirmButtonText: 'Si, Guardar la sesión',
+      confirmButtonText: 'Continuar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        sesion.tiempo = tiempo;
-        sesion.fecha = formatDate(new Date());
-        //console.log("fecha:",sesion.fecha);
-        sesion.id_caso.id = id_caso;
-        // abogado por default
-        sesion.id_abogado.id = abogadoLogueado_id;
-        //console.log(sesion);
-        //console.log(idLogeado);
-        createSesion(sesion);
-        reset();
+        const {value: text} = Swal.fire({
+          input: 'textarea',
+          inputLabel: '¿Cuál fue la actividad realizada?',
+          inputPlaceholder: 'Ingrese la actividad de la sesión',
+          inputAttributes: {
+            'aria-label': 'Ingrese una actividad de la sesión'
+          },
+          inputValidator: (value) => {
+            if (!value) {
+              return 'Debe ingresar una actividad de la sesión'
+            }else if(value.length > 256){
+              return 'El texto es muy largo (máximo 256 caracteres)'
+            }
+          },
+          showCancelButton: true,
+          confirmButtonColor: '#DFBF68',
+          cancelButtonColor: '#ACACAC',
+          confirmButtonText: 'Si, Guardar la sesión',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            let text = result.value;
+            if (text) {
+              sesion.actividad = text;
+              sesion.tiempo = tiempo;
+              sesion.fecha = formatDate(new Date());
+              sesion.id_caso.id = id_caso;
+              sesion.id_abogado.id = abogadoLogueado_id;
+              createSesion(sesion);
+              reset();
+            }
+          }else{
+            if(estaPausado==0){
+              start();
+            }
+          }
+        });
       }
       else{
         if(estaPausado==0){

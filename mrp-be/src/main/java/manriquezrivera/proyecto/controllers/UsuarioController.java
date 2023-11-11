@@ -61,7 +61,6 @@ public class UsuarioController {
         }
         // Caso en que el abogado se este editando (el nombre)
         else{
-            System.out.println("Se esta editando el abogado: " + user);
             // Se busca el usuario
             User userExistente = userService.getUserById(user.getId());
             System.out.println(userExistente);

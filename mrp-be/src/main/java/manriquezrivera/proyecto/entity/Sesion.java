@@ -18,6 +18,7 @@ public class Sesion {
     private Long tiempo;
     private Date fecha;
     private boolean borrado;
+    private String actividad;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_caso")
