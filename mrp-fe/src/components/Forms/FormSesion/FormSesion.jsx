@@ -3,10 +3,10 @@ import * as yup from "yup";
 import * as formik from "formik";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {VscCheck, VscClose} from "react-icons/vsc";
+import { VscCheck, VscClose } from "react-icons/vsc";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 const FormSesion = (props) => {
   const sesion = props.item;
   const close = props.close;
@@ -35,7 +35,10 @@ const FormSesion = (props) => {
     fecha: yup
       .date()
       .required("Ingrese una fecha válida")
-      .max(formatDateUpload(new Date()), "La fecha no puede ser mayor a la actual"),
+      .max(
+        formatDateUpload(new Date()),
+        "La fecha no puede ser mayor a la actual"
+      ),
     id_caso: yup
       .number()
       .required("Ingrese un caso válido")
@@ -44,13 +47,17 @@ const FormSesion = (props) => {
       .number()
       .required("Ingrese un abogado válido")
       .min(1, "Seleccione una opción válida"),
+    actividad: yup
+      .string()
+      .required("Ingrese una actividad válida")
+      .max(255, "Máximo 255 caracteres"),
   });
 
   const getAbogados = async () => {
     try {
       const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-    };
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      };
       let url = "http://localhost:8090/abogados";
       const response = await axios.get(url, config);
       if (response.status === 200) {
@@ -82,9 +89,10 @@ const FormSesion = (props) => {
             fecha: sumOneDayToDate(values.fecha),
             id_caso: { id: values.id_caso },
             id_abogado: { id: values.id_abogado },
+            actividad: values.actividad,
             borrado: sesion !== null ? sesion.borrado : false,
           };
-          post("Sesiones",object);
+          post("Sesiones", object);
         }}
         initialValues={{
           horas: sesion !== null ? Math.floor(sesion.tiempo / 3600) : 0,
@@ -94,6 +102,7 @@ const FormSesion = (props) => {
           fecha: sesion !== null ? sesion.fecha : "",
           id_caso: sesion !== null ? sesion.id_caso.id : 0,
           id_abogado: sesion !== null ? sesion.id_abogado.id : 0,
+          actividad: sesion !== null ? sesion.actividad : "",
         }}
       >
         {({
@@ -203,11 +212,40 @@ const FormSesion = (props) => {
                 {errors.id_abogado}
               </Form.Control.Feedback>
             </Form.Group>
+            <Form.Group className="mb-3" controlId="input-actividad">
+              <Form.Label>Actividad</Form.Label>
+              <Form.Control
+                name="actividad"
+                type="textarea"
+                value={values.actividad}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isValid={touched.actividad && !errors.actividad}
+                isInvalid={touched.actividad && !!errors.actividad}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.actividad}
+              </Form.Control.Feedback>
+            </Form.Group>
             <hr />
             <div className="d-flex justify-content-end">
-            <VscClose onClick={close} style={{cursor: "pointer", color: "rgb(172, 172, 172)", fontSize: 30}} />
-            <VscCheck onClick={handleSubmit} style={{cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30}} />
-          </div>
+              <VscClose
+                onClick={close}
+                style={{
+                  cursor: "pointer",
+                  color: "rgb(172, 172, 172)",
+                  fontSize: 30,
+                }}
+              />
+              <VscCheck
+                onClick={handleSubmit}
+                style={{
+                  cursor: "pointer",
+                  color: "rgb(223, 191, 104)",
+                  fontSize: 30,
+                }}
+              />
+            </div>
           </Form>
         )}
       </Formik>

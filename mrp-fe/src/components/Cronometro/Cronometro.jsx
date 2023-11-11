@@ -124,7 +124,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        const {value: text} = Swal.fire({
+        Swal.fire({
           input: 'textarea',
           inputLabel: '¿Cuál fue la actividad realizada?',
           inputPlaceholder: 'Ingrese la actividad de la sesión',
@@ -134,8 +134,8 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
           inputValidator: (value) => {
             if (!value) {
               return 'Debe ingresar una actividad de la sesión'
-            }else if(value.length > 256){
-              return 'El texto es muy largo (máximo 256 caracteres)'
+            }else if(value.length > 255){
+              return 'El texto es muy largo (máximo 255 caracteres)'
             }
           },
           showCancelButton: true,

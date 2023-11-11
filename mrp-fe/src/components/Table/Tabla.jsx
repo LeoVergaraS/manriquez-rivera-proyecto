@@ -5,6 +5,7 @@ import Alerta from "../Alerta/Alerta";
 import { useEffect, useState } from "react";
 import { VscAdd, VscCheck, VscClose, VscDebugRestart } from "react-icons/vsc";
 import { Container, Modal, Pagination, Placeholder, Table } from "react-bootstrap";
+import { Tooltip } from "react-tooltip";
 
 const Tabla = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -332,6 +333,8 @@ const Tabla = (props) => {
         <VscCheck onClick={() => deleteItem(props.content,item)} style={{cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30}} />
       </Modal.Footer>
     </Modal>
+
+    <Tooltip id="tooltip-actividad" style={{ backgroundColor: "#DFBF68"}} />
     </>
   );
 };

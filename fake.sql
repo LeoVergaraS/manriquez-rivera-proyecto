@@ -48,13 +48,14 @@ VALUES
     ( '2022-12-23', 0, 4, 5, 1),
     ( '2022-08-07', 0, 5, 8, 2);
 
-INSERT INTO mrp.sesion (fecha, borrado, tiempo, id_caso, id_abogado)
+INSERT INTO mrp.sesion (fecha, borrado, tiempo, id_caso, id_abogado, actividad)
 SELECT
   DATE_ADD(c.fecha, INTERVAL FLOOR(RAND() * DATEDIFF(CURRENT_DATE(), c.fecha)) DAY), -- Fecha aleatoria posterior al caso
   0, -- Valor de borrado
   FLOOR(30 + RAND() * 120), -- Tiempo aleatorio en minutos (entre 30 y 150 minutos)
   c.id, -- ID del caso correspondiente
-  a.id -- ID de un abogado aleatorio
+  a.id, -- ID de un abogado aleatorio
+  CONCAT('Actividad ', ROW_NUMBER() OVER ()) -- Actividad con un número secuencial y el ID del caso
 FROM mrp.caso c
 JOIN mrp.abogado a ON RAND() < 0.5 -- Asigna un abogado aleatorio con una probabilidad del 50%
 ORDER BY RAND()
