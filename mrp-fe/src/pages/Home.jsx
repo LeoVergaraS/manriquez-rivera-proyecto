@@ -193,8 +193,6 @@ const [home, setHome] = useState(true);
         const config = {
           headers: { Authorization: `Bearer ${Cookies.get("token")}` }
         };
-        console.log(abogadoLogueado);
-        //console.log("XDD");
         let url = "http://localhost:8090/casos/abogado/" + abogadoLogueado.id;
         const response = await axios.get(url, config);
         if (response.status === 200) {

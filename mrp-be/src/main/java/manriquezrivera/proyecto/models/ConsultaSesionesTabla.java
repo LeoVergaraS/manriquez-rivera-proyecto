@@ -22,4 +22,6 @@ public class  ConsultaSesionesTabla{
     private Long id;
     private Date fecha;
     private Long tiempo;
+    private String actividad;
+    private String hora_inicio;
 }

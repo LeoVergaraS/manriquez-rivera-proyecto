@@ -21,6 +21,7 @@ import manriquezrivera.proyecto.models.InfoTablaMateria;
 import manriquezrivera.proyecto.repositories.ConsultaClienteRepository;
 import manriquezrivera.proyecto.repositories.ConsultaMateriaRepository;
 import manriquezrivera.proyecto.repositories.ConsultaSesionesRepository;
+import manriquezrivera.proyecto.repositories.ConsultaSesionesTablaRepository;
 import manriquezrivera.proyecto.models.ConsultaSesionesTabla;
 //import manriquezrivera.proyecto.util.Util;
 @Service
@@ -32,6 +33,9 @@ public class ConsultaService {
 
 	@Autowired
 	ConsultaSesionesRepository consultaSesionesRepository;
+
+	@Autowired 
+	ConsultaSesionesTablaRepository consultaSesionesTablaRepository;
 
 	// public Util util;
 	// ---------------------------------------------- VISTA GENERAL
@@ -234,14 +238,9 @@ public class ConsultaService {
 		List<ConsultaSesionesTabla> consultaSesionesTabla;
 			
 		if (idAbo != -1) {
-			System.out.println("con abogado y fecha");
-			return consultaSesionesRepository.getConsultaSesionesByIdAbogadoTabla(idAbo, idCaso, fechaInicio, fechaFin);
+			return consultaSesionesTablaRepository.getConsultaSesionesByIdAbogadoTabla(idAbo, idCaso, fechaInicio, fechaFin);
 		} else {
-			System.out.println("sin abogado y fecha");
-			System.out.println("idCaso: " + idCaso + " fechaInicio: " + fechaInicio + " fechaFin: " + fechaFin);
-			consultaSesionesTabla  = consultaSesionesRepository.getConsultaSesionesTabla(idCaso, fechaInicio, fechaFin);
-			System.out.println("XDD?");
-			//System.out.println(consultaSesionesTabla);
+			consultaSesionesTabla  = consultaSesionesTablaRepository.getConsultaSesionesTabla(idCaso, fechaInicio, fechaFin);
 			return consultaSesionesTabla;
 		}
 	}
@@ -250,11 +249,9 @@ public class ConsultaService {
 	public List<ConsultaSesionesTabla> getConsultasByCasoTablaDesdeSiempre(Long idCaso, Long idAbo){
 
 		if (idAbo != -1) {
-			System.out.println("con abogado y ds");
-			return consultaSesionesRepository.getConsultaSesionesByIdAbogadoTablaDesdeSiempre(idAbo, idCaso);
+			return consultaSesionesTablaRepository.getConsultaSesionesByIdAbogadoTablaDesdeSiempre(idAbo, idCaso);
 		} else {
-			System.out.println("sin abogado y ds");
-			return consultaSesionesRepository.getConsultaSesionesTablaDesdeSiempre(idCaso);
+			return consultaSesionesTablaRepository.getConsultaSesionesTablaDesdeSiempre(idCaso);
 		}
 	}
 

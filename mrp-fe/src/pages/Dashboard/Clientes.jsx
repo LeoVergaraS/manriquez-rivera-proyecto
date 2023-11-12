@@ -269,7 +269,9 @@ const Clientes = ({
 										<thead>
 											<tr>
 												<th>Fecha</th>
+												<th>Hora de inicio</th>
 												<th>Tiempo</th>
+												<th>Actividad</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -277,7 +279,9 @@ const Clientes = ({
 												sliceData.map((sesion, index) => (
 													<tr key={index}>
 														<td>{formatDateShow(sesion.fecha)}</td>
+														<td>{sesion.hora_inicio}</td>
 														<td>{castTime(sesion.tiempo)}</td>
+														<td>{sesion.actividad}</td>
 													</tr>
 												))}
 										</tbody>

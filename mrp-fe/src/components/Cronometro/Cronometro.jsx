@@ -33,6 +33,8 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
     id_abogado: {
       id:0,
     },
+    actividad: null,
+    horaInicio: "",
   });
 
   const formatearTiempo = (tiempo) => {
@@ -48,6 +50,10 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
   };
 
   const start = async () => {
+    if(sesion.horaInicio == ""){
+      sesion.horaInicio = new Date().toLocaleTimeString();
+      console.log("La hora de inicio es: "+new Date().toLocaleTimeString());
+    }
     if (!isPlaying) {
       setRunningTime("running");
       setIsDisabled(true);
@@ -97,6 +103,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
     }).then((result) => {
       if (result.isConfirmed) {
         reset();
+        sesion.horaInicio = "";
       }
       else{
       }
@@ -154,6 +161,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
               sesion.id_abogado.id = abogadoLogueado_id;
               createSesion(sesion);
               reset();
+              sesion.horaInicio = "";
             }
           }else{
             if(estaPausado==0){
