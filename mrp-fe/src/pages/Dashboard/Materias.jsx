@@ -43,7 +43,7 @@ const Materias = ({
       console.error(err);
     }
   };
-
+// GRAFICO //
   const getSesionesByMateriaDesdeSiempre = async (id_abogado) => {
     try {
       const config = {
@@ -57,9 +57,6 @@ const Materias = ({
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setSesionesMateria(response.data);
-        setSesionesMateriaTabla(
-          response.data.filter((sesion) => sesion.tiempo !== 0)
-        );
       }
     } catch (err) {
       console.error(err.message);
@@ -112,9 +109,89 @@ const Materias = ({
         if (response.status === 200) {
           console.log(response.data);
           setSesionesMateria(response.data);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+// TABLA //
+
+
+  const getSesionesByMateriaDesdeSiempreTabla = async (id_abogado) => {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      };
+      let url =
+        "http://localhost:8090/consultas/materia/tabla/" +
+        materia.id +
+        "/" +
+        id_abogado;
+      const response = await axios.get(url, config);
+      if (response.status === 200) {
+        //setSesionesMateria(response.data);
+        setSesionesMateriaTabla(
+          response.data.filter((sesion) => sesion.tiempo !== 0)
+        );
+        console.log(sesionesMateriaTabla);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getSesionesByMateriaTabla = async (
+    id_abogado,
+    fechaInicio,
+    fechaFin,
+    dropSelect,
+    dropSiempre,
+    dropAnio
+  ) => {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      };
+      // si es que se selecciono desde siempre
+      if (dropSiempre == 1) {
+        getSesionesByMateriaDesdeSiempreTabla(
+          id_abogado,
+          fechaInicio,
+          fechaFin,
+          dropSelect,
+          dropSiempre
+        );
+      } else {
+        // esto calcula la diferencia de dias entre las fechas cuando se selecciona un año en el dropSelect
+        if (dropAnio == 1) {
+          const fechaInicioAux = new Date(fechaInicio);
+          const fechaFinAux = new Date(fechaFin);
+
+          const difMS = fechaFinAux - fechaInicioAux;
+          const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+          setDropSelect(difDias + 1);
+        }
+        let url =
+          "http://localhost:8090/consultas/materia/tabla/" +
+          materia.id +
+          "/" +
+          fechaInicio +
+          "/" +
+          fechaFin +
+          "/" +
+          dropSelect +
+          "/" +
+          id_abogado;
+        const response = await axios.get(url, config);
+        if (response.status === 200) {
+          console.log(response.data);
+          //setSesionesMateria(response.data);
           setSesionesMateriaTabla(
             response.data.filter((sesion) => sesion.tiempo !== 0)
           );
+          console.log(sesionesMateriaTabla);
         }
       }
     } catch (err) {
@@ -166,6 +243,14 @@ const Materias = ({
   useEffect(() => {
     if (materia.id !== 0) {
       getSesionesByMateria(
+        id_abogado,
+        fechaInicio,
+        fechaFin,
+        dropSelect,
+        dropSiempre,
+        dropAnio
+      );
+      getSesionesByMateriaTabla(
         id_abogado,
         fechaInicio,
         fechaFin,

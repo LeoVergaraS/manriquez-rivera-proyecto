@@ -178,7 +178,7 @@ public class ConsultaController {
 				fechaInicio, fechaFin, dropSiempre);
 		return ResponseEntity.ok().body(consultaEstadisticasMateria);
 	}
-
+	// GRAFICO //
 	@GetMapping("/materia/sesiones/{id_materia}/{fi}/{ff}/{dropSelect}/{id_abogado}")
 	public ResponseEntity<List<ConsultaSesiones>> getSesionesMateriaPorFecha(
 			@PathVariable("id_abogado") Long id_abogado,
@@ -196,6 +196,28 @@ public class ConsultaController {
 				id_abogado);
 		return ResponseEntity.ok().body(consultaSesionesMateria);
 	}
+	// TABLA //
+		@GetMapping("/materia/tabla/{id_materia}/{fi}/{ff}/{dropSelect}/{id_abogado}")
+	public ResponseEntity<List<ConsultaSesionesTabla>> getSesionesMateriaPorFechaTabla(
+			@PathVariable("id_abogado") Long id_abogado,
+			@PathVariable("id_materia") Long id_materia, @PathVariable("fi") String fechaInicio,
+			@PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer cantidadDias) {
+		System.out.println("WTF");
+		List<ConsultaSesionesTabla> consultaSesionesMateria = consultaService.getConsultasByMateriaTablaMateria(id_materia, fechaInicio, fechaFin,
+				 id_abogado, cantidadDias);
+		return ResponseEntity.ok().body(consultaSesionesMateria);
+	}
+
+	@GetMapping("/materia/tabla/{id_materia}/{id_abogado}")
+	public ResponseEntity<List<ConsultaSesionesTabla>> getSesionesMateriaTabla(@PathVariable("id_abogado") Long id_abogado,
+			@PathVariable("id_materia") Long id_materia) {
+				System.out.println("WTF dESDE SIEMPRE");
+		List<ConsultaSesionesTabla> consultaSesionesMateria = consultaService.getConsultasByMateriaTablaDesdeSiempreMateria(id_materia,
+				id_abogado);
+		return ResponseEntity.ok().body(consultaSesionesMateria);
+	}
+
+
 
 	// ----------------------------------------------------------------------------
 	// Para los 2 cards que salen en la vista Dashboard-Cliente
