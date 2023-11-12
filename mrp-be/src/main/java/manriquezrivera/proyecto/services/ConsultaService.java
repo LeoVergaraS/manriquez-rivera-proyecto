@@ -21,7 +21,7 @@ import manriquezrivera.proyecto.models.InfoTablaMateria;
 import manriquezrivera.proyecto.repositories.ConsultaClienteRepository;
 import manriquezrivera.proyecto.repositories.ConsultaMateriaRepository;
 import manriquezrivera.proyecto.repositories.ConsultaSesionesRepository;
-
+import manriquezrivera.proyecto.models.ConsultaSesionesTabla;
 //import manriquezrivera.proyecto.util.Util;
 @Service
 public class ConsultaService {
@@ -228,10 +228,10 @@ public class ConsultaService {
 	}
 
 	// TABLA VISTA CLIENTE - NO INCLUYE DESDE SIEMPRE
-	public List<ConsultaSesiones> getConsultasByCasoTabla(Long idCaso, String fechaInicio, String fechaFin, Long idAbo,
+	public List<ConsultaSesionesTabla> getConsultasByCasoTabla(Long idCaso, String fechaInicio, String fechaFin, Long idAbo,
 			Integer cantidadDias) {
 
-		List<ConsultaSesiones> consultaSesiones;
+		List<ConsultaSesionesTabla> consultaSesionesTabla;
 			
 		if (idAbo != -1) {
 			System.out.println("con abogado y fecha");
@@ -239,14 +239,15 @@ public class ConsultaService {
 		} else {
 			System.out.println("sin abogado y fecha");
 			System.out.println("idCaso: " + idCaso + " fechaInicio: " + fechaInicio + " fechaFin: " + fechaFin);
-			consultaSesiones  = consultaSesionesRepository.getConsultaSesionesTabla(idCaso, fechaInicio, fechaFin);
-			System.out.println(consultaSesiones);
-			return consultaSesiones;
+			consultaSesionesTabla  = consultaSesionesRepository.getConsultaSesionesTabla(idCaso, fechaInicio, fechaFin);
+			System.out.println("XDD?");
+			//System.out.println(consultaSesionesTabla);
+			return consultaSesionesTabla;
 		}
 	}
 
 	// TABLA VISTA CLIENTE - INCLUYE DESDE SIEMPRE
-	public List<ConsultaSesiones> getConsultasByCasoTablaDesdeSiempre(Long idCaso, Long idAbo){
+	public List<ConsultaSesionesTabla> getConsultasByCasoTablaDesdeSiempre(Long idCaso, Long idAbo){
 
 		if (idAbo != -1) {
 			System.out.println("con abogado y ds");

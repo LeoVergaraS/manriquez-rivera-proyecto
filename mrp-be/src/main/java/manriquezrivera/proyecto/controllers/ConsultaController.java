@@ -15,6 +15,7 @@ import manriquezrivera.proyecto.models.InfoTablaCliente;
 import manriquezrivera.proyecto.models.InfoTablaMateria;
 import manriquezrivera.proyecto.models.ConsultaCliente;
 import manriquezrivera.proyecto.models.ConsultaSesiones;
+import manriquezrivera.proyecto.models.ConsultaSesionesTabla;
 import manriquezrivera.proyecto.models.ConsultaMateria;
 import manriquezrivera.proyecto.services.ConsultaService;
 
@@ -141,12 +142,12 @@ public class ConsultaController {
 	}
 
 	@GetMapping("/sesiones/tabla/id_caso/{id}/{fi}/{ff}/{id_abo}/{dropSelect}")
-	public ResponseEntity<List<ConsultaSesiones>> getSesionseByIdCasoTabla(@PathVariable("id") Long id,
+	public ResponseEntity<List<ConsultaSesionesTabla>> getSesionseByIdCasoTabla(@PathVariable("id") Long id,
 			@PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin,
 			@PathVariable("id_abo") Long id_abo,
 			@PathVariable("dropSelect") Integer dropSelect) {
 
-		List<ConsultaSesiones> consultas = consultaService.getConsultasByCasoTabla(id, fechaInicio, fechaFin, id_abo,
+		List<ConsultaSesionesTabla> consultas = consultaService.getConsultasByCasoTabla(id, fechaInicio, fechaFin, id_abo,
 				dropSelect);
 		if (consultas == null) {
 			return ResponseEntity.notFound().build();
@@ -157,11 +158,11 @@ public class ConsultaController {
 	}
 
 	@GetMapping("/sesiones/tabla/id_caso/{id}/{id_abo}")
-	public ResponseEntity<List<ConsultaSesiones>> getSesionseByIdCasoTablaDesdeSiempre(
+	public ResponseEntity<List<ConsultaSesionesTabla>> getSesionseByIdCasoTablaDesdeSiempre(
 			@PathVariable("id") Long id,
 			@PathVariable("id_abo") Long id_abo) {
 
-		List<ConsultaSesiones> consultas = consultaService.getConsultasByCasoTablaDesdeSiempre(id, id_abo);
+		List<ConsultaSesionesTabla> consultas = consultaService.getConsultasByCasoTablaDesdeSiempre(id, id_abo);
 		if (consultas == null) {
 			return ResponseEntity.notFound().build();
 		}
