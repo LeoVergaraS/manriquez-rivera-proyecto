@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { BiTime, BiClipboard } from "react-icons/bi";
 import castTime from "../../utils/functions/castTime";
 import formatDateShow from "../../utils/functions/formatDateShow";
-import { Card, Table, Container, Col, Row, Pagination } from "react-bootstrap";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
+import { Card, Table, Container, Col, Row, Pagination } from "react-bootstrap";
 
 const Clientes = ({
 	fechaInicio,
@@ -119,7 +119,6 @@ const Clientes = ({
 			console.log(err.message);
 		}
 	};
-	console.log(sesionesByCasoTabla);
 
 	const getSesionesByIdCasoTablaDesdeSiempre = async (id) => {
 		try {
@@ -172,7 +171,6 @@ const Clientes = ({
 	};
 
 	const paginatedData = (data) => {
-		console.log(data);
 		setSliceData(
 			data.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 		);

@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import castTime from "../../utils/functions/castTime";
 import { BiUser, BiTime, BiClipboard } from "react-icons/bi";
 import formatDateShow from "../../utils/functions/formatDateShow";
-import { Card, Col, Container, Pagination, Row, Table } from "react-bootstrap";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
+import { Card, Col, Container, Pagination, Row, Table } from "react-bootstrap";
 
 const Materias = ({
   id_abogado,
@@ -107,7 +107,6 @@ const Materias = ({
           id_abogado;
         const response = await axios.get(url, config);
         if (response.status === 200) {
-          console.log(response.data);
           setSesionesMateria(response.data);
         }
       }
@@ -186,12 +185,9 @@ const Materias = ({
           id_abogado;
         const response = await axios.get(url, config);
         if (response.status === 200) {
-          console.log(response.data);
-          //setSesionesMateria(response.data);
           setSesionesMateriaTabla(
             response.data.filter((sesion) => sesion.tiempo !== 0)
           );
-          console.log(sesionesMateriaTabla);
         }
       }
     } catch (err) {
@@ -389,9 +385,9 @@ const Materias = ({
                         sliceData.map((sesion, index) => (
                           <tr key={index}>
                             <td>{formatDateShow(sesion.fecha)}</td>
-                            <td></td>
+                            <td>{sesion.hora_inicio}</td>
                             <td>{castTime(sesion.tiempo)}</td>
-                            <td></td>
+                            <td>{sesion.actividad}</td>
                           </tr>
                         ))}
                     </tbody>

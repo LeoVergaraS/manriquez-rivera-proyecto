@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Form } from "react-bootstrap";
+import "./login.scss";
 import axios from "axios";
 import Cookies from "js-cookie";
-import "./login.scss";
+import { useState } from "react";
+import { Form } from "react-bootstrap";
 
 const Login = () => {
   const [seePassword, setSeePassword] = useState(false);
@@ -42,7 +42,6 @@ const Login = () => {
         password: login.password,
       };
       let url = "http://localhost:8090/auth/login";
-      console.log("body:", body);
       const response = await axios.post(url, body);
       if (response.status === 200) {
         const expirationTime = new Date(
@@ -50,7 +49,6 @@ const Login = () => {
         );
         Cookies.set("token", response.data.token, { expires: expirationTime });
         window.location.href = "/";
-        console.log("respondesata:", response.data);
       }
     } catch (err) {
       console.log(err);
