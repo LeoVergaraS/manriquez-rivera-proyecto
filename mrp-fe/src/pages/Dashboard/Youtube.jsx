@@ -9,12 +9,16 @@ import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import DropdownR from "../../components/Dropdown/DropdownR";
 import formatearFecha from "../../utils/functions/formatearFecha";
+import sumOneDayToDate from "../../utils/functions/sumOneDayToDate";
 import formatDateUpload from "../../utils/functions/formatDateUpload";
 import DropdownAbogado from "../../components/Dropdown/DropdownAbogado";
 import formatDateBarraFiltro from "../../utils/functions/formatDateBarraFiltro";
 import { VscChevronLeft, VscGlobe, VscPerson, VscLayers } from "react-icons/vsc";
 
 const Youtube = () => {
+
+	const [fechaFiltroInicio, setFechaFiltroInicio] = useState(new Date());
+	const [fechaFiltroFin, setFechaFiltroFin] = useState(new Date());
 
 	const [selectedCliente, setSelectedCliente] = useState("");
 	const [selectedGeneral, setSelectedGeneral] = useState("selected");
@@ -30,18 +34,10 @@ const Youtube = () => {
 
 	const [flag, setFlag] = useState(0);
 
-	const [estadisticas, setEstadisticas] = useState([]);
-
 	const [showModal, setShowModal] = useState(false);
 
 	const [fechaFin, setFechaFin] = useState(formatearFecha(new Date(), 1, 0));
-	const [fechaInicio, setFechaInicio] = useState(
-		formatearFecha(new Date(), 0, 6)
-	);
-	// Variable que almacena las consultas de vista GENERAL
-	// se les aplica todos los filtros
-	const [consultasS, setConsultasS] = useState([]);
-	const [consultasM, setConsultasM] = useState([]);
+	const [fechaInicio, setFechaInicio] = useState(formatearFecha(new Date(), 0, 6));
 
 	const [abogado, setAbogado] = useState({
 		nombre: "Todos",
@@ -68,94 +64,17 @@ const Youtube = () => {
 		}
 	};
 
-	const getConsultasMaterias = async () => {
-		try {
-			const config = {
-				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-			};
-			let url = "http://localhost:8090/consultas/materia/" + fechaInicio + "/" + fechaFin + "/" + dropSelect + "/" + dropSiempre + "/" +
-				abogado.id;
-			const response = await axios.get(url, config);
-			if (response.status === 200) {
-				setConsultasM(response.data);
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
-
 	const handleSearch = () => {
-		setFechaInicio(formatDateUpload(personalizado.fechaInicio));
-		setFechaFin(formatDateUpload(personalizado.fechaFin));
+		setFechaFiltroInicio(sumOneDayToDate(formatDateUpload(personalizado.fechaInicio)))
+		setFechaFiltroFin(sumOneDayToDate(formatDateUpload(personalizado.fechaFin)))
+		setFechaInicio(sumOneDayToDate(formatDateUpload(personalizado.fechaInicio)));
+		setFechaFin(sumOneDayToDate(formatDateUpload(personalizado.fechaFin)));
 		const difMS = personalizado.fechaFin - personalizado.fechaInicio;
 		const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
 		setDropSelect(difDias + 1);
 		setDropSiempre(0);
 		setDropAnio(0);
 		handleModal();
-	};
-
-	// aqui se obtienen las consultas de sesiones
-	const getConsultasSesiones = async () => {
-		try {
-			// si es que se selecciono desde siempre
-			if (dropSiempre == 1) {
-				getConsultasSesionesDesdeSiempre();
-			} else {
-				// esto calcula la diferencia de dias entre las fechas cuando se selecciona un año en el dropSelect
-				if (dropAnio == 1) {
-					const fechaInicioAux = new Date(fechaInicio);
-					const fechaFinAux = new Date(fechaFin);
-
-					const difMS = fechaFinAux - fechaInicioAux;
-					const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
-					setDropSelect(difDias + 1);
-				}
-
-				const config = {
-					headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-				};
-
-				let url = "http://localhost:8090/consultas/sesiones/" + fechaInicio + "/" + fechaFin + "/" + dropSelect + "/" + abogado.id;
-				const response = await axios.get(url, config);
-
-				if (response.status === 200) {
-					setConsultasS(response.data);
-				}
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
-
-	const getConsultasSesionesDesdeSiempre = async () => {
-		try {
-			const config = {
-				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-			};
-			let url = "http://localhost:8090/consultas/sesiones/" + abogado.id;
-			const response = await axios.get(url, config);
-			if (response.status === 200) {
-				setConsultasS(response.data);
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
-
-	const getEstadisticas = async () => {
-		try {
-			const config = {
-				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-			};
-			let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre + "/" + abogado.id;
-			const response = await axios.get(url, config);
-			if (response.status === 200) {
-				setEstadisticas(response.data);
-			}
-		} catch (err) {
-			console.error(err.message);
-		}
 	};
 
 	const getAbogados = async () => {
@@ -178,11 +97,8 @@ const Youtube = () => {
 	const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
 	useEffect(() => {
-		getConsultasMaterias();
-		getConsultasSesiones();
-		getEstadisticas();
 		getAbogados();
-	}, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio, flag, abogado]);
+	}, []);
 
 	return (
 		<>
@@ -216,7 +132,7 @@ const Youtube = () => {
 
 
 				</div>
-				<h6 style={{color:"#1E464B"}}>{formatDateBarraFiltro(fechaInicio,fechaFin)}</h6>
+				<h6 style={{color:"#1E464B"}}>{formatDateBarraFiltro(fechaFiltroInicio,fechaFiltroFin)}</h6>
 			</div>
 			<main className="dashboard-layout">
 				<aside
@@ -244,9 +160,16 @@ const Youtube = () => {
 				<div className="dashboard-content">
 					{selectedGeneral === "selected" ? (
 						<General
-							consultasS={consultasS}
-							estadisticas={estadisticas}
-							consultasM={consultasM}
+							dropSiempre={dropSiempre}
+							dropAnio={dropAnio}
+							setFechaInicio={setFechaInicio}
+							fechaInicio={fechaInicio}
+							fechaFin={fechaFin}
+							dropSelect={dropSelect}
+							abogado={abogado}
+							setDropSelect={setDropSelect}
+							setFechaFiltroInicio={setFechaFiltroInicio}
+							setFechaFiltroFin={setFechaFiltroFin}
 						/>
 					) : null}
 
@@ -260,6 +183,8 @@ const Youtube = () => {
 							dropAnio={dropAnio}
 							setDropSelect={setDropSelect}
 							setFechaInicio={setFechaInicio}
+							setFechaFiltroInicio={setFechaFiltroInicio}
+							setFechaFiltroFin={setFechaFiltroFin}
 						/>
 					) : null}
 
@@ -273,6 +198,8 @@ const Youtube = () => {
 							dropAnio={dropAnio}
 							setDropSelect={setDropSelect}
 							setFechaInicio={setFechaInicio}
+							setFechaFiltroInicio={setFechaFiltroInicio}
+							setFechaFiltroFin={setFechaFiltroFin}
 						/>
 					) : null}
 				</div>
@@ -288,7 +215,7 @@ const Youtube = () => {
 							<Form.Label>Fecha inicio</Form.Label>
 							<Form.Control
 								type="date"
-								value={formatDateUpload(personalizado.fechaInicio)}
+								value={personalizado.fechaInicio.toISOString().substr(0, 10)}
 								onChange={(e) =>
 									setPersonalizado({
 										...personalizado,
@@ -302,7 +229,7 @@ const Youtube = () => {
 							<Form.Label>Fecha fin</Form.Label>
 							<Form.Control
 								type="date"
-								value={formatDateUpload(personalizado.fechaFin)}
+								value={personalizado.fechaFin.toISOString().substr(0, 10)}
 								onChange={(e) =>
 									setPersonalizado({
 										...personalizado,

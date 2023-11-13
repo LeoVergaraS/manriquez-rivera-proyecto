@@ -4,16 +4,11 @@
  * @returns {string} - Fecha formateada en el formato yyyy-mm-dd
  */
 const formatDateUpload = (date) => {
-  let dd = date.getDate();
-  let mm = date.getMonth() + 1;
-  let yyyy = date.getFullYear();
-  if (dd < 10) {
-    dd = "0" + dd;
-  }
-  if (mm < 10) {
-    mm = "0" + mm;
-  }
-  return yyyy + "-" + mm + "-" + dd;
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 };
 
 export default formatDateUpload;

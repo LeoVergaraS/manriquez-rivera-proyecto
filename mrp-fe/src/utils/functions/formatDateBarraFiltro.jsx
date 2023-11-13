@@ -1,9 +1,16 @@
 import mesesAbreviados from '../../data/mesesAbreviados'
+import sumOneDayToDate from './sumOneDayToDate';
 
 const formatDateBarraFiltro = (fechaInicio, fechaFin) => {
-    
+
     const fechaIn = new Date (fechaInicio);
     const fechaFi = new Date (fechaFin);
+
+    console.log(fechaIn);
+    console.log(fechaFi);
+
+    fechaIn.setDate(fechaIn.getDate() + 1);
+    fechaFi.setDate(fechaFi.getDate() + 1);
 
     let d1 = "";
     let m1 = "";
@@ -31,6 +38,7 @@ const formatDateBarraFiltro = (fechaInicio, fechaFin) => {
             return `${d1} ${m1} - ${d2} ${m2} ${anio2}`;
         }
     }else{
+        console.log(fechaIn.getDate());
         d1 = fechaIn.getDate();
         m1 = mesesAbreviados[fechaIn.getMonth()];
         anio1 = fechaIn.getFullYear();
