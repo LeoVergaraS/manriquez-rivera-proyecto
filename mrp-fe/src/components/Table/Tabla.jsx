@@ -23,8 +23,9 @@ const Tabla = (props) => {
   }
 
   const handleOnClickFilter = (e) => {
+    const element = e.target.closest(".table-paginated-filtro__ordenar-icon");
     setOrder(e.target.id);
-
+  
     const elements = document.querySelectorAll(
       ".table-paginated-filtro__ordenar-icon"
     );
@@ -32,7 +33,7 @@ const Tabla = (props) => {
     elements.forEach((element) => {
       element.classList.remove("table-paginated-filtro__ordenar-icon--selected");
     });
-    e.target.classList.add("table-paginated-filtro__ordenar-icon--selected");
+    element.classList.add("table-paginated-filtro__ordenar-icon--selected");
   };
 
   const orderBy = (atribute, order) => {
@@ -82,7 +83,6 @@ const Tabla = (props) => {
   //        Para la busqueda de la tabla
   /////////////////////////////////////////////////
   const [filterSearch, setFilterSearch] = useState("#");
-  const [search, setSearch] = useState("");
   const [dataCopy, setDataCopy] = useState(null);
 
   const handleSearchChange = (e) => {
@@ -310,7 +310,7 @@ const Tabla = (props) => {
               onChange={handleFilterChange}
             />
             <VscChevronUp id="ASC" onClick={handleOnClickFilter} className="table-paginated-filtro__ordenar-icon table-paginated-filtro__ordenar-icon--selected" />
-            <VscChevronDown id="DESC" onClick={handleOnClickFilter} className="table-paginated-filtro__ordenar-icon" />
+              <VscChevronDown id="DESC" onClick={handleOnClickFilter} className="table-paginated-filtro__ordenar-icon" />
           </div>
           <div className="table-paginated-filtro__buscar">
           <Select
