@@ -28,8 +28,8 @@ public class SesionService{
 
     public Sesion saveSesion(Sesion sesion){
         //System.out.println(sesion);
-        java.sql.Date fecha = new java.sql.Date(new Date().getTime());   
-        sesion.setFecha(fecha);
+        //java.sql.Date fecha = new java.sql.Date(new Date().getTime());   
+        //sesion.setFecha(fecha);
         return sesionRepository.save(sesion);
     }
 

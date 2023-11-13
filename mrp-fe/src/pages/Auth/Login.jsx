@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [seePassword, setSeePassword] = useState(false);
@@ -13,12 +14,15 @@ const Login = () => {
     password: "",
   });
 
+
   const handleInputChange = (e) => {
     setLogin({
       ...login,
       [e.target.name]: e.target.value,
     });
   };
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,10 +52,30 @@ const Login = () => {
           new Date().getTime() + 1000 * 60 * 60 * 12
         );
         Cookies.set("token", response.data.token, { expires: expirationTime });
-        window.location.href = "/";
+        Swal.fire({
+          icon: 'success',
+          title: 'Sesión iniciada con éxito',
+          text: 'Bienvenido!',
+          showConfirmButton: false,  // No mostrar el botón de confirmación (OK)
+          timer: 1500,  // Muestra la alerta durante 3 segundos
+          timerProgressBar: true,  // Muestra una barra de progreso durante el tiempo de espera
+        }).then((result) => {
+         
+          window.location.href = "/";
+          
+        });
+        
       }
     } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Error al iniciar sesión",
+        text: "Ingrese un usuario o contraseña válida",
+        showConfirmButton: false,  // No mostrar el botón de confirmación (OK)
+        timer: 1500,  // Muestra la alerta durante 3 segundos
+      });
       console.log(err);
+
     }
   };
 

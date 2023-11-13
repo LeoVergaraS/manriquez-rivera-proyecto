@@ -12,7 +12,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import Select from 'react-select'
 import Cookies from 'js-cookie';
-
+import sumOneDayToDate from "../../utils/functions/sumOneDayToDate";
 function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -156,7 +156,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
             if (text) {
               sesion.actividad = text;
               sesion.tiempo = tiempo;
-              sesion.fecha = formatDate(new Date());
+              sesion.fecha = sumOneDayToDate(formatDate(new Date()));
               sesion.id_caso.id = id_caso;
               sesion.id_abogado.id = abogadoLogueado_id;
               createSesion(sesion);
@@ -188,7 +188,13 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
       let url = "http://localhost:8090/sesiones";
       const response = await axios.post(url, sesion,config);
       if (response.status === 200) {
-        Swal.fire("Sesión guardada con exito!", "", "success");
+        Swal.fire({
+          icon: 'success',
+          title: 'Sesión guardada con éxito!',
+          showConfirmButton: false,  // No mostrar el botón de confirmación (OK)
+          timer: 1500,  // Muestra la alerta durante 3 segundos
+          timerProgressBar: true,  // Muestra una barra de progreso durante el tiempo de espera
+        })
       }
     } catch (err) {
       console.log(err.message);
