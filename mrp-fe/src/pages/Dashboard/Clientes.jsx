@@ -17,6 +17,7 @@ const Clientes = ({
 	dropSelect,
 	dropAnio,
 	setDropSelect,
+	setFechaInicio,
 }) => {
 	const [caso, setCaso] = useState([]);
 	const [casos, setCasos] = useState([]);
@@ -67,6 +68,7 @@ const Clientes = ({
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesByCaso(response.data);
+					setFechaInicio(response.data[0].fecha);
 				}
 			}
 		} catch (err) {
@@ -83,6 +85,7 @@ const Clientes = ({
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setSesionesByCaso(response.data);
+				setFechaInicio(response.data[0].fecha);
 			}
 		} catch (err) {
 			console.log(err.message);
@@ -189,6 +192,11 @@ const Clientes = ({
 		if (caso.id !== undefined) {
 			getSesionesByIdCaso(caso.id);
 			getSesionesByIdCasoTabla(caso.id);
+		}
+	}, [caso]);
+
+	useEffect(() => {
+		if (caso.id !== undefined) {
 			getEstadisticas(caso.id, fechaInicio, fechaFin, id_abo, dropSiempre);
 		}
 	}, [caso, fechaInicio, fechaFin, id_abo, dropSiempre]);

@@ -4,12 +4,14 @@ import Cookies from 'js-cookie';
 import General from "./General";
 import Clientes from "./Clientes";
 import Materias from "./Materias";
+
 import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import DropdownR from "../../components/Dropdown/DropdownR";
 import formatearFecha from "../../utils/functions/formatearFecha";
 import formatDateUpload from "../../utils/functions/formatDateUpload";
 import DropdownAbogado from "../../components/Dropdown/DropdownAbogado";
+import formatDateBarraFiltro from "../../utils/functions/formatDateBarraFiltro";
 import { VscChevronLeft, VscGlobe, VscPerson, VscLayers } from "react-icons/vsc";
 
 const Youtube = () => {
@@ -35,7 +37,6 @@ const Youtube = () => {
 	const [fechaFin, setFechaFin] = useState(formatearFecha(new Date(), 1, 0));
 	const [fechaInicio, setFechaInicio] = useState(
 		formatearFecha(new Date(), 0, 6)
-		
 	);
 	// Variable que almacena las consultas de vista GENERAL
 	// se les aplica todos los filtros
@@ -74,7 +75,7 @@ const Youtube = () => {
 			};
 			let url = "http://localhost:8090/consultas/materia/" + fechaInicio + "/" + fechaFin + "/" + dropSelect + "/" + dropSiempre + "/" +
 				abogado.id;
-			const response = await axios.get(url,config);
+			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setConsultasM(response.data);
 			}
@@ -116,7 +117,7 @@ const Youtube = () => {
 				};
 
 				let url = "http://localhost:8090/consultas/sesiones/" + fechaInicio + "/" + fechaFin + "/" + dropSelect + "/" + abogado.id;
-				const response = await axios.get(url,config);
+				const response = await axios.get(url, config);
 
 				if (response.status === 200) {
 					setConsultasS(response.data);
@@ -133,7 +134,7 @@ const Youtube = () => {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
 			let url = "http://localhost:8090/consultas/sesiones/" + abogado.id;
-			const response = await axios.get(url,config);
+			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setConsultasS(response.data);
 			}
@@ -148,7 +149,7 @@ const Youtube = () => {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
 			let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre + "/" + abogado.id;
-			const response = await axios.get(url,config);
+			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setEstadisticas(response.data);
 			}
@@ -163,7 +164,7 @@ const Youtube = () => {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
 			let url = "http://localhost:8090/abogados";
-			const response = await axios.get(url,config);
+			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setAbogados(response.data);
 			}
@@ -181,7 +182,7 @@ const Youtube = () => {
 		getConsultasSesiones();
 		getEstadisticas();
 		getAbogados();
-	}, [fechaFin,fechaInicio,dropSelect,dropSiempre,dropAnio,abogado,flag,abogado]);
+	}, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio, flag, abogado]);
 
 	return (
 		<>
@@ -215,6 +216,7 @@ const Youtube = () => {
 
 
 				</div>
+				<h6 style={{color:"#1E464B"}}>{formatDateBarraFiltro(fechaInicio,fechaFin)}</h6>
 			</div>
 			<main className="dashboard-layout">
 				<aside
@@ -257,6 +259,7 @@ const Youtube = () => {
 							dropSelect={dropSelect}
 							dropAnio={dropAnio}
 							setDropSelect={setDropSelect}
+							setFechaInicio={setFechaInicio}
 						/>
 					) : null}
 
@@ -269,6 +272,7 @@ const Youtube = () => {
 							dropSiempre={dropSiempre}
 							dropAnio={dropAnio}
 							setDropSelect={setDropSelect}
+							setFechaInicio={setFechaInicio}
 						/>
 					) : null}
 				</div>
