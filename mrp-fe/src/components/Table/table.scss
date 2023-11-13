@@ -3,6 +3,43 @@
 .table-paginated{
     margin: 0;
 
+    &-filtro{
+        display: flex;
+        width: 100%;
+        height: auto;
+        background-color: #e9ecef;
+        padding: 5px 15px;
+
+        &__ordenar{
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            width: 40%;
+            gap: 10px;
+
+            &-text{
+                margin: 0;
+            }
+
+            &-select{
+                width: 35%;
+            }
+
+            &-icon{
+                font-size: 22px;
+                cursor: pointer;
+                transition: all 0.2s ease-in-out;
+                &:hover{
+                    color: $color-secundario;
+                }
+                &--selected{
+                    color: white;
+                }
+            }
+
+        }
+    }
+
     &-head{
         &__row{
             text-align: center;
