@@ -14,7 +14,7 @@
             display: flex;
             justify-content: left;
             align-items: center;
-            width: 40%;
+            width: 50%;
             gap: 10px;
 
             &-text{
@@ -22,7 +22,7 @@
             }
 
             &-select{
-                width: 35%;
+                width: 150px;
             }
 
             &-icon{
@@ -37,6 +37,23 @@
                 }
             }
 
+        }
+
+        &__buscar{
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            width: 50%;
+            gap: 10px;
+
+            &-select{
+                width: 150px;
+            }
+
+            &-input{
+                width: auto;
+            }
+            
         }
     }
 

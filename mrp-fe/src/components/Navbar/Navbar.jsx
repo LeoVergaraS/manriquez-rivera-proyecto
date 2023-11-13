@@ -45,8 +45,7 @@ const NavbarResponsive = ({ token }) => {
                 <Navbar.Toggle className="navbar__toggle" aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="navbar__collapse" id="basic-navbar-nav">
                     <Nav className="navbar__nav justify-content-left" >
-                        {token && abogadoLogueado && (<Nav.Link className="navbar__nav-link">{abogadoLogueado.nombre}</Nav.Link>)}
-                  
+                        {token && abogadoLogueado && (<Nav.Link className="navbar__nav-link" style={{cursor: "auto"}}>{abogadoLogueado.nombre}</Nav.Link>)}
                     </Nav>
                     <Nav className="navbar__nav m-auto justify-content-center gap-3" >
                         <Nav.Link className="navbar__nav-link" href="/">Inicio</Nav.Link>

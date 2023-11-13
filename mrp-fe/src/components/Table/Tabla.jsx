@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import Alerta from "../Alerta/Alerta";
 import { useEffect, useState } from "react";
 import { VscAdd, VscCheck, VscClose, VscDebugRestart, VscChevronUp, VscChevronDown } from "react-icons/vsc";
-import { Container, Modal, Pagination, Placeholder, Table } from "react-bootstrap";
+import { Container, Form, Modal, Pagination, Placeholder, Table } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import Select from "react-select";
 
@@ -38,8 +38,6 @@ const Tabla = (props) => {
   const orderBy = (atribute, order) => {
     const atr = atribute === "#" ? "id" : atribute.toLowerCase(); 
     const sortOrder = order === "ASC" ? 1 : -1;
-
-    console.log(data[0][atr]);
 
     if(atr === 'caso'){
       data.sort((a,b)=>{
@@ -78,6 +76,54 @@ const Tabla = (props) => {
         return 0;
       });
     } 
+  };
+
+  /////////////////////////////////////////////////
+  //        Para la busqueda de la tabla
+  /////////////////////////////////////////////////
+  const [filterSearch, setFilterSearch] = useState("#");
+  const [search, setSearch] = useState("");
+  const [dataCopy, setDataCopy] = useState(null);
+
+  const handleSearchChange = (e) => {
+    setFilterSearch(e.value);
+  };
+
+  const busqueda = (articulo, busqueda) => {
+    articulo = articulo.toUpperCase();
+    busqueda = busqueda.toUpperCase();
+
+    var filtros = busqueda.replace(' ', '|');
+    var regex = new RegExp(filtros).test(articulo);
+    return regex;
+  }
+
+  const handleOnChangeSearch = (e) => {
+    const buscar = e.target.value;
+    const atr = filterSearch === "#" ? "id" : filterSearch.toLowerCase();
+
+    if(atr === "caso"){
+      const newData = dataCopy.filter((item) => busqueda(item.id_caso.id.toString(), buscar));
+      setData(newData);
+    }else if(atr === "abogado"){
+      const newData = dataCopy.filter((item) => busqueda(item.id_abogado.nombre, buscar));
+      setData(newData);
+    }else if(atr === "cliente"){
+      const newData = dataCopy.filter((item) => busqueda(item.id_cliente.nombre, buscar));
+      setData(newData);
+    }else if(atr === "materia"){
+      const newData = dataCopy.filter((item) => busqueda(item.id_materia.nombre, buscar));
+      setData(newData);
+    }else if(atr === "submateria"){
+      const newData = dataCopy.filter((item) => busqueda(item.id_submateria.nombre, buscar));
+      setData(newData);
+    }else if(atr === "id"){
+      const newData = dataCopy.filter((item) => busqueda(item.id.toString(), buscar));
+      setData(newData);
+    }else{
+      const newData = dataCopy.filter((item) => busqueda(item[atr], buscar));
+      setData(newData);
+    }
   };
 
 
@@ -128,6 +174,7 @@ const Tabla = (props) => {
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setData(response.data);
+        setDataCopy(response.data);
         paginatedData(response.data);
         setPagesCount(Math.ceil(response.data.length / pageSize));
       }
@@ -246,6 +293,7 @@ const Tabla = (props) => {
     };
   }, [data, filter, order, currentPage, pageSize]);
 
+  
   return (
     <>
       <Container style={{ marginTop: 20 }}>
@@ -263,6 +311,23 @@ const Tabla = (props) => {
             />
             <VscChevronUp id="ASC" onClick={handleOnClickFilter} className="table-paginated-filtro__ordenar-icon table-paginated-filtro__ordenar-icon--selected" />
             <VscChevronDown id="DESC" onClick={handleOnClickFilter} className="table-paginated-filtro__ordenar-icon" />
+          </div>
+          <div className="table-paginated-filtro__buscar">
+          <Select
+              className="table-paginated-filtro__buscar-select"
+              classNamePrefix="buscar-select"
+              defaultValue={{ value: props.headers[0], label: props.headers[0] }}
+              options={props.headers.slice(0, props.headers.length - 1).map((header) => ({ value: header, label: header }))}
+              isClearable={false}
+              isSearchable={false}
+              onChange={handleSearchChange}
+            />
+            <Form.Control 
+              className="table-paginated-filtro__buscar-input"
+              type="text"
+              placeholder="Buscar..."
+              onChange={handleOnChangeSearch}
+            />
           </div>
         </div>
         <Table className="table-paginated" striped responsive="sm" hover>
