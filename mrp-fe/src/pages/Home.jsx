@@ -320,6 +320,7 @@ const [home, setHome] = useState(true);
             set={setCasoSeleccionado}
             createOption={createCasoOption}
             home={home}
+            
           />
         </fieldset>
       </Row>

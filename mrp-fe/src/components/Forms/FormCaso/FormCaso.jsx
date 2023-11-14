@@ -185,6 +185,7 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
                     value={values.abogado}
                     error={errors.abogado}
                     touched={touched.abogado}
+                    multi={true}
                   />
                 </Form.Group>
 

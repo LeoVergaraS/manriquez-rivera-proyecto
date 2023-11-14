@@ -33,7 +33,7 @@ const GraficoGernal1 = ({ title, tiempoSesiones }) => {
                 ]
             },
             options: {
-                responsive: false,
+                responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
