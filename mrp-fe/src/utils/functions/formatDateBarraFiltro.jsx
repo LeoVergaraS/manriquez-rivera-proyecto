@@ -1,7 +1,7 @@
 import mesesAbreviados from '../../data/mesesAbreviados'
 
 const formatDateBarraFiltro = (fechaInicio, fechaFin) => {
-    
+
     const fechaIn = new Date (fechaInicio); 
     const fechaFi = new Date (fechaFin);
 

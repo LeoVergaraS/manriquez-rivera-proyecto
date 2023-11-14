@@ -80,21 +80,21 @@ const DropdownR = ({ setFI, setFF, setDropSelect, setDropSiempre, setDropAnio, s
 		}
 
 		if (eventKey == 8) {
-			formatFechaMeses(1, setFI, setFF, setDropSelect);
+			formatFechaMeses(12, setFI, setFF, setDropSelect);
 			setDropSiempre(0);
 			setDropAnio(0);
 			setFlag(0);
 		}
 
 		if (eventKey == 9) {
-			formatFechaMeses(2, setFI, setFF, setDropSelect);
+			formatFechaMeses(11, setFI, setFF, setDropSelect);
 			setDropSiempre(0);
 			setDropAnio(0);
 			setFlag(0);
 		}
 
 		if (eventKey == 10) {
-			formatFechaMeses(3, setFI, setFF, setDropSelect);
+			formatFechaMeses(10, setFI, setFF, setDropSelect);
 			setDropSiempre(0);
 			setDropAnio(0);
 			setFlag(0);

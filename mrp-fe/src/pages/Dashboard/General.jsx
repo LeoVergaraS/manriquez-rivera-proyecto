@@ -3,6 +3,7 @@ import castTime from "../../utils/functions/castTime";
 import { Card, Table, Container, Row, Col } from "react-bootstrap";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 import GraficoGernal2 from "../../components/Graficos/GraficoGeneral2";
+import GraficoBarras from "../../components/Graficos/GraficoBarras";
 import { BiUser, BiClipboard, BiBookmark, BiBookmarks } from "react-icons/bi";
 
 import axios from "axios";
@@ -94,6 +95,7 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 				setConsultasS(response.data);
 				setFechaFiltroInicio(response.data[0].fecha);
 				setFechaFiltroFin(fechaFin)
+				console.log("fechaFingCSDS", fechaFin)
 			}
 		} catch (err) {
 			console.error(err.message);
@@ -276,6 +278,15 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 											Con más sesiones
 										</p>
 									</div>
+								</Card>
+							</Col>
+						</Row>
+						<Row className="mb-4" style={{ height: "49%" }}>
+							<Col>
+								<Card className="card-grafico-1">
+									<Card.Body style={{ padding: 0 }}>
+										<GraficoBarras/>
+									</Card.Body>
 								</Card>
 							</Col>
 						</Row>
