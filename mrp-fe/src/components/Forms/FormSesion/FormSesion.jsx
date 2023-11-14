@@ -7,8 +7,10 @@ import { VscCheck, VscClose } from "react-icons/vsc";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
 import Cookies from "js-cookie";
-import SelectCaso from "../MySelect/SelectCaso";
 import { createCasoOption } from "../../../data/options";
+import Select from "react-select";
+import SelectAbogado from "../MySelect/SelectAbogado";
+
 const FormSesion = (props) => {
   const sesion = props.item;
   const close = props.close;
@@ -55,29 +57,26 @@ const FormSesion = (props) => {
       .max(255, "Máximo 255 caracteres"),
   });
 
-  const getAbogados = async () => {
+  const getCasos = async () => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       };
-      let url = "http://localhost:8090/abogados";
+      let url = `http://localhost:8090/casos`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
-        const abogados = response.data;
-        setOptions(
-          abogados.map((abogado) => ({
-            value: abogado.id,
-            label: abogado.nombre,
-          }))
-        );
+        const casos = response.data;
+        setOptions(casos.map((caso) => createCasoOption(caso)));
       }
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err);
     }
   };
 
+  
+
   useEffect(() => {
-    getAbogados();
+    getCasos();
   }, []);
 
   const Formulario = () => {
@@ -89,12 +88,13 @@ const FormSesion = (props) => {
             id: sesion !== null ? sesion.id : null,
             tiempo: values.horas * 3600 + values.minutos * 60 + values.segundos,
             fecha: sumOneDayToDate(values.fecha),
-            id_caso: { id: values.id_caso },
+            id_caso: { id: values.id_caso.value },
             id_abogado: { id: values.id_abogado },
             actividad: values.actividad,
             borrado: sesion !== null ? sesion.borrado : false,
           };
-          post("Sesiones", object);
+          console.log(object);
+          //post("Sesiones", object);
         }}
         initialValues={{
           horas: sesion !== null ? Math.floor(sesion.tiempo / 3600) : 0,
@@ -176,42 +176,37 @@ const FormSesion = (props) => {
                 {errors.fecha}
               </Form.Control.Feedback>
             </Form.Group>
+            <Form.Group className="mb-3" controlId="input-caso">
+              <Form.Label>Caso</Form.Label>
+              <Select
+                name="id_caso"
+                options={options}
+                placeholder="Seleccione un caso"
+                isMulti={false}
+                isClearable={false}
+                onChange={(value) => setFieldValue("id_caso", value)}
+                onBlur={() => setFieldTouched("id_caso", true)}
+                value={values.id_caso}
+              />
+              {!!errors.id_caso && touched.id_caso && (
+                <div style={{ color: '#dc3545', marginTop: '.25rem', fontSize: '.875em' }}>{errors.id_caso}</div>
+              )}
+            </Form.Group>
             <Form.Group className="mb-3" controlId="input-abogado">
               <Form.Label>Abogado</Form.Label>
-              <Form.Select
-                name="id_abogado"
-                aria-label="select"
-                onChange={handleChange}
+              <SelectAbogado 
+                caso={values.id_caso !== null ? values.id_caso.value : null}
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
                 value={values.id_abogado}
-                onBlur={handleBlur}
-                isValid={touched.id_abogado && !errors.id_abogado}
-                isInvalid={touched.id_abogado && !!errors.id_abogado}
-              >
-                <option key={0} value={0}>
-                  Seleccione una opción
-                </option>
-                {options.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </Form.Select>
+                touched={touched.id_abogado}
+                error={errors.id_abogado}
+              />
               <Form.Control.Feedback type="invalid">
                 {errors.id_abogado}
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="input-caso">
-              <Form.Label>Caso</Form.Label>
-              <SelectCaso
-                name="id_caso"
-                onChange={setFieldValue}
-                onBlur={setFieldTouched}
-                abogado={values.id_abogado}
-                value={values.id_caso}
-                error={errors.id_caso}
-                touched={touched.id_caso}
-              />
-            </Form.Group>
+
             <Form.Group className="mb-3" controlId="input-actividad">
               <Form.Label>Actividad</Form.Label>
               <Form.Control
