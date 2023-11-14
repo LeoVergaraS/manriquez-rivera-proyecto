@@ -40,13 +40,10 @@ const SelectAbogado = (props) => {
     useEffect(() => {
         id_caso != null ? getAbogadosByIdCaso(id_caso) : setOptions([]);
 
-        console.log(casoAnterior, id_caso, props.value)
         if (casoAnterior != id_caso) {
-            console.log("1")
             setAbogadoAnterior(props.value);
             props.onChange("id_abogado", 0);
         }else{
-            console.log("2")
             props.value == 0 && props.onChange("id_abogado", abogadoAnterior);
         }
     }, [id_caso]);

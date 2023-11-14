@@ -1,4 +1,4 @@
-import { Form, InputGroup } from "react-bootstrap";
+import { Col, Form, InputGroup, Row } from "react-bootstrap";
 import * as yup from "yup";
 import * as formik from "formik";
 import React, { useEffect, useState } from "react";
@@ -43,6 +43,7 @@ const FormSesion = (props) => {
         formatDateUpload(new Date()),
         "La fecha no puede ser mayor a la actual"
       ),
+    hora_inicio: yup.string().required("Campo requerido"),
     id_caso: yup.object().shape({
       value: yup.number().required("Campo requerido"),
       label: yup.string().required("Campo requerido"),
@@ -73,10 +74,11 @@ const FormSesion = (props) => {
     }
   };
 
-  
+
 
   useEffect(() => {
     getCasos();
+    console.log(sesion);
   }, []);
 
   const Formulario = () => {
@@ -91,16 +93,17 @@ const FormSesion = (props) => {
             id_caso: { id: values.id_caso.value },
             id_abogado: { id: values.id_abogado },
             actividad: values.actividad,
+            hora_inicio: values.hora_inicio,
             borrado: sesion !== null ? sesion.borrado : false,
           };
-          console.log(object);
-          //post("Sesiones", object);
+          post("Sesiones", object);
         }}
         initialValues={{
           horas: sesion !== null ? Math.floor(sesion.tiempo / 3600) : 0,
           minutos: sesion !== null ? Math.floor((sesion.tiempo % 3600) / 60) : 0,
           segundos: sesion !== null ? sesion.tiempo % 60 : 0,
           fecha: sesion !== null ? sesion.fecha : "",
+          hora_inicio: sesion !== null ? sesion.hora_inicio : "",
           id_caso: sesion !== null ? createCasoOption(sesion.id_caso) : null,
           id_abogado: sesion !== null ? sesion.id_abogado.id : 0,
           actividad: sesion !== null ? sesion.actividad : "",
@@ -118,7 +121,7 @@ const FormSesion = (props) => {
         }) => (
           <Form noValidate onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="input-tiempo">
-              <Form.Label>Tiempo</Form.Label>
+              <Form.Label>Tiempo de la sesión</Form.Label>
               <InputGroup>
                 <Form.Control
                   name="horas"
@@ -161,21 +164,45 @@ const FormSesion = (props) => {
                 {errors.segundos}
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="input-fecha">
-              <Form.Label>Fecha</Form.Label>
-              <Form.Control
-                name="fecha"
-                type="date"
-                value={values.fecha}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isValid={touched.fecha && !errors.fecha}
-                isInvalid={touched.fecha && !!errors.fecha}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.fecha}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="input-fecha">
+                  <Form.Label>Fecha</Form.Label>
+                  <Form.Control
+                    name="fecha"
+                    type="date"
+                    value={values.fecha}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    isValid={touched.fecha && !errors.fecha}
+                    isInvalid={touched.fecha && !!errors.fecha}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.fecha}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="input-hora-inicio">
+                  <Form.Label>Hora inicio</Form.Label>
+                  <Form.Control
+                    name="hora_inicio"
+                    type="time"
+                    step={1}
+                    value={values.hora_inicio}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    isValid={touched.hora_inicio && !errors.hora_inicio}
+                    isInvalid={touched.hora_inicio && !!errors.hora_inicio}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.hora_inicio}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+            </Row>
+
+
             <Form.Group className="mb-3" controlId="input-caso">
               <Form.Label>Caso</Form.Label>
               <Select
@@ -194,7 +221,7 @@ const FormSesion = (props) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="input-abogado">
               <Form.Label>Abogado</Form.Label>
-              <SelectAbogado 
+              <SelectAbogado
                 caso={values.id_caso !== null ? values.id_caso.value : null}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}

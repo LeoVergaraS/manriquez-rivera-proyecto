@@ -3,7 +3,7 @@ const headers = {
   casos: ["#", "Fecha", "Materia", "Submateria", "Cliente", "Acciones"],
   clientes: ["#", "Nombre", "Acciones"],
   materias: ["#", "Nombre", "Acciones"],
-  sesiones: ["#", "Tiempo", "Fecha", "Caso", "Abogado", "Actividad", "Acciones"],
+  sesiones: ["#", "Tiempo", "Fecha", "Hora inicio", "Caso", "Abogado", "Actividad", "Acciones"],
   submaterias: ["#", "Nombre", "Materia", "Acciones"],
 };
 

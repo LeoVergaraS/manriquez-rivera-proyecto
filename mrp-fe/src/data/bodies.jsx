@@ -91,6 +91,7 @@ const bodySesion = (sesion, edit, deleted) => {
       <td>{sesion.id}</td>
       <td>{castTime(sesion.tiempo)}</td>
       <td>{formatDateShow(sesion.fecha)}</td>
+      <td>{sesion.hora_inicio}</td>
       <td>{sesion.id_caso.id}</td>
       <td>{sesion.id_abogado.nombre}</td>
       <td

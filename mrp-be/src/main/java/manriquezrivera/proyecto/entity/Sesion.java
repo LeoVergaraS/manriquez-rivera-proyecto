@@ -30,6 +30,6 @@ public class Sesion {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Abogado id_abogado;
 
-    private String horaInicio;
+    private String hora_inicio;
 
 }
