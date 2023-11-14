@@ -8,6 +8,7 @@ import formatDateShow from "../../utils/functions/formatDateShow";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 import { Card, Table, Container, Col, Row, Pagination } from "react-bootstrap";
+import captions from "../../utils/functions/captions";
 
 const Clientes = ({
 	fechaInicio,
@@ -189,7 +190,7 @@ const Clientes = ({
 		paginatedData(sesionesByCasoTabla);
 		setPagesCount(Math.ceil(sesionesByCasoTabla.length / pageSize));
 	}, [currentPage, sesionesByCasoTabla]);
-	
+
 	useEffect(() => {
 		getCasos();
 	}, [id_abo]);
@@ -244,13 +245,13 @@ const Clientes = ({
 											<BiTime />
 										</span>
 									</div>
-									<h1 className="card-estadisticas-c__estadistica">
+									<h1 className={"card-estadisticas-c__estadistica" + (estadisticas.tiempo_total >= 3600 ? " tiempo" : "")} >
 										{estadisticas.tiempo_total === null
-											? 0
+											? "0 seg"
 											: castTime(estadisticas.tiempo_total)}
 									</h1>
 									<p className="card-estadisticas-c__caption">
-										De tiempo trabajado
+										{estadisticas.tiempo_total === null ? "Trabajados en total" : captions(estadisticas.tiempo_total)}
 									</p>
 								</Card>
 							</Col>

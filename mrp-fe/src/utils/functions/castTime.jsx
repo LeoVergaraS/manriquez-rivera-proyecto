@@ -11,6 +11,9 @@ const castTime = (time) => {
       const minutos = Math.floor((time % 3600) / 60);
       const horasStr = String(horas).padStart(2, '0');
       const minutosStr = String(minutos).padStart(2, '0');
+      if(horasStr === "01"){
+        return `${horasStr} hr ${minutosStr} min`;
+      }else
       return `${horasStr} hrs ${minutosStr} min`;
     }
   }

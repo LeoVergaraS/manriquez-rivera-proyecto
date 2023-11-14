@@ -41,6 +41,7 @@
     font-size: 55px;
     text-align: center;
     color: $color-oscuro;
+    padding: 0 5px;
   }
 
   &__caption{
@@ -48,11 +49,18 @@
     font-size: 30px;
     color: black;
     font-weight: lighter;
+    padding: 0 5px;
   }
 
   &:hover{
     scale: 1.05;
   }
+}
+
+.tiempo{
+  font-size: 45px;
+  text-align: center;
+  color: $color-oscuro;
 }
 
 .card-grafico{
