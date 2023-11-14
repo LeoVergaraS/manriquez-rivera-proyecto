@@ -49,17 +49,37 @@ VALUES
     ( '2022-08-07', 0, 5, 8, 2);
 
 INSERT INTO mrp.sesion (fecha, borrado, tiempo, id_caso, id_abogado, actividad)
-SELECT
-  DATE_ADD(c.fecha, INTERVAL FLOOR(RAND() * DATEDIFF(CURRENT_DATE(), c.fecha)) DAY), -- Fecha aleatoria posterior al caso
-  0, -- Valor de borrado
-  FLOOR(30 + RAND() * 120), -- Tiempo aleatorio en minutos (entre 30 y 150 minutos)
-  c.id, -- ID del caso correspondiente
-  a.id, -- ID de un abogado aleatorio
-  CONCAT('Actividad ', ROW_NUMBER() OVER ()) -- Actividad con un número secuencial y el ID del caso
-FROM mrp.caso c
-JOIN mrp.abogado a ON RAND() < 0.5 -- Asigna un abogado aleatorio con una probabilidad del 50%
-ORDER BY RAND()
-LIMIT 100;
+VALUES 
+('2023-10-15', 0, 120, 1, 1, 'Consulta inicial'),
+('2023-10-16', 0, 90, 2, 2, 'Revisión de documentos'),
+('2023-10-17', 0, 150, 3, 1, 'Preparación para el juicio'),
+('2023-10-18', 0, 80, 4, 2, 'Entrevista con el cliente'),
+('2023-10-19', 0, 110, 5, 1, 'Investigación legal'),
+('2023-10-20', 0, 130, 6, 2, 'Redacción de documentos legales'),
+('2023-10-21', 0, 100, 7, 1, 'Mediación'),
+('2023-10-22', 0, 70, 8, 2, 'Asesoramiento legal'),
+('2023-10-23', 0, 140, 9, 1, 'Planificación estratégica del caso'),
+('2023-10-24', 0, 160, 10, 2, 'Presentación en el tribunal'),
+('2023-10-25', 0, 95, 11, 1, 'Evaluación de riesgos'),
+('2023-10-26', 0, 115, 12, 2, 'Seguimiento del caso'),
+('2023-10-27', 0, 125, 13, 1, 'Auditoría legal'),
+('2023-10-28', 0, 75, 14, 2, 'Resolución de conflictos'),
+('2023-10-29', 0, 145, 15, 1, 'Acuerdo extrajudicial'),
+('2023-10-30', 0, 85, 16, 2, 'Análisis jurisprudencial'),
+('2023-10-31', 0, 105, 17, 1, 'Defensa legal'),
+('2023-11-01', 0, 155, 18, 2, 'Reclamación de deudas'),
+('2023-11-02', 0, 180, 19, 1, 'Asistencia en el juicio'),
+('2023-11-03', 0, 165, 20, 2, 'Apelación legal'),
+('2023-11-04', 0, 120, 21, 1, 'Entrevista con testigos'),
+('2023-11-05', 0, 90, 22, 2, 'Análisis de evidencia'),
+('2023-11-06', 0, 150, 23, 1, 'Negociación con la parte contraria'),
+('2023-11-07', 0, 80, 24, 2, 'Consulta telefónica'),
+('2023-11-08', 0, 110, 25, 1, 'Revisión de contratos'),
+('2023-11-09', 0, 130, 26, 2, 'Mediación familiar'),
+('2023-11-10', 0, 100, 27, 1, 'Asesoramiento empresarial'),
+('2023-11-11', 0, 70, 28, 2, 'Defensa penal'),
+('2023-11-12', 0, 140, 29, 1, 'Reclamación de seguros'),
+('2023-11-13', 0, 160, 30, 2, 'Preparación de recursos legales');
    
 INSERT INTO mrp.caso_abogado (id_abogado, id_caso)
 VALUES

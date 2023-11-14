@@ -7,6 +7,8 @@ import { VscCheck, VscClose } from "react-icons/vsc";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
 import Cookies from "js-cookie";
+import SelectCaso from "../MySelect/SelectCaso";
+import { createCasoOption } from "../../../data/options";
 const FormSesion = (props) => {
   const sesion = props.item;
   const close = props.close;
@@ -19,37 +21,37 @@ const FormSesion = (props) => {
   const validations = yup.object().shape({
     horas: yup
       .number()
-      .required("Ingrese una cantidad de horas válida")
+      .required("Campo requerido")
       .min(0, "Mínimo 0 hora")
       .max(24, "Máximo 24 horas"),
     minutos: yup
       .number()
-      .required("Ingrese una cantidad de minutos válida")
+      .required("Campo requerido")
       .min(0, "Mínimo 0 minutos")
       .max(59, "Máximo 59 minutos"),
     segundos: yup
       .number()
-      .required("Ingrese una cantidad de segundos válida")
+      .required("Campo requerido")
       .min(0, "Mínimo 0 segundos")
       .max(59, "Máximo 59 segundos"),
     fecha: yup
       .date()
-      .required("Ingrese una fecha válida")
+      .required("Campo requerido")
       .max(
         formatDateUpload(new Date()),
         "La fecha no puede ser mayor a la actual"
       ),
-    id_caso: yup
-      .number()
-      .required("Ingrese un caso válido")
-      .min(1, "Ingrese una opción válida"),
+    id_caso: yup.object().shape({
+      value: yup.number().required("Campo requerido"),
+      label: yup.string().required("Campo requerido"),
+    }).required("Campo requerido"),
     id_abogado: yup
       .number()
-      .required("Ingrese un abogado válido")
+      .required("Campo requerido")
       .min(1, "Seleccione una opción válida"),
     actividad: yup
       .string()
-      .required("Ingrese una actividad válida")
+      .required("Campo requerido")
       .max(255, "Máximo 255 caracteres"),
   });
 
@@ -96,11 +98,10 @@ const FormSesion = (props) => {
         }}
         initialValues={{
           horas: sesion !== null ? Math.floor(sesion.tiempo / 3600) : 0,
-          minutos:
-            sesion !== null ? Math.floor((sesion.tiempo % 3600) / 60) : 0,
+          minutos: sesion !== null ? Math.floor((sesion.tiempo % 3600) / 60) : 0,
           segundos: sesion !== null ? sesion.tiempo % 60 : 0,
           fecha: sesion !== null ? sesion.fecha : "",
-          id_caso: sesion !== null ? sesion.id_caso.id : 0,
+          id_caso: sesion !== null ? createCasoOption(sesion.id_caso) : null,
           id_abogado: sesion !== null ? sesion.id_abogado.id : 0,
           actividad: sesion !== null ? sesion.actividad : "",
         }}
@@ -111,6 +112,8 @@ const FormSesion = (props) => {
           values,
           errors,
           touched,
+          setFieldValue,
+          setFieldTouched,
           handleBlur,
         }) => (
           <Form noValidate onSubmit={handleSubmit}>
@@ -173,21 +176,6 @@ const FormSesion = (props) => {
                 {errors.fecha}
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="input-caso">
-              <Form.Label>Caso</Form.Label>
-              <Form.Control
-                name="id_caso"
-                type="number"
-                value={values.id_caso}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isValid={touched.id_caso && !errors.id_caso}
-                isInvalid={touched.id_caso && !!errors.id_caso}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.id_caso}
-              </Form.Control.Feedback>
-            </Form.Group>
             <Form.Group className="mb-3" controlId="input-abogado">
               <Form.Label>Abogado</Form.Label>
               <Form.Select
@@ -212,9 +200,22 @@ const FormSesion = (props) => {
                 {errors.id_abogado}
               </Form.Control.Feedback>
             </Form.Group>
+            <Form.Group className="mb-3" controlId="input-caso">
+              <Form.Label>Caso</Form.Label>
+              <SelectCaso
+                name="id_caso"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                abogado={values.id_abogado}
+                value={values.id_caso}
+                error={errors.id_caso}
+                touched={touched.id_caso}
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="input-actividad">
               <Form.Label>Actividad</Form.Label>
               <Form.Control
+                placeholder="Ingrese una actividad"
                 name="actividad"
                 type="textarea"
                 value={values.actividad}

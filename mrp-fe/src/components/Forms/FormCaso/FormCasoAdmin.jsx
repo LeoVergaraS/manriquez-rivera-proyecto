@@ -278,6 +278,7 @@ const FormCasoAdmin = (props) => {
                 name="abogado"
                 placeholder="Seleccione uno o más abogados"
                 options={optionsAbogados}
+                multi={true}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 value={values.abogado}

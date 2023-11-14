@@ -16,14 +16,14 @@ const MySelect = (props) => {
         name={props.name}
         options={props.options}
         placeholder={props.placeholder}
-        isMulti
+        isMulti={props.multi}
         isClearable={false}
         onChange={handleChange}
         onBlur={handleBlur}
         value={props.value}
       />
       {!!props.error && props.touched && (
-        <div style={{ color: 'red', marginTop: '.5rem' }}>{props.error}</div>
+        <div style={{ color: '#dc3545', marginTop: '.25rem', fontSize: '.875em' }}>{props.error}</div>
       )}
     </div>
   )
