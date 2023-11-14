@@ -43,8 +43,16 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<Cliente> postCliente(@RequestBody Cliente cliente){
-      Cliente clienteGuardado = clienteService.saveCliente(cliente);
-      return ResponseEntity.ok().body(clienteGuardado);
+      
+      Cliente clienteExistente = clienteService.getClienteByNombre(cliente.getNombre());
+      if(clienteExistente != null){
+        return ResponseEntity.badRequest().build();
+      }      
+      
+      else{
+        Cliente clienteGuardado = clienteService.saveCliente(cliente);
+        return ResponseEntity.ok().body(clienteGuardado);
+      }
     }
 
     @PostMapping("/delete")

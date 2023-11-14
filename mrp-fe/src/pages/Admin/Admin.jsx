@@ -25,36 +25,6 @@ import {
 import TablaUsuario from "../../components/Table/TablaUsuario";
 
 const Admin = () => {
-  const [showCreate, setShowCreate] = useState(false);
-
-  const handleShowCreate = () => {
-    setShowCreate(true);
-  };
-
-  const handleCloseCreate = () => {
-    setShowCreate(false);
-  };
-
-  const usuario = {
-    id: null,
-    username: "",
-    password: "",
-  };
-
-  const createUsuario = async (usuario) => {
-    try {
-      const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      };
-      let url = "http://localhost:8090/usuarios";
-      const response = await axios.post(url, usuario, config);
-      if (response.status === 200) {
-        handleCloseCreate();
-      }
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
 
   const [selected, setSelected] = useState(1);
   const [content, setContent] = useState("Abogados");
@@ -100,9 +70,6 @@ const Admin = () => {
             <div id={6} className="admin-nav__item" onClick={handleOnClick}>
               Submaterias
             </div>
-            {/*<div id={7} className="admin-nav__item" onClick={handleShowCreate}>
-							Agregar usuario
-	</div>*/}
           </div>
         </aside>
         <div className="admin-content">
@@ -161,19 +128,6 @@ const Admin = () => {
           ) : null}
         </div>
       </main>
-
-      <Modal show={showCreate} onHide={handleCloseCreate}>
-        <Modal.Header closeButton>
-          <Modal.Title>Crear usuario</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <FormUsuario
-            item={usuario}
-            post={createUsuario}
-            close={handleCloseCreate}
-          />
-        </Modal.Body>
-      </Modal>
     </>
   );
 };

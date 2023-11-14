@@ -198,8 +198,13 @@ const TablaUsuario = (props) => {
           title: "Creado correctamente",
         });
       }
-    } catch (err) {
+    } catch (err) { 
       console.error(err);
+      Alerta.fire({
+        icon: "error",
+        title: "Error al crear",
+        text: "El nombre de usuario ya existe",
+      });
     }
   };
 
