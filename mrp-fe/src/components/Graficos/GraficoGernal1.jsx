@@ -33,7 +33,7 @@ const GraficoGernal1 = ({ title, tiempoSesiones }) => {
                 ]
             },
             options: {
-                responsive: true,
+                responsive: false,
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
@@ -65,7 +65,7 @@ const GraficoGernal1 = ({ title, tiempoSesiones }) => {
                     y: {
                         title: {
                             display: true,
-                            text: 'Horas se sesión', // Etiqueta para el eje y
+                            text: 'Horas de sesión', // Etiqueta para el eje y
                             color: '#1e3f43'
                         },
                         grid: {

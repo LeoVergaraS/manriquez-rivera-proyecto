@@ -132,7 +132,7 @@ const Youtube = () => {
 
 
 				</div>
-				<h6 style={{color:"#1E464B"}}>{formatDateBarraFiltro(fechaFiltroInicio,fechaFiltroFin)}</h6>
+				<h6 style={{ color: "#1E464B" }}>{formatDateBarraFiltro(fechaFiltroInicio, fechaFiltroFin)}</h6>
 			</div>
 			<main className="dashboard-layout">
 				<aside
@@ -222,6 +222,8 @@ const Youtube = () => {
 										fechaInicio: new Date(e.target.value),
 									})
 								}
+								style={{ cursor: 'pointer' }} // Cambia el cursor para indicar que el campo es interactivo
+								onKeyDown={(e) => e.preventDefault()} // Prevén la edición manual presionando teclas
 							/>
 						</Form.Group>
 
@@ -236,6 +238,8 @@ const Youtube = () => {
 										fechaFin: new Date(e.target.value),
 									})
 								}
+								style={{ cursor: 'pointer' }} // Cambia el cursor para indicar que el campo es interactivo
+								onKeyDown={(e) => e.preventDefault()} // Prevén la edición manual presionando teclas
 							/>
 						</Form.Group>
 					</Form>
@@ -244,7 +248,7 @@ const Youtube = () => {
 					<Button variant="secondary" onClick={handleModal}>
 						Cancelar
 					</Button>
-					<Button variant="success" onClick={handleSearch}>
+					<Button className="customPrimary" onClick={handleSearch}>
 						Buscar
 					</Button>
 				</Modal.Footer>

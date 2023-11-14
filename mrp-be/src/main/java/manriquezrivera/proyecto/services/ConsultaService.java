@@ -162,7 +162,7 @@ public class ConsultaService {
 		if (idAbogado != -1) {
 			consultaSesiones = consultaSesionesRepository.getConsultaSesionesByIdMateriaConAbogado(idMateria,
 					idAbogado);
-			System.out.println("XD" + consultaSesiones);
+			
 		}
 		// TODOS LOS ABOGADOS
 		else {
@@ -259,13 +259,12 @@ public class ConsultaService {
 		// TABLA VISTA MATERIA - NO INCLUYE DESDE SIEMPRE
 	public List<ConsultaSesionesTabla> getConsultasByMateriaTablaMateria(Long idMateria, String fechaInicio, String fechaFin, Long idAbo,
 			Integer cantidadDias) {
-				System.out.println("XD");
+
 		List<ConsultaSesionesTabla> consultaSesionesTabla;
 			
 		if (idAbo != -1) {
 		 consultaSesionesTabla=	 consultaSesionesTablaRepository.getConsultaSesionesByIdMateriaConAbogadoFecha( idMateria, idAbo, fechaInicio, fechaFin);
-		System.out.println(idAbo + " " + idMateria + " " + fechaInicio + " " + fechaFin);
-		 System.out.println(consultaSesionesTabla);	 
+	 
 		 return consultaSesionesTabla;
 
 		} else {
@@ -276,7 +275,6 @@ public class ConsultaService {
 
 	// TABLA VISTA MATERIA - INCLUYE DESDE SIEMPRE
 	public List<ConsultaSesionesTabla> getConsultasByMateriaTablaDesdeSiempreMateria(Long idMateria, Long idAbo){
-		System.out.println("LOL");
 		if (idAbo != -1) {
 			return consultaSesionesTablaRepository.getConsultaSesionesByIdMateriaConAbogado( idMateria, idAbo);
 		} else {
@@ -608,7 +606,7 @@ public class ConsultaService {
 				instance1.add(Calendar.DAY_OF_YEAR, 1);
 				dias++;
 			}
-
+			dias++;
 			return dias;
 		} catch (ParseException e) {
 			e.printStackTrace();

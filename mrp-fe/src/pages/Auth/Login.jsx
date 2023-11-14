@@ -55,7 +55,7 @@ const Login = () => {
         Swal.fire({
           icon: 'success',
           title: 'Sesión iniciada con éxito',
-          text: 'Bienvenido!',
+          text: 'Bien venido!',
           showConfirmButton: false,  // No mostrar el botón de confirmación (OK)
           timer: 1500,  // Muestra la alerta durante 3 segundos
           timerProgressBar: true,  // Muestra una barra de progreso durante el tiempo de espera
@@ -86,7 +86,7 @@ const Login = () => {
           <h2 className="form-login__title">App Manriquez Rivera</h2>
           <br></br>
           <Form.Group className="mb-3" controlId="formUsuario">
-            <Form.Label>Correo</Form.Label>
+            <Form.Label>Usuario</Form.Label>
             <Form.Control
               type="text"
               name="username"
