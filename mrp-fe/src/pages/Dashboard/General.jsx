@@ -9,8 +9,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 
-const General = ({dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin, dropSelect, abogado, setDropSelect, setFechaFiltroInicio, setFechaFiltroFin}) => {
-	
+const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin, dropSelect, abogado, setDropSelect, setFechaFiltroInicio, setFechaFiltroFin }) => {
+
 	// Variable que almacena las consultas de vista GENERAL
 	// se les aplica todos los filtros
 	const [consultasS, setConsultasS] = useState([]);
@@ -148,18 +148,23 @@ const General = ({dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin, 
 											<BiClipboard />
 										</span>
 									</div>
-									<Table responsive="sm" style={{ textAlign: "center" }}>
-										<tbody>
-											<tr>
-												<td>Cantidad</td>
-												<td>{estadisticas.cantidad_sesiones}</td>
-											</tr>
-											<tr>
-												<td>Tiempo total</td>
-												<td>{castTime(estadisticas.cantidad_tiempo)}</td>
-											</tr>
-										</tbody>
-									</Table>
+									<div className="card-estadisticas__body">
+										<h1 className="card-estadisticas__estadistica">
+											{estadisticas.cantidad_sesiones}
+										</h1>
+										<p className="card-estadisticas__caption" style={{ marginBottom: 1 }}>
+											{estadisticas.cantidad_sesiones == 1 ? "Sesión" : "Sesiones"}
+										</p>
+										<hr style={{ width: "90%", height: "2px", color: "#1E464B", backgroundColor: "#1E464B", borderWidth: 0 }}></hr>
+										<h1 className={"card-estadisticas__estadistica" + (estadisticas.cantidad_tiempo >= 3600 ? " tiempo" : "")}>
+											{estadisticas.cantidad_tiempo === null ?
+												"0 seg" : castTime(estadisticas.cantidad_tiempo)}
+										</h1>
+										<p className="card-estadisticas__caption">
+											trabajados
+										</p>
+									</div>
+
 								</Card>
 							</Col>
 							<Col>
@@ -170,22 +175,33 @@ const General = ({dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin, 
 											<BiUser />
 										</span>
 									</div>
-									<Table responsive="sm" style={{ textAlign: "center" }}>
-										<tbody>
-											<tr>
-												<td>Cantidad</td>
-												<td>{estadisticas.cantidad_clientes}</td>
-											</tr>
-											<tr>
-												<td>Más atendido</td>
-												<td>{estadisticas.nombre_cliente_max}</td>
-											</tr>
-											<tr>
-												<td>Tiempo</td>
-												<td>{castTime(estadisticas.tiempo_cliente_max)}</td>
-											</tr>
-										</tbody>
-									</Table>
+									<div className="card-estadisticas__body">
+										<div className="card-estadisticas__upper">
+											<h1 style={{fontSize: "45px"}} className="card-estadisticas__estadistica">
+												{estadisticas.cantidad_clientes}
+											</h1>
+											<p className="card-estadisticas__caption" style={{ marginBottom: 1 }}>
+												{estadisticas.cantidad_clientes == 1 ? "Cliente" : "Clientes"}
+											</p>
+										</div>
+
+										<hr style={{ width: "90%", height: "2px", color: "#1E464B", backgroundColor: "#1E464B", borderWidth: 0, margin: 3 }}></hr>
+										<h1 style={{fontSize: "40px"}}  className={"card-estadisticas__estadistica" + (estadisticas.tiempo_cliente_max >= 3600 ? " tiempo" : "")}>
+											{estadisticas.tiempo_cliente_max === null ?
+												"0 seg" : castTime(estadisticas.tiempo_cliente_max)}
+										</h1>
+										<p className="card-estadisticas__caption" style={{margin: 0}}>
+											trabajados
+										</p>
+										<hr style={{ width: "90%", height: "2px", color: "#1E464B", backgroundColor: "#1E464B", borderWidth: 0, margin: 3 }}></hr>
+										<h1 className="card-estadisticas__estadistica" style={{fontSize: "38px", margin: 0}}>
+											{estadisticas.nombre_cliente_max}
+										</h1>
+										<p className="card-estadisticas__caption" style={{ marginBottom: 1 }}>
+											Con más sesiones
+										</p>
+									</div>
+
 								</Card>
 							</Col>
 						</Row>
@@ -198,22 +214,32 @@ const General = ({dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin, 
 											<BiBookmark />
 										</span>
 									</div>
-									<Table responsive="sm" style={{ textAlign: "center" }}>
-										<tbody>
-											<tr>
-												<td>Cantidad</td>
-												<td>{estadisticas.cantidad_materias}</td>
-											</tr>
-											<tr>
-												<td>Más atendida</td>
-												<td>{estadisticas.nombre_materia_max}</td>
-											</tr>
-											<tr>
-												<td>Tiempo</td>
-												<td>{castTime(estadisticas.tiempo_materia_max)}</td>
-											</tr>
-										</tbody>
-									</Table>
+									<div className="card-estadisticas__body">
+										<div className="card-estadisticas__upper">
+											<h1 style={{fontSize: "45px"}}  className="card-estadisticas__estadistica">
+												{estadisticas.cantidad_materias}
+											</h1>
+											<p className="card-estadisticas__caption" style={{ marginBottom: 1 }}>
+												{estadisticas.cantidad_materias == 1 ? "Materia" : "Materias"}
+											</p>
+										</div>
+
+										<hr style={{ width: "90%", height: "2px", color: "#1E464B", backgroundColor: "#1E464B", borderWidth: 0, margin: 3 }}></hr>
+										<h1 style={{fontSize: "40px"}}  className={"card-estadisticas__estadistica" + (estadisticas.tiempo_materia_max >= 3600 ? " tiempo" : "")}>
+											{estadisticas.tiempo_materia_max === null ?
+												"0 seg" : castTime(estadisticas.tiempo_materia_max)}
+										</h1>
+										<p className="card-estadisticas__caption" style={{margin: 0}}>
+											trabajados
+										</p>
+										<hr style={{ width: "90%", height: "2px", color: "#1E464B", backgroundColor: "#1E464B", borderWidth: 0, margin: 3 }}></hr>
+										<h1 className="card-estadisticas__estadistica" style={{fontSize: "38px", margin: 0}}>
+											{estadisticas.nombre_materia_max}
+										</h1>
+										<p className="card-estadisticas__caption" style={{ marginBottom: 1 }}>
+											Con más sesiones
+										</p>
+									</div>
 								</Card>
 							</Col>
 							<Col>
@@ -224,22 +250,32 @@ const General = ({dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin, 
 											<BiBookmarks />
 										</span>
 									</div>
-									<Table responsive="sm" style={{ textAlign: "center" }}>
-										<tbody>
-											<tr>
-												<td>Cantidad</td>
-												<td>{estadisticas.cantidad_submateria}</td>
-											</tr>
-											<tr>
-												<td>Más atendida</td>
-												<td>{estadisticas.nombre_submateria_max}</td>
-											</tr>
-											<tr>
-												<td>Tiempo</td>
-												<td>{castTime(estadisticas.tiempo_submateria_max)}</td>
-											</tr>
-										</tbody>
-									</Table>
+									<div className="card-estadisticas__body">
+										<div className="card-estadisticas__upper">
+											<h1 className="card-estadisticas__estadistica" style={{fontSize: "45px"}}>
+												{estadisticas.cantidad_submateria}
+											</h1>
+											<p className="card-estadisticas__caption" style={{ marginBottom: 1 }}>
+												{estadisticas.cantidad_submateria == 1 ? "Submateria" : "Submaterias"}
+											</p>
+										</div>
+
+										<hr style={{ width: "90%", height: "2px", color: "#1E464B", backgroundColor: "#1E464B", borderWidth: 0, margin: 3 }}></hr>
+										<h1 style={{fontSize: "40px"}} className={"card-estadisticas__estadistica" + (estadisticas.tiempo_submateria_max >= 3600 ? " tiempo" : "")}>
+											{estadisticas.tiempo_submateria_max === null ?
+												"0 seg" : castTime(estadisticas.tiempo_submateria_max)}
+										</h1>
+										<p className="card-estadisticas__caption" style={{margin: 0}}>
+											trabajados
+										</p>
+										<hr style={{ width: "90%", height: "2px", color: "#1E464B", backgroundColor: "#1E464B", borderWidth: 0, margin: 3 }}></hr>
+										<h1 className="card-estadisticas__estadistica" style={{fontSize: "38px", margin: 0}}>
+											{estadisticas.nombre_submateria_max}
+										</h1>
+										<p className="card-estadisticas__caption" style={{ marginBottom: 1 }}>
+											Con más sesiones
+										</p>
+									</div>
 								</Card>
 							</Col>
 						</Row>
