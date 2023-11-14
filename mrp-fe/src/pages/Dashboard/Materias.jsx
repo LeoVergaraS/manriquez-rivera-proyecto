@@ -8,6 +8,7 @@ import formatDateShow from "../../utils/functions/formatDateShow";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 import { Card, Col, Container, Pagination, Row, Table } from "react-bootstrap";
+import captions from "../../utils/functions/captions";
 
 const Materias = ({
 	id_abogado,
@@ -330,10 +331,13 @@ const Materias = ({
 											<BiTime />
 										</span>
 									</div>
-									<h1 className="card-estadisticas__estadistica">
-										{estadisticas.tiempo_total}
+									<h1 className={"card-estadisticas__estadistica" + (estadisticas.tiempo_total >= 3600 ? " tiempo" : "")}>
+										{estadisticas.tiempo_total === null ?
+											"0 seg" : castTime(estadisticas.tiempo_total)}
 									</h1>
-									<p className="card-estadisticas__caption">Hrs trabajadas</p>
+									<p className="card-estadisticas__caption">
+										{estadisticas.tiempo_total === null ? "Trabajados en total" : captions(estadisticas.tiempo_total)}
+									</p>
 								</Card>
 							</Col>
 							<Col>
