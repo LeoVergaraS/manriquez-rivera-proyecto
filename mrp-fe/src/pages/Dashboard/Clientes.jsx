@@ -18,6 +18,8 @@ const Clientes = ({
 	dropAnio,
 	setDropSelect,
 	setFechaInicio,
+	setFechaFiltroInicio,
+	setFechaFiltroFin,
 }) => {
 	const [caso, setCaso] = useState([]);
 	const [casos, setCasos] = useState([]);
@@ -68,7 +70,10 @@ const Clientes = ({
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesByCaso(response.data);
-					setFechaInicio(response.data[0].fecha);
+					//console.log("response.data", response.data);
+					//setFechaInicio(response.data[0].fecha);
+					setFechaFiltroInicio(response.data[0].fecha);
+					setFechaFiltroFin(fechaFin)
 				}
 			}
 		} catch (err) {
@@ -85,7 +90,9 @@ const Clientes = ({
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setSesionesByCaso(response.data);
-				setFechaInicio(response.data[0].fecha);
+				//setFechaInicio(response.data[0].fecha);
+				setFechaFiltroInicio(response.data[0].fecha);
+				setFechaFiltroFin(fechaFin)
 			}
 		} catch (err) {
 			console.log(err.message);
@@ -153,7 +160,6 @@ const Clientes = ({
 		}
 	};
 
-
 	const createCasoOption = (caso) => {
 		return {
 			label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre
@@ -186,17 +192,12 @@ const Clientes = ({
 	
 	useEffect(() => {
 		getCasos();
-	}, [fechaInicio, fechaFin, id_abo, dropSiempre]);
+	}, [id_abo]);
 
 	useEffect(() => {
 		if (caso.id !== undefined) {
 			getSesionesByIdCaso(caso.id);
 			getSesionesByIdCasoTabla(caso.id);
-		}
-	}, [caso]);
-
-	useEffect(() => {
-		if (caso.id !== undefined) {
 			getEstadisticas(caso.id, fechaInicio, fechaFin, id_abo, dropSiempre);
 		}
 	}, [caso, fechaInicio, fechaFin, id_abo, dropSiempre]);

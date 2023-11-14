@@ -5,7 +5,106 @@ import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 import GraficoGernal2 from "../../components/Graficos/GraficoGeneral2";
 import { BiUser, BiClipboard, BiBookmark, BiBookmarks } from "react-icons/bi";
 
-const General = ({ consultasS, estadisticas, consultasM }) => {
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
+
+const General = ({dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin, dropSelect, abogado, setDropSelect, setFechaFiltroInicio, setFechaFiltroFin}) => {
+	
+	// Variable que almacena las consultas de vista GENERAL
+	// se les aplica todos los filtros
+	const [consultasS, setConsultasS] = useState([]);
+	const [consultasM, setConsultasM] = useState([]);
+	const [estadisticas, setEstadisticas] = useState([]);
+
+	const getEstadisticas = async () => {
+		try {
+			const config = {
+				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+			};
+			let url = "http://localhost:8090/consultas/prueba/" + fechaInicio + "/" + fechaFin + "/" + dropSiempre + "/" + abogado.id;
+			const response = await axios.get(url, config);
+			if (response.status === 200) {
+				setEstadisticas(response.data);
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
+
+	const getConsultasMaterias = async () => {
+		try {
+			const config = {
+				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+			};
+			let url = "http://localhost:8090/consultas/materia/" + fechaInicio + "/" + fechaFin + "/" + dropSelect + "/" + dropSiempre + "/" +
+				abogado.id;
+			const response = await axios.get(url, config);
+			if (response.status === 200) {
+				setConsultasM(response.data);
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
+
+	// aqui se obtienen las consultas de sesiones
+	const getConsultasSesiones = async () => {
+		try {
+			// si es que se selecciono desde siempre
+			if (dropSiempre == 1) {
+				getConsultasSesionesDesdeSiempre();
+			} else {
+				// esto calcula la diferencia de dias entre las fechas cuando se selecciona un año en el dropSelect
+				if (dropAnio == 1) {
+					const fechaInicioAux = new Date(fechaInicio);
+					const fechaFinAux = new Date(fechaFin);
+
+					const difMS = fechaFinAux - fechaInicioAux;
+					const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+					setDropSelect(difDias + 1);
+				}
+
+				const config = {
+					headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+				};
+
+				let url = "http://localhost:8090/consultas/sesiones/" + fechaInicio + "/" + fechaFin + "/" + dropSelect + "/" + abogado.id;
+				const response = await axios.get(url, config);
+
+				if (response.status === 200) {
+					setConsultasS(response.data);
+					setFechaFiltroInicio(response.data[0].fecha);
+					setFechaFiltroFin(fechaFin)
+				}
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
+
+	const getConsultasSesionesDesdeSiempre = async () => {
+		try {
+			const config = {
+				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+			};
+			let url = "http://localhost:8090/consultas/sesiones/" + abogado.id;
+			const response = await axios.get(url, config);
+			if (response.status === 200) {
+				setConsultasS(response.data);
+				setFechaFiltroInicio(response.data[0].fecha);
+				setFechaFiltroFin(fechaFin)
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
+
+	useEffect(() => {
+		getConsultasMaterias();
+		getConsultasSesiones();
+		getEstadisticas();
+	}, [fechaFin, fechaInicio, dropSelect, dropSiempre, dropAnio, abogado]);
 
 	return (
 		<Container fluid className="mt-3">

@@ -18,16 +18,13 @@ const Materias = ({
 	dropAnio,
 	setDropSelect,
 	setFechaInicio,
+	setFechaFiltroInicio,
+	setFechaFiltroFin,
 }) => {
 	const [materias, setMaterias] = useState([]);
 	const [materia, setMateria] = useState({ id: 0 });
 	const [sesionesMateria, setSesionesMateria] = useState([]);
 	const [sesionesMateriaTabla, setSesionesMateriaTabla] = useState([]); //para la tabla
-
-	const setF1 = (fecha) => {
-		setFechaInicio(fecha);
-	};
-
 
 	const [estadisticas, setEstadisticas] = useState({
 		cantidad_sesiones: 0,
@@ -63,7 +60,8 @@ const Materias = ({
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setSesionesMateria(response.data);
-				setFechaInicio(response.data[0].fecha);
+				setFechaFiltroInicio(response.data[0].fecha);
+				setFechaFiltroFin(fechaFin)
 			}
 		} catch (err) {
 			console.error(err.message);
@@ -115,7 +113,8 @@ const Materias = ({
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesMateria(response.data);
-					setFechaInicio(response.data[0].fecha);
+					setFechaFiltroInicio(response.data[0].fecha);
+					setFechaFiltroFin(fechaFin)
 				}
 			}
 		} catch (err) {
@@ -264,15 +263,7 @@ const Materias = ({
 			);
 			getEstadisticas(id_abogado, fechaInicio, fechaFin, dropSiempre);
 		}
-	}, [
-		materia,
-		id_abogado,
-		fechaInicio,
-		fechaFin,
-		dropSelect,
-		dropSiempre,
-		dropAnio,
-		setDropSelect,
+	}, [materia, id_abogado, fechaInicio, fechaFin, dropSelect, dropSiempre, dropAnio, setDropSelect,
 	]);
 
 	//Para la paginacion de la tabla
