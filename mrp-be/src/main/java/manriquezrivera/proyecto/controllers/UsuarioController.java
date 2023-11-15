@@ -63,7 +63,6 @@ public class UsuarioController {
         else{
             // Se busca el usuario
             User userExistente = userService.getUserById(user.getId());
-            System.out.println(userExistente);
             // Se actualiza el nombre del abogado
             Abogado abogado = userExistente.getId_abogado();
             abogado.setNombre(user.getUsername());
@@ -88,6 +87,18 @@ public class UsuarioController {
         // Se guarda el usuario
         User userSaved = userService.saveUser(userExistente);
         return ResponseEntity.ok().body(userSaved);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteUser(@RequestBody User user) {
+        // Se busca el usuario
+
+        User userExistente = userService.getUserById(user.getId());
+        // Se elimina el usuario
+        userService.deleteUser(userExistente);
+        // Se elimina el abogado
+        abogadoService.deleteAbogado(userExistente.getId_abogado());
+        return ResponseEntity.ok().body("Usuario eliminado correctamente");
     }
     
 }

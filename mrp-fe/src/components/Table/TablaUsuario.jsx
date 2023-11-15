@@ -42,43 +42,11 @@ const TablaUsuario = (props) => {
     const atr = atribute === "#" ? "id" : atribute.toLowerCase();
     const sortOrder = order === "ASC" ? 1 : -1;
 
-    if (atr === 'caso') {
-      data.sort((a, b) => {
-        if (a.id_caso.id > b.id_caso.id) return 1 * sortOrder;
-        if (a.id_caso.id < b.id_caso.id) return -1 * sortOrder;
-        return 0;
-      });
-    } else if (atr === 'abogado') {
-      data.sort((a, b) => {
-        if (a.id_abogado.nombre > b.id_abogado.nombre) return 1 * sortOrder;
-        if (a.id_abogado.nombre < b.id_abogado.nombre) return -1 * sortOrder;
-        return 0;
-      });
-    } else if (atr === 'cliente') {
-      data.sort((a, b) => {
-        if (a.id_cliente.nombre > b.id_cliente.nombre) return 1 * sortOrder;
-        if (a.id_cliente.nombre < b.id_cliente.nombre) return -1 * sortOrder;
-        return 0;
-      });
-    } else if (atr === 'materia') {
-      data.sort((a, b) => {
-        if (a.id_materia.nombre > b.id_materia.nombre) return 1 * sortOrder;
-        if (a.id_materia.nombre < b.id_materia.nombre) return -1 * sortOrder;
-        return 0;
-      });
-    } else if (atr === 'submateria') {
-      data.sort((a, b) => {
-        if (a.id_submateria.nombre > b.id_submateria.nombre) return 1 * sortOrder;
-        if (a.id_submateria.nombre < b.id_submateria.nombre) return -1 * sortOrder;
-        return 0;
-      });
-    } else {
-      data.sort((a, b) => {
-        if (a[atr] > b[atr]) return 1 * sortOrder;
-        if (a[atr] < b[atr]) return -1 * sortOrder;
-        return 0;
-      });
-    }
+    data.sort((a, b) => {
+      if (a[atr] > b[atr]) return 1 * sortOrder;
+      if (a[atr] < b[atr]) return -1 * sortOrder;
+      return 0;
+    });
   };
 
   /////////////////////////////////////////////////
@@ -104,22 +72,7 @@ const TablaUsuario = (props) => {
     const buscar = e.target.value;
     const atr = filterSearch === "#" ? "id" : filterSearch.toLowerCase();
 
-    if (atr === "caso") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_caso.id.toString(), buscar));
-      setData(newData);
-    } else if (atr === "abogado") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_abogado.nombre, buscar));
-      setData(newData);
-    } else if (atr === "cliente") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_cliente.nombre, buscar));
-      setData(newData);
-    } else if (atr === "materia") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_materia.nombre, buscar));
-      setData(newData);
-    } else if (atr === "submateria") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_submateria.nombre, buscar));
-      setData(newData);
-    } else if (atr === "id") {
+    if (atr === "id") {
       const newData = dataCopy.filter((item) => busqueda(item.id.toString(), buscar));
       setData(newData);
     } else {
@@ -249,6 +202,7 @@ const TablaUsuario = (props) => {
   };
 
   const deleteItem = async (content, item) => {
+    console.log(content);
     try {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
@@ -537,7 +491,7 @@ const TablaUsuario = (props) => {
         </Modal.Body>
         <Modal.Footer>
           <VscClose onClick={toggleDeleted} style={{ cursor: "pointer", color: "rgb(172, 172, 172)", fontSize: 30 }} />
-          <VscCheck onClick={() => deleteItem(props.content, item)} style={{ cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30 }} />
+          <VscCheck onClick={() => deleteItem("usuarios", item)} style={{ cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30 }} />
         </Modal.Footer>
       </Modal>
     </>
