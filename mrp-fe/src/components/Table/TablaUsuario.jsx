@@ -9,9 +9,30 @@ import Select from "react-select";
 import FormAbogado from "../Forms/FormAbogado/FormAbogado";
 import FormUsuario from "../Forms/FormUsuario/FormUsuario";
 import FormChange from "../Forms/FormChange/FormChange";
+import Swal from "sweetalert2";
 
 const TablaUsuario = (props) => {
   const body = props.body;
+
+  /////////////////////////////////////////////////
+  //              Usuario logueado
+  /////////////////////////////////////////////////
+  const [abogadoLogueado, setAbogadoLogueado] = useState(null);
+
+  const getUsuarioLogueado = async () => {
+    try {
+        const config = {
+            headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+        };
+        let url = "http://localhost:8090/auth/getUserLogueado";
+        const response = await axios.get(url, config);
+        if (response.status === 200) {
+            setAbogadoLogueado(response.data.id_abogado);
+        }
+    } catch (err) {
+        console.log(err.message);
+    }
+};
 
   //////////////////////////////////////////////////
   //        Para los filtros de la tabla
@@ -212,10 +233,23 @@ const TablaUsuario = (props) => {
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleDeleted();
-        Alerta.fire({
-          icon: "success",
-          title: "Eliminado correctamente",
-        });
+        Swal.fire({
+          title: 'Usuario eliminado correctamente',
+          text: abogadoLogueado.nombre === item.nombre ? 'Se cerrará la sesión' : '',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          if (abogadoLogueado.nombre === item.nombre) {
+            Cookies.remove('token')
+            let claveObjeto = "CasoSeleccionado";
+
+            localStorage.removeItem(claveObjeto);
+            claveObjeto = "tiempoCronometro";
+            localStorage.removeItem(claveObjeto);
+            window.location.href = '/login'
+          }
+        }) 
       }
     } catch (err) {
       console.error(err);
@@ -262,6 +296,10 @@ const TablaUsuario = (props) => {
   //////////////////////////////////////////////////
   //               Efectos
   //////////////////////////////////////////////////
+  useEffect(() => {
+    getUsuarioLogueado();
+  }, []);
+
   useEffect(() => {
     get(props.content);
   }, [props.content]);
