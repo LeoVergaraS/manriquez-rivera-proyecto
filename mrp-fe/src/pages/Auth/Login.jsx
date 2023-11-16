@@ -110,12 +110,12 @@ const Login = () => {
             {seePassword ?
               (<VscEyeClosed
                 onClick={handleSee}
-                onMouseEnter={() => setMessage("Ocultar contrasena")}
+                onMouseEnter={() => setMessage("Ocultar contraseña")}
                 onMouseLeave={() => setMessage("")}
                 style={{ fontSize: "25px", cursor: "pointer" }} />) :
               (<VscEye
                 onClick={handleSee}
-                onMouseEnter={() => setMessage("Mostrar contrasena")}
+                onMouseEnter={() => setMessage("Mostrar contraseña")}
                 onMouseLeave={() => setMessage("")}
                 style={{ fontSize: "25px", cursor: "pointer" }} />)
             }
