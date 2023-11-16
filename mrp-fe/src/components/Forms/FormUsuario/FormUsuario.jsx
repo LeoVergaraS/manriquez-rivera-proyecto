@@ -1,7 +1,8 @@
 import * as yup from "yup";
 import * as formik from "formik";
 import { Form } from "react-bootstrap";
-import { VscCheck, VscClose } from "react-icons/vsc";
+import { VscCheck, VscClose, VscEye, VscEyeClosed } from "react-icons/vsc";
+import { useState } from "react";
 
 const FormUsuario = ({ item, post, close }) => {
   const { Formik } = formik;
@@ -26,6 +27,23 @@ const FormUsuario = ({ item, post, close }) => {
       .max(16, "Máximo 16 caracteres"),
   });
 
+  //////////////////////////////////////////
+  //      Mostrar/ocultar contraseña
+  //////////////////////////////////////////
+  const [seePassword, setSeePassword] = useState(false);
+  const [tipo, setTipo] = useState("password");
+  const [message, setMessage] = useState("");
+
+  const handleSee = () => {
+    if (seePassword) {
+      setSeePassword(false);
+      setTipo("password");
+    } else {
+      setSeePassword(true);
+      setTipo("text");
+    }
+  }
+
   return (
     <Formik
       validationSchema={formSchema}
@@ -37,7 +55,7 @@ const FormUsuario = ({ item, post, close }) => {
           //usuario: values.usuario,
           password: values.password,
         };
-        post("Usuarios",objetoActualizado);
+        post("Usuarios", objetoActualizado);
       }}
       initialValues={{
         //usuario: usuario.usuario,
@@ -102,7 +120,7 @@ const FormUsuario = ({ item, post, close }) => {
             <Form.Label>Contraseña</Form.Label>
             <Form.Control
               name="password"
-              type="password"
+              type={tipo}
               placeholder="Ingrese una contraseña"
               value={values.password}
               onChange={handleChange}
@@ -118,7 +136,7 @@ const FormUsuario = ({ item, post, close }) => {
             <Form.Label>Repetir contraseña</Form.Label>
             <Form.Control
               name="repetirPassword"
-              type="password"
+              type={tipo}
               placeholder="Repita la contraseña"
               value={values.repetirPassword}
               onChange={handleChange}
@@ -130,10 +148,25 @@ const FormUsuario = ({ item, post, close }) => {
               {errors.repetirPassword}
             </Form.Control.Feedback>
           </Form.Group>
+          <div className="mostrar-contrasenia" style={{display: "flex", justifyContent: "left", alignItems: "center", gap: "5px"}}>
+            {seePassword ?
+              (<VscEyeClosed
+                onClick={handleSee}
+                onMouseEnter={() => setMessage("Ocultar contrasena")}
+                onMouseLeave={() => setMessage("")}
+                style={{ fontSize: "25px", cursor: "pointer" }} />) :
+              (<VscEye
+                onClick={handleSee}
+                onMouseEnter={() => setMessage("Mostrar contrasena")}
+                onMouseLeave={() => setMessage("")}
+                style={{ fontSize: "25px", cursor: "pointer" }} />)
+            }
+            {message}
+          </div>
           <hr />
           <div className="d-flex justify-content-end">
-            <VscClose onClick={close} style={{cursor: "pointer", color: "rgb(172, 172, 172)", fontSize: 30}} />
-            <VscCheck onClick={handleSubmit} style={{cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30}} />
+            <VscClose onClick={close} style={{ cursor: "pointer", color: "rgb(172, 172, 172)", fontSize: 30 }} />
+            <VscCheck onClick={handleSubmit} style={{ cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30 }} />
           </div>
         </Form>
       )}
