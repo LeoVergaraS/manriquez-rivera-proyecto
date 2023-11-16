@@ -18,9 +18,11 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     text-align: center;
+
     &:hover {
       color: #dfbf68;
     }
+
     &--collapse {
       transform: rotate(180deg);
     }
@@ -50,8 +52,10 @@
   &-content {
     display: block;
     transition: display 0.3s;
+
     &__tabs {
       padding: 0;
+
       &-item {
         height: auto;
         width: 100%;
@@ -61,6 +65,7 @@
         cursor: pointer;
         transition: all 0.3 ease-in-out;
         padding: 10px 10px;
+
         &:hover {
           color: $color-oscuro;
         }
@@ -85,9 +90,10 @@
 .selected {
   background-color: $color-primario;
   color: $color-oscuro;
-  box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.35);
-  -webkit-box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.35);
-  -moz-box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.35);
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+  -webkit-box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+  -moz-box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+
   &:hover {
     color: $color-oscuro;
   }
@@ -104,8 +110,9 @@
 }
 
 .customPrimary {
-  background-color: #DFBF68; /* Cambia el color de fondo según tu preferencia */
-  color: #ffffff; /* Cambia el color del texto si es necesario */
+  background-color: #DFBF68;
+  /* Cambia el color de fondo según tu preferencia */
+  color: #ffffff;
+  /* Cambia el color del texto si es necesario */
   /* Otros estilos según sea necesario */
 }
-

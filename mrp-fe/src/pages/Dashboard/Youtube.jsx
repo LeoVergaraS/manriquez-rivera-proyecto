@@ -136,8 +136,7 @@ const Youtube = () => {
 			</div>
 			<main className="dashboard-layout">
 				<aside
-					className={`dashboard-navegador ${isCollapsed ? "dashboard-navegador--collapse" : ""
-						}`}
+					className={`dashboard-navegador ${isCollapsed ? "dashboard-navegador--collapse" : ""}`}
 				>
 					<div className={`dashboard-navegador-content ${isCollapsed ? "dashboard-navegador-content--collapse" : ""}`}>
 						<ul className="dashboard-navegador-content__tabs">
