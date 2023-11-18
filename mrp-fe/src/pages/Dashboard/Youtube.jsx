@@ -17,8 +17,9 @@ import { VscChevronLeft, VscGlobe, VscPerson, VscLayers } from "react-icons/vsc"
 
 const Youtube = () => {
 
-	const [fechaFiltroInicio, setFechaFiltroInicio] = useState(new Date());
-	const [fechaFiltroFin, setFechaFiltroFin] = useState(new Date());
+	const [fechaFiltroInicio, setFechaFiltroInicio] = useState("2023-01-01");
+	const [fechaFiltroFin, setFechaFiltroFin] = useState("2023-01-01");
+	
 
 	const [selectedCliente, setSelectedCliente] = useState("");
 	const [selectedGeneral, setSelectedGeneral] = useState("selected");
@@ -27,6 +28,9 @@ const Youtube = () => {
 		fechaInicio: new Date(),
 		fechaFin: new Date(),
 	});
+
+	
+
 
 	const [dropSelect, setDropSelect] = useState(7);
 	const [dropSiempre, setDropSiempre] = useState(0);
@@ -65,6 +69,7 @@ const Youtube = () => {
 	};
 
 	const handleSearch = () => {
+		console.log("personalizado", personalizado);
 		setFechaFiltroInicio(sumOneDayToDate(formatDateUpload(personalizado.fechaInicio)))
 		setFechaFiltroFin(sumOneDayToDate(formatDateUpload(personalizado.fechaFin)))
 		setFechaInicio(sumOneDayToDate(formatDateUpload(personalizado.fechaInicio)));

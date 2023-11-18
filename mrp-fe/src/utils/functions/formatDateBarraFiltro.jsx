@@ -1,7 +1,7 @@
 import mesesAbreviados from '../../data/mesesAbreviados'
 
 const formatDateBarraFiltro = (fechaInicio, fechaFin) => {
-    
+
     const fechaInicioSplit = fechaInicio.split('-');
     const fechaFinSplit = fechaFin.split('-');
     
@@ -11,8 +11,6 @@ const formatDateBarraFiltro = (fechaInicio, fechaFin) => {
     let d2 = fechaFinSplit[2];
     let m2 = mesesAbreviados[fechaFinSplit[1] - 1];
     let anio2 = fechaFinSplit[0];
-
-    console.log(d1, m1, anio1, d2, m2, anio2);
 
     if(fechaInicioSplit[0] == fechaFinSplit[0]){
         if(fechaInicioSplit[1] == fechaFinSplit[1]){
