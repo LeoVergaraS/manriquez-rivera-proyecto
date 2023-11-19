@@ -1,9 +1,9 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
-import { createCasoOption, createOption } from "../../../data/options";
+import { createOption } from "../../../data/options";
 import { Form } from "react-bootstrap";
+import urlweb from "../../../utils/config/urlweb";
 
 const SelectAbogado = (props) => {
     const id_caso = props.caso;
@@ -26,7 +26,7 @@ const SelectAbogado = (props) => {
             const config = {
                 headers: { Authorization: `Bearer ${Cookies.get("token")}` },
             };
-            let url = `http://localhost:8090/abogados/caso/${id}`;
+            let url = `http://${urlweb}/abogados/caso/${id}`;
             const response = await axios.get(url, config);
             if (response.status === 200) {
                 const abogados = response.data;

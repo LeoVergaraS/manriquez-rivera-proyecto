@@ -8,6 +8,8 @@ import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import { VscCheck, VscClose } from "react-icons/vsc";
 import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
 import Cookies from 'js-cookie';
+import urlweb from "../../../utils/config/urlweb";
+
 const FormCasoAdmin = (props) => {
   const caso = props.item;
   const close = props.close;
@@ -68,8 +70,8 @@ const FormCasoAdmin = (props) => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-    };
-      let url = "http://localhost:8090/abogados";
+      };
+      let url = `http://${urlweb}/abogados`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const abogados = response.data;
@@ -89,8 +91,8 @@ const FormCasoAdmin = (props) => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-    };
-      let url = "http://localhost:8090/materias";
+      };
+      let url = `http://${urlweb}/materias`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const materias = response.data;
@@ -110,8 +112,8 @@ const FormCasoAdmin = (props) => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-    };
-      let url = "http://localhost:8090/submaterias";
+      };
+      let url = `http://${urlweb}/submaterias`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const submaterias = response.data;
@@ -131,8 +133,8 @@ const FormCasoAdmin = (props) => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-    };
-      let url = "http://localhost:8090/abogados/caso/" + id;
+      };
+      let url = `http://${urlweb}/abogados/caso/${id}`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         setInitialAbogados(

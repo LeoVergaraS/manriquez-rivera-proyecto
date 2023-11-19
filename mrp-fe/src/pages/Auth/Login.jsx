@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import Swal from "sweetalert2";
+import urlweb from "../../utils/config/urlweb";
 
 const Login = () => {
   const [seePassword, setSeePassword] = useState(false);
@@ -47,7 +48,7 @@ const Login = () => {
         username: login.username.trim(),
         password: login.password,
       };
-      let url = "http://localhost:8090/auth/login";
+      let url = `http://${urlweb}/auth/login`;
       const response = await axios.post(url, body);
       if (response.status === 200) {
         const expirationTime = new Date(

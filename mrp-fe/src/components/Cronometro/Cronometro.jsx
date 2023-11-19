@@ -13,6 +13,8 @@ import { Tooltip } from "react-tooltip";
 import Select from 'react-select'
 import Cookies from 'js-cookie';
 import sumOneDayToDate from "../../utils/functions/sumOneDayToDate";
+import urlweb from "../../utils/config/urlweb";
+
 function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -185,7 +187,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
       //console.log(sesion);
-      let url = "http://localhost:8090/sesiones";
+      let url = `http://${urlweb}/sesiones`;
       const response = await axios.post(url, sesion,config);
       if (response.status === 200) {
         Swal.fire({

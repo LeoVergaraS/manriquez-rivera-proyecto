@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
+import urlweb from '../../utils/config/urlweb';
 
 const NavbarResponsive = ({ token }) => {
 
@@ -25,7 +26,7 @@ const NavbarResponsive = ({ token }) => {
             const config = {
                 headers: { Authorization: `Bearer ${Cookies.get("token")}` }
             };
-            let url = "http://localhost:8090/auth/getUserLogueado";
+            let url = `http://${urlweb}/auth/getUserLogueado`;
             const response = await axios.get(url, config);
             if (response.status === 200) {
                 setAbogadoLogueado(response.data.id_abogado);

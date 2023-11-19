@@ -10,6 +10,7 @@ import FormAbogado from "../Forms/FormAbogado/FormAbogado";
 import FormUsuario from "../Forms/FormUsuario/FormUsuario";
 import FormChange from "../Forms/FormChange/FormChange";
 import Swal from "sweetalert2";
+import urlweb from "../../utils/config/urlweb";
 
 const TablaUsuario = (props) => {
   const body = props.body;
@@ -24,7 +25,7 @@ const TablaUsuario = (props) => {
         const config = {
             headers: { Authorization: `Bearer ${Cookies.get("token")}` }
         };
-        let url = "http://localhost:8090/auth/getUserLogueado";
+        let url = `http://${urlweb}/auth/getUserLogueado`;
         const response = await axios.get(url, config);
         if (response.status === 200) {
             setAbogadoLogueado(response.data.id_abogado);
