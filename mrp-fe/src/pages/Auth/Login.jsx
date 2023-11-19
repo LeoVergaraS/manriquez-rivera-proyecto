@@ -55,7 +55,7 @@ const Login = () => {
         Swal.fire({
           icon: 'success',
           title: 'Sesión iniciada con éxito',
-          text: 'Bien venido!',
+          text: 'Bienvenido!',
           showConfirmButton: false,  // No mostrar el botón de confirmación (OK)
           timer: 1500,  // Muestra la alerta durante 3 segundos
           timerProgressBar: true,  // Muestra una barra de progreso durante el tiempo de espera

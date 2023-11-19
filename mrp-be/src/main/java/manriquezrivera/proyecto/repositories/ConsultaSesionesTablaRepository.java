@@ -12,7 +12,7 @@ import manriquezrivera.proyecto.models.ConsultaSesionesTabla;
 public interface ConsultaSesionesTablaRepository extends JpaRepository<ConsultaSesionesTabla, Long>  {
     // TABLA CLIENTE //
 	// Sesiones por abogado con intervalo de fecha para la tabla 
-	@Query(value = "SELECT s.id as id,s.fecha as fecha, s.tiempo as tiempo, s.actividad as actividad, sesion.hora_inicio as hora_inicio FROM sesion as s, caso_abogado as ca, caso as c WHERE ca.id_abogado = :id_abogado AND ca.id_abogado = s.id_abogado AND s.id_caso = :id_caso AND s.borrado = 0 AND c.id = :id_caso AND s.id_caso = ca.id_caso AND s.fecha BETWEEN :fechaInicio AND :fechaFin ORDER BY s.fecha DESC", nativeQuery = true)
+	@Query(value = "SELECT s.id as id,s.fecha as fecha, s.tiempo as tiempo, s.actividad as actividad, s.hora_inicio as hora_inicio FROM sesion as s, caso_abogado as ca, caso as c WHERE ca.id_abogado = :id_abogado AND ca.id_abogado = s.id_abogado AND s.id_caso = :id_caso AND s.borrado = 0 AND c.id = :id_caso AND s.id_caso = ca.id_caso AND s.fecha BETWEEN :fechaInicio AND :fechaFin ORDER BY s.fecha DESC", nativeQuery = true)
 	List<ConsultaSesionesTabla> getConsultaSesionesByIdAbogadoTabla(@Param ("id_abogado") Long id_abogado, @Param ("id_caso") Long id_caso, @Param ("fechaInicio") String fechaInicio, @Param ("fechaFin") String fechaFin);
 	
 	// Sesiones sin abogado con intervalo de fecha para la tabla 

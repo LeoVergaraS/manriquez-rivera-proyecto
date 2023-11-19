@@ -34,7 +34,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
       id:0,
     },
     actividad: null,
-    horaInicio: "",
+    hora_inicio: "",
   });
 
   const formatearTiempo = (tiempo) => {
@@ -50,8 +50,8 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
   };
 
   const start = async () => {
-    if(sesion.horaInicio == ""){
-      sesion.horaInicio = new Date().toLocaleTimeString();
+    if(sesion.hora_inicio == ""){
+      sesion.hora_inicio = new Date().toLocaleTimeString();
       console.log("La hora de inicio es: "+new Date().toLocaleTimeString());
     }
     if (!isPlaying) {
@@ -103,7 +103,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
     }).then((result) => {
       if (result.isConfirmed) {
         reset();
-        sesion.horaInicio = "";
+        sesion.hora_inicio = "";
       }
       else{
       }
@@ -161,7 +161,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
               sesion.id_abogado.id = abogadoLogueado_id;
               createSesion(sesion);
               reset();
-              sesion.horaInicio = "";
+              sesion.hora_inicio = "";
             }
           }else{
             if(estaPausado==0){
@@ -184,7 +184,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
       const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
-      //console.log(sesion);
+      console.log("XD"+sesion.hora_inicio);
       let url = "http://localhost:8090/sesiones";
       const response = await axios.post(url, sesion,config);
       if (response.status === 200) {
