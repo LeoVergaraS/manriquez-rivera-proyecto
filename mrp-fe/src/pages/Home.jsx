@@ -295,7 +295,9 @@ function Home() {
   const [objSelected, setObjSelected] = useState("1 hora");
   const [ts, setTs] = useState(60);
 
-  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  }
 
   const handleSelectTs = (tiempo) => {
     setObjSelected(tiempo.label);
@@ -522,7 +524,7 @@ function Home() {
                         (<div
                           key={tiempo.value}
                           className={`card-cronometro__collapse-content-item card-cronometro__collapse-content-item--last ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
-                          onClick={() => handleSelectTs(tiempo)}
+                          onClick={!isCollapsed && (() => handleSelectTs(tiempo))}
                         >
                           {tiempo.label}
                         </div>)
@@ -530,7 +532,7 @@ function Home() {
                         (<div
                           key={tiempo.value}
                           className={`card-cronometro__collapse-content-item ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
-                          onClick={() => handleSelectTs(tiempo)}
+                          onClick={!isCollapsed && (() => handleSelectTs(tiempo))}
                         >
                           {tiempo.label}
                         </div>)
