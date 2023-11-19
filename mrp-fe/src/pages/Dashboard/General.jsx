@@ -113,7 +113,7 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 			<Row style={{ height: "calc(100vh - 175px)" }}>
 				<Col>
 					<Container style={{ height: "100%" }}>
-						<Row className="mb-4" style={{ height: "49%" }}>
+						<Row className="mb-4" style={{ height: "45%" }}>
 							<Col>
 								<Card className="card-grafico-1">
 									<Card.Body style={{ padding: 0 }}>
@@ -125,14 +125,13 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 								</Card>
 							</Col>
 						</Row>
-						<Row style={{ height: "48%" }} >
+						<Row className="mb-4" style={{ height: "45%" }}>
 							<Col>
 								<Card className="card-grafico-2">
 									<Card.Body style={{ padding: 0 }}>
-										<GraficoGernal2
+										<GraficoBarras
 											consultasM={consultasM}
-											title={"Tiempo de materias por día"}
-										/>
+											tittle={"Tiempo de materias"}/>
 									</Card.Body>
 								</Card>
 							</Col>
@@ -278,15 +277,6 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 											Con más sesiones
 										</p>
 									</div>
-								</Card>
-							</Col>
-						</Row>
-						<Row className="mb-4" style={{ height: "49%" }}>
-							<Col>
-								<Card className="card-grafico-1">
-									<Card.Body style={{ padding: 0 }}>
-										<GraficoBarras/>
-									</Card.Body>
 								</Card>
 							</Col>
 						</Row>
