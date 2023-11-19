@@ -38,7 +38,6 @@ const Youtube = () => {
 
 	const [flag, setFlag] = useState(0);
 
-	const [showModal, setShowModal] = useState(false);
 
 	const [fechaFin, setFechaFin] = useState(formatearFecha(new Date(), 1, 0));
 	const [fechaInicio, setFechaInicio] = useState(formatearFecha(new Date(), 0, 6));
@@ -50,7 +49,6 @@ const Youtube = () => {
 
 	const [abogados, setAbogados] = useState([]);
 
-	const handleModal = () => setShowModal(!showModal);
 
 	const handleSelected = (type) => {
 		if (type === "cliente") {
@@ -68,18 +66,19 @@ const Youtube = () => {
 		}
 	};
 
-	const handleSearch = () => {
-		console.log("personalizado", personalizado);
-		setFechaFiltroInicio(sumOneDayToDate(formatDateUpload(personalizado.fechaInicio)))
-		setFechaFiltroFin(sumOneDayToDate(formatDateUpload(personalizado.fechaFin)))
-		setFechaInicio(sumOneDayToDate(formatDateUpload(personalizado.fechaInicio)));
-		setFechaFin(sumOneDayToDate(formatDateUpload(personalizado.fechaFin)));
-		const difMS = personalizado.fechaFin - personalizado.fechaInicio;
+	const handleSearch = (fechas) => {
+		setFechaFiltroInicio(fechas.fechaInicio)
+		setFechaFiltroFin(fechas.fechaFin)
+		setFechaInicio(fechas.fechaInicio);
+		setFechaFin(fechas.fechaFin);
+
+		const difMS = new Date(fechas.fechaFin) - new Date(fechas.fechaInicio);
+		
 		const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
+		console.log(difDias)
 		setDropSelect(difDias + 1);
 		setDropSiempre(0);
 		setDropAnio(0);
-		handleModal();
 	};
 
 	const getAbogados = async () => {
@@ -125,12 +124,14 @@ const Youtube = () => {
 						<label>Fecha </label>
 						<DropdownR
 							className="filtro__tiempo"
+							fi={fechaInicio}
+							ff={fechaFin}
+							handleSearch={handleSearch}
 							setFI={setFechaInicio}
 							setFF={setFechaFin}
 							setDropSelect={setDropSelect}
 							setDropSiempre={setDropSiempre}
 							setDropAnio={setDropAnio}
-							setShowModal={setShowModal}
 							setFlag={setFlag}
 						/>
 					</fieldset>
@@ -208,55 +209,6 @@ const Youtube = () => {
 					) : null}
 				</div>
 			</main>
-
-			<Modal show={showModal} onHide={handleModal}>
-				<Modal.Header closeButton>
-					<Modal.Title>Rango de tiempo</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<Form>
-						<Form.Group className="mb-3" controlId="formBasicEmail">
-							<Form.Label>Fecha inicio</Form.Label>
-							<Form.Control
-								type="date"
-								value={personalizado.fechaInicio.toISOString().substr(0, 10)}
-								onChange={(e) =>
-									setPersonalizado({
-										...personalizado,
-										fechaInicio: new Date(e.target.value),
-									})
-								}
-								style={{ cursor: 'pointer' }} // Cambia el cursor para indicar que el campo es interactivo
-								onKeyDown={(e) => e.preventDefault()} // Prevén la edición manual presionando teclas
-							/>
-						</Form.Group>
-
-						<Form.Group className="mb-3" controlId="formBasicPassword">
-							<Form.Label>Fecha fin</Form.Label>
-							<Form.Control
-								type="date"
-								value={personalizado.fechaFin.toISOString().substr(0, 10)}
-								onChange={(e) =>
-									setPersonalizado({
-										...personalizado,
-										fechaFin: new Date(e.target.value),
-									})
-								}
-								style={{ cursor: 'pointer' }} // Cambia el cursor para indicar que el campo es interactivo
-								onKeyDown={(e) => e.preventDefault()} // Prevén la edición manual presionando teclas
-							/>
-						</Form.Group>
-					</Form>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleModal}>
-						Cancelar
-					</Button>
-					<Button className="customPrimary" onClick={handleSearch}>
-						Buscar
-					</Button>
-				</Modal.Footer>
-			</Modal>
 		</>
 	);
 };
