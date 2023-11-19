@@ -14,6 +14,7 @@ import formatDateShow from "../utils/functions/formatDateShow";
 import InputSelect from "../components/InputSelect/InputSelect";
 import { Container, Col, Row, Card, Modal } from "react-bootstrap";
 import { VscChevronDown } from "react-icons/vsc";
+import urlweb from "../utils/config/urlweb";
 
 function Home() {
   const [casos, setCasos] = useState([]);
@@ -105,7 +106,7 @@ function Home() {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/materias";
+      let url = `http://${urlweb}/materias`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setMaterias(response.data);
@@ -120,7 +121,7 @@ function Home() {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/auth/getUserLogueado";
+      let url = `http://${urlweb}/auth/getUserLogueado`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setAbogadoLogueado(response.data.id_abogado);
@@ -135,7 +136,7 @@ function Home() {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/submaterias";
+      let url = `http://${urlweb}/submaterias`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setSubMaterias(response.data);
@@ -151,7 +152,7 @@ function Home() {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(config);
-      let url = "http://localhost:8090/casos";
+      let url = `http://${urlweb}/casos`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasos(response.data);
@@ -166,7 +167,7 @@ function Home() {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/casos/" + id;
+      let url = `http://${urlweb}/casos/${id}`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasoSeleccionado(response.data);
@@ -185,7 +186,7 @@ function Home() {
         const config = {
           headers: { Authorization: `Bearer ${Cookies.get("token")}` }
         };
-        let url = "http://localhost:8090/casos/abogado/" + abogadoLogueado.id;
+        let url = `http://${urlweb}/casos/abogado/${abogadoLogueado.id}`;
         const response = await axios.get(url, config);
         if (response.status === 200) {
           setCasos(response.data);
@@ -202,7 +203,7 @@ function Home() {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(request);
-      let url = "http://localhost:8090/casos";
+      let url = `http://${urlweb}/casos`;
       const response = await axios.post(url, request, config);
 
       if (response.status === 200) {
@@ -222,7 +223,7 @@ function Home() {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(item);
-      let url = "http://localhost:8090/casos";
+      let url = `http://${urlweb}/casos`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         handleCloseEdit();

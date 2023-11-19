@@ -15,6 +15,8 @@ import DropdownAbogado from "../../components/Dropdown/DropdownAbogado";
 import formatDateBarraFiltro from "../../utils/functions/formatDateBarraFiltro";
 import { VscChevronLeft, VscGlobe, VscPerson, VscLayers } from "react-icons/vsc";
 
+import urlweb from "../../utils/config/urlweb";
+
 const Youtube = () => {
 
 	const [fechaFiltroInicio, setFechaFiltroInicio] = useState("2023-01-01");
@@ -86,7 +88,7 @@ const Youtube = () => {
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
-			let url = "http://localhost:8090/abogados";
+			let url = `http://${urlweb}/abogados`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setAbogados(response.data);
