@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  mrp-fe:
+    container_name: mrp-fe
+    image: luistoro17/mrp-fe:latest
+    ports: 
+      - 5173:5173
+  mysql-db:
+    container_name: mysql-db
+    image: mysql
+    restart: always
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mrp
+      DB_DIALECT: MySQL8Dialect
+    ports:
+      - 3307:3306
+  app:
+    container_name: mrp-be
+    image: luistoro17/mrp-be:latest
+    ports:
+      - '8090:8090'
+      -  '587:587'
+    environment:
+      - DB_URL=jdbc:mysql://mysql-db:3306/mrp?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - mysql-db
+volumes:
+  mysql-data:
