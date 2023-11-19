@@ -6,6 +6,7 @@
         font-size: 1.5rem;
         border-bottom: 3px solid #DFBF68;
         transition: all 0.5s ease;
+        user-select: none;
         &:hover{
             border-bottom: 3px solid #1E464B;
             transition: all 0.5s ease;

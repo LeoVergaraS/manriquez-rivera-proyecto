@@ -42,8 +42,16 @@ public class MateriaController {
 
     @PostMapping
     public ResponseEntity<Materia> postMateria(@RequestBody Materia materia){
-      Materia materiaGuardada = materiaService.saveMateria(materia);
-      return ResponseEntity.ok().body(materiaGuardada);
+      
+      Materia materiaExistente = materiaService.getMateriaByNombre(materia.getNombre());
+      if(materiaExistente != null){
+        return ResponseEntity.badRequest().build();
+      }      
+      
+      else{
+        Materia materiaGuardada = materiaService.saveMateria(materia);
+        return ResponseEntity.ok().body(materiaGuardada);
+      }
     }
 
     @PostMapping("/delete")

@@ -200,6 +200,11 @@ const Tabla = (props) => {
       }
     } catch (err) {
       console.error(err);
+      Alerta.fire({
+        icon: "error",
+        title: "No se pudo crear",
+        text: "El item ya existe",
+      });
     }
   };
 
@@ -220,6 +225,11 @@ const Tabla = (props) => {
       }
     } catch (err) {
       console.error(err);
+      Alerta.fire({
+        icon: "error",
+        title: "No se pudo editar",
+        text: "El item ya existe",
+      });
     }
   };
 

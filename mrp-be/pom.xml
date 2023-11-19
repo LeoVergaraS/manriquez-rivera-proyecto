@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>manriquez-rivera</groupId>
-	<artifactId>proyecto</artifactId>
+	<artifactId>mrp-be</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>proyecto</name>
+	<name>mrp-be</name>
 	<description>Proyecto para Manriquez Rivera</description>
 	<properties>
 		<java.version>17</java.version>

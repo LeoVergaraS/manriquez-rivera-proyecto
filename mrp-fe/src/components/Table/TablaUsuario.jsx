@@ -9,9 +9,31 @@ import Select from "react-select";
 import FormAbogado from "../Forms/FormAbogado/FormAbogado";
 import FormUsuario from "../Forms/FormUsuario/FormUsuario";
 import FormChange from "../Forms/FormChange/FormChange";
+import Swal from "sweetalert2";
+import urlweb from "../../utils/config/urlweb";
 
 const TablaUsuario = (props) => {
   const body = props.body;
+
+  /////////////////////////////////////////////////
+  //              Usuario logueado
+  /////////////////////////////////////////////////
+  const [abogadoLogueado, setAbogadoLogueado] = useState(null);
+
+  const getUsuarioLogueado = async () => {
+    try {
+        const config = {
+            headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+        };
+        let url = `http://${urlweb}/auth/getUserLogueado`;
+        const response = await axios.get(url, config);
+        if (response.status === 200) {
+            setAbogadoLogueado(response.data.id_abogado);
+        }
+    } catch (err) {
+        console.log(err.message);
+    }
+};
 
   //////////////////////////////////////////////////
   //        Para los filtros de la tabla
@@ -42,43 +64,11 @@ const TablaUsuario = (props) => {
     const atr = atribute === "#" ? "id" : atribute.toLowerCase();
     const sortOrder = order === "ASC" ? 1 : -1;
 
-    if (atr === 'caso') {
-      data.sort((a, b) => {
-        if (a.id_caso.id > b.id_caso.id) return 1 * sortOrder;
-        if (a.id_caso.id < b.id_caso.id) return -1 * sortOrder;
-        return 0;
-      });
-    } else if (atr === 'abogado') {
-      data.sort((a, b) => {
-        if (a.id_abogado.nombre > b.id_abogado.nombre) return 1 * sortOrder;
-        if (a.id_abogado.nombre < b.id_abogado.nombre) return -1 * sortOrder;
-        return 0;
-      });
-    } else if (atr === 'cliente') {
-      data.sort((a, b) => {
-        if (a.id_cliente.nombre > b.id_cliente.nombre) return 1 * sortOrder;
-        if (a.id_cliente.nombre < b.id_cliente.nombre) return -1 * sortOrder;
-        return 0;
-      });
-    } else if (atr === 'materia') {
-      data.sort((a, b) => {
-        if (a.id_materia.nombre > b.id_materia.nombre) return 1 * sortOrder;
-        if (a.id_materia.nombre < b.id_materia.nombre) return -1 * sortOrder;
-        return 0;
-      });
-    } else if (atr === 'submateria') {
-      data.sort((a, b) => {
-        if (a.id_submateria.nombre > b.id_submateria.nombre) return 1 * sortOrder;
-        if (a.id_submateria.nombre < b.id_submateria.nombre) return -1 * sortOrder;
-        return 0;
-      });
-    } else {
-      data.sort((a, b) => {
-        if (a[atr] > b[atr]) return 1 * sortOrder;
-        if (a[atr] < b[atr]) return -1 * sortOrder;
-        return 0;
-      });
-    }
+    data.sort((a, b) => {
+      if (a[atr] > b[atr]) return 1 * sortOrder;
+      if (a[atr] < b[atr]) return -1 * sortOrder;
+      return 0;
+    });
   };
 
   /////////////////////////////////////////////////
@@ -104,22 +94,7 @@ const TablaUsuario = (props) => {
     const buscar = e.target.value;
     const atr = filterSearch === "#" ? "id" : filterSearch.toLowerCase();
 
-    if (atr === "caso") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_caso.id.toString(), buscar));
-      setData(newData);
-    } else if (atr === "abogado") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_abogado.nombre, buscar));
-      setData(newData);
-    } else if (atr === "cliente") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_cliente.nombre, buscar));
-      setData(newData);
-    } else if (atr === "materia") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_materia.nombre, buscar));
-      setData(newData);
-    } else if (atr === "submateria") {
-      const newData = dataCopy.filter((item) => busqueda(item.id_submateria.nombre, buscar));
-      setData(newData);
-    } else if (atr === "id") {
+    if (atr === "id") {
       const newData = dataCopy.filter((item) => busqueda(item.id.toString(), buscar));
       setData(newData);
     } else {
@@ -198,8 +173,13 @@ const TablaUsuario = (props) => {
           title: "Creado correctamente",
         });
       }
-    } catch (err) {
+    } catch (err) { 
       console.error(err);
+      Alerta.fire({
+        icon: "error",
+        title: "Error al crear",
+        text: "El nombre de usuario ya existe",
+      });
     }
   };
 
@@ -244,6 +224,7 @@ const TablaUsuario = (props) => {
   };
 
   const deleteItem = async (content, item) => {
+    console.log(content);
     try {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
@@ -253,10 +234,23 @@ const TablaUsuario = (props) => {
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleDeleted();
-        Alerta.fire({
-          icon: "success",
-          title: "Eliminado correctamente",
-        });
+        Swal.fire({
+          title: 'Usuario eliminado correctamente',
+          text: abogadoLogueado.nombre === item.nombre ? 'Se cerrará la sesión' : '',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          if (abogadoLogueado.nombre === item.nombre) {
+            Cookies.remove('token')
+            let claveObjeto = "CasoSeleccionado";
+
+            localStorage.removeItem(claveObjeto);
+            claveObjeto = "tiempoCronometro";
+            localStorage.removeItem(claveObjeto);
+            window.location.href = '/login'
+          }
+        }) 
       }
     } catch (err) {
       console.error(err);
@@ -303,6 +297,10 @@ const TablaUsuario = (props) => {
   //////////////////////////////////////////////////
   //               Efectos
   //////////////////////////////////////////////////
+  useEffect(() => {
+    getUsuarioLogueado();
+  }, []);
+
   useEffect(() => {
     get(props.content);
   }, [props.content]);
@@ -532,7 +530,7 @@ const TablaUsuario = (props) => {
         </Modal.Body>
         <Modal.Footer>
           <VscClose onClick={toggleDeleted} style={{ cursor: "pointer", color: "rgb(172, 172, 172)", fontSize: 30 }} />
-          <VscCheck onClick={() => deleteItem(props.content, item)} style={{ cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30 }} />
+          <VscCheck onClick={() => deleteItem("usuarios", item)} style={{ cursor: "pointer", color: "rgb(223, 191, 104)", fontSize: 30 }} />
         </Modal.Footer>
       </Modal>
     </>

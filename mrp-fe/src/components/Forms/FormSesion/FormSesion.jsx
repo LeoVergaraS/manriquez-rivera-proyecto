@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import { createCasoOption } from "../../../data/options";
 import Select from "react-select";
 import SelectAbogado from "../MySelect/SelectAbogado";
+import urlweb from "../../../utils/config/urlweb";
 
 const FormSesion = (props) => {
   const sesion = props.item;
@@ -63,7 +64,7 @@ const FormSesion = (props) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       };
-      let url = `http://localhost:8090/casos`;
+      let url = `http://${urlweb}/casos`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         const casos = response.data;

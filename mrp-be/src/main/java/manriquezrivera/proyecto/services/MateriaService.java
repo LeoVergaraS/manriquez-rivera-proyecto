@@ -29,4 +29,8 @@ public class MateriaService{
         materia.setBorrado(true);
         return materiaRepository.save(materia);
     }
+
+    public Materia getMateriaByNombre(String nombre) {
+        return materiaRepository.getByNombre(nombre);
+    }
 }

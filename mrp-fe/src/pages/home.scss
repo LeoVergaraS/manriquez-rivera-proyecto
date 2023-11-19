@@ -1,4 +1,6 @@
-.table-home{
+@use "../utils/scss/variables.scss" as *;
+
+.table-home {
     color: black;
     font-size: 30px;
     table-layout: fixed;
@@ -6,24 +8,24 @@
     margin-right: 40px;
 }
 
-.tbody-home{
+.tbody-home {
     align-items: center;
     justify-content: center;
     min-height: 80%;
     background: white;
 }
 
-.container2{
+.container2 {
     display: flex;
     justify-content: center;
 }
 
-.thead-home{
+.thead-home {
     background: #3B575A;
     color: white;
 }
 
-.th-home{
+.th-home {
     padding: 20px 15px;
     font-weight: 700;
     text-align: center;
@@ -39,7 +41,7 @@
     //border-radius: 10px;
 }
 
-tbody tr:hover{
+tbody tr:hover {
     background: rgb(219, 215, 215);
 }
 
@@ -50,78 +52,182 @@ tbody tr:hover{
     border-bottom: 3px solid white;
 }
 
-.special-row{
+.special-row {
     height: 5px;
 }
 
-.home{
-    &__nav-link{
+.home {
+    &__nav-link {
         font-size: 1.5rem;
         border-bottom: 3px solid #DFBF68;
         transition: all 0.5s ease;
     }
 }
 
-.create-icon{
+.create-icon {
     transition: scale 0.2s ease-in-out;
-    &:hover{
+
+    &:hover {
         scale: 1.2;
     }
 }
 
-.edit-icon{
+.edit-icon {
     transition: scale 0.2s ease-in-out;
     cursor: pointer;
     font-size: 40px;
     color: #DFBF68;
-    &:hover{
+
+    &:hover {
         scale: 1.2;
     }
 }
 
-.edit-icon-disabled{
+.edit-icon-disabled {
     transition: scale 0.2s ease-in-out;
     cursor: auto;
     font-size: 40px;
     color: #DFBF68;
     opacity: 0.5;
-    &:hover{
+
+    &:hover {
         scale: 1;
     }
 }
 
-.card-caso{
-    -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.4);
-    -moz-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.4);
-    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.4);
+.card-caso {
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
     transition: scale 0.4s ease-in-out;
-    &.hovered{
+
+    &.hovered {
         scale: 1.05;
     }
 }
 
-.card-cronometro{
-    -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.4);
-    -moz-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.4);
-    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.4);
+.card-cronometro {
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
     transition: scale 0.4s ease-in-out;
-    &.hovered{
+
+    &.hovered {
         scale: 1.05;
+    }
+
+    &__ts-container {
+        position: absolute;
+        width: 90%;
+        bottom: 0;
+        margin: -186px 5%;
+        transition: margin 0.3s ease-in-out;
+
+        &--collapse {
+            margin: -33px 5%;
+        }
+    }
+
+    &__collapse {
+        border: 2px solid #DFBF68;
+        border-top: 0px;
+        border-radius: 0 0 5px 5px;
+        height: 186px;
+        transition: height 0.3s ease-in-out;
+        box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+        -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+
+        &--collapse {
+            height: 33px;
+        }
+
+        &-select {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 5px;
+
+            &-text {
+                font-size: 20px;
+                color: #DFBF68;
+                user-select: none;
+                transition: color 0.3s ease-in-out;
+
+                &:hover {
+                    color: white;
+                }
+            }
+
+            &-button{
+                transform: rotate(180deg);
+                transition: transform 0.3s ease-in-out;
+                &--collapse {
+                    transform: rotate(0deg);
+                }
+            }
+
+            &-icon {
+                font-size: 30px;
+                color: #DFBF68;
+                transition: color 0.3s ease-in-out;
+
+                &:hover {
+                    color: white;
+                }
+
+            }
+        }
+
+        &-content {
+            opacity: 1;
+            height: auto;
+            transition: all 0.5s ease-in;
+
+            &--collapse {
+                height: 0;
+                opacity: 0;
+                transition: all 0.2s ease-out;
+
+            }
+
+            &-item {
+                color: white;
+                font-size: 18px;
+                padding: 2px 5px;
+                user-select: none;
+
+                &:hover {
+                    color: $color-secundario;
+                }
+
+                &--selected {
+                    background-color: $color-primario;
+                    color: $color-oscuro;
+                    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+                    -webkit-box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+                    -moz-box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.35);
+
+                    &:hover {
+                        color: $color-oscuro;
+                    }
+                }
+
+                &--last {
+                    border-radius: 0 0 5px 5px;
+                }
+            }
+        }
     }
 }
 
-.select-ts-container{
-    position: relative;
-    width: 80%;
-    bottom: -40px;
-    left: 10%;
-    background-color: rgb(0,0,0,0);
-}
 
-.fieldset-select{
+.fieldset-select {
     border: 2px solid #DFBF68;
     border-radius: 5px;
-    &__legend{
+
+    &__legend {
         position: relative;
         padding: 0 10px;
         margin: 0;

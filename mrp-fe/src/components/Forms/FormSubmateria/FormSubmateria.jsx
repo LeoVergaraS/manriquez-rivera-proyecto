@@ -6,6 +6,8 @@ import Select from "react-select";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import urlweb from "../../../utils/config/urlweb";
+
 const FormSubmateria = (props) => {
   const submateria = props.item;
   const close = props.close;
@@ -30,8 +32,8 @@ const FormSubmateria = (props) => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-    };
-      let url = "http://localhost:8090/materias";
+      };
+      let url = `http://${urlweb}/materias`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const materias = response.data;

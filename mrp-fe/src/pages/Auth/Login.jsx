@@ -3,11 +3,14 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
+import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import Swal from "sweetalert2";
+import urlweb from "../../utils/config/urlweb";
 
 const Login = () => {
   const [seePassword, setSeePassword] = useState(false);
   const [tipo, setTipo] = useState("password");
+  const [message, setMessage] = useState("");
 
   const [login, setLogin] = useState({
     username: "",
@@ -45,7 +48,7 @@ const Login = () => {
         username: login.username.trim(),
         password: login.password,
       };
-      let url = "http://localhost:8090/auth/login";
+      let url = `http://${urlweb}/auth/login`;
       const response = await axios.post(url, body);
       if (response.status === 200) {
         const expirationTime = new Date(
@@ -104,14 +107,21 @@ const Login = () => {
               placeholder="Ingrese su contraseña"
               required
             />
-            <span 
-                className="seePassword" 
-                style={{cursor: "pointer", color: seePassword ? "rgb(223,191,104,0.6)" : "#DFBF68"}}
+            <div className="mostrar-contrasenia mt-1" style={{display: "flex", justifyContent: "left", alignItems: "center", gap: "5px"}}>
+            {seePassword ?
+              (<VscEyeClosed
                 onClick={handleSee}
-                >
-                    {seePassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-                
-            </span>
+                onMouseEnter={() => setMessage("Ocultar contraseña")}
+                onMouseLeave={() => setMessage("")}
+                style={{ fontSize: "25px", cursor: "pointer" }} />) :
+              (<VscEye
+                onClick={handleSee}
+                onMouseEnter={() => setMessage("Mostrar contraseña")}
+                onMouseLeave={() => setMessage("")}
+                style={{ fontSize: "25px", cursor: "pointer" }} />)
+            }
+            {message}
+          </div>
           </Form.Group>
           <button className="form-login__button-submit">Iniciar sesión</button>
         </Form>

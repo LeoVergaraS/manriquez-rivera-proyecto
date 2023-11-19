@@ -13,9 +13,10 @@ import FormCaso from "../components/Forms/FormCaso/FormCaso";
 import formatDateShow from "../utils/functions/formatDateShow";
 import InputSelect from "../components/InputSelect/InputSelect";
 import { Container, Col, Row, Card, Modal } from "react-bootstrap";
+import { VscChevronDown } from "react-icons/vsc";
+import urlweb from "../utils/config/urlweb";
 
 function Home() {
-  const [ts, setTs] = useState(60);
   const [casos, setCasos] = useState([]);
   const [materias, setMaterias] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
@@ -29,14 +30,8 @@ function Home() {
     nombre: null,
     borrado: false,
   });
-const [home, setHome] = useState(true);
-  const tiempos = [
-    { label: "1 hora", value: 60 },
-    { label: "45 min", value: 45 },
-    { label: "30 min", value: 30 },
-    { label: "15 min", value: 15 },
-    { label: "Sin pausa", value: -1 }
-  ]
+  const [home, setHome] = useState(true);
+
 
   const casoPorDefecto = {
 
@@ -61,9 +56,7 @@ const [home, setHome] = useState(true);
     setShowEdit(true);
   };
 
-  const handleSelectTs = (e) => {
-    setTs(e.value);
-  }
+
 
   const handleCloseEdit = () => {
     setEditedItem(defaultItem);
@@ -113,7 +106,7 @@ const [home, setHome] = useState(true);
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/materias";
+      let url = `http://${urlweb}/materias`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setMaterias(response.data);
@@ -128,7 +121,7 @@ const [home, setHome] = useState(true);
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/auth/getUserLogueado";
+      let url = `http://${urlweb}/auth/getUserLogueado`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setAbogadoLogueado(response.data.id_abogado);
@@ -143,7 +136,7 @@ const [home, setHome] = useState(true);
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/submaterias";
+      let url = `http://${urlweb}/submaterias`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setSubMaterias(response.data);
@@ -159,7 +152,7 @@ const [home, setHome] = useState(true);
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(config);
-      let url = "http://localhost:8090/casos";
+      let url = `http://${urlweb}/casos`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasos(response.data);
@@ -174,7 +167,7 @@ const [home, setHome] = useState(true);
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/casos/" + id;
+      let url = `http://${urlweb}/casos/${id}`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasoSeleccionado(response.data);
@@ -193,7 +186,7 @@ const [home, setHome] = useState(true);
         const config = {
           headers: { Authorization: `Bearer ${Cookies.get("token")}` }
         };
-        let url = "http://localhost:8090/casos/abogado/" + abogadoLogueado.id;
+        let url = `http://${urlweb}/casos/abogado/${abogadoLogueado.id}`;
         const response = await axios.get(url, config);
         if (response.status === 200) {
           setCasos(response.data);
@@ -210,7 +203,7 @@ const [home, setHome] = useState(true);
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(request);
-      let url = "http://localhost:8090/casos";
+      let url = `http://${urlweb}/casos`;
       const response = await axios.post(url, request, config);
 
       if (response.status === 200) {
@@ -230,7 +223,7 @@ const [home, setHome] = useState(true);
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(item);
-      let url = "http://localhost:8090/casos";
+      let url = `http://${urlweb}/casos`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         handleCloseEdit();
@@ -288,6 +281,35 @@ const [home, setHome] = useState(true);
     )
   }
 
+  ///////////////////////////////////////////////////////////
+  //              Para el collapse y select
+  ///////////////////////////////////////////////////////////
+  const tiempos = [
+    { label: "1 hora", value: 60 },
+    { label: "45 min", value: 45 },
+    { label: "30 min", value: 30 },
+    { label: "15 min", value: 15 },
+    { label: "Sin pausa", value: -1 }
+  ]
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [objSelected, setObjSelected] = useState("1 hora");
+  const [ts, setTs] = useState(60);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  }
+
+  const handleSelectTs = (tiempo) => {
+    setObjSelected(tiempo.label);
+    setTs(tiempo.value);
+    toggleCollapse();
+  }
+
+
+  ///////////////////////////////////////////////////////////
+  //                     Los efectos
+  ///////////////////////////////////////////////////////////
   useEffect(() => {
     getMaterias();
     getSubMaterias();
@@ -296,8 +318,11 @@ const [home, setHome] = useState(true);
 
   useEffect(() => {
     getCasoByIdAbogado();
-
   }, [abogadoLogueado]);
+
+  useEffect(() => {
+    console.log(ts);
+  }, [ts]);
 
   return (
     <Container
@@ -320,7 +345,7 @@ const [home, setHome] = useState(true);
             set={setCasoSeleccionado}
             createOption={createCasoOption}
             home={home}
-            
+
           />
         </fieldset>
       </Row>
@@ -484,39 +509,38 @@ const [home, setHome] = useState(true);
                   }
                 />
               </Card.Body>
-              <Select
-                className="select-ts-container"
-                classNamePrefix="select-ts"
-                options={tiempos}
-                defaultValue={tiempos[0]}
-                isDisabled={isDisabled}
-                onChange={handleSelectTs}
-                styles={{
-                  control: (baseStyles) => ({
-                    ...baseStyles,
-                    backgroundColor: "rgba(0,0,0,0)",
-                    border: "none",
-                    borderBottom: "3px solid #DFBF68",
-                  }),
-                  singleValue: (baseStyles) => ({
-                    ...baseStyles,
-                    color: "white",
-                    fontSize: "19px",
-                  }),
-                  menu: (baseStyles) => ({
-                    ...baseStyles,
-                    backgroundColor: "rgba(0,0,0,0)",
-                    color: "white",
-                    borderBottom: "3px solid #DFBF68",
-                    fontSize: "19px"
-                  }),
-                  option: (baseStyles, state) => ({
-                    ...baseStyles,
-                    backgroundColor: state.isFocused ? "#DFBF68" : "rgba(0,0,0,0)",
-                    color: state.isFocused ? "black" : "white",
-                  }),
-                }}
-              />
+              <div className={`card-cronometro__ts-container ${isCollapsed ? "card-cronometro__ts-container--collapse" : ""}`}>
+                <div className={`card-cronometro__collapse ${isCollapsed ? "card-cronometro__collapse--collapse" : ""}`}>
+                  <div onClick={!isDisabled && toggleCollapse} style={{cursor: isDisabled && 'auto', opacity: isDisabled && '0.5'}} className="card-cronometro__collapse-select">
+                    <span className="card-cronometro__collapse-select-text">
+                      {objSelected}
+                    </span>
+                    <div className={`card-cronometro__collapse-select-button ${isCollapsed ? "card-cronometro__collapse-select-button--collapse" : ""}`}>
+                      <VscChevronDown className="card-cronometro__collapse-select-icon" />
+                    </div>
+                  </div>
+                  <div className={`card-cronometro__collapse-content ${isCollapsed ? "card-cronometro__collapse-content--collapse" : ""}`}>
+                    {tiempos.map((tiempo, index) => (
+                      index === tiempos.length - 1 ?
+                        (<div
+                          key={tiempo.value}
+                          className={`card-cronometro__collapse-content-item card-cronometro__collapse-content-item--last ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
+                          onClick={!isCollapsed && (() => handleSelectTs(tiempo))}
+                        >
+                          {tiempo.label}
+                        </div>)
+                        :
+                        (<div
+                          key={tiempo.value}
+                          className={`card-cronometro__collapse-content-item ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
+                          onClick={!isCollapsed && (() => handleSelectTs(tiempo))}
+                        >
+                          {tiempo.label}
+                        </div>)
+                    ))}
+                  </div>
+                </div>
+              </div>
             </Card>
           </div>
         </Col>

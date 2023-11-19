@@ -9,6 +9,8 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 import { Card, Col, Container, Pagination, Row, Table } from "react-bootstrap";
 import captions from "../../utils/functions/captions";
+import GraficoBarras from "../../components/Graficos/GraficoBarras";
+import urlweb from "../../utils/config/urlweb";
 
 const Materias = ({
 	id_abogado,
@@ -38,7 +40,7 @@ const Materias = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url = "http://localhost:8090/materias";
+			let url = `http://${urlweb}/materias`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setMaterias(response.data);
@@ -53,11 +55,7 @@ const Materias = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url =
-				"http://localhost:8090/consultas/materia/sesiones/" +
-				materia.id +
-				"/" +
-				id_abogado;
+			let url = `http://${urlweb}/consultas/materia/sesiones/${materia.id}/${id_abogado}`
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setSesionesMateria(response.data);
@@ -101,16 +99,7 @@ const Materias = ({
 					setDropSelect(difDias + 1);
 				}
 				let url =
-					"http://localhost:8090/consultas/materia/sesiones/" +
-					materia.id +
-					"/" +
-					fechaInicio +
-					"/" +
-					fechaFin +
-					"/" +
-					dropSelect +
-					"/" +
-					id_abogado;
+					`http://${urlweb}/consultas/materia/sesiones/${materia.id}/${fechaInicio}/${fechaFin}/${dropSelect}/${id_abogado}`
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesMateria(response.data);
@@ -132,10 +121,7 @@ const Materias = ({
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
 			let url =
-				"http://localhost:8090/consultas/materia/tabla/" +
-				materia.id +
-				"/" +
-				id_abogado;
+				`http://${urlweb}/consultas/materia/tabla/${materia.id}/${id_abogado}`
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				//setSesionesMateria(response.data);
@@ -180,17 +166,7 @@ const Materias = ({
 					const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
 					setDropSelect(difDias + 1);
 				}
-				let url =
-					"http://localhost:8090/consultas/materia/tabla/" +
-					materia.id +
-					"/" +
-					fechaInicio +
-					"/" +
-					fechaFin +
-					"/" +
-					dropSelect +
-					"/" +
-					id_abogado;
+				let url = `http://${urlweb}/consultas/materia/tabla/${materia.id}/${fechaInicio}/${fechaFin}/${dropSelect}/${id_abogado}`
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesMateriaTabla(
@@ -213,17 +189,7 @@ const Materias = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url =
-				"http://localhost:8090/consultas/materia/estadisticas/" +
-				id_abogado +
-				"/" +
-				materia.id +
-				"/" +
-				fechaInicio +
-				"/" +
-				fechaFin +
-				"/" +
-				dropSiempre;
+			let url = `http://${urlweb}/consultas/materia/estadisticas/${id_abogado}/${materia.id}/${fechaInicio}/${fechaFin}/${dropSiempre}`
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setEstadisticas(response.data);

@@ -6,6 +6,7 @@ import axios from "axios";
 import MySelect from "../MySelect/MySelect";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import Cookies from 'js-cookie';
+import urlweb from "../../../utils/config/urlweb";
 
 const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
   const { Formik } = formik;
@@ -50,7 +51,7 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/abogados";
+      let url = `http://${urlweb}/abogados`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const abogados = response.data;
@@ -71,7 +72,7 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = "http://localhost:8090/abogados/caso/" + id;
+      let url = `http://${urlweb}/abogados/caso/${id}`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         setInitialAbogados(
