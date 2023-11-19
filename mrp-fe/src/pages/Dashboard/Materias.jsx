@@ -9,6 +9,7 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import GraficoGernal1 from "../../components/Graficos/GraficoGernal1";
 import { Card, Col, Container, Pagination, Row, Table } from "react-bootstrap";
 import captions from "../../utils/functions/captions";
+import GraficoBarras from "../../components/Graficos/GraficoBarras";
 
 const Materias = ({
 	id_abogado,

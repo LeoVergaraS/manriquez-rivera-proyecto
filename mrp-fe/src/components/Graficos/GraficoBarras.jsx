@@ -1,19 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Container } from 'react-bootstrap';
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { Card } from 'react-bootstrap';
 
+const GradicoBarras = ({consultasM, tittle }) => {
 
-const GradicoBarras = ({ }) => {
-
-    useEffect(() => {
-
-    },);
+    const tiempos = consultasM !== undefined ? consultasM.map((tiempo) => { return tiempo.tiempo }) : [];
+    const materias = consultasM !== undefined ? consultasM.map((tiempo) => { return tiempo.nombre }) : [];
 
     const data = {
-        labels: ["Derecho Civil", "Loleros", "Cristiano ROn", "Derecho Civil", "Loleros", "Cristiano ROn"],
+        labels: materias,
         datasets: [
             {
                 label: 'Ingresos',
@@ -23,7 +17,7 @@ const GradicoBarras = ({ }) => {
                 hoverBackgroundColor: "#DFBF68",
                 hoverBorderColor: "#DFBF68",
                 barPercentage: 0.3,
-                data: [65, 59, 80, 81, 56, 55]
+                data: tiempos
             },
         ]
     };
@@ -81,9 +75,9 @@ const GradicoBarras = ({ }) => {
 
     return (
         <>
-            <div className="card">
-                <div className="card-header" style={{ height: "100%" }}>
-                    <h4 className="card-title text-center" >Tiempo de materias por día</h4>
+            <div className="card" style={{ height: "100%" }}>
+                <div className="card-header">
+                    <h4 className="card-title text-center" >{tittle}</h4>
                 </div>
                 <div className="card-body" style={{ height: "100%" }}>
                     <Bar
