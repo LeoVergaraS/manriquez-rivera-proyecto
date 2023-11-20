@@ -5,8 +5,12 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 
-  preview: {
+  server: {
+    watch:{
+      useFsEvents: true,
+    },
     host: true,
+    strictPort: true,
     port: 3000,
   }
 })
