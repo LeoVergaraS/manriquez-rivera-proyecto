@@ -7,6 +7,7 @@ import { VscAdd, VscCheck, VscClose, VscDebugRestart, VscChevronUp, VscChevronDo
 import { Container, Form, Modal, Pagination, Placeholder, Table } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import Select from "react-select";
+import urlweb from "../../utils/config/urlweb";
 
 const Tabla = (props) => {
   const name = props.name;
@@ -170,7 +171,7 @@ const Tabla = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://localhost:8090/${mapping}`;
+      const url = `http://${urlweb}/${mapping}`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setData(response.data);
@@ -189,7 +190,7 @@ const Tabla = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://localhost:8090/${mapping}`;
+      const url = `http://${urlweb}/${mapping}`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleCreate();
@@ -214,7 +215,7 @@ const Tabla = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://localhost:8090/${mapping}`;
+      const url = `http://${urlweb}/${mapping}`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleEdit();
@@ -239,7 +240,7 @@ const Tabla = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://localhost:8090/${mapping}/delete`;
+      const url = `http://${urlweb}/${mapping}/delete`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleDeleted();
