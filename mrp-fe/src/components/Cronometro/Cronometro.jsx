@@ -1,16 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import "./cronometro.scss";
-import { FaPlayCircle, FaRegPlayCircle } from "react-icons/fa";
+import { FaPlayCircle } from "react-icons/fa";
 import { FaCirclePause } from "react-icons/fa6";
 import { VscDebugRestart } from "react-icons/vsc";
-import { GiSaveArrow } from "react-icons/gi";
 import axios from "axios";
 import formatDate from "../../utils/functions/formatearFecha";
-import { AiOutlinePlusCircle, AiFillSave } from "react-icons/ai";
+import { AiFillSave } from "react-icons/ai";
 import Swal from "sweetalert2";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
-import Select from 'react-select'
 import Cookies from 'js-cookie';
 import sumOneDayToDate from "../../utils/functions/sumOneDayToDate";
 import urlweb from "../../utils/config/urlweb";
@@ -158,7 +156,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
             if (text) {
               sesion.actividad = text;
               sesion.tiempo = tiempo;
-              sesion.fecha = sumOneDayToDate(formatDate(new Date()));
+              sesion.fecha = formatDate(new Date());
               sesion.id_caso.id = id_caso;
               sesion.id_abogado.id = abogadoLogueado_id;
               createSesion(sesion);

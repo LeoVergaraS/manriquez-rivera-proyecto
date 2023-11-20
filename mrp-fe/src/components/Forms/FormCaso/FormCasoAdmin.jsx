@@ -170,7 +170,7 @@ const FormCasoAdmin = (props) => {
             id_cliente: { nombre: values.id_cliente },
             id_materia: { id: values.id_materia },
             id_submateria: { id: values.id_submateria },
-            fecha: sumOneDayToDate(values.fecha),
+            fecha: values.fecha,
             borrado: caso !== null ? caso.borrado : false,
           };
           const request = { caso: object, abogados: abogados };

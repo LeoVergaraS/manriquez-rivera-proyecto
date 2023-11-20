@@ -6,11 +6,8 @@ import Clientes from "./Clientes";
 import Materias from "./Materias";
 
 import { useEffect, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
 import DropdownR from "../../components/Dropdown/DropdownR";
 import formatearFecha from "../../utils/functions/formatearFecha";
-import sumOneDayToDate from "../../utils/functions/sumOneDayToDate";
-import formatDateUpload from "../../utils/functions/formatDateUpload";
 import DropdownAbogado from "../../components/Dropdown/DropdownAbogado";
 import formatDateBarraFiltro from "../../utils/functions/formatDateBarraFiltro";
 import { VscChevronLeft, VscGlobe, VscPerson, VscLayers } from "react-icons/vsc";

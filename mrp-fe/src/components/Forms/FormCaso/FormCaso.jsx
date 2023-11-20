@@ -7,6 +7,7 @@ import MySelect from "../MySelect/MySelect";
 import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import Cookies from 'js-cookie';
 import urlweb from "../../../utils/config/urlweb";
+import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
 
 const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
   const { Formik } = formik;
@@ -107,7 +108,7 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
           item.id_materia = { id: values.id_materia };
           item.id_submateria = { id: values.id_submateria };
           item.fecha = formatDateUpload(
-            new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate() + 1)
+            new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate())
           );
           const request = { caso: item, abogados: abogados };
           postCaso(request);

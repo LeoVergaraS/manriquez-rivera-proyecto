@@ -90,7 +90,7 @@ const FormSesion = (props) => {
           const object = {
             id: sesion !== null ? sesion.id : null,
             tiempo: values.horas * 3600 + values.minutos * 60 + values.segundos,
-            fecha: sumOneDayToDate(values.fecha),
+            fecha: values.fecha,
             id_caso: { id: values.id_caso.value },
             id_abogado: { id: values.id_abogado },
             actividad: values.actividad,
