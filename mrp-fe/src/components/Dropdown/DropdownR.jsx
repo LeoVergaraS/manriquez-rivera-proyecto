@@ -104,7 +104,7 @@ const DropdownR = ({fi, ff, setFI, setFF, setDropSelect, setDropSiempre, setDrop
 		}
 
 		if (eventKey == 11) {
-			toggleOpen();
+			toggleToast();
 			setDropSiempre(0);
 			setDropAnio(0);
 			setFlag(0);
