@@ -1,7 +1,32 @@
-FROM node:18-alpine
+# Imagen base de node
+FROM node:18-alpine as BUILD_IMAGE
+
+# Directorio de trabajo
 WORKDIR /mrp-fe
-COPY package*.json ./
+COPY package.json .
+
+# Instalar dependencias
 RUN npm install
-EXPOSE 5173
-CMD [ "npm", "run", "dev" ]
-COPY . ./
+COPY . .
+
+# Se crea la carpeta dist
+RUN npm run build
+
+# Imagen de la aplicación en producción
+FROM node:18-alpine as PRODUCTION_IMAGE
+WORKDIR /mrp-fe
+
+# Copiar el directorio dist
+COPY --from=BUILD_IMAGE /mrp-fe/dist /mrp-fe/dist
+EXPOSE 3000
+
+# Se necesita el package.json para el preview
+COPY package.json .
+COPY vite.config.ts .
+
+# Se inicia el preview
+EXPOSE 3000
+CMD [ "npm", "run", "preview" ]
+
+
+
