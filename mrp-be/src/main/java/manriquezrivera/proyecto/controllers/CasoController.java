@@ -1,7 +1,9 @@
 package manriquezrivera.proyecto.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,7 @@ import manriquezrivera.proyecto.services.CasoAbogadoService;
 import manriquezrivera.proyecto.services.CasoService;
 import manriquezrivera.proyecto.services.ClienteService;
 import manriquezrivera.proyecto.entity.Caso;
+import manriquezrivera.proyecto.models.CasoDTO;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,15 +70,28 @@ public class CasoController {
 
 	// get casos para vista cliente desde siempre
 	@GetMapping("/abogado/siempre/{id}/{fechaInicio}/{fechaFin}")
-	public ResponseEntity<List<Caso>> getCasosDesdeSiempreByIdAbogado(@PathVariable(value = "id") Integer id,
+	public ResponseEntity<List<CasoDTO>> getCasosDesdeSiempreByIdAbogado(@PathVariable(value = "id") Integer id,
 			@PathVariable(value = "fechaInicio") String fechaInicio,
 			@PathVariable(value = "fechaFin") String fechaFin) {
-		System.out.println("Hola");
+		System.out.println("Desde siempre");
 		List<Caso> casos = casoService.getCasoDesdeSiempre(id, fechaInicio, fechaFin);
+		System.out.println("Salimos del service");
+		System.out.println("Los casos son: " + casos);
 		if (casos == null) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok().body(casos);
+		System.out.println("No son nulos ");
+
+		casos.forEach(caso -> {
+			Hibernate.initialize(caso.getId_materia());
+			Hibernate.initialize(caso.getId_submateria());
+			Hibernate.initialize(caso.getId_cliente());
+		});
+
+		// transferir el array casos a un array de CasoDTO
+		List<CasoDTO> casosDTO = casoService.mapCasosToDTO(casos);
+
+		return ResponseEntity.ok().body(casosDTO);
 	}
 
 	@GetMapping("/{id}")

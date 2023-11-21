@@ -1,6 +1,7 @@
 package manriquezrivera.proyecto.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import manriquezrivera.proyecto.entity.CasoAbogado;
 import manriquezrivera.proyecto.entity.Cliente;
 import manriquezrivera.proyecto.entity.Sesion;
 import manriquezrivera.proyecto.entity.Submateria;
+import manriquezrivera.proyecto.models.CasoDTO;
 import manriquezrivera.proyecto.repositories.CasoAbogadoRepository;
 import manriquezrivera.proyecto.repositories.CasoRepository;
 import manriquezrivera.proyecto.repositories.SesionRepository;
@@ -141,17 +143,37 @@ public class CasoService {
     // DESDE SIEMPRE
     public List<Caso> getCasoDesdeSiempre(Integer id, String fechaInicio, String fechaFin) {
         Long idLong = id.longValue();
-        List<Sesion> sesiones = sesionRepository.getByIdAbogadoAux(idLong);
-        //System.out.println(sesiones);
-        fechaInicio = sesiones.get(0).getFecha().toString();
-        System.out.println("FECHA INICIO: "+fechaInicio);
+
         if (idLong == -1) {
-            System.out.println("IF");
+            System.out.println("Sin abogado");
+            List<Sesion> sesiones = sesionRepository.getByIdAbogadoAuxSinAbogado();
+            fechaInicio = sesiones.get(0).getFecha().toString();
             return casoRepository.getCasosByFechaSinAbogado(fechaInicio, fechaFin);
         } else {
-            System.out.println("ELSE");
-            System.out.println("RESPONSE: "+casoRepository.getCasosByFecha(idLong, fechaInicio, fechaFin));
+            System.out.println("Con abogado");
+            List<Sesion> sesiones = sesionRepository.getByIdAbogadoAux(idLong);
+            fechaInicio = sesiones.get(0).getFecha().toString();
             return casoRepository.getCasosByFecha(idLong, fechaInicio, fechaFin);
         }
     }
+
+    public List<CasoDTO> mapCasosToDTO(List<Caso> casos) {
+        List<CasoDTO> casosDTO = new ArrayList<>();
+        for (Caso caso : casos) {
+            casosDTO.add(mapCasoToDTO(caso));
+        }
+        return casosDTO;
+    }
+
+    public CasoDTO mapCasoToDTO(Caso caso) {
+        CasoDTO casoDTO = new CasoDTO();
+        casoDTO.setId(caso.getId());
+        casoDTO.setBorrado(caso.isBorrado());
+        casoDTO.setFecha(caso.getFecha());
+        casoDTO.setId_materia(caso.getId_materia());
+        casoDTO.setId_submateria(caso.getId_submateria());
+        casoDTO.setId_cliente(caso.getId_cliente());
+        return casoDTO;
+    }
+
 }

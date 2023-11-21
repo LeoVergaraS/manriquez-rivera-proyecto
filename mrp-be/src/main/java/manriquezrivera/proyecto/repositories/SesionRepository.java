@@ -23,4 +23,8 @@ public interface SesionRepository extends JpaRepository<Sesion, Long>{
     // HICE otra pq no sé si la de arriba se está usando en algún lado y no quiero modificarla
     @Query(value = "SELECT * FROM sesion WHERE borrado = 0 AND id_abogado = :idAbogado ORDER BY fecha", nativeQuery = true)
     List<Sesion> getByIdAbogadoAux(@Param("idAbogado") Long idAbogado);
+
+    // lo mismo de antes pero sin abogado
+    @Query(value = "SELECT * FROM sesion WHERE borrado = 0 ORDER BY fecha", nativeQuery = true)
+    List<Sesion> getByIdAbogadoAuxSinAbogado();
 }
