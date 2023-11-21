@@ -122,7 +122,6 @@ const bodySubmateria = (submateria, edit, deleted) => {
     <tr key={submateria.id} className="table-paginated-body__row">
       <td>{submateria.id}</td>
       <td>{submateria.nombre}</td>
-      <td>{submateria.id_materia.nombre}</td>
       <td className="table-paginated-body__actions">
         <VscEdit
           onClick={() => edit(submateria)}

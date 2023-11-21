@@ -71,11 +71,11 @@ public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria
 	// Descripcion: Consulta la cantidad de submaterias que se han trabajado en un
 	// tiempo determinado
 	@Query(value = "SELECT count(*) " +
-			"FROM (SELECT su.nombre as tiempo " +
-			"FROM mrp.sesion as s, mrp.caso as c, mrp.materia as m, mrp.sub_materia as su " +
-			"WHERE c.id_materia = m.id AND c.id = s.id_caso AND su.id_materia = m.id " +
-			"AND s.borrado = 0 AND s.fecha BETWEEN :fechaInicio AND :fechaFin " +
-			"group by su.nombre) as submaterias", nativeQuery = true)
+					"FROM (SELECT su.nombre as tiempo " +
+					"		FROM mrp.sesion as s, mrp.caso as c, mrp.sub_materia as su " +
+					"		WHERE s.id_caso = c.id AND c.id_submateria = su.id" +
+					"			  AND s.borrado = 0 AND s.fecha BETWEEN :fechaInicio AND :fechaFin " +
+					"		GROUP BY su.nombre) as submaterias", nativeQuery = true)
 	Integer getConsultaCantidadSubmaterias(@Param("fechaInicio") String fechaInicio,
 			@Param("fechaFin") String fechaFin);
 
@@ -275,11 +275,11 @@ public interface ConsultaMateriaRepository extends JpaRepository<ConsultaMateria
 			@Param("fechaFin") String fechaFin, @Param("idAbogado") Long idAbogado);
 
 	@Query(value = "SELECT count(*) " +
-			"FROM (SELECT su.nombre as tiempo " +
-			"FROM mrp.sesion as s, mrp.caso as c, mrp.materia as m, mrp.sub_materia as su " +
-			"WHERE c.id_materia = m.id AND c.id = s.id_caso AND s.id_abogado = :idAbogado AND su.id_materia = m.id " +
-			"AND s.borrado = 0 AND s.fecha BETWEEN :fechaInicio AND :fechaFin " +
-			"group by su.nombre) as submaterias", nativeQuery = true)
+					"FROM (SELECT su.nombre as tiempo " +
+					"		FROM mrp.sesion as s, mrp.caso as c, mrp.sub_materia as su " +
+					"		WHERE c.id = s.id_caso AND s.id_abogado = :idAbogado AND su.id = c.id_submateria" +
+					"				AND s.borrado = 0 AND s.fecha BETWEEN :fechaInicio AND :fechaFin " +
+					"		GROUP BY su.nombre) as submaterias", nativeQuery = true)
 	Integer getConsultaCantidadSubmateriasByIdAbogado(@Param("fechaInicio") String fechaInicio,
 			@Param("fechaFin") String fechaFin, @Param("idAbogado") Long idAbogado);
 
