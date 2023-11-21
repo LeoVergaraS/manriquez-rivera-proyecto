@@ -42,9 +42,36 @@ public class CasoController {
 		return ResponseEntity.ok().body(casos);
 	}
 
+	// get casos para el HOME
 	@GetMapping("/abogado/{id}")
 	public ResponseEntity<List<Caso>> getCasos(@PathVariable(value = "id") Integer id) {
+		System.out.println("Hola");
 		List<Caso> casos = casoService.getCasoByIdAbogado(id);
+		if (casos == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(casos);
+	}
+
+	// get casos para vista cliente con intervalo de fecha
+	@GetMapping("/abogado/{id}/{fechaInicio}/{fechaFin}")
+	public ResponseEntity<List<Caso>> getCasos(@PathVariable(value = "id") Integer id,
+			@PathVariable(value = "fechaInicio") String fechaInicio,
+			@PathVariable(value = "fechaFin") String fechaFin) {
+		List<Caso> casos = casoService.getCasoByFecha(id, fechaInicio, fechaFin);
+		if (casos == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(casos);
+	}
+
+	// get casos para vista cliente desde siempre
+	@GetMapping("/abogado/siempre/{id}/{fechaInicio}/{fechaFin}")
+	public ResponseEntity<List<Caso>> getCasosDesdeSiempreByIdAbogado(@PathVariable(value = "id") Integer id,
+			@PathVariable(value = "fechaInicio") String fechaInicio,
+			@PathVariable(value = "fechaFin") String fechaFin) {
+		System.out.println("Hola");
+		List<Caso> casos = casoService.getCasoDesdeSiempre(id, fechaInicio, fechaFin);
 		if (casos == null) {
 			return ResponseEntity.notFound().build();
 		}

@@ -12,8 +12,10 @@ import manriquezrivera.proyecto.entity.Caso;
 import manriquezrivera.proyecto.entity.Abogado;
 import manriquezrivera.proyecto.entity.CasoAbogado;
 import manriquezrivera.proyecto.entity.Cliente;
+import manriquezrivera.proyecto.entity.Sesion;
 import manriquezrivera.proyecto.repositories.CasoAbogadoRepository;
 import manriquezrivera.proyecto.repositories.CasoRepository;
+import manriquezrivera.proyecto.repositories.SesionRepository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +31,9 @@ public class CasoService {
 
     @Autowired
     private CasoAbogadoRepository casoAbogadoRepository;
+
+    @Autowired
+    private SesionRepository sesionRepository;
 
     public List<Caso> getAllCasos() {
         return casoRepository.getAll();
@@ -106,5 +111,32 @@ public class CasoService {
     public Caso deleteCaso(Caso caso) {
         caso.setBorrado(true);
         return casoRepository.save(caso);
+    }
+
+    // CON INTERVALO DE FECHA
+    public List<Caso> getCasoByFecha(Integer id, String fechaInicio, String fechaFin) {
+        Long idLong = id.longValue();
+        if (idLong == -1) {
+            return casoRepository.getCasosByFechaSinAbogado(fechaInicio, fechaFin);
+        } else {
+            return casoRepository.getCasosByFecha(idLong, fechaInicio, fechaFin);
+        }
+    }
+
+    // DESDE SIEMPRE
+    public List<Caso> getCasoDesdeSiempre(Integer id, String fechaInicio, String fechaFin) {
+        Long idLong = id.longValue();
+        List<Sesion> sesiones = sesionRepository.getByIdAbogadoAux(idLong);
+        //System.out.println(sesiones);
+        fechaInicio = sesiones.get(0).getFecha().toString();
+        System.out.println("FECHA INICIO: "+fechaInicio);
+        if (idLong == -1) {
+            System.out.println("IF");
+            return casoRepository.getCasosByFechaSinAbogado(fechaInicio, fechaFin);
+        } else {
+            System.out.println("ELSE");
+            System.out.println("RESPONSE: "+casoRepository.getCasosByFecha(idLong, fechaInicio, fechaFin));
+            return casoRepository.getCasosByFecha(idLong, fechaInicio, fechaFin);
+        }
     }
 }

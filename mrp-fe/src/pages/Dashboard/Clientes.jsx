@@ -32,12 +32,34 @@ const Clientes = ({
 		tiempo_total: 0,
 	});
 
-	const getCasos = async () => {
+	const getCasosByFecha = async (id_abo) => {
+		try {
+			console.log(fechaInicio, fechaFin, id_abo);
+			if (dropSiempre == 1) {
+				getCasosByIdAbogadoDesdeSiempre(id_abo);
+			} else {
+				const config = {
+					headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+				};
+				console.log("getCasos");
+				let url = `http://${urlweb}/casos/abogado/${id_abo}/${fechaInicio}/${fechaFin}`;
+				const response = await axios.get(url, config);
+				if (response.status === 200) {
+					setCasos(response.data);
+				}
+			}
+		} catch (err) {
+			console.log(err.message);
+		}
+	};
+
+	const getCasosByIdAbogadoDesdeSiempre = async (id_abo) => {
 		try {
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url = `http://${urlweb}/casos/abogado/${id_abo}`;
+			console.log("getCasosDesdeSiempre");
+			let url = `http://${urlweb}/casos/abogado/siempre/${id_abo}/${fechaInicio}/${fechaFin}`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setCasos(response.data);
@@ -190,8 +212,9 @@ const Clientes = ({
 	}, [currentPage, sesionesByCasoTabla]);
 
 	useEffect(() => {
-		getCasos();
-	}, [id_abo]);
+		getCasosByFecha(id_abo);
+		console.log("casos:", casos);
+	}, [id_abo, fechaInicio, fechaFin, dropSiempre]);
 
 	useEffect(() => {
 		if (caso.id !== undefined) {
