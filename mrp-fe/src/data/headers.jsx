@@ -4,7 +4,7 @@ const headers = {
   clientes: ["#", "Nombre", "Acciones"],
   materias: ["#", "Nombre", "Acciones"],
   sesiones: ["#", "Tiempo", "Fecha", "Hora inicio", "Caso", "Abogado", "Actividad", "Acciones"],
-  submaterias: ["#", "Nombre", "Materia", "Acciones"],
+  submaterias: ["#", "Nombre", "Acciones"],
 };
 
 export default headers;
