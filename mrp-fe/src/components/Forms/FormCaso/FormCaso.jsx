@@ -142,12 +142,12 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
                     value={values.id_cliente}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    isValid={touched.id_cliente && !errors.id_cliente}
+                    isInvalid={touched.id_cliente && !!errors.id_cliente}
                   />
-                  {errors.id_cliente && touched.id_cliente && (
-                    <div style={{ color: "red", marginTop: ".5rem" }}>
-                      {errors.id_cliente}
-                    </div>
-                  )}
+                  <Form.Control.Feedback type="invalid">
+                    {errors.id_cliente}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="input-materia">
@@ -158,6 +158,8 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
                     onChange={handleChange}
                     value={values.id_materia}
                     onBlur={handleBlur}
+                    isValid={touched.id_materia && !errors.id_materia}
+                    isInvalid={touched.id_materia && !!errors.id_materia}
                   >
                     <option key={0} value={0}>
                       Seleccione una opción
@@ -168,11 +170,9 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
                       </option>
                     ))}
                   </Form.Select>
-                  {errors.id_materia && touched.id_materia && (
-                    <div style={{ color: "red", marginTop: ".5rem" }}>
-                      {errors.id_materia}
-                    </div>
-                  )}
+                  <Form.Control.Feedback type="invalid">
+                    {errors.id_materia}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col>
@@ -199,6 +199,8 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
                     onChange={handleChange}
                     value={values.id_submateria}
                     onBlur={handleBlur}
+                    isValid={touched.id_submateria && !errors.id_submateria}
+                    isInvalid={touched.id_submateria && !!errors.id_submateria}
                   >
                     <option key={0} value={0}>
                       Seleccione una opción
@@ -209,11 +211,9 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
                       </option>
                     ))}
                   </Form.Select>
-                  {errors.id_submateria && touched.id_submateria && (
-                    <div style={{ color: "red", marginTop: ".5rem" }}>
-                      {errors.id_submateria}
-                    </div>
-                  )}
+                  < Form.Control.Feedback type="invalid">
+                    {errors.id_submateria}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
             </Row>

@@ -21,12 +21,8 @@ public class SubMateriaService{
         return subMateriaRepository.getById(id);
     }
 
-    public List<Submateria> getSubmateriaByNombre(String nombre){
+    public Submateria getSubmateriaByNombre(String nombre){
         return subMateriaRepository.getByNombre(nombre);
-    }
-
-    public List<Submateria> getSubmateriaByIdMateria(Long id_materia){
-        return subMateriaRepository.getByIdMateria(id_materia);
     }
 
     public Submateria saveSubMateria(Submateria subMateria){

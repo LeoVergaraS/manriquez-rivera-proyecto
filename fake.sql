@@ -1,11 +1,11 @@
-INSERT INTO mrp.sub_materia (id_materia, nombre, borrado)
+INSERT INTO mrp.sub_materia (nombre, borrado)
 VALUES
-  (1, 'SubMateria 1', 0),
-  (2, 'SubMateria 2', 0),
-  (3, 'SubMateria 3', 0),
-  (4, 'SubMateria 4', 0),
-  (5, 'SubMateria 5', 0),
-  (6, 'SubMateria 6', 0);
+  ('SubMateria 1', 0),
+  ('SubMateria 2', 0),
+  ('SubMateria 3', 0),
+  ('SubMateria 4', 0),
+  ('SubMateria 5', 0),
+  ('SubMateria 6', 0);
 
 INSERT INTO mrp.cliente (nombre, borrado)
 VALUES

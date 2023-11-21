@@ -2,7 +2,6 @@ package manriquezrivera.proyecto.controllers;
 
 import java.util.List;
 
-import org.hibernate.sql.ast.tree.expression.Summarization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,23 +43,13 @@ public class SubmateriaController {
 
   @PostMapping
   public ResponseEntity<Submateria> postSubmateria(@RequestBody Submateria submateria) {
-
-    List<Submateria> submateriaPorNombre = submateriaService.getSubmateriaByNombre(submateria.getNombre());
-    List<Submateria> submateriasPorIdMateria = submateriaService.getSubmateriaByIdMateria(submateria.getId_materia().getId());
-
-    if(submateriaPorNombre == null){
-      Submateria submateriaGuardada = submateriaService.saveSubMateria(submateria);
-      return ResponseEntity.ok().body(submateriaGuardada);
+    Submateria submateriaExistente = submateriaService.getSubmateriaByNombre(submateria.getNombre());
+    if (submateriaExistente != null) {
+      return ResponseEntity.badRequest().build();
     }
-    else{
-      for (Submateria submateria2 : submateriasPorIdMateria) {
-        if(submateria2.getNombre().equals(submateria.getNombre())){
-          return ResponseEntity.badRequest().build();
-        }
-      }
-      Submateria submateriaGuardada = submateriaService.saveSubMateria(submateria);
-      return ResponseEntity.ok().body(submateriaGuardada);
-    }
+
+    Submateria submateriaGuardada = submateriaService.saveSubMateria(submateria);
+    return ResponseEntity.ok().body(submateriaGuardada);
   }
 
   @PostMapping("/delete")

@@ -56,7 +56,6 @@ public class CasoAbogadoServiceTest {
         submateria.setId(1L);
         submateria.setNombre("Submateria 1");
         submateria.setBorrado(false);
-        submateria.setId_materia(materia);
 
         cliente = new Cliente();
         cliente.setId(1L);

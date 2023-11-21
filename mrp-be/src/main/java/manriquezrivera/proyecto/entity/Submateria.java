@@ -1,5 +1,4 @@
 package manriquezrivera.proyecto.entity;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,9 +15,4 @@ public class Submateria {
     private Long id;
     private String nombre;
     private boolean borrado;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_materia")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Materia id_materia;
 }

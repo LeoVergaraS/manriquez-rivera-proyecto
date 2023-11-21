@@ -9,6 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig {
     @Bean
     public WebMvcConfigurer corsConfigure() {
+        String origin = "http://localhost:5173";
+        //String origin = 'http://104.131.178.92:3000'
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
@@ -16,9 +18,7 @@ public class CorsConfig {
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
-                        .allowedOrigins("http://localhost:5173")
-                        .allowedOrigins("http://localhost:3000")
-                        .allowedOrigins("http://104.131.178.92:3000");
+                        .allowedOrigins(origin);
             }
 
         };

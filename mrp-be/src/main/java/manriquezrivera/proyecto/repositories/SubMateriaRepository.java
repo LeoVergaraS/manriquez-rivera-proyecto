@@ -17,9 +17,6 @@ public interface SubMateriaRepository extends JpaRepository<Submateria, Long>{
     @Query(value = "SELECT * FROM sub_materia WHERE borrado = 0 AND id = :id", nativeQuery = true)
     Submateria getById(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM sub_materia WHERE borrado = 0 AND id_materia = :id_materia", nativeQuery = true)
-    List<Submateria> getByIdMateria(@Param("id_materia") Long id_materia);
-
     @Query(value = "SELECT * FROM sub_materia WHERE borrado = 0 AND nombre = :nombre", nativeQuery = true)
-    List<Submateria> getByNombre(String nombre);
+    Submateria getByNombre(String nombre);
 }
