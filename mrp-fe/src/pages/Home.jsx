@@ -20,7 +20,6 @@ function Home() {
   const [casos, setCasos] = useState([]);
   const [materias, setMaterias] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
-  const [subMaterias, setSubMaterias] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [hoveredCard1, setHoveredCard1] = useState("");
@@ -125,21 +124,6 @@ function Home() {
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setAbogadoLogueado(response.data.id_abogado);
-      }
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
-  const getSubMaterias = async () => {
-    try {
-      const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-      };
-      let url = `http://${urlweb}/submaterias`;
-      const response = await axios.get(url, config);
-      if (response.status === 200) {
-        setSubMaterias(response.data);
       }
     } catch (err) {
       console.log(err.message);
@@ -312,7 +296,6 @@ function Home() {
   ///////////////////////////////////////////////////////////
   useEffect(() => {
     getMaterias();
-    getSubMaterias();
     getUsuarioLogueado();
   }, []);
 
@@ -552,7 +535,6 @@ function Home() {
             postCaso={createCaso}
             handleClose={handleCloseCreate}
             materias={materias}
-            subMaterias={subMaterias}
           />
         </Modal.Body>
       </Modal>
@@ -567,7 +549,6 @@ function Home() {
             postCaso={updateCaso}
             handleClose={handleCloseEdit}
             materias={materias}
-            subMaterias={subMaterias}
           />
         </Modal.Body>
       </Modal>

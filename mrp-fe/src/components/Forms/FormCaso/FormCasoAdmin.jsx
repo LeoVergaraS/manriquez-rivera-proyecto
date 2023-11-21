@@ -9,6 +9,9 @@ import { VscCheck, VscClose } from "react-icons/vsc";
 import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
 import Cookies from 'js-cookie';
 import urlweb from "../../../utils/config/urlweb";
+import SelectCrear from "../MySelect/SelectCrear";
+import { createOption } from "../../../data/options";
+
 
 const FormCasoAdmin = (props) => {
   const caso = props.item;
@@ -40,14 +43,15 @@ const FormCasoAdmin = (props) => {
       .required("Ingrese una materia válida")
       .min(1, "Seleccione una opción válida"),
     id_submateria: yup
-      .number()
-      .required("Ingrese una submateria válida")
-      .min(1, "Seleccione una opción válida"),
+      .object().shape({
+        value: yup.string().required("Ingrese una submateria válida"),
+        label: yup.string().required("Ingrese una submateria válida"),
+      }).required("Ingrese una submateria válida"),
     id_cliente: yup
-      .string()
-      .required("Ingrese un cliente válido")
-      .min(1, "Mínimo 1 caracter")
-      .max(255, "Máximo 255 caracteres"),
+      .object().shape({
+        value: yup.string().required("Ingrese un cliente válido"),
+        label: yup.string().required("Ingrese un cliente válido"),
+      }).required("Ingrese un cliente válido"),
     abogado: yup
       .array()
       .min(1, "Seleccione al menos un abogado")
@@ -129,6 +133,22 @@ const FormCasoAdmin = (props) => {
     }
   };
 
+  const getClientes = async () => {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
+      let url = `http://${urlweb}/clientes`;
+      const response = await axios.get(url,config);
+      if (response.status === 200) {
+        const clientes = response.data;
+        setOptionsClientes(clientes.map((cliente) => createOption(cliente.id, cliente.nombre)));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const getAbogadosByCaso = async (id) => {
     try {
       const config = {
@@ -154,6 +174,7 @@ const FormCasoAdmin = (props) => {
     getAbogados();
     getMaterias();
     getSubmaterias();
+    getClientes();
     caso === null ? null : getAbogadosByCaso(caso.id);
   }, [caso]);
 
@@ -167,9 +188,9 @@ const FormCasoAdmin = (props) => {
           });
           const object = {
             id: caso !== null ? caso.id : null,
-            id_cliente: { nombre: values.id_cliente },
+            id_cliente: { nombre: values.id_cliente.value },
             id_materia: { id: values.id_materia },
-            id_submateria: { id: values.id_submateria },
+            id_submateria: { nombre: values.id_submateria.value },
             fecha: values.fecha,
             borrado: caso !== null ? caso.borrado : false,
           };
@@ -178,8 +199,8 @@ const FormCasoAdmin = (props) => {
         }}
         initialValues={{
           id_materia: caso !== null ? caso.id_materia.id : 0,
-          id_submateria: caso !== null ? caso.id_submateria.id : 0,
-          id_cliente: caso !== null ? caso.id_cliente.nombre : "",
+          id_submateria: caso !== null ? createOption(caso.id_submateria.id, caso.id_submateria.nombre) : null,
+          id_cliente: caso !== null ? createOption(caso.id_cliente.id, caso.id_cliente.nombre) : null,
           fecha: caso !== null ? caso.fecha : "",
           abogado: caso === null ? [] : initialAbogados,
         }}
@@ -236,43 +257,31 @@ const FormCasoAdmin = (props) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="input-cliente">
               <Form.Label>Cliente</Form.Label>
-              <Form.Control
+              <SelectCrear 
                 name="id_cliente"
                 placeholder="Ingrese un cliente"
-                type="text"
+                text= "el cliente"
+                options={optionsClientes}
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
                 value={values.id_cliente}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isValid={touched.id_cliente && !errors.id_cliente}
-                isInvalid={touched.id_cliente && !!errors.id_cliente}
+                error={errors.id_cliente}
+                touched={touched.id_cliente}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.id_cliente}
-              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="input-submateria">
               <Form.Label>Submateria</Form.Label>
-              <Form.Select
-                aria-label="select"
+              <SelectCrear 
                 name="id_submateria"
+                placeholder="Ingrese una submateria"
+                text= "la submateria"
+                options={optionsSubmaterias}
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
                 value={values.id_submateria}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isValid={touched.id_submateria && !errors.id_submateria}
-                isInvalid={touched.id_submateria && !!errors.id_submateria}
-              >
-                <option key={0} value={0}>
-                  Seleccione una opción
-                </option>
-                {optionsSubmaterias.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                {errors.id_submateria}
-              </Form.Control.Feedback>
+                error={errors.id_submateria}
+                touched={touched.id_submateria}
+              />
             </Form.Group>
             <Form.Group className="mb-3" controlId="input-abogado">
               <Form.Label>Abogados</Form.Label>

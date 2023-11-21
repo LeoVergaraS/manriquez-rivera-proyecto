@@ -13,6 +13,7 @@ import manriquezrivera.proyecto.entity.Abogado;
 import manriquezrivera.proyecto.entity.CasoAbogado;
 import manriquezrivera.proyecto.entity.Cliente;
 import manriquezrivera.proyecto.entity.Sesion;
+import manriquezrivera.proyecto.entity.Submateria;
 import manriquezrivera.proyecto.repositories.CasoAbogadoRepository;
 import manriquezrivera.proyecto.repositories.CasoRepository;
 import manriquezrivera.proyecto.repositories.SesionRepository;
@@ -28,6 +29,9 @@ public class CasoService {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private SubMateriaService subMateriaService;
 
     @Autowired
     private CasoAbogadoRepository casoAbogadoRepository;
@@ -83,14 +87,25 @@ public class CasoService {
     public Caso saveCaso(ObjectNode request) {
         List<Long> abogados = castRequestToIds(request);
         Caso caso = castRequestToCaso(request);
+
         String nombreCliente = caso.getId_cliente().getNombre();
+        String nombreSubmateria = caso.getId_submateria().getNombre();
+
         Cliente cliente = clienteService.getClienteByNombre(nombreCliente);
+        Submateria submateria = subMateriaService.getSubmateriaByNombre(nombreSubmateria);
 
         if (cliente == null) {
             Cliente clienteCreado = clienteService.saveCliente(new Cliente(null, nombreCliente, false));
             caso.setId_cliente(clienteCreado);
         } else {
             caso.setId_cliente(cliente);
+        }
+
+        if (submateria == null) {
+            Submateria submateriaCreada = subMateriaService.saveSubMateria(new Submateria(null, nombreSubmateria, false));
+            caso.setId_submateria(submateriaCreada);
+        } else {
+            caso.setId_submateria(submateria);
         }
 
         Caso casoGuardado = casoRepository.save(caso);

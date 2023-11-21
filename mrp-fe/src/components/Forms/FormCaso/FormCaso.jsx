@@ -8,12 +8,17 @@ import formatDateUpload from "../../../utils/functions/formatDateUpload";
 import Cookies from 'js-cookie';
 import urlweb from "../../../utils/config/urlweb";
 import sumOneDayToDate from "../../../utils/functions/sumOneDayToDate";
+import SelectCrear from "../MySelect/SelectCrear";
+import { createOption } from "../../../data/options";
 
-const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
+const FormCaso = ({ caso, postCaso, handleClose, materias }) => {
   const { Formik } = formik;
   const [options, setOptions] = useState([]);
   const [initialAbogados, setInitialAbogados] = useState(null);
   const [numbersAbogados, setNumbersAbogados] = useState(null);
+
+  const [optionsClientes, setOptionsClientes] = useState([]);
+  const [optionsSubmaterias, setOptionsSubmaterias] = useState([]);
 
   const validations = yup.object().shape({
     id_materia: yup
@@ -21,14 +26,15 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
       .required("Ingrese una materia válida")
       .min(1, "Seleccione una opción válida"),
     id_submateria: yup
-      .number()
-      .required("Ingrese una submateria válida")
-      .min(1, "Seleccione una opción válida"),
+      .object().shape({
+        value: yup.string().required("Ingrese una submateria válida"),
+        label: yup.string().required("Ingrese una submateria válida"),
+      }).required("Ingrese una submateria válida"),
     id_cliente: yup
-      .string()
-      .required("Ingrese un cliente válido")
-      .min(1, "Mínimo 1 caracter")
-      .max(255, "Máximo 255 caracteres"),
+      .object().shape({
+        value: yup.string().required("Ingrese un cliente válido"),
+        label: yup.string().required("Ingrese un cliente válido"),
+      }).required("Ingrese un cliente válido"),
     abogado: yup
       .array()
       .min(1, "Seleccione al menos un abogado")
@@ -89,8 +95,42 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
     }
   };
 
+  const getClientes = async () => {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      };
+      let url = `http://${urlweb}/clientes`;
+      const response = await axios.get(url,config);
+      if (response.status === 200) {
+        const clientes = response.data;
+        setOptionsClientes(clientes.map((cliente) => createOption(cliente.id, cliente.nombre)));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getSubmaterias = async () => {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }  
+      };
+      let url = `http://${urlweb}/submaterias`;
+      const response = await axios.get(url,config);
+      if (response.status === 200) {
+        const submaterias = response.data;
+        setOptionsSubmaterias(submaterias.map((submateria) => createOption(submateria.id, submateria.nombre)));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     getAbogados();
+    getClientes();
+    getSubmaterias();
     caso.id === null ? null : getAbogadosByCaso(caso.id);
   }, [caso.id]);
 
@@ -104,9 +144,9 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
           });
           const fecha = new Date();
           const item = { ...caso };
-          item.id_cliente = { nombre: values.id_cliente };
+          item.id_cliente = { nombre: values.id_cliente.value };
           item.id_materia = { id: values.id_materia };
-          item.id_submateria = { id: values.id_submateria };
+          item.id_submateria = { nombre: values.id_submateria.value };
           item.fecha = formatDateUpload(
             new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate())
           );
@@ -115,8 +155,8 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
         }}
         initialValues={{
           id_materia: caso.id_materia.id,
-          id_submateria: caso.id_submateria.id,
-          id_cliente: caso.id_cliente.nombre,
+          id_submateria: caso.id === null ? null : createOption(caso.id_submateria.id, caso.id_submateria.nombre),
+          id_cliente: caso.id === null ? null : createOption(caso.id_cliente.id, caso.id_cliente.nombre),
           abogado: caso.id === null ? [] : initialAbogados,
         }}
       >
@@ -135,21 +175,18 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
               <Col>
                 <Form.Group className="mb-3" controlId="input-cliente">
                   <Form.Label>Cliente</Form.Label>
-                  <Form.Control
+                  <SelectCrear 
                     name="id_cliente"
-                    placeholder="Ingrese un cliente"
-                    type="text"
+                    placeholder="Seleccione un cliente"
+                    options={optionsClientes}
+                    onChange={setFieldValue}
+                    onBlur={setFieldTouched}
                     value={values.id_cliente}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isValid={touched.id_cliente && !errors.id_cliente}
-                    isInvalid={touched.id_cliente && !!errors.id_cliente}
+                    error={errors.id_cliente}
+                    touched={touched.id_cliente}
+                    text="el cliente"
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.id_cliente}
-                  </Form.Control.Feedback>
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="input-materia">
                   <Form.Label>Materia</Form.Label>
                   <Form.Select
@@ -193,27 +230,17 @@ const FormCaso = ({ caso, postCaso, handleClose, materias, subMaterias }) => {
 
                 <Form.Group className="mb-3" controlId="input-submateria">
                   <Form.Label>Submateria</Form.Label>
-                  <Form.Select
-                    aria-label="select"
+                  <SelectCrear 
                     name="id_submateria"
-                    onChange={handleChange}
+                    placeholder="Seleccione una submateria"
+                    text="la submateria"
+                    options={optionsSubmaterias}
+                    onChange={setFieldValue}
+                    onBlur={setFieldTouched}
                     value={values.id_submateria}
-                    onBlur={handleBlur}
-                    isValid={touched.id_submateria && !errors.id_submateria}
-                    isInvalid={touched.id_submateria && !!errors.id_submateria}
-                  >
-                    <option key={0} value={0}>
-                      Seleccione una opción
-                    </option>
-                    {subMaterias.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.nombre}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  < Form.Control.Feedback type="invalid">
-                    {errors.id_submateria}
-                  </Form.Control.Feedback>
+                    error={errors.id_submateria}
+                    touched={touched.id_submateria}
+                  />
                 </Form.Group>
               </Col>
             </Row>
