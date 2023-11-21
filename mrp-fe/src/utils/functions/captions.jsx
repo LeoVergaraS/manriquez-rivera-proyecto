@@ -1,5 +1,4 @@
 const captions = (time) => {
-    console.log(time)
     if(time === 1){
         return "Trabajado en total"
     }else if(120 > time && time > 59){

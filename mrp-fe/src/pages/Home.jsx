@@ -320,10 +320,6 @@ function Home() {
     getCasoByIdAbogado();
   }, [abogadoLogueado]);
 
-  useEffect(() => {
-    console.log(ts);
-  }, [ts]);
-
   return (
     <Container
       fluid
@@ -525,7 +521,7 @@ function Home() {
                         (<div
                           key={tiempo.value}
                           className={`card-cronometro__collapse-content-item card-cronometro__collapse-content-item--last ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
-                          onClick={!isCollapsed && (() => handleSelectTs(tiempo))}
+                          onClick={!isCollapsed ? (() => handleSelectTs(tiempo)) : undefined}
                         >
                           {tiempo.label}
                         </div>)
@@ -533,7 +529,7 @@ function Home() {
                         (<div
                           key={tiempo.value}
                           className={`card-cronometro__collapse-content-item ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
-                          onClick={!isCollapsed && (() => handleSelectTs(tiempo))}
+                          onClick={!isCollapsed ? (() => handleSelectTs(tiempo)) : undefined}
                         >
                           {tiempo.label}
                         </div>)

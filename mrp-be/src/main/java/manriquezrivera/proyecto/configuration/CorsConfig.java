@@ -10,7 +10,7 @@ public class CorsConfig {
     @Bean
     public WebMvcConfigurer corsConfigure() {
         String origin = "http://localhost:5173";
-        //String origin = 'http://104.131.178.92:3000'
+        //origin = 'http://104.131.178.92:3000'
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
