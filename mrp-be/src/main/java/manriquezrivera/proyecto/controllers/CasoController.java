@@ -69,28 +69,14 @@ public class CasoController {
 	}
 
 	// get casos para vista cliente desde siempre
-	@GetMapping("/abogado/siempre/{id}/{fechaInicio}/{fechaFin}")
-	public ResponseEntity<List<CasoDTO>> getCasosDesdeSiempreByIdAbogado(@PathVariable(value = "id") Integer id,
-			@PathVariable(value = "fechaInicio") String fechaInicio,
-			@PathVariable(value = "fechaFin") String fechaFin) {
-		System.out.println("Desde siempre");
+	@GetMapping("/abogado/siempre/{id}/{fi}/{ff}")
+	public ResponseEntity<List<CasoDTO>> getCasosDesdeSiempreByIdAbogado(@PathVariable("id") Integer id, @PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin) {
 		List<Caso> casos = casoService.getCasoDesdeSiempre(id, fechaInicio, fechaFin);
-		System.out.println("Salimos del service");
-		System.out.println("Los casos son: " + casos);
 		if (casos == null) {
 			return ResponseEntity.notFound().build();
 		}
-		System.out.println("No son nulos ");
 
-		casos.forEach(caso -> {
-			Hibernate.initialize(caso.getId_materia());
-			Hibernate.initialize(caso.getId_submateria());
-			Hibernate.initialize(caso.getId_cliente());
-		});
-
-		// transferir el array casos a un array de CasoDTO
 		List<CasoDTO> casosDTO = casoService.mapCasosToDTO(casos);
-
 		return ResponseEntity.ok().body(casosDTO);
 	}
 

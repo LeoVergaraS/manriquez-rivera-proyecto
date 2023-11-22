@@ -183,7 +183,7 @@ const Clientes = ({
 
 	const createCasoOption = (caso) => {
 		return {
-			label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre
+			label: `${caso.nombre_cliente} - ${caso.nombre_materia
 				} - ${formatDateShow(caso.fecha)}`,
 			value: caso.id,
 		};

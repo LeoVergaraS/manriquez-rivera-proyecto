@@ -168,11 +168,9 @@ public class CasoService {
     public CasoDTO mapCasoToDTO(Caso caso) {
         CasoDTO casoDTO = new CasoDTO();
         casoDTO.setId(caso.getId());
-        casoDTO.setBorrado(caso.isBorrado());
         casoDTO.setFecha(caso.getFecha());
-        casoDTO.setId_materia(caso.getId_materia());
-        casoDTO.setId_submateria(caso.getId_submateria());
-        casoDTO.setId_cliente(caso.getId_cliente());
+        casoDTO.setNombre_cliente(caso.getId_cliente().getNombre());
+        casoDTO.setNombre_materia(caso.getId_materia().getNombre());
         return casoDTO;
     }
 
