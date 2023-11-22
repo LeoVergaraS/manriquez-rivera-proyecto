@@ -34,14 +34,12 @@ const Clientes = ({
 
 	const getCasosByFecha = async (id_abo) => {
 		try {
-			console.log(fechaInicio, fechaFin, id_abo);
 			if (dropSiempre == 1) {
 				getCasosByIdAbogadoDesdeSiempre(id_abo);
 			} else {
 				const config = {
 					headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 				};
-				console.log("getCasos");
 				let url = `http://${urlweb}/casos/abogado/${id_abo}/${fechaInicio}/${fechaFin}`;
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
@@ -202,6 +200,7 @@ const Clientes = ({
 	};
 
 	const handleOptions = (casos) => {
+		if(casos.length === 0) return setOptions([]);
 		const nKeys = Object.keys(casos[0]).length;
 		if(nKeys === 4) setOptions(casos.map(createCasoOptionDesdeSiempre));
 		else setOptions(casos.map(createCasoOption));
