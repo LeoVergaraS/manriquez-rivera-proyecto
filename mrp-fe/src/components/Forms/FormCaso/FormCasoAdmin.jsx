@@ -188,9 +188,9 @@ const FormCasoAdmin = (props) => {
           });
           const object = {
             id: caso !== null ? caso.id : null,
-            id_cliente: { nombre: values.id_cliente.value },
+            id_cliente: { nombre: values.id_cliente.label },
             id_materia: { id: values.id_materia },
-            id_submateria: { nombre: values.id_submateria.value },
+            id_submateria: { nombre: values.id_submateria.label },
             fecha: values.fecha,
             borrado: caso !== null ? caso.borrado : false,
           };

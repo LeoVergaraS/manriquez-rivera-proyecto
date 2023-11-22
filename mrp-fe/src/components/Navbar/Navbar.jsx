@@ -37,7 +37,7 @@ const NavbarResponsive = ({ token }) => {
     };
 
     useEffect(() => {
-        getUsuarioLogueado();
+        token && getUsuarioLogueado();
     }, []);
 
     return (

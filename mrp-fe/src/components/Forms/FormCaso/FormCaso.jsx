@@ -144,9 +144,9 @@ const FormCaso = ({ caso, postCaso, handleClose, materias }) => {
           });
           const fecha = new Date();
           const item = { ...caso };
-          item.id_cliente = { nombre: values.id_cliente.value };
+          item.id_cliente = { nombre: values.id_cliente.label };
           item.id_materia = { id: values.id_materia };
-          item.id_submateria = { nombre: values.id_submateria.value };
+          item.id_submateria = { nombre: values.id_submateria.label };
           item.fecha = formatDateUpload(
             new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate())
           );
