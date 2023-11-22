@@ -145,12 +145,10 @@ public class CasoService {
         Long idLong = id.longValue();
 
         if (idLong == -1) {
-            System.out.println("Sin abogado");
             List<Sesion> sesiones = sesionRepository.getByIdAbogadoAuxSinAbogado();
             fechaInicio = sesiones.get(0).getFecha().toString();
             return casoRepository.getCasosByFechaSinAbogado(fechaInicio, fechaFin);
         } else {
-            System.out.println("Con abogado");
             List<Sesion> sesiones = sesionRepository.getByIdAbogadoAux(idLong);
             fechaInicio = sesiones.get(0).getFecha().toString();
             return casoRepository.getCasosByFecha(idLong, fechaInicio, fechaFin);

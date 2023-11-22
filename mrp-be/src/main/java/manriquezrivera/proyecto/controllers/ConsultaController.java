@@ -152,8 +152,6 @@ public class ConsultaController {
 		if (consultas == null) {
 			return ResponseEntity.notFound().build();
 		}
-
-		//System.out.println("consultas: " + consultas);
 		return ResponseEntity.ok().body(consultas);
 	}
 
@@ -202,7 +200,6 @@ public class ConsultaController {
 			@PathVariable("id_abogado") Long id_abogado,
 			@PathVariable("id_materia") Long id_materia, @PathVariable("fi") String fechaInicio,
 			@PathVariable("ff") String fechaFin, @PathVariable("dropSelect") Integer cantidadDias) {
-		System.out.println("WTF");
 		List<ConsultaSesionesTabla> consultaSesionesMateria = consultaService.getConsultasByMateriaTablaMateria(id_materia, fechaInicio, fechaFin,
 				 id_abogado, cantidadDias);
 		return ResponseEntity.ok().body(consultaSesionesMateria);
@@ -211,7 +208,6 @@ public class ConsultaController {
 	@GetMapping("/materia/tabla/{id_materia}/{id_abogado}")
 	public ResponseEntity<List<ConsultaSesionesTabla>> getSesionesMateriaTabla(@PathVariable("id_abogado") Long id_abogado,
 			@PathVariable("id_materia") Long id_materia) {
-				System.out.println("WTF dESDE SIEMPRE");
 		List<ConsultaSesionesTabla> consultaSesionesMateria = consultaService.getConsultasByMateriaTablaDesdeSiempreMateria(id_materia,
 				id_abogado);
 		return ResponseEntity.ok().body(consultaSesionesMateria);
