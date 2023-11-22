@@ -12,6 +12,7 @@ const Login = () => {
   const [tipo, setTipo] = useState("password");
   const [message, setMessage] = useState("");
 
+
   const [login, setLogin] = useState({
     username: "",
     password: "",
@@ -82,53 +83,66 @@ const Login = () => {
     }
   };
 
+  ////////////////////////////////////////////////
+  //                  Animacion
+  ////////////////////////////////////////////////
+  const [animation, setAnimation] = useState(false);
+  const handleAnimation = (value) => {
+    setAnimation(value);
+  }
+
+
   return (
     <main className="bodyLogin">
-      <div className="wrapper">
-        <Form onSubmit={handleSubmit} className="form-login">
-          <h2 className="form-login__title">App Manriquez Rivera</h2>
-          <br></br>
-          <Form.Group className="mb-3" controlId="formUsuario">
-            <Form.Label>Usuario</Form.Label>
-            <Form.Control
-              type="text"
-              name="username"
-              onChange={handleInputChange}
-              placeholder="Ingrese su usuario"
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formPassword">
-            <Form.Label>Contraseña</Form.Label>
-            <Form.Control
-              type={tipo}
-              name="password"
-              onChange={handleInputChange}
-              placeholder="Ingrese su contraseña"
-              required
-            />
-            <div className="mostrar-contrasenia mt-1" style={{display: "flex", justifyContent: "left", alignItems: "center", gap: "5px"}}>
-            {seePassword ?
-              (<VscEyeClosed
-                onClick={handleSee}
-                onMouseEnter={() => setMessage("Ocultar contraseña")}
-                onMouseLeave={() => setMessage("")}
-                style={{ fontSize: "25px", cursor: "pointer" }} />) :
-              (<VscEye
-                onClick={handleSee}
-                onMouseEnter={() => setMessage("Mostrar contraseña")}
-                onMouseLeave={() => setMessage("")}
-                style={{ fontSize: "25px", cursor: "pointer" }} />)
-            }
-            {message}
-          </div>
-          </Form.Group>
-          <button className="form-login__button-submit">Iniciar sesión</button>
-        </Form>
-        <div></div>
-        <div className="banner">
-          <h1 className="wel_text">Bienvenido!</h1>
+      <div className={`formulario ${animation ? "formulario--animation" : ""}`}>
+      <Form onSubmit={handleSubmit} className={`form-login ${animation ? "form-login--animation" : ""}`}>
+        <h2 className="form-login__title">Iniciar sesión</h2>
+        <p className="form-login__text">Ingrese sus credenciales</p>
+        <br></br>
+        <Form.Group className="mb-3" controlId="formUsuario">
+          <Form.Label>Usuario</Form.Label>
+          <Form.Control
+            type="text"
+            name="username"
+            onChange={handleInputChange}
+            placeholder="Ingrese su usuario"
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formPassword">
+          <Form.Label>Contraseña</Form.Label>
+          <Form.Control
+            type={tipo}
+            name="password"
+            onChange={handleInputChange}
+            placeholder="Ingrese su contraseña"
+            required
+          />
+          <div className="mostrar-contrasenia mt-1" style={{display: "flex", justifyContent: "left", alignItems: "center", gap: "5px"}}>
+          {seePassword ?
+            (<VscEyeClosed
+              onClick={handleSee}
+              onMouseEnter={() => setMessage("Ocultar contraseña")}
+              onMouseLeave={() => setMessage("")}
+              style={{ fontSize: "25px", cursor: "pointer" }} />) :
+            (<VscEye
+              onClick={handleSee}
+              onMouseEnter={() => setMessage("Mostrar contraseña")}
+              onMouseLeave={() => setMessage("")}
+              style={{ fontSize: "25px", cursor: "pointer" }} />)
+          }
+          {message}
         </div>
+        </Form.Group>
+        <button className="form-login__button-submit">Iniciar sesión</button>
+      </Form>
+      </div>
+      <div 
+        className={`banner ${animation ? "banner--animation" : ""}`}
+        onMouseEnter={() => handleAnimation(true)}
+      >
+        <h1 className="wel-title">Bienvenido!</h1>
+        <p className="wel-text">A la aplicación Manriquez Rivera</p>
       </div>
     </main>
   );
