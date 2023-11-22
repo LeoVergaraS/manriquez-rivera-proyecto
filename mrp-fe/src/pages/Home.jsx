@@ -322,7 +322,7 @@ function Home() {
             objects={casos}
             placeholder={"Seleccione un caso"}
             set={setCasoSeleccionado}
-            createOption={createCasoOption}
+            options={casos.map(createCasoOption)}
             home={home}
 
           />

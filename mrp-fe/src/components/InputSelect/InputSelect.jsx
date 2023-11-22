@@ -1,8 +1,8 @@
-import formatDateShow from '../../utils/functions/formatDateShow';
 import Select from 'react-select';
 import './inputSelect.scss'
 
-const InputSelect = ({ objects, set, createOption, placeholder, home }) => {
+const InputSelect = ({ objects, set, options, placeholder, home }) => {
+
 
   const handleSelect = (e) => {
     if (e === null) {
@@ -27,7 +27,7 @@ const InputSelect = ({ objects, set, createOption, placeholder, home }) => {
       <div className="input-select">
         <Select
           placeholder={placeholder}
-          options={objects.map((obj) => createOption(obj))}
+          options={options}
           onChange={handleSelect}
           defaultValue={null}
         />

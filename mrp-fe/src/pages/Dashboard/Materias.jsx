@@ -267,7 +267,7 @@ const Materias = ({
 									objects={materias}
 									placeholder={"Seleccione una materia"}
 									set={setMateria}
-									createOption={createMateriaOption}
+									options={materias.map(createMateriaOption)}
 									home={false}
 								/>
 							</fieldset>

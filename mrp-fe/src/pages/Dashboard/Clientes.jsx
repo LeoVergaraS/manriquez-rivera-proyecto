@@ -46,6 +46,7 @@ const Clientes = ({
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setCasos(response.data);
+					handleOptions(response.data);
 				}
 			}
 		} catch (err) {
@@ -63,6 +64,7 @@ const Clientes = ({
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setCasos(response.data);
+				handleOptions(response.data);
 			}
 		} catch (err) {
 			console.log(err.message);
@@ -181,13 +183,29 @@ const Clientes = ({
 		}
 	};
 
-	const createCasoOption = (caso) => {
+	const [options, setOptions] = useState([]);
+
+	const createCasoOptionDesdeSiempre = (caso) => {
 		return {
 			label: `${caso.nombre_cliente} - ${caso.nombre_materia
 				} - ${formatDateShow(caso.fecha)}`,
 			value: caso.id,
 		};
 	};
+
+	const createCasoOption = (caso) => {
+		return {
+			label: `${caso.id_cliente.nombre} - ${caso.id_materia.nombre
+				} - ${formatDateShow(caso.fecha)}`,
+			value: caso.id,
+		};
+	};
+
+	const handleOptions = (casos) => {
+		const nKeys = Object.keys(casos[0]).length;
+		if(nKeys === 4) setOptions(casos.map(createCasoOptionDesdeSiempre));
+		else setOptions(casos.map(createCasoOption));
+	}
 
 	//Para la paginacion de la tabla
 	const [pageSize, setPageSize] = useState(10);
@@ -213,7 +231,7 @@ const Clientes = ({
 
 	useEffect(() => {
 		getCasosByFecha(id_abo);
-		console.log("casos:", casos);
+
 	}, [id_abo, fechaInicio, fechaFin, dropSiempre]);
 
 	useEffect(() => {
@@ -235,7 +253,7 @@ const Clientes = ({
 								<InputSelect
 									objects={casos}
 									set={setCaso}
-									createOption={createCasoOption}
+									options={options}
 									placeholder={"Seleccione un caso"}
 									home={false}
 								/>
