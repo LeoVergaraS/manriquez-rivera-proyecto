@@ -304,21 +304,12 @@ function Home() {
   }, [abogadoLogueado]);
 
   return (
-    <Container
-      fluid
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "start",
-        alignItems: "center",
-      }}
-    >
-
-      <Row style={{ margin: "75px", alignItems: "center", width: "50%" }}>
-        <fieldset className="fieldset-select">
-          <legend className="fieldset-select__legend"> Buscar caso </legend>
+    <Container className="layout-home" fluid>
+      <Row className="row-select-input">
+        <fieldset className="row-select-input__fieldset-select">
+          <legend className="row-select-input__legend"> Buscar caso </legend>
           <InputSelect
-            className="fieldset-select__input-select"
+            className="row-select-input__input-select"
             objects={casos}
             placeholder={"Seleccione un caso"}
             set={setCasoSeleccionado}
@@ -329,115 +320,90 @@ function Home() {
         </fieldset>
       </Row>
 
-      <Row>
-        <Col style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <div className="container2">
-            <Card
-              onMouseEnter={() => handleMouseEnter(1)}
-              className={"card-caso " + hoveredCard1}
-              style={{ background: "#235c62", borderRadius: "25px" }}
-            >
-              <Card.Body>
-                <Row style={{ alignItems: "center" }}>
-                  <Col xs={"auto"}>
-                    <Row style={{ marginBottom: 20 }}>
-                      <AiOutlinePlusCircle
-                        className="create-icon"
-                        onClick={handleShowCreate}
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-content="Crear caso"
-                        style={{
-                          cursor: "pointer",
-                          fontSize: 40,
-                          color: "#DFBF68",
-                        }}
-                      />
-                    </Row>
-                    <Row style={{ marginTop: 35 }}>
-                      <FiEdit
-                        className={
-                          casoSeleccionado === undefined ||
+      <Row className="row-content-home"  >
+        <Col className="col-content-home col-content-home--left" xs={12} lg={8} xxl={8}>
+          <Card
+            onMouseEnter={() => handleMouseEnter(1)}
+            className={"card-caso " + hoveredCard1}
+          >
+            <Card.Body className="card-caso__body">
+              <Row className="card-caso__row card-caso__row--upper">
+                <Col className="card-caso__col card-caso__col--icons" xs={12} sm={2} md={1}>
+                  <AiOutlinePlusCircle
+                    className="card-caso__create-icon"
+                    onClick={handleShowCreate}
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content="Crear caso"
+                  />
+                  <FiEdit 
+                    className={ `card-caso__edit-icon ${casoSeleccionado === undefined || casoSeleccionado === null || casoSeleccionado.id === 0 ? "card-caso__edit-icon--disabled" : ""}` }
+                    onClick={
+                      casoSeleccionado == undefined ||
+                        casoSeleccionado === null
+                        ? null
+                        : casoSeleccionado.id === 0
+                          ? null
+                          : handleShowEdit
+                    }
+                    data-tooltip-id={
+                      casoSeleccionado == undefined ||
+                        casoSeleccionado === null
+                        ? null
+                        : casoSeleccionado.id === 0
+                          ? null
+                          : "my-tooltip"
+                    }
+                    data-tooltip-content={
+                      casoSeleccionado == undefined ||
+                        casoSeleccionado === null
+                        ? null
+                        : casoSeleccionado.id === 0
+                          ? null
+                          : "Editar caso"
+                    }
+                  />
+                </Col>
+                <Col className="card-caso__col card-caso__col--table" xs={12} sm={10} md={11}>
+                  <table className="table-home">
+                    <thead className="table-home__thead">
+                      <tr className="table-home__tr table-home__tr--header">
+                        <th className="table-home__th">Cliente</th>
+                        <th className="table-home__th">Materia</th>
+                        <th className="table-home__th">Sub Materia</th>
+                        <th ></th>
+                      </tr>
+                      <tr className="table-home__tr table-home__tr--special"></tr>
+                    </thead>
+                    <tbody className="table-home__tbody tbody-home">
+                      <tr
+                        key={setCasoSeleccionado.id}
+                        className="table-home__tr table-home__tr--body"
+                      >
+                        <td className="table-home__td table-home__td--first">
+                          {casoSeleccionado == undefined ||
                             casoSeleccionado === null
-                            ? "edit-icon-disabled"
-                            : casoSeleccionado.id === 0
-                              ? "edit-icon-disabled"
-                              : "edit-icon"
-                        }
-                        onClick={
-                          casoSeleccionado == undefined ||
+                            ? "-"
+                            : casoSeleccionado.id_cliente.nombre}
+                        </td>
+                        <td className="table-home__td">
+                          {casoSeleccionado == undefined ||
                             casoSeleccionado === null
-                            ? null
-                            : casoSeleccionado.id === 0
-                              ? null
-                              : handleShowEdit
-                        }
-                        data-tooltip-id={
-                          casoSeleccionado == undefined ||
+                            ? "-"
+                            : casoSeleccionado.id_materia.nombre}
+                        </td>
+                        <td className="table-home__td table-home__td--last">
+                          {casoSeleccionado == undefined ||
                             casoSeleccionado === null
-                            ? null
-                            : casoSeleccionado.id === 0
-                              ? null
-                              : "my-tooltip"
-                        }
-                        data-tooltip-content={
-                          casoSeleccionado == undefined ||
-                            casoSeleccionado === null
-                            ? null
-                            : casoSeleccionado.id === 0
-                              ? null
-                              : "Editar caso"
-                        }
-                      />
-                    </Row>
-                  </Col>
-                  <Col>
-                    <table className="table-home">
-                      <thead className="thead-home">
-                        <tr className="tr-home" style={{ background: "#235c62" }}>
-                          <th className="th-home">Cliente</th>
-                          <th className="th-home">Materia</th>
-                          <th className="th-home">Sub Materia</th>
-                          <th ></th>
-                        </tr>
-                        <tr className="special-row"></tr>
-                      </thead>
-                      <tbody className="tbody-home" style={{ color: "white" }}>
-                        <tr
-                          key={setCasoSeleccionado.id}
-                          style={{ background: "#235c62" }}
-                          className="tr-home"
-                        >
-                          <td className="td-home">
-                            {casoSeleccionado == undefined ||
-                              casoSeleccionado === null
-                              ? "-"
-                              : casoSeleccionado.id_cliente.nombre}
-                          </td>
-                          <td className="td-home">
-                            {casoSeleccionado == undefined ||
-                              casoSeleccionado === null
-                              ? "-"
-                              : casoSeleccionado.id_materia.nombre}
-                          </td>
-                          <td className="td-home">
-                            {casoSeleccionado == undefined ||
-                              casoSeleccionado === null
-                              ? "-"
-                              : casoSeleccionado.id_submateria.nombre}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </Col>
-                </Row>
-                <br></br>
-                <p
-                  style={{
-                    color: "white",
-                    fontSize: "25px",
-                    textAlign: "right",
-                  }}
-                >
+                            ? "-"
+                            : casoSeleccionado.id_submateria.nombre}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Col>
+              </Row>
+              <Row className="card-caso__row card-caso__row--down">
+                <p className="card-caso__caso-text">
                   {casoSeleccionado === undefined || casoSeleccionado === null
                     ? ""
                     : casoSeleccionado.id === 0
@@ -447,81 +413,64 @@ function Home() {
                       "  |   " +
                       formatDateShow(casoSeleccionado.fecha)}
                 </p>
-              </Card.Body>
-            </Card>
-            <Card
-              onMouseEnter={() => handleMouseEnter(2)}
-              className={"card-cronometro " + hoveredCard2}
-              style={{
-                background: "#235c62",
-                height: "auto",
-                width: "300px",
-                marginLeft: "30px",
-                borderRadius: "25px",
-              }}
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col className="col-content-home col-content-home--right" xs={12} lg={4} xxl={4}>
+          <Card
+            onMouseEnter={() => handleMouseEnter(2)}
+            className={"card-cronometro " + hoveredCard2}
+          >
+            <p className="card-cronometro__title">
+              Tiempo de sesión
+            </p>
+            <Card.Body className="card-cronometro__body"
             >
-              <p
-                style={{
-                  textAlign: "center",
-                  color: "white",
-                  fontSize: "30px",
-                  marginTop: "10px",
-                }}
-              >
-                Tiempo de sesión
-              </p>
-              <Card.Body
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Cronometro
-                  ts={ts}
-                  setIsDisabled={setIsDisabled}
-                  abogadoLogueado_id={abogadoLogueado.id}
-                  id_caso={
-                    casoSeleccionado === undefined || casoSeleccionado === null
-                      ? 0
-                      : casoSeleccionado.id
-                  }
-                />
-              </Card.Body>
-              <div className={`card-cronometro__ts-container ${isCollapsed ? "card-cronometro__ts-container--collapse" : ""}`}>
-                <div className={`card-cronometro__collapse ${isCollapsed ? "card-cronometro__collapse--collapse" : ""}`}>
-                  <div onClick={!isDisabled && toggleCollapse} style={{cursor: isDisabled && 'auto', opacity: isDisabled && '0.5'}} className="card-cronometro__collapse-select">
-                    <span className="card-cronometro__collapse-select-text">
-                      {objSelected}
-                    </span>
-                    <div className={`card-cronometro__collapse-select-button ${isCollapsed ? "card-cronometro__collapse-select-button--collapse" : ""}`}>
-                      <VscChevronDown className="card-cronometro__collapse-select-icon" />
-                    </div>
-                  </div>
-                  <div className={`card-cronometro__collapse-content ${isCollapsed ? "card-cronometro__collapse-content--collapse" : ""}`}>
-                    {tiempos.map((tiempo, index) => (
-                      index === tiempos.length - 1 ?
-                        (<div
-                          key={tiempo.value}
-                          className={`card-cronometro__collapse-content-item card-cronometro__collapse-content-item--last ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
-                          onClick={!isCollapsed ? (() => handleSelectTs(tiempo)) : undefined}
-                        >
-                          {tiempo.label}
-                        </div>)
-                        :
-                        (<div
-                          key={tiempo.value}
-                          className={`card-cronometro__collapse-content-item ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
-                          onClick={!isCollapsed ? (() => handleSelectTs(tiempo)) : undefined}
-                        >
-                          {tiempo.label}
-                        </div>)
-                    ))}
+              <Cronometro
+                ts={ts}
+                setIsDisabled={setIsDisabled}
+                abogadoLogueado_id={abogadoLogueado.id}
+                id_caso={
+                  casoSeleccionado === undefined || casoSeleccionado === null
+                    ? 0
+                    : casoSeleccionado.id
+                }
+              />
+            </Card.Body>
+            <div className={`card-cronometro__ts-container ${isCollapsed ? "card-cronometro__ts-container--collapse" : ""}`}>
+              <div className={`card-cronometro__collapse ${isCollapsed ? "card-cronometro__collapse--collapse" : ""}`}>
+                <div onClick={!isDisabled && toggleCollapse} style={{ cursor: isDisabled && 'auto', opacity: isDisabled && '0.5' }} className="card-cronometro__collapse-select">
+                  <span className="card-cronometro__collapse-select-text">
+                    {objSelected}
+                  </span>
+                  <div className={`card-cronometro__collapse-select-button ${isCollapsed ? "card-cronometro__collapse-select-button--collapse" : ""}`}>
+                    <VscChevronDown className="card-cronometro__collapse-select-icon" />
                   </div>
                 </div>
+                <div className={`card-cronometro__collapse-content ${isCollapsed ? "card-cronometro__collapse-content--collapse" : ""}`}>
+                  {tiempos.map((tiempo, index) => (
+                    index === tiempos.length - 1 ?
+                      (<div
+                        key={tiempo.value}
+                        className={`card-cronometro__collapse-content-item card-cronometro__collapse-content-item--last ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
+                        onClick={!isCollapsed ? (() => handleSelectTs(tiempo)) : undefined}
+                      >
+                        {tiempo.label}
+                      </div>)
+                      :
+                      (<div
+                        key={tiempo.value}
+                        className={`card-cronometro__collapse-content-item ${tiempo.value === ts ? "card-cronometro__collapse-content-item--selected" : ""} }`}
+                        onClick={!isCollapsed ? (() => handleSelectTs(tiempo)) : undefined}
+                      >
+                        {tiempo.label}
+                      </div>)
+                  ))}
+                </div>
               </div>
-            </Card>
-          </div>
+            </div>
+          </Card>
         </Col>
       </Row>
 

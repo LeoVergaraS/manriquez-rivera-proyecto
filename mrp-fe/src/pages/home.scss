@@ -1,119 +1,188 @@
 @use "../utils/scss/variables.scss" as *;
 
-.table-home {
-    color: black;
-    font-size: 30px;
-    table-layout: fixed;
-    border-collapse: collapse;
-    margin-right: 40px;
+.layout-home{
+    height: calc(100vh - 56px);
 }
 
-.tbody-home {
-    align-items: center;
-    justify-content: center;
-    min-height: 80%;
-    background: white;
-}
 
-.container2 {
+.row-select-input{
+    padding: 28px 0 20px 0;
+    width: 100vw;
     display: flex;
     justify-content: center;
-}
 
-.thead-home {
-    background: #3B575A;
-    color: white;
-}
+    &__fieldset-select{
+        border: 2px solid #DFBF68;
+        border-radius: 5px;
+        position: relative;
+        width: 90%;
+        align-items: center;
+    }
 
-.th-home {
-    padding: 20px 15px;
-    font-weight: 700;
-    text-align: center;
-    border-bottom: 3px solid #DFBF68;
-    width: 250px;
-}
+    &__legend{
+        position: absolute;
+        padding: 0 10px;
+        margin: 0;
+        top: -25px;
+        background-color: #1E464B;
+        width: auto;
+        color: #DFBF68;
+        font-size: 25px;
+    }
 
-.td-home {
-    padding: 15px;
-    border-bottom: solid 1px rgb(225, 21, 212);
-    text-align: center;
-    border: 2px solid white;
-    //border-radius: 10px;
-}
-
-tbody tr:hover {
-    background: rgb(219, 215, 215);
-}
-
-.special-column {
-    background-color: white;
-    cursor: pointer;
-    border-radius: 0%;
-    border-bottom: 3px solid white;
-}
-
-.special-row {
-    height: 5px;
-}
-
-.home {
-    &__nav-link {
-        font-size: 1.5rem;
-        border-bottom: 3px solid #DFBF68;
-        transition: all 0.5s ease;
+    &__input-select{
+        margin-top: 25px;
     }
 }
 
-.create-icon {
-    transition: scale 0.2s ease-in-out;
-
-    &:hover {
-        scale: 1.2;
-    }
+.row-content-home{
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
 }
 
-.edit-icon {
-    transition: scale 0.2s ease-in-out;
-    cursor: pointer;
-    font-size: 40px;
-    color: #DFBF68;
-
-    &:hover {
-        scale: 1.2;
-    }
+.col-content-home{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.edit-icon-disabled {
-    transition: scale 0.2s ease-in-out;
-    cursor: auto;
-    font-size: 40px;
-    color: #DFBF68;
-    opacity: 0.5;
-
-    &:hover {
-        scale: 1;
-    }
-}
 
 .card-caso {
     -webkit-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
     transition: scale 0.4s ease-in-out;
+    background: rgb(35, 92, 98);
+    border-radius: 25px;
+    width: 98%;
 
     &.hovered {
         scale: 1.05;
     }
+
+    &__row{
+        &--upper{
+            align-items: center;
+        }
+    }
+
+    &__col{
+        &--icons{
+            display: flex;
+            justify-content: space-around;
+        }
+
+        &--table{
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &__create-icon{
+        cursor: pointer;
+        font-size: 40px;
+        color: #DFBF68;
+        transition: scale 0.2s ease-in-out;
+
+        &:hover {
+            scale: 1.2;
+        }
+    }
+
+    &__edit-icon{
+        cursor: pointer;
+        font-size: 40px;
+        color: #DFBF68;
+        transition: scale 0.2s ease-in-out;
+        &:hover {
+            scale: 1.2;
+        }
+
+        &--disabled{
+            cursor: auto;
+            opacity: 0.5;
+            &:hover {
+                scale: 1;
+            }
+        }
+    }
+    
+    &__caso-text{
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        margin: 10px 0 0 0;
+    }
 }
+
+.table-home {
+    table-layout: fixed;
+    border-collapse: collapse;
+
+    &__tr{
+        &--special{
+            height: 5px;
+        }
+    }
+
+    &__thead{
+        color: white;
+        font-size: 20px;
+    }
+
+    &__th{
+        padding: 0 15px;
+        font-weight: 700;
+        text-align: center;
+        border-bottom: 3px solid #DFBF68;
+    }
+
+    &__tbody{
+        align-items: center;
+        justify-content: center;
+        min-height: 80%;
+        color: white;
+        font-size: 20px;
+    }
+
+    &__td{
+        padding: 15px;
+        text-align: center;
+        border: 2px solid white;
+        background: rgb(35, 92, 98);
+        max-width: 100px;
+        width: 100px;
+    }
+
+}   
 
 .card-cronometro {
     -webkit-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
     transition: scale 0.4s ease-in-out;
+    background: rgb(35, 92, 98);
+    height: auto;
+    width: 90%;
+    border-radius: 25px;
 
     &.hovered {
         scale: 1.05;
+    }
+
+    &__title{
+        text-align: center;
+        color: white;
+        font-size: 25px;
+        margin: 10px 0 0 0;
+    }
+
+    &__body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     &__ts-container {
@@ -222,19 +291,194 @@ tbody tr:hover {
     }
 }
 
+@media screen and (min-width: 420px){
+    .table-home {
+        &__td{
+            max-width: 120px;
+            width: 120px;
+        }
+    
+    }  
 
-.fieldset-select {
-    border: 2px solid #DFBF68;
-    border-radius: 5px;
+    .card-caso{
+        width: 90%;
+    }
 
-    &__legend {
-        position: relative;
-        padding: 0 10px;
-        margin: 0;
-        top: -25px;
-        background-color: #1E464B;
-        width: auto;
-        color: #DFBF68;
-        font-size: 30px;
+    .card-cronometro{
+        width: 300px;
+    }
+
+    
+}
+
+@media screen and (min-width: 576px){
+    .row-select-input{
+        &__fieldset-select{
+            width: 70%;
+        }
+    }
+
+    .card-caso {
+        &__col{
+            &--icons{
+                flex-direction: column;
+                align-items: center;
+                gap: 35px;
+            }
+        }
+        
+        &__caso-text{
+            font-size: 20px;
+            text-align: right;
+        }
+    }
+
+    .table-home {
+        &__td{
+            max-width: 130px;
+            width: 130px;
+        }
+    
+    }
+    
+    .card-cronometro{
+        width: 300px;
     }
 }
+
+@media screen and (min-width: 650px){
+    .table-home {
+        &__td{
+            max-width: 150px;
+            width: 150px;
+        }
+    
+    }
+}
+
+@media screen and (min-width: 768px){
+    
+
+    .row-select-input{
+        &__fieldset-select{
+            width: 60%;
+        }
+    }
+
+    .table-home {
+        &__thead{
+            font-size: 25px;
+        }
+
+        &__tbody{
+            font-size: 25px;
+        }
+
+        &__td{
+            max-width: 200px;
+            width: 200px;
+        }
+    
+    }
+
+    .card-caso{
+        &__caso-text{
+            font-size: 25px;
+        }
+    }
+
+    .card-cronometro{
+        &__title{
+            font-size: 30px;
+        }
+    }
+
+}
+
+@media screen and (min-width: 992px){
+    .layout-home{
+        height: calc(100vh - 71px);
+    }
+
+    .row-content-home{
+        gap: 0;
+    }
+
+    .row-select-input{
+        padding: 75px 0 75px 0;
+    
+        &__fieldset-select{
+            width: 50%;
+        }
+    }
+}
+
+@media screen and (min-width: 1200px){
+    .card-caso{
+        width: 95%;
+    }
+
+    .card-cronometro{
+        width: 350px;
+        height: 280px;
+    }
+
+    .table-home{
+        &__th{
+            padding: 5px 20px;
+        }
+
+        &__tr{
+            &--header{
+                font-size: 30px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1400px){
+    .table-home {
+        &__th{
+            padding: 15px 20px;
+        }
+
+        &__tbody{
+            font-size: 30px;
+        }
+
+        &__td{
+            max-width: 300px;
+            width: 300px;
+        }
+    
+    }
+
+    .card-caso{
+        &__caso-text{
+            font-size: 30px;
+            padding: 10px 20px;
+        }
+    }
+}
+
+@media screen and (min-width: 1500px){
+    .card-caso{
+        width: 940px;
+        margin-right: 15px;
+    }
+    
+    .card-cronometro{
+        width: 350px;
+        margin-left: 15px;
+    }
+
+    .col-content-home{
+        &--right{
+            justify-content: flex-start;
+        }
+        &--left{
+            justify-content: flex-end;
+        }
+    }
+}
+

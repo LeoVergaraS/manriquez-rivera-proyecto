@@ -1,7 +1,7 @@
 import Select from 'react-select';
 import './inputSelect.scss'
 
-const InputSelect = ({ objects, set, options, placeholder, home }) => {
+const InputSelect = ({ objects, set, options, placeholder, home, className }) => {
 
 
   const handleSelect = (e) => {
@@ -24,7 +24,7 @@ const InputSelect = ({ objects, set, options, placeholder, home }) => {
     }
 };
     return (
-      <div className="input-select">
+      <div className={`input-select ${className}`}>
         <Select
           placeholder={placeholder}
           options={options}
