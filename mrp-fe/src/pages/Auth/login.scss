@@ -1,3 +1,4 @@
+@use "../../utils/scss/variables.scss" as *;
 /**{
     margin: 0;
     padding: 0;
@@ -6,8 +7,8 @@
 }*/
 
 .bodyLogin {
-    width: 100%;
-    height: calc(100vh - 71px);
+    width: 100vw;
+    height: calc(100vh - 56px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,12 +34,35 @@
     background: linear-gradient(to right, #f7f7f7, #DFBF68);
 
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-    transition: all 1s linear;
-
+    transition: all 1.3s ease;
 
     &--animation {
-        width: 55%;
+        width: 0%;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%);
+    }
+
+    &__wel-title {
+        font-size: 40px;
+        line-height: 50px;
+        transition: all 0.3s ease;
+        &--hover{
+            font-size: 43px;
+            cursor: pointer;
+        }
+        &--animation{
+            opacity: 0;
+        }
+    }
+    &__wel-text{
+        transition: all 0.3s ease;
+        font-size: 16px;
+        &--hover{
+            font-size: 17px;
+            cursor: pointer;
+        }
+        &--animation{
+            opacity: 0;
+        }
     }
 }
 
@@ -47,13 +71,13 @@
     justify-content: center;
     align-items: center;
 
-    transition: all 0.5s ease-in-out;
+    transition: all 1.3s ease;
     width: 0;
     opacity: 0;
     height: 100%;
 
     &--animation {
-        width: 45%;
+        width: 100%;
         opacity: 1;
     }
 }
@@ -90,8 +114,32 @@
     }
 }
 
+@media screen and (min-width: 992px) {
+    .bodyLogin{
+        height: calc(100vh - 71px);
+    }
 
-.wel-title {
-    font-size: 40px;
-    line-height: 50px;
+    .banner{
+        &--animation{
+            width: 50%;
+        }
+
+        &__wel-title{
+            &--animation{
+                opacity: 1;
+            }
+        }
+
+        &__wel-text{
+            &--animation{
+                opacity: 1;
+            }
+        }
+    }
+
+    .formulario{
+        &--animation{
+            width: 50%;
+        }
+    }
 }

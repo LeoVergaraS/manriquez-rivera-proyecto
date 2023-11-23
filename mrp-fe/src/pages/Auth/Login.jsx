@@ -87,8 +87,13 @@ const Login = () => {
   //                  Animacion
   ////////////////////////////////////////////////
   const [animation, setAnimation] = useState(false);
+  const [hover, setHover] = useState(false);
   const handleAnimation = (value) => {
     setAnimation(value);
+  }
+
+  const handleHover = (value) => {
+    setHover(value);
   }
 
 
@@ -138,11 +143,13 @@ const Login = () => {
       </Form>
       </div>
       <div 
-        className={`banner ${animation ? "banner--animation" : ""}`}
-        onMouseEnter={() => handleAnimation(true)}
+        className={`banner ${animation ? "banner--animation" : ""} `}
+        onClick={() => handleAnimation(true)}
+        onMouseEnter={() => handleHover(true)}
+        onMouseLeave={() => handleHover(false)}
       >
-        <h1 className="wel-title">Bienvenido!</h1>
-        <p className="wel-text">A la aplicación Manriquez Rivera</p>
+        <h1 className={`banner__wel-title ${animation ? "banner__wel-title--animation" : ""} ${!animation && hover ? "banner__wel-title--hover" : ""}`}>Bienvenido!</h1>
+        <p className={`banner__wel-text ${animation ? "banner__wel-text--animation" : ""} ${!animation && hover ? "banner__wel-text--hover" : ""}`}>A la aplicación Manriquez Rivera</p>
       </div>
     </main>
   );
