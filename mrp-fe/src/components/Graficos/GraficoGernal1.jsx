@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Chart } from 'chart.js';
 import 'chart.js/auto';
 import castTime from '../../utils/functions/castTime';
+import './graficoGeneral1.scss';
 
 const GraficoGernal1 = ({ title, tiempoSesiones }) => {
 
@@ -83,19 +84,17 @@ const GraficoGernal1 = ({ title, tiempoSesiones }) => {
     }, [tiempoSesiones]);
 
     return (
-        <>
-            <div className="card" style={{ height: "100%" }}>
-                <div className="card-header">
-                    <h4 className="card-title text-center" >{title}</h4>
-                </div>
-                <div className="card-body" style={{ height: "100%" }}>
-                    <canvas
-                        id="myChart1"
-                        ref={chartRef}
-                    />
-                </div>
+        <div className="card grafico-general-1">
+            <div className="card-header grafico-general-1__header">
+                <h4 className="card-title text-center" >{title}</h4>
             </div>
-        </>
+            <div className="card-body grafico-general-1__body">
+                <canvas
+                    id="myChart1"
+                    ref={chartRef}
+                />
+            </div>
+        </div>
     );
 }
 

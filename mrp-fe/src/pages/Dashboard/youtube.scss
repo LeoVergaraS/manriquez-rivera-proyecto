@@ -4,17 +4,15 @@
   display: flex;
 }
 
-.filtro {
+.filtro{
   display: flex;
   width: 100%;
-  justify-content: left;
-  padding: 2px 0;
-  gap: 30px;
+  justify-content: center;
   align-items: center;
   background-color: #f2f3f4;
+  padding: 2px 0 5px 0;
 
-  &__button-collapse {
-    width: 112px;
+  &__button-collapse{
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     text-align: center;
@@ -28,30 +26,29 @@
     }
   }
 
-  &__text {
-    width: 200px;
-    margin: 0;
+  &__text{
+    display: none;
   }
 
-  &__opciones {
+  &__opciones{
     display: flex;
     gap: 10px;
   }
 
-  &__tiempo {
-    margin-left: 5px;
+  &__tiempo-text{
+    display: none;
   }
 }
 
 .dashboard-navegador {
   width: 120px;
-  height: calc(100vh - 134px);
+  height: 100vh;
   background-color: $color-secundario;
-  transition: all 0.3s;
+  transition: all 0.5s ease;
 
   &-content {
-    display: block;
-    transition: display 0.3s;
+    opacity: 1;
+    transition: all 0.3s ease; 
 
     &__tabs {
       padding: 0;
@@ -78,7 +75,7 @@
     }
 
     &--collapse {
-      display: none;
+      opacity: 0;
     }
   }
 
@@ -115,4 +112,44 @@
   color: #ffffff;
   /* Cambia el color del texto si es necesario */
   /* Otros estilos según sea necesario */
+}
+
+@media screen and (min-width: 576px){
+  .filtro{
+    gap: 20px;
+
+    &__tiempo-text{
+      font-size: 14px;
+      display: block;
+      margin: 0;
+    }
+  }
+}
+
+@media screen and (min-width: 768px){
+  .filtro{
+    &__text{
+      display: block;
+      margin: 0;
+    }
+
+    &__tiempo-text{
+      font-size: 16px;
+    }
+  }
+}
+
+@media screen and (min-width: 992px){
+  .filtro{
+    justify-content: left;
+    gap: 30px;
+
+    &__button-collapse{
+      width: 120px;
+    }
+
+    &__text{
+      width: 200px;
+    }
+  }
 }

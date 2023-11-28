@@ -137,7 +137,7 @@ const Youtube = () => {
 
 
 				</div>
-				<h6 style={{ color: "#1E464B" }}>{formatDateBarraFiltro(fechaFiltroInicio, fechaFiltroFin)}</h6>
+				<h6 className="filtro__tiempo-text" style={{ color: "#1E464B" }}>{formatDateBarraFiltro(fechaFiltroInicio, fechaFiltroFin)}</h6>
 			</div>
 			<main className="dashboard-layout">
 				<aside
