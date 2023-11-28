@@ -146,12 +146,20 @@ public class CasoService {
 
         if (idLong == -1) {
             List<Sesion> sesiones = sesionRepository.getByIdAbogadoAuxSinAbogado();
-            fechaInicio = sesiones.get(0).getFecha().toString();
-            return casoRepository.getCasosByFechaSinAbogado(fechaInicio, fechaFin);
+            if(sesiones.size() == 0) {
+                return null;
+            }else{
+                fechaInicio = sesiones.get(0).getFecha().toString();
+                return casoRepository.getCasosByFechaSinAbogado(fechaInicio, fechaFin);
+            }
         } else {
             List<Sesion> sesiones = sesionRepository.getByIdAbogadoAux(idLong);
-            fechaInicio = sesiones.get(0).getFecha().toString();
-            return casoRepository.getCasosByFecha(idLong, fechaInicio, fechaFin);
+            if(sesiones.size() == 0) {
+                return null;
+            }else{
+                fechaInicio = sesiones.get(0).getFecha().toString();
+                return casoRepository.getCasosByFecha(idLong, fechaInicio, fechaFin);
+            }
         }
     }
 

@@ -1,9 +1,7 @@
 package manriquezrivera.proyecto.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,7 +60,7 @@ public class CasoController {
 			@PathVariable(value = "fechaFin") String fechaFin) {
 		List<Caso> casos = casoService.getCasoByFecha(id, fechaInicio, fechaFin);
 		if (casos == null) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok().body(null);
 		}
 		return ResponseEntity.ok().body(casos);
 	}
@@ -72,7 +70,7 @@ public class CasoController {
 	public ResponseEntity<List<CasoDTO>> getCasosDesdeSiempreByIdAbogado(@PathVariable("id") Integer id, @PathVariable("fi") String fechaInicio, @PathVariable("ff") String fechaFin) {
 		List<Caso> casos = casoService.getCasoDesdeSiempre(id, fechaInicio, fechaFin);
 		if (casos == null) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok().body(null);
 		}
 
 		List<CasoDTO> casosDTO = casoService.mapCasosToDTO(casos);

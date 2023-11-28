@@ -230,7 +230,6 @@ const Clientes = ({
 
 	useEffect(() => {
 		getCasosByFecha(id_abo);
-
 	}, [id_abo, fechaInicio, fechaFin, dropSiempre]);
 
 	useEffect(() => {
