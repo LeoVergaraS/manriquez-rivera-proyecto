@@ -7,11 +7,14 @@
 
 .admin-nav {
   background-color: $color-secundario;
-  height: calc(100vh - (71px));
+  height: auto;
+  display: flex;
+  flex-direction: column;
   width: auto;
 
   &__column {
     display: block;
+    flex-grow: 1;
   }
 
   &__item {
@@ -41,7 +44,8 @@
 
 .admin-content {
   width: 100%;
-  height: calc(100vh - (71px));
+  height: calc(100vh - 56px);
+  overflow-y: auto;
   background-color: $color-oscuro;
   padding: 10px;
 
@@ -50,5 +54,11 @@
     color: $color-secundario;
     font-size: 40px;
     margin: 0;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .admin-content{
+    height: calc(100vh - 72px);
   }
 }
