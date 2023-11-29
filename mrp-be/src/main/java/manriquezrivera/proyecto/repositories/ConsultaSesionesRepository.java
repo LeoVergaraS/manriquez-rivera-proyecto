@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import manriquezrivera.proyecto.models.ConsultaSesiones;
-import manriquezrivera.proyecto.models.ConsultaSesionesTabla;
 
 @Repository
 public interface ConsultaSesionesRepository extends JpaRepository<ConsultaSesiones, Long> {

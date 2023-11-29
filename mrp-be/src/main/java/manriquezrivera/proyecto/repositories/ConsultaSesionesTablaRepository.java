@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import manriquezrivera.proyecto.models.ConsultaSesiones;
 import manriquezrivera.proyecto.models.ConsultaSesionesTabla;
 
 public interface ConsultaSesionesTablaRepository extends JpaRepository<ConsultaSesionesTabla, Long>  {
