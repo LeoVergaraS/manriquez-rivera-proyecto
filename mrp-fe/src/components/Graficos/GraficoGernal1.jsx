@@ -4,10 +4,11 @@ import 'chart.js/auto';
 import castTime from '../../utils/functions/castTime';
 import './graficoGeneral1.scss';
 
-const GraficoGernal1 = ({ title, tiempoSesiones }) => {
+const GraficoGernal1 = ({ title, tiempoSesiones, className }) => {
 
     const tiempos = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo }) : [];
     const dias1 = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.fecha }) : [];
+    const cn = className !== undefined ? className : '';
 
     const chartRef = useRef();
     const myChartRef = useRef(null);
@@ -84,7 +85,7 @@ const GraficoGernal1 = ({ title, tiempoSesiones }) => {
     }, [tiempoSesiones]);
 
     return (
-        <div className="card grafico-general-1">
+        <div className={`card grafico-general-1 ${cn}`}>
             <div className="card-header grafico-general-1__header">
                 <h4 className="card-title text-center" >{title}</h4>
             </div>

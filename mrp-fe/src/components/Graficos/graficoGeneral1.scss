@@ -1,6 +1,10 @@
 .grafico-general-1{
     width: 100%;
-    height: 50%;
+    height: 100%;
+
+    &--general{
+        height: 50%;
+    }
 
     &__body{
         position: relative;

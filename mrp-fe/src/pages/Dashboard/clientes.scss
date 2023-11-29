@@ -1,5 +1,30 @@
 @use '../../utils/scss/variables.scss' as *;
 
+.dashboard-clientes-layout{
+  height: 100vh;
+  margin: 15px 0 15px 0;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.dashboard-clientes__row{
+  height: 100%;
+
+  &--select{
+    height: 93px;
+  }
+
+  &--estadisticas{
+    height: 56%;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  &--grafico{
+    height: calc(42% - 93px);
+  }
+}
+
 .clientes{
   &__fieldset-select{
     width: 100%;
@@ -71,9 +96,46 @@
   }
 
   &:hover{
-    scale: 1.05;
+    scale: 1.01;
   }
 
   
 }
 
+@media screen and (min-width: 768px){
+  .dashboard-clientes__row{
+    gap: 20px;
+    &--estadisticas{
+      height: 40%;
+      gap: 0;
+    }
+  
+    &--grafico{
+      height: calc(60% - 93px);
+    }
+  }
+}
+
+@media screen and (min-width: 992px){
+  .dashboard-clientes-layout{
+    height: calc(100vh - 170px);
+  }
+}
+
+@media screen and (min-width: 1400px){
+  .dashboard-clientes__row{
+    gap: 0;
+    &--select{
+      height: 93px;
+    }
+    &--estadisticas{
+      height: 240px;
+    }
+    &--grafico{
+      height: 452px;
+    }
+    &--special{
+      height: 45px;
+    }
+  }
+}

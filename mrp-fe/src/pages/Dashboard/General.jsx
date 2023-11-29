@@ -112,6 +112,7 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 		<Container fluid className="dashboard-general-layout">
 			<div className="general__content">
 				<GraficoGernal1
+					className={"grafico-general-1--general"}
 					tiempoSesiones={consultasS}
 					title={"Tiempo de sesiones por día"}
 				/>
