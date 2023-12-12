@@ -256,13 +256,13 @@ const Materias = ({
 	}, [currentPage, sesionesMateriaTabla]);
 
 	return (
-		<Container fluid className="mt-3" style={{ height: "calc(100vh - 163px)" }}>
-			<Row style={{ height: "100%" }}>
-				<Col xs={6} style={{ height: "100%" }}>
-					<Container style={{ height: "100%" }}>
-						<Row>
+		<Container fluid className="dashboard-materia-layout">
+			<Row className="dashboard-materia__row">
+				<Col xs={12} xxl={6}>
+					<Row className="dashboard-materia__row--select">
+						<Col>
 							<fieldset className="materias__fieldset-select">
-								<legend className="materias__legend"> Buscar materia</legend>
+								<legend className="materias__legend">Buscar materia</legend>
 								<InputSelect
 									objects={materias}
 									placeholder={"Seleccione una materia"}
@@ -271,72 +271,72 @@ const Materias = ({
 									home={false}
 								/>
 							</fieldset>
-						</Row>
-						<Row className="mb-3">
-							<Col>
-								<Card className="card-estadisticas">
-									<div className="card-estadisticas__header">
-										<h2 className="card-estadisticas__title">Sesiones</h2>
-										<span className="card-estadisticas__icon">
-											<BiClipboard />
-										</span>
-									</div>
-									<h1 className="card-estadisticas__estadistica">
-										{estadisticas.cantidad_sesiones}
-									</h1>
-									<p className="card-estadisticas__caption">
-										Sesiones realizadas
-									</p>
-								</Card>
-							</Col>
-							<Col>
-								<Card className="card-estadisticas">
-									<div className="card-estadisticas__header">
-										<h2 className="card-estadisticas__title">Tiempo</h2>
-										<span className="card-estadisticas-c__icon">
-											<BiTime />
-										</span>
-									</div>
-									<h1 className={"card-estadisticas__estadistica" + (estadisticas.tiempo_total >= 3600 ? " tiempo" : "")}>
-										{estadisticas.tiempo_total === null ?
-											"0 seg" : castTime(estadisticas.tiempo_total)}
-									</h1>
-									<p className="card-estadisticas__caption">
-										{estadisticas.tiempo_total === null ? "Trabajados en total" : captions(estadisticas.tiempo_total)}
-									</p>
-								</Card>
-							</Col>
-							<Col>
-								<Card className="card-estadisticas">
-									<div className="card-estadisticas__header">
-										<h2 className="card-estadisticas__title">Clientes</h2>
-										<span className="card-estadisticas-c__icon">
-											<BiUser />
-										</span>
-									</div>
-									<h1 className="card-estadisticas__estadistica">
-										{estadisticas.cantidad_clientes}
-									</h1>
-									<p className="card-estadisticas__caption">
-										Clientes atendidos
-									</p>
-								</Card>
-							</Col>
-						</Row>
-						<Row className="p-2" style={{ height: "57.7%" }}>
-							<Card className="card-grafico">
-								<GraficoGernal1
-									tiempoSesiones={sesionesMateria}
-									title={"Tiempo de sesiones por día"}
-								/>
+						</Col>
+					</Row>
+					<Row className="dashboard-materia__row--estadisticas" xs={1} md={3}>
+						<Col>
+							<Card className="card-estadisticas">
+								<div className="card-estadisticas__header">
+									<h2 className="card-estadisticas__title">Sesiones</h2>
+									<span className="card-estadisticas__icon">
+										<BiClipboard />
+									</span>
+								</div>
+								<h1 className="card-estadisticas__estadistica">
+									{estadisticas.cantidad_sesiones}
+								</h1>
+								<p className="card-estadisticas__caption">
+									Sesiones realizadas
+								</p>
 							</Card>
-						</Row>
-					</Container>
+						</Col>
+						<Col>
+							<Card className="card-estadisticas">
+								<div className="card-estadisticas__header">
+									<h2 className="card-estadisticas__title">Tiempo</h2>
+									<span className="card-estadisticas-c__icon">
+										<BiTime />
+									</span>
+								</div>
+								<h1 className={"card-estadisticas__estadistica" + (estadisticas.tiempo_total >= 3600 ? " tiempo" : "")}>
+									{estadisticas.tiempo_total === null ?
+										"0 seg" : castTime(estadisticas.tiempo_total)}
+								</h1>
+								<p className="card-estadisticas__caption">
+									{estadisticas.tiempo_total === null ? "Trabajados en total" : captions(estadisticas.tiempo_total)}
+								</p>
+							</Card>
+						</Col>
+						<Col>
+							<Card className="card-estadisticas">
+								<div className="card-estadisticas__header">
+									<h2 className="card-estadisticas__title">Clientes</h2>
+									<span className="card-estadisticas-c__icon">
+										<BiUser />
+									</span>
+								</div>
+								<h1 className="card-estadisticas__estadistica">
+									{estadisticas.cantidad_clientes}
+								</h1>
+								<p className="card-estadisticas__caption">
+									Clientes atendidos
+								</p>
+							</Card>
+						</Col>
+					</Row>
+					<Row className="dashboard-materia__row--grafico">
+						<Col>
+							<GraficoGernal1
+								tiempoSesiones={sesionesMateria}
+								title={"Tiempo de sesiones por día"}
+							/>
+						</Col>
+					</Row>
 				</Col>
-				<Col xs={6} className="p-2" style={{ height: "100%" }}>
-					<Container style={{ height: "100%" }}>
-						<Row style={{ height: "35px" }} />
-						<Row style={{ height: "calc(100vh - 206px)" }}>
+				<Col xs={12} xxl={6}>
+					<Row className="dashboard-materia__row--special" />
+					<Row>
+						<Col>
 							<Card className="card-sesiones">
 								<Card.Body>
 									<Card.Title>Sesiones registradas</Card.Title>
@@ -457,8 +457,8 @@ const Materias = ({
 									)}
 								</Card.Body>
 							</Card>
-						</Row>
-					</Container>
+						</Col>
+					</Row>
 				</Col>
 			</Row>
 		</Container>

@@ -132,7 +132,7 @@
       height: 240px;
     }
     &--grafico{
-      height: 452px;
+      height: calc(98% - 90px - 240px);
     }
     &--special{
       height: 45px;
