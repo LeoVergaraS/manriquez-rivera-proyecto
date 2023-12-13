@@ -40,7 +40,7 @@ const Materias = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url = `http://${urlweb}/materias`;
+			let url = `${urlweb}/materias`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setMaterias(response.data);
@@ -55,7 +55,7 @@ const Materias = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url = `http://${urlweb}/consultas/materia/sesiones/${materia.id}/${id_abogado}`
+			let url = `${urlweb}/consultas/materia/sesiones/${materia.id}/${id_abogado}`
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setSesionesMateria(response.data);
@@ -99,7 +99,7 @@ const Materias = ({
 					setDropSelect(difDias + 1);
 				}
 				let url =
-					`http://${urlweb}/consultas/materia/sesiones/${materia.id}/${fechaInicio}/${fechaFin}/${dropSelect}/${id_abogado}`
+					`${urlweb}/consultas/materia/sesiones/${materia.id}/${fechaInicio}/${fechaFin}/${dropSelect}/${id_abogado}`
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesMateria(response.data);
@@ -121,7 +121,7 @@ const Materias = ({
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
 			let url =
-				`http://${urlweb}/consultas/materia/tabla/${materia.id}/${id_abogado}`
+				`${urlweb}/consultas/materia/tabla/${materia.id}/${id_abogado}`
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				//setSesionesMateria(response.data);
@@ -166,7 +166,7 @@ const Materias = ({
 					const difDias = Math.trunc(difMS / (1000 * 60 * 60 * 24));
 					setDropSelect(difDias + 1);
 				}
-				let url = `http://${urlweb}/consultas/materia/tabla/${materia.id}/${fechaInicio}/${fechaFin}/${dropSelect}/${id_abogado}`
+				let url = `${urlweb}/consultas/materia/tabla/${materia.id}/${fechaInicio}/${fechaFin}/${dropSelect}/${id_abogado}`
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesMateriaTabla(
@@ -189,7 +189,7 @@ const Materias = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url = `http://${urlweb}/consultas/materia/estadisticas/${id_abogado}/${materia.id}/${fechaInicio}/${fechaFin}/${dropSiempre}`
+			let url = `${urlweb}/consultas/materia/estadisticas/${id_abogado}/${materia.id}/${fechaInicio}/${fechaFin}/${dropSiempre}`
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setEstadisticas(response.data);

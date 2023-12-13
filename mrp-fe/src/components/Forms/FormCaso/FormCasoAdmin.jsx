@@ -75,7 +75,7 @@ const FormCasoAdmin = (props) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = `http://${urlweb}/abogados`;
+      let url = `${urlweb}/abogados`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const abogados = response.data;
@@ -96,7 +96,7 @@ const FormCasoAdmin = (props) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = `http://${urlweb}/materias`;
+      let url = `${urlweb}/materias`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const materias = response.data;
@@ -117,7 +117,7 @@ const FormCasoAdmin = (props) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = `http://${urlweb}/submaterias`;
+      let url = `${urlweb}/submaterias`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const submaterias = response.data;
@@ -138,7 +138,7 @@ const FormCasoAdmin = (props) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = `http://${urlweb}/clientes`;
+      let url = `${urlweb}/clientes`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         const clientes = response.data;
@@ -154,7 +154,7 @@ const FormCasoAdmin = (props) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = `http://${urlweb}/abogados/caso/${id}`;
+      let url = `${urlweb}/abogados/caso/${id}`;
       const response = await axios.get(url,config);
       if (response.status === 200) {
         setInitialAbogados(

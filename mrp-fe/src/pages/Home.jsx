@@ -105,7 +105,7 @@ function Home() {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = `http://${urlweb}/materias`;
+      let url = `${urlweb}/materias`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setMaterias(response.data);
@@ -120,7 +120,7 @@ function Home() {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = `http://${urlweb}/auth/getUserLogueado`;
+      let url = `${urlweb}/auth/getUserLogueado`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setAbogadoLogueado(response.data.id_abogado);
@@ -136,7 +136,7 @@ function Home() {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(config);
-      let url = `http://${urlweb}/casos`;
+      let url = `${urlweb}/casos`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasos(response.data);
@@ -151,7 +151,7 @@ function Home() {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
-      let url = `http://${urlweb}/casos/${id}`;
+      let url = `${urlweb}/casos/${id}`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setCasoSeleccionado(response.data);
@@ -170,7 +170,7 @@ function Home() {
         const config = {
           headers: { Authorization: `Bearer ${Cookies.get("token")}` }
         };
-        let url = `http://${urlweb}/casos/abogado/${abogadoLogueado.id}`;
+        let url = `${urlweb}/casos/abogado/${abogadoLogueado.id}`;
         const response = await axios.get(url, config);
         if (response.status === 200) {
           setCasos(response.data);
@@ -187,7 +187,7 @@ function Home() {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(request);
-      let url = `http://${urlweb}/casos`;
+      let url = `${urlweb}/casos`;
       const response = await axios.post(url, request, config);
 
       if (response.status === 200) {
@@ -207,7 +207,7 @@ function Home() {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       console.log(item);
-      let url = `http://${urlweb}/casos`;
+      let url = `${urlweb}/casos`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         handleCloseEdit();

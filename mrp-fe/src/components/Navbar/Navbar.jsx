@@ -26,7 +26,7 @@ const NavbarResponsive = ({ token }) => {
             const config = {
                 headers: { Authorization: `Bearer ${Cookies.get("token")}` }
             };
-            let url = `http://${urlweb}/auth/getUserLogueado`;
+            let url = `${urlweb}/auth/getUserLogueado`;
             const response = await axios.get(url, config);
             if (response.status === 200) {
                 setAbogadoLogueado(response.data.id_abogado);

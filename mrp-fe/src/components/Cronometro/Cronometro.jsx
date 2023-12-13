@@ -185,7 +185,7 @@ function Cronometro({ id_caso, ts, setIsDisabled, abogadoLogueado_id }) {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
       //console.log(sesion);
-      let url = `http://${urlweb}/sesiones`;
+      let url = `${urlweb}/sesiones`;
       const response = await axios.post(url, sesion,config);
       if (response.status === 200) {
         Swal.fire({

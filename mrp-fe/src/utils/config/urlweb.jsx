@@ -1,14 +1,13 @@
 
-const verificarConexion = (hostname) => {
+const getUrl = (hostname) => {
     if(hostname === "localhost"){
-        return ":8090";
+        return `http://${hostname}:8090`;
     }else{
-        return "/api";
+        return `https://${hostname}/api`;
     }
 }
 
 
 const hostname = window.location.hostname;
-const conect = verificarConexion(hostname);
-const urlweb = `${hostname}${conect}`
+const urlweb = getUrl(hostname);
 export default urlweb;

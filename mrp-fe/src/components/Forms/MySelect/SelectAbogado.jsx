@@ -26,7 +26,7 @@ const SelectAbogado = (props) => {
             const config = {
                 headers: { Authorization: `Bearer ${Cookies.get("token")}` },
             };
-            let url = `http://${urlweb}/abogados/caso/${id}`;
+            let url = `${urlweb}/abogados/caso/${id}`;
             const response = await axios.get(url, config);
             if (response.status === 200) {
                 const abogados = response.data;

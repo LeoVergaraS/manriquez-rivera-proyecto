@@ -49,7 +49,7 @@ const Login = () => {
         username: login.username.trim(),
         password: login.password,
       };
-      let url = `http://${urlweb}/auth/login`;
+      let url = `${urlweb}/auth/login`;
       const response = await axios.post(url, body);
       if (response.status === 200) {
         const expirationTime = new Date(

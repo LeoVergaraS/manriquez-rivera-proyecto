@@ -24,7 +24,7 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
-			let url = `http://${urlweb}/consultas/prueba/${fechaInicio}/${fechaFin}/${dropSiempre}/${abogado.id}`;
+			let url = `${urlweb}/consultas/prueba/${fechaInicio}/${fechaFin}/${dropSiempre}/${abogado.id}`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setEstadisticas(response.data);
@@ -39,7 +39,7 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
-			let url = `http://${urlweb}/consultas/materia/${fechaInicio}/${fechaFin}/${dropSelect}/${dropSiempre}/${abogado.id}`;
+			let url = `${urlweb}/consultas/materia/${fechaInicio}/${fechaFin}/${dropSelect}/${dropSiempre}/${abogado.id}`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setConsultasM(response.data);
@@ -70,7 +70,7 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 					headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 				};
 
-				let url = `http://${urlweb}/consultas/sesiones/${fechaInicio}/${fechaFin}/${dropSelect}/${abogado.id}`;
+				let url = `${urlweb}/consultas/sesiones/${fechaInicio}/${fechaFin}/${dropSelect}/${abogado.id}`;
 				const response = await axios.get(url, config);
 
 				if (response.status === 200) {
@@ -89,7 +89,7 @@ const General = ({ dropSiempre, dropAnio, setFechaInicio, fechaInicio, fechaFin,
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
-			let url = `http://${urlweb}/consultas/sesiones/${abogado.id}`;
+			let url = `${urlweb}/consultas/sesiones/${abogado.id}`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setConsultasS(response.data);

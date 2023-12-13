@@ -85,7 +85,7 @@ const Youtube = () => {
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` }
 			};
-			let url = `http://${urlweb}/abogados`;
+			let url = `${urlweb}/abogados`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setAbogados(response.data);

@@ -40,7 +40,7 @@ const Clientes = ({
 				const config = {
 					headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 				};
-				let url = `http://${urlweb}/casos/abogado/${id_abo}/${fechaInicio}/${fechaFin}`;
+				let url = `${urlweb}/casos/abogado/${id_abo}/${fechaInicio}/${fechaFin}`;
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setCasos(response.data);
@@ -58,7 +58,7 @@ const Clientes = ({
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
 			console.log("getCasosDesdeSiempre");
-			let url = `http://${urlweb}/casos/abogado/siempre/${id_abo}/${fechaInicio}/${fechaFin}`;
+			let url = `${urlweb}/casos/abogado/siempre/${id_abo}/${fechaInicio}/${fechaFin}`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setCasos(response.data);
@@ -88,7 +88,7 @@ const Clientes = ({
 				const config = {
 					headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 				};
-				let url = `http://${urlweb}/consultas/sesiones/id_caso/${id}/${fechaInicio}/${fechaFin}/${id_abo}/${dropSelect}`
+				let url = `${urlweb}/consultas/sesiones/id_caso/${id}/${fechaInicio}/${fechaFin}/${id_abo}/${dropSelect}`
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesByCaso(response.data);
@@ -108,7 +108,7 @@ const Clientes = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url = `http://${urlweb}/consultas/sesiones/${id}/${id_abo}`;
+			let url = `${urlweb}/consultas/sesiones/${id}/${id_abo}`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setSesionesByCaso(response.data);
@@ -140,7 +140,7 @@ const Clientes = ({
 				const config = {
 					headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 				};
-				let url = `http://${urlweb}/consultas/sesiones/tabla/id_caso/${id}/${fechaInicio}/${fechaFin}/${id_abo}/${dropSelect}`
+				let url = `${urlweb}/consultas/sesiones/tabla/id_caso/${id}/${fechaInicio}/${fechaFin}/${id_abo}/${dropSelect}`
 				const response = await axios.get(url, config);
 				if (response.status === 200) {
 					setSesionesByCasoTabla(response.data);
@@ -156,7 +156,7 @@ const Clientes = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url = `http://${urlweb}/consultas/sesiones/tabla/id_caso/${id}/${id_abo}`;
+			let url = `${urlweb}/consultas/sesiones/tabla/id_caso/${id}/${id_abo}`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setSesionesByCasoTabla(response.data);
@@ -171,7 +171,7 @@ const Clientes = ({
 			const config = {
 				headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 			};
-			let url = `http://${urlweb}/consultas/cliente/estadisticas/${id_caso}/${fechaInicio}/${fechaFin}/${id_abo}/${dropSiempre}`;
+			let url = `${urlweb}/consultas/cliente/estadisticas/${id_caso}/${fechaInicio}/${fechaFin}/${id_abo}/${dropSiempre}`;
 			const response = await axios.get(url, config);
 			if (response.status === 200) {
 				setEstadisticas(response.data);

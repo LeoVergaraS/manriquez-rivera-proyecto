@@ -64,7 +64,7 @@ const FormSesion = (props) => {
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       };
-      let url = `http://${urlweb}/casos`;
+      let url = `${urlweb}/casos`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         const casos = response.data;
@@ -79,7 +79,6 @@ const FormSesion = (props) => {
 
   useEffect(() => {
     getCasos();
-    console.log(sesion);
   }, []);
 
   const Formulario = () => {

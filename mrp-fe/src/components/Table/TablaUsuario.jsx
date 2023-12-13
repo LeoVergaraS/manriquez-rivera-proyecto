@@ -25,7 +25,7 @@ const TablaUsuario = (props) => {
         const config = {
             headers: { Authorization: `Bearer ${Cookies.get("token")}` }
         };
-        let url = `http://${urlweb}/auth/getUserLogueado`;
+        let url = `${urlweb}/auth/getUserLogueado`;
         const response = await axios.get(url, config);
         if (response.status === 200) {
             setAbogadoLogueado(response.data.id_abogado);
@@ -145,7 +145,7 @@ const TablaUsuario = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://${urlweb}/${mapping}`;
+      const url = `${urlweb}/${mapping}`;
       const response = await axios.get(url, config);
       if (response.status === 200) {
         setData(response.data);
@@ -164,7 +164,7 @@ const TablaUsuario = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://${urlweb}/${mapping}`;
+      const url = `${urlweb}/${mapping}`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleCreate();
@@ -189,7 +189,7 @@ const TablaUsuario = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://${urlweb}/${mapping}`;
+      const url = `${urlweb}/${mapping}`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleEdit();
@@ -209,7 +209,7 @@ const TablaUsuario = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://${urlweb}/${mapping}`;
+      const url = `${urlweb}/${mapping}`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleChange();
@@ -230,7 +230,7 @@ const TablaUsuario = (props) => {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       };
       const mapping = content.toLowerCase();
-      const url = `http://${urlweb}/${mapping}/delete`;
+      const url = `${urlweb}/${mapping}/delete`;
       const response = await axios.post(url, item, config);
       if (response.status === 200) {
         toggleDeleted();
