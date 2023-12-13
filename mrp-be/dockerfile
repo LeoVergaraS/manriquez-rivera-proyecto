@@ -4,6 +4,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY mvnw .
 COPY ./.mvn /app/.mvn
+COPY keystore.p12 /app/keystore.p12
 
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
@@ -13,4 +14,5 @@ RUN ./mvnw clean install -DskipTests
 FROM openjdk:17
 WORKDIR /app
 COPY --from=builder /app/target/*.jar /app/mrp.jar
+COPY --from=builder /app/keystore.p12 /app/keystore.p12
 ENTRYPOINT ["java", "-jar", "/app/mrp.jar"]

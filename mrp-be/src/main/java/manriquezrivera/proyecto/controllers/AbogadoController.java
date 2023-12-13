@@ -22,6 +22,11 @@ public class AbogadoController {
   @Autowired
   AbogadoService abogadoService;
 
+  @GetMapping("/test")
+  public ResponseEntity<String> test(){
+    return ResponseEntity.ok().body("AbogadoController funciona correctamente");
+  }
+
   @GetMapping
   public ResponseEntity<List<Abogado>> getAbogados(){
     List<Abogado> abogados = abogadoService.getAbogados();

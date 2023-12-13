@@ -29,6 +29,7 @@ public class SecurityConfig {
 						.disable())
 				.authorizeHttpRequests(authRequest -> {
 					authRequest.requestMatchers("/auth/**").permitAll();
+					authRequest.requestMatchers("/abogados/test").permitAll();
 					authRequest.requestMatchers(HttpMethod.OPTIONS).permitAll();
 					authRequest.requestMatchers("/**").authenticated();
 					authRequest.anyRequest().authenticated();
