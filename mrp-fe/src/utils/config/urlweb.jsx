@@ -1,6 +1,14 @@
-//const ip = "104.131.178.92"; // Cambiar por la ip del servidor
-const ip = "localhost";
-const port = "8090";
-const urlweb = `${ip}:${port}`
 
+const verificarConexion = (hostname) => {
+    if(hostname === "localhost"){
+        return ":8090";
+    }else{
+        return "/api";
+    }
+}
+
+
+const hostname = window.location.hostname;
+const conect = verificarConexion(hostname);
+const urlweb = `${hostname}${conect}`
 export default urlweb;
