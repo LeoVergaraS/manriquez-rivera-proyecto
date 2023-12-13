@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig {
     @Bean
     public WebMvcConfigurer corsConfigure() {
-        String origin_local = "http://localhost:5173";
-        String origin_prod = "http://104.131.178.92:3000"; // cambiar por el dominio
+        String origin_local = "http://localhost";
+        String origin_prod = "https://cronocobro.cl";
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
@@ -18,9 +18,8 @@ public class CorsConfig {
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
-                        .allowedOrigins(origin_prod, origin_local);
+                        .allowedOrigins(origin_local, origin_local + ":3000", origin_local + ":5173", origin_prod);
             }
         };
     }
-
 }
