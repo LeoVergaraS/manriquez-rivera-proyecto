@@ -149,7 +149,7 @@ const Login = () => {
         onMouseLeave={() => handleHover(false)}
       >
         <h1 className={`banner__wel-title ${animation ? "banner__wel-title--animation" : ""} ${!animation && hover ? "banner__wel-title--hover" : ""}`}>Bienvenido!</h1>
-        <p className={`banner__wel-text ${animation ? "banner__wel-text--animation" : ""} ${!animation && hover ? "banner__wel-text--hover" : ""}`}>A la aplicación Manriquez Rivera</p>
+        <p className={`banner__wel-text ${animation ? "banner__wel-text--animation" : ""} ${!animation && hover ? "banner__wel-text--hover" : ""}`}>A la aplicación CronoCobro</p>
       </div>
     </main>
   );
