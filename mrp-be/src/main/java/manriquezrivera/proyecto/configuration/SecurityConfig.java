@@ -28,10 +28,10 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf
 						.disable())
 				.authorizeHttpRequests(authRequest -> {
-					authRequest.requestMatchers("/auth/**").permitAll();
-					authRequest.requestMatchers("/abogados/test").permitAll();
+					authRequest.requestMatchers("/api/auth/login").permitAll();
+					authRequest.requestMatchers("/api/abogados/test").permitAll();
 					authRequest.requestMatchers(HttpMethod.OPTIONS).permitAll();
-					authRequest.requestMatchers("/**").authenticated();
+					authRequest.requestMatchers("/api/**").authenticated();
 					authRequest.anyRequest().authenticated();
 				})
 				.sessionManagement(sessionManager -> sessionManager

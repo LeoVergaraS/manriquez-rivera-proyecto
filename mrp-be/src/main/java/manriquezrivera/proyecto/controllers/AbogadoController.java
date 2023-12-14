@@ -17,7 +17,7 @@ import manriquezrivera.proyecto.services.AbogadoService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/abogados")
+@RequestMapping("/api/abogados")
 public class AbogadoController {
   @Autowired
   AbogadoService abogadoService;

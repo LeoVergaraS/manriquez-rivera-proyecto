@@ -15,7 +15,7 @@ import manriquezrivera.proyecto.user.User;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor    
 public class AuthController {
     
