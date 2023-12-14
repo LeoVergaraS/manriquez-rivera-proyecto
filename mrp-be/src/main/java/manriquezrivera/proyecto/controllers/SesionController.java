@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/sesiones")
+@RequestMapping("/api/sesiones")
 public class SesionController {
     @Autowired
     SesionService sesionService;

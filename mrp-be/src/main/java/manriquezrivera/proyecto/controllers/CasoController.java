@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/casos")
+@RequestMapping("/api/casos")
 public class CasoController {
 	@Autowired
 	CasoService casoService;

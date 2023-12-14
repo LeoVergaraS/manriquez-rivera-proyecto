@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/materias")
+@RequestMapping("/api/materias")
 public class MateriaController {
     @Autowired
     MateriaService materiaService;

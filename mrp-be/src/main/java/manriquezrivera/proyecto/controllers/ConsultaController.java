@@ -21,7 +21,7 @@ import manriquezrivera.proyecto.services.ConsultaService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/consultas")
+@RequestMapping("/api/consultas")
 public class ConsultaController {
 	@Autowired
 	ConsultaService consultaService;
