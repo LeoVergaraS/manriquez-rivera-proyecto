@@ -6,7 +6,7 @@ import './graficoGeneral1.scss';
 
 const GraficoGernal1 = ({ title, tiempoSesiones, className }) => {
 
-    const tiempos = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo }) : [];
+    const tiempos = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.tiempo/60 }) : [];
     const dias1 = tiempoSesiones !== undefined ? tiempoSesiones.map((tiempo) => { return tiempo.fecha }) : [];
     const cn = className !== undefined ? className : '';
 
@@ -46,7 +46,7 @@ const GraficoGernal1 = ({ title, tiempoSesiones, className }) => {
                             label: function (context) {
                                 var label = ' ';
                                 if (context.parsed.y !== null) {
-                                    label += castTime(context.parsed.y);
+                                    label += castTime(context.parsed.y * 60);
                                 }
                                 return label;
                             }
@@ -67,7 +67,7 @@ const GraficoGernal1 = ({ title, tiempoSesiones, className }) => {
                     y: {
                         title: {
                             display: true,
-                            text: 'Horas de sesión', // Etiqueta para el eje y
+                            text: 'Minutos de sesión', // Etiqueta para el eje y
                             color: '#1e3f43'
                         },
                         grid: {

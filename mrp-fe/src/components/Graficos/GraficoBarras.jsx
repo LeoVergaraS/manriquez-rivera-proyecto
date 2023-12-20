@@ -1,10 +1,11 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import './graficoBarras.scss';
+import castTime from '../../utils/functions/castTime';
 
 const GradicoBarras = ({ consultasM, tittle }) => {
 
-    const tiempos = consultasM !== undefined ? consultasM.map((tiempo) => { return tiempo.tiempo }) : [];
+    const tiempos = consultasM !== undefined ? consultasM.map((tiempo) => { return (tiempo.tiempo/60) }) : [];
     const materias = consultasM !== undefined ? consultasM.map((tiempo) => { return tiempo.nombre }) : [];
 
     const data = {
@@ -35,7 +36,7 @@ const GradicoBarras = ({ consultasM, tittle }) => {
                     label: function (context) {
                         var label = ' ';
                         if (context.parsed.y !== null) {
-                            label += context.parsed.y;
+                            label += castTime(context.parsed.y * 60);
                         }
                         return label;
                     }

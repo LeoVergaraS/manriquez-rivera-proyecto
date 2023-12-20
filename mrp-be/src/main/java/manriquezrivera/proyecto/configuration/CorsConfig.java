@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig {
     @Bean
     public WebMvcConfigurer corsConfigure() {
-        String origin_local = "https://localhost";
+        String origin_local = "http://localhost";
         String origin_prod = "https://cronocobro.cl";
         return new WebMvcConfigurer() {
             @Override
